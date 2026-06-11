@@ -74,6 +74,24 @@ def test_imagegen_jobs_and_only_filter_are_written_after_approval(tmp_path: Path
     assert "OpenAI" not in json.dumps(jobs, ensure_ascii=False)
 
 
+def test_imagegen_jobs_include_final_end_keyframe_when_generating_all(tmp_path: Path) -> None:
+    project = tmp_path / "imagegen-final-keyframe"
+    prepare_storyboard_project(project)
+    assert run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard").returncode == 0
+    allow_upload(project)
+
+    result = run_cli("scripts/generate_images.py", "--project", str(project), "--live")
+
+    assert result.returncode == 0
+    scenes = load_json(project / "storyboard" / "scenes.json")
+    jobs = load_json(project / "prompts" / "imagegen_jobs.json")
+    scene_ids = [job["scene_id"] for job in jobs["jobs"]]
+    assert len(jobs["jobs"]) == scenes["keyframe_count"]
+    assert scene_ids[-1] == "sc07"
+    assert jobs["jobs"][-1]["output"] == "images/draft/sc07_v001.png"
+    assert "final end keyframe" in jobs["jobs"][-1]["prompt"]
+
+
 def test_fake_generated_file_is_recorded_without_overwrite_and_regenerate_versions(tmp_path: Path) -> None:
     project = tmp_path / "record-output"
     prepare_storyboard_project(project)

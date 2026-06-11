@@ -57,7 +57,8 @@ def build_image_prompt_plan(
             f"Fixed site lock: {continuity['fixed_site_lock']}",
             f"Camera and composition: {continuity['camera_lock']}",
             f"Lighting and color: {continuity['lighting_color_lock']}",
-            "Approved reference assets to preserve:",
+            "Visual style contract: obey the selected reusable style guide while preserving storyboard continuity.",
+            "Approved style guide and reference assets to preserve:",
             reference_block,
             "Safety framing: show a near-miss prevention moment, not an accident impact.",
             "Output must be clean, readable, realistic enough for worker education, and free of generated text.",
@@ -65,6 +66,54 @@ def build_image_prompt_plan(
                 "Prompting reference: follow the local Codex imagegen skill and the official image generation guide; "
                 "avoid precise in-image text because image models can struggle with exact text rendering and layout."
             ),
+        ]
+    )
+    return {
+        "scene_id": scene_id,
+        "output": f"images/draft/{scene_id}.png",
+        "prompt": prompt,
+        "negative_prompt": _negative_prompt(),
+        "reference_assets": reference_assets,
+        "continuity_bible": continuity,
+        "quality_checklist": _image_quality_checklist(),
+    }
+
+
+def build_final_image_prompt_plan(
+    scene_id: str,
+    previous_scene: dict,
+    reference_assets: dict[str, list[dict[str, str]]],
+    reference_block: str,
+    scene_index: int,
+    scene_total: int,
+    previous_qa_blockers: list[str] | None = None,
+) -> ImagePromptPlan:
+    continuity = _continuity_bible()
+    previous = str(previous_scene.get("visual_action_ko", "Continue directly from the previous prevention beat."))
+    prompt = "\n".join(
+        [
+            "Create the final end keyframe for a Korean industrial safety training animation.",
+            f"Scene ID: {scene_id}.",
+            f"Story flow role: final end keyframe {scene_index} of {scene_total}; this is the last frame of the sliding chain.",
+            f"Previous scene continuity: {previous}",
+            "Current story beat: leave the same ready-mix concrete plant visibly controlled, with vehicles stopped or moving safely, workers outside hazard zones, and the signal workflow complete.",
+            "Next scene setup: closing frame; no new incident, no new character, no new vehicle, and no visual jump.",
+            (
+                "Narrative requirement: this final end keyframe must resolve the prevention story and serve as "
+                "the exact end frame for the last Seedance clip."
+            ),
+            *_previous_blocker_prompt_lines(previous_qa_blockers or []),
+            "Primary action: use the selected reusable style guide for the same ready-mix concrete plant, same BCT bulk cement trailer, same yellow dump truck, same signal person and worker, separated traffic lanes, visible safe pedestrian route, controlled blind spot zone, no text, no injury, no impact frame.",
+            f"Fixed character lock: {continuity['fixed_character_lock']}",
+            f"Fixed equipment lock: {continuity['fixed_equipment_lock']}",
+            f"Fixed site lock: {continuity['fixed_site_lock']}",
+            f"Camera and composition: {continuity['camera_lock']}",
+            f"Lighting and color: {continuity['lighting_color_lock']}",
+            "Visual style contract: obey the selected reusable style guide while preserving storyboard continuity.",
+            "Approved style guide and reference assets to preserve:",
+            reference_block,
+            "Safety framing: show a completed near-miss prevention moment, not an accident impact.",
+            "Output must be clean, readable, realistic enough for worker education, and free of generated text.",
         ]
     )
     return {
@@ -103,7 +152,8 @@ def build_video_prompt_plan(scene: dict, reference_assets: dict[str, list[dict[s
             f"Action causality: {contract['causality_rule']}",
             "Text delivery: do not render exact Korean or English text inside generated frames; subtitles and overlays are added in post-production.",
             f"Forbidden motion: {contract['motion_rule']}",
-            "Approved reference assets to preserve:",
+            "Visual style contract: preserve the selected reusable style guide from the keyframes.",
+            "Approved style guide and reference assets to preserve:",
             reference_block,
             "Camera: slow 35mm documentary training frame, stable tripod or gentle dolly, no stylized cinematic exaggeration.",
         ]

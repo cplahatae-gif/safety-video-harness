@@ -534,7 +534,7 @@
       <aside class="status-panel" aria-label="현재 운영 기준">
         <h2 class="status-title">현재 운영 기준</h2>
         <div class="status-grid">
-          <div class="metric"><b>56 pass</b><span>최근 전체 테스트 기준</span></div>
+          <div class="metric"><b>58 pass</b><span>최근 전체 테스트 기준</span></div>
           <div class="metric"><b>30초</b><span>기본 비용 가드레일</span></div>
           <div class="metric"><b>10초</b><span>유료 검증 실행 제한</span></div>
           <div class="metric"><b>3회</b><span>동일 blocker escalation</span></div>
@@ -556,10 +556,10 @@
         <div class="node"><strong>레퍼런스 분석</strong><span>인물, 장비, 작업상황, 스타일 DNA를 수동 md 우선으로 읽는다.</span></div>
         <div class="node"><strong>스토리보드</strong><span>영상 길이와 이미지 분량에 맞춰 컷과 키프레임을 설계한다.</span></div>
         <div class="node loop"><strong>스토리 QA</strong><span>역할별 평가자를 병렬 실행하고 Arbiter가 통과/수정 여부를 정한다.</span></div>
-        <div class="node gate"><strong>Gate 1</strong><span>스토리 승인 전 live 이미지 생성 차단.</span></div>
+        <div class="node gate"><strong>Gate 1</strong><span>스토리보드 QA 통과 전 live 이미지 생성 차단.</span></div>
         <div class="node loop"><strong>이미지 생성/QA</strong><span>Codex imagegen 작업 명세를 만들고 역할별 평가자와 Arbiter로 판정한다.</span></div>
         <div class="node"><strong>이미지 승인</strong><span>승인본은 보존하고 기존 승인 파일은 덮어쓰지 않는다.</span></div>
-        <div class="node gate"><strong>Gate 2</strong><span>비용 명세와 외부 업로드 허용 확인.</span></div>
+        <div class="node gate"><strong>Gate 2</strong><span>비용, 업로드 허용, 전체 이미지 QA 통과 확인.</span></div>
         <div class="node paid"><strong>Seedance 생성</strong><span>10초, 최대 1회 검증 실행을 기본으로 제한한다.</span></div>
         <div class="node loop"><strong>영상 QA</strong><span>프레임 검사 후 미달 시 자동 재생성 없이 propose-only 수정 제안만 작성.</span></div>
       </div>

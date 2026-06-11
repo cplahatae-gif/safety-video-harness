@@ -1,0 +1,13 @@
+# OMO image RALPH orchestrator verification
+date: 2026-06-11T05:58:23Z
+
+## html parser
+docs/safety-video-harness-algorithm-onepager.html: html parser ok
+docs/safety-video-harness-onepager.html: html parser ok
+
+## pytest
+..........................................................               [100%]
+58 passed in 12.59s
+
+## fixture OMO plan
+planned OMO image RALPH orchestration for 0 scene(s)

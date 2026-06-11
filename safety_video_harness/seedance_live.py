@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+import re
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Final
 
 from safety_video_harness.errors import HarnessError
 from safety_video_harness.io import read_json, write_json, write_jsonl
@@ -11,6 +13,7 @@ from safety_video_harness.io import read_json, write_json, write_jsonl
 MAX_TEST_SECONDS = 10
 MAX_ATTEMPTS = 3
 SECONDS_PER_CLIP = 5
+URL_RE: Final = re.compile(r"https?://\S+")
 
 
 @dataclass(frozen=True, slots=True)
@@ -58,7 +61,7 @@ def run_seedance_live_plan(project: Path, plan: dict) -> str:
             {
                 "scene_id": job["scene_id"],
                 "cost_stdout": cost.stdout.strip(),
-                "create_stdout": created.stdout.strip(),
+                "create_stdout": _redact_public_urls(created.stdout.strip()),
             }
         )
     for run in runs:
@@ -128,3 +131,7 @@ def _run_cli(command: list[str]) -> subprocess.CompletedProcess[str]:
     if result.returncode != 0:
         raise HarnessError(result.stderr.strip() or result.stdout.strip() or "higgsfield command failed")
     return result
+
+
+def _redact_public_urls(text: str) -> str:
+    return URL_RE.sub("[redacted-url]", text)

@@ -1,6 +1,8 @@
 # Safety Video Harness Rules
 
 - Never run live image or video generation without approval.
+- Start each new safety-video project with an intake interview before storyboard, image, or video generation.
+- Intake must ask for source files, topic, target seconds, image density, reference images, selected style guide, aspect ratio, text delivery, and approval scope.
 - Use Codex built-in `imagegen` skill/tool as the default image generation path.
 - Do not implement OpenAI Image API/CLI image generation unless the user explicitly asks for that fallback.
 - Never leave project image assets only under `$CODEX_HOME/generated_images`; move or copy selected outputs into the project.
@@ -17,6 +19,9 @@
 - Append every storyboard, image, and video QA round to project evidence and `llm-wiki/evaluation-rounds.md`.
 - Do not pass video QA from metadata alone; sampled-frame inspection evidence plus visual QA must approve character continuity, gaze motivation, education clarity, and storyboard alignment.
 - Treat unclear gaze direction, unexplained character appearance/disappearance, or generic factory footage as video blockers.
+- Ask where each reference belongs: `model/cast`, `model/ppe`, `product/equipment`, `ref/approved/person`, `ref/approved/work`, `ref/approved/space`, `ref/approved/style`, `ref/approved/camera`, or `ref/approved/lighting`.
+- After asking whether references exist, ask which reusable style guide to use and show 5 choices from `style-guides/catalog.json`.
+- Store reusable styles under `style-guides/<style-id>/STYLE_GUIDE.md` with reference images in `style-guides/<style-id>/references/`.
 - Use dry-run before live work.
 - Treat 30 seconds as a cost guardrail, not a technical limit.
 - Inspect video through sampled frames, not direct MP4 understanding.

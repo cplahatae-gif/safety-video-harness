@@ -1,0 +1,16 @@
+Style guide catalog integration verification
+
+Commands:
+- uv run pytest -q tests/test_style_guides.py tests/test_plugin_structure.py
+- uv run pytest -q
+- uv run python scripts/generate_images.py --project projects/remicon-collision-guide --dry-run --only sc01
+
+Results:
+- targeted style/plugin tests: 7 passed
+- targeted style/remicon/story-flow tests after module split: 10 passed
+- full test suite: 70 passed
+- remicon fixture dry-run: image dry-run prepared 1 prompt(s)
+- prompt contains Selected style guide: korean-industrial-webtoon
+- prompt contains modern Korean webtoon safety-training style
+- prompt length: 6140 chars
+- module size check after refactor: project.py 231, generation.py 207, prompt_contract.py 241 pure-ish LOC

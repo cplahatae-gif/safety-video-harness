@@ -27,6 +27,8 @@ def test_plugin_manifest_and_harness_assets_exist() -> None:
         "hooks/protected_paths.json",
         "schemas/project_config.schema.json",
         "schemas/scenes.schema.json",
+        "style-guides/catalog.json",
+        "style-guides/korean-industrial-webtoon/STYLE_GUIDE.md",
         "templates/project/PLAN.md",
         "templates/project/AGENTS.safety.md",
     ]:
@@ -55,3 +57,45 @@ def test_session_start_anchor_reloads_nonnegotiable_mission_rules() -> None:
     assert "parallel role evaluators" in output
     assert "critical veto" in output
     assert "Video failures are propose-only" in output
+    assert "Start with an intake interview" in output
+    assert "reference images" in output
+    assert "selected style guide" in output
+
+
+def test_live_veto_hook_allows_approved_project_live_command(tmp_path: Path) -> None:
+    project = tmp_path / "approved-live-hook"
+    project.mkdir()
+    (project / "project_config.json").write_text('{"external_upload_allowed": true}', encoding="utf-8")
+    (project / "approvals.json").write_text(
+        json.dumps(
+            {
+                "gates": {
+                    "storyboard": {"approved": True},
+                    "image_to_video": {"approved": False},
+                }
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    result = subprocess.run(
+        [
+            "python3",
+            "hooks/pretooluse-live-veto.py",
+            "uv",
+            "run",
+            "python",
+            "scripts/generate_images.py",
+            "--project",
+            str(project),
+            "--live",
+        ],
+        cwd=ROOT,
+        check=False,
+        text=True,
+        capture_output=True,
+    )
+
+    assert result.returncode == 0
+    assert "allow" in result.stdout

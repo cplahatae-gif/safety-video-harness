@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 from pathlib import Path
-from shutil import which
-from zipfile import BadZipFile, ZipFile
 
 from safety_video_harness.errors import HarnessError
 from safety_video_harness.io import ensure_dirs, read_json, sha256_file, write_json
 from safety_video_harness.source_facts import facts_for_sources, topics_from_facts
+from safety_video_harness.source_rendering import extract_rendered_assets
+from safety_video_harness.style_guides import default_style_guide_id, reference_intake_defaults, style_interview_defaults
 
 PROJECT_DIRS = [
     "sources/raw",
@@ -16,6 +16,12 @@ PROJECT_DIRS = [
     "product/equipment",
     "ref/candidates",
     "ref/approved",
+    "ref/approved/person",
+    "ref/approved/work",
+    "ref/approved/space",
+    "ref/approved/style",
+    "ref/approved/camera",
+    "ref/approved/lighting",
     "style",
     "storyboard/versions",
     "prompts",
@@ -79,7 +85,7 @@ def render_sources(project: Path, dry_run: bool, mode: str = "media_extract") ->
     rendered_dir = project / "sources" / "rendered"
     rendered_dir.mkdir(parents=True, exist_ok=True)
     for index, entry in enumerate(entries, start=1):
-        assets, rendering_mode, warning = _extract_rendered_assets(rendered_dir, entry, index, mode)
+        assets, rendering_mode, warning = extract_rendered_assets(rendered_dir, entry, index, mode)
         entry["rendered_assets"] = [str(asset) for asset in assets]
         entry["page_count"] = len(assets)
         entry["rendering_mode"] = rendering_mode
@@ -87,41 +93,6 @@ def render_sources(project: Path, dry_run: bool, mode: str = "media_extract") ->
     write_json(project / "sources" / "sources.json", {"sources": entries})
     run_mode = "dry-run" if dry_run else "rendered"
     return f"{run_mode} rendered {len(entries)} source(s)"
-
-
-def _extract_rendered_assets(rendered_dir: Path, entry: dict, index: int, mode: str) -> tuple[list[Path], str, str]:
-    source = Path(str(entry["path"]))
-    if source.suffix.lower() == ".pptx":
-        if mode == "slide_render":
-            if which("soffice") is None:
-                assets = _extract_pptx_media(rendered_dir, source, str(entry["source_id"]))
-                return assets, "media_extract", "soffice missing; used PPTX media extraction fallback"
-            raise HarnessError("slide_render via soffice is not implemented yet; use --mode media_extract")
-        return _extract_pptx_media(rendered_dir, source, str(entry["source_id"])), mode, ""
-    output = rendered_dir / f"{entry['source_id']}_source_{index:02d}.txt"
-    output.write_text(f"dry-run rendered asset for {entry['path']}\n", encoding="utf-8")
-    return [output], mode, ""
-
-
-def _extract_pptx_media(rendered_dir: Path, source: Path, source_id: str) -> list[Path]:
-    assets: list[Path] = []
-    try:
-        with ZipFile(source) as archive:
-            names = sorted(name for name in archive.namelist() if name.startswith("ppt/media/"))
-            for index, name in enumerate(names, start=1):
-                suffix = Path(name).suffix.lower()
-                if suffix not in [".png", ".jpg", ".jpeg"]:
-                    continue
-                output = rendered_dir / f"{source_id}_slide_{index:02d}{suffix}"
-                output.write_bytes(archive.read(name))
-                assets.append(output)
-    except BadZipFile:
-        output = rendered_dir / f"{source_id}_slide_01.txt"
-        output.write_text(f"dry-run placeholder for invalid pptx fixture: {source}\n", encoding="utf-8")
-        return [output]
-    if not assets:
-        raise HarnessError(f"no renderable media found in {source}")
-    return assets
 
 
 def extract_topics(project: Path) -> str:
@@ -146,6 +117,10 @@ def apply_default_intake(project: Path) -> str:
         config["topic"] = topic_entries[0]["title_ko"]
         config["selected_topic_id"] = topic_entries[0]["topic_id"]
         config["topic_selection_mode"] = "default"
+    style_guide_id = str(config.get("style_guide_id", default_style_guide_id()))
+    config["style_guide_id"] = style_guide_id
+    config["reference_intake"] = reference_intake_defaults()
+    config["style_interview"] = style_interview_defaults(style_guide_id)
     write_json(project / "project_config.json", config)
     return "applied default intake"
 
@@ -177,11 +152,15 @@ def search_references(project: Path, dry_run: bool) -> str:
 
 
 def extract_style_dna(project: Path) -> str:
+    config = read_json(project / "project_config.json")
+    style_guide_id = str(config.get("style_guide_id", default_style_guide_id()))
     style = {
+        "selected_style_guide_id": style_guide_id,
         "style": {
             "palette": "clear industrial safety colors",
             "camera": "wide educational framing",
             "texture": "clean instructional animation",
+            "guide": style_guide_id,
         },
         "negative_constraints": [
             "no gore",
@@ -206,6 +185,9 @@ def _project_config(project: Path, name: str) -> dict:
         "target_seconds": 30,
         "target_duration_sec": 30,
         "image_density": "normal",
+        "style_guide_id": default_style_guide_id(),
+        "reference_intake": reference_intake_defaults(),
+        "style_interview": style_interview_defaults(default_style_guide_id()),
         "duration_policy": "default_30_extend_with_approval",
         "seconds_per_clip": 5,
         "aspect_ratio": "16:9",

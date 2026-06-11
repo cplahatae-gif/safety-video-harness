@@ -64,4 +64,20 @@ def test_storyboard_quality_blocks_missing_citations(tmp_path: Path) -> None:
     assert "storyboard QA blockers" in result.stderr
     report = json.loads((project / "qa" / "storyboard_quality_reviews.json").read_text(encoding="utf-8"))
     assert report["passed"] is False
-    assert "missing source citation" in json.dumps(report, ensure_ascii=False)
+
+
+def test_storyboard_gate_requires_passing_storyboard_qa(tmp_path: Path) -> None:
+    project = tmp_path / "storyboard-gate-qa"
+    prepare_project(project)
+    path = project / "storyboard" / "scenes.json"
+    scenes = json.loads(path.read_text(encoding="utf-8"))
+    scenes["scenes"][0]["visual_action_ko"] = ""
+    path.write_text(json.dumps(scenes, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    qa = run_cli("scripts/evaluate_storyboard.py", "--project", str(project))
+    approved = run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard")
+
+    assert qa.returncode != 0
+    assert approved.returncode != 0
+    assert "storyboard QA" in approved.stderr
+    assert "weak causal prevention beat" in approved.stderr

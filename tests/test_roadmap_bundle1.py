@@ -92,6 +92,41 @@ def test_reference_profile_manifest_and_approval_workflow(tmp_path: Path) -> Non
     assert provenance["approvals"][0]["source"] == "ref/candidates/style-candidate.png"
 
 
+def test_reference_profile_manifest_includes_categorized_approved_references(tmp_path: Path) -> None:
+    project = tmp_path / "reference-profile-categories"
+    prepare_project(project)
+
+    work_dir = project / "ref" / "approved" / "work"
+    space_dir = project / "ref" / "approved" / "space"
+    work_dir.mkdir(parents=True, exist_ok=True)
+    space_dir.mkdir(parents=True, exist_ok=True)
+    (work_dir / "loading-zone-control.png").write_bytes(b"fake image")
+    (work_dir / "loading-zone-control.md").write_text(
+        "work situation shows a controlled loading zone with a visible stop action",
+        encoding="utf-8",
+    )
+    (work_dir / "manual-signal-rule.md").write_text(
+        "md-only reference describes a signal worker gaze rule",
+        encoding="utf-8",
+    )
+    (space_dir / "plant-route-map.png").write_bytes(b"fake image")
+    (space_dir / "plant-route-map.md").write_text(
+        "space reference shows separated vehicle lanes and pedestrian route",
+        encoding="utf-8",
+    )
+
+    analyzed = run_cli("scripts/analyze_reference_assets.py", "--project", str(project), "--dry-run")
+    assert analyzed.returncode == 0
+
+    manifest = load_json(project / "ref" / "approved" / "reference_assets.json")
+    asset_blob = json.dumps(manifest, ensure_ascii=False)
+    assert "work_situation_reference" in asset_blob
+    assert "controlled loading zone" in asset_blob
+    assert "md-only reference describes a signal worker gaze rule" in asset_blob
+    assert "space_reference" in asset_blob
+    assert "separated vehicle lanes" in asset_blob
+
+
 def test_gate2_requires_cost_images_video_plan_upload_and_qa(tmp_path: Path) -> None:
     project = tmp_path / "gate2"
     prepare_project(project)
@@ -131,6 +166,40 @@ def test_gate2_requires_cost_images_video_plan_upload_and_qa(tmp_path: Path) -> 
 
     approved = run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "image_to_video", "--estimated-credits", "12")
     assert approved.returncode == 0
+
+
+def test_gate2_rejects_partial_image_qa_coverage(tmp_path: Path) -> None:
+    project = tmp_path / "gate2-partial-qa"
+    prepare_project(project)
+    assert run_cli("scripts/select_topic.py", "--project", str(project), "--topic-id", "topic-001").returncode == 0
+    assert run_cli("scripts/extract_style_dna.py", "--project", str(project)).returncode == 0
+    assert run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30").returncode == 0
+    assert run_cli("scripts/evaluate_storyboard.py", "--project", str(project)).returncode == 0
+    assert run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard").returncode == 0
+    assert run_cli("scripts/generate_seedance.py", "--project", str(project), "--dry-run").returncode == 0
+
+    config_path = project / "project_config.json"
+    config = load_json(config_path)
+    config["external_upload_allowed"] = True
+    config_path.write_text(json.dumps(config, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    for index in range(1, 8):
+        (project / "images" / "approved" / f"sc{index:02d}.png").write_bytes(b"fake image")
+    (project / "qa" / "image_reviews.json").write_text(
+        json.dumps(
+            {
+                "dry_run": False,
+                "reviews": [{"scene_id": "sc01", "blocking_issues": [], "total_score": 25}],
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+
+    result = run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "image_to_video", "--estimated-credits", "12")
+
+    assert result.returncode != 0
+    assert "image QA coverage" in result.stderr
 
 
 def test_approval_write_respects_single_writer_lock(tmp_path: Path) -> None:

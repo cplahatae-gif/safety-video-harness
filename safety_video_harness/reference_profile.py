@@ -11,10 +11,7 @@ from safety_video_harness.io import read_json, write_json
 def analyze_reference_assets(project: Path, dry_run: bool) -> str:
     assets = []
     for role, relative_dir in ASSET_DIRS.items():
-        if role == "approved_reference":
-            scan_dir = project / "ref" / "approved"
-        else:
-            scan_dir = project / relative_dir
+        scan_dir = project / relative_dir
         assets.extend(_profile_assets(project, role, scan_dir))
     write_json(
         project / "ref" / "approved" / "reference_assets.json",
@@ -49,7 +46,7 @@ def approve_reference(project: Path, candidate: str) -> str:
 def _profile_assets(project: Path, role: str, scan_dir: Path) -> list[dict[str, str | list[str]]]:
     if not scan_dir.exists():
         return []
-    return [
+    image_assets = [
         {
             "asset_id": path.stem,
             "role": role,
@@ -61,6 +58,19 @@ def _profile_assets(project: Path, role: str, scan_dir: Path) -> list[dict[str, 
         for path in sorted(scan_dir.glob("*"))
         if path.suffix.lower() in IMAGE_SUFFIXES
     ]
+    profile_assets = [
+        {
+            "asset_id": path.stem,
+            "role": role,
+            "path": str(path.relative_to(project)),
+            "description": " ".join(path.read_text(encoding="utf-8").split()),
+            "locked_traits": _locked_traits(role),
+            "usage": _usage_for(role),
+        }
+        for path in sorted(scan_dir.glob("*.md"))
+        if not _has_matching_image(scan_dir, path)
+    ]
+    return image_assets + profile_assets
 
 
 def _description_for(path: Path) -> str:
@@ -73,6 +83,10 @@ def _description_for(path: Path) -> str:
     return f"visual reference from {path.name}; manual description not provided"
 
 
+def _has_matching_image(asset_dir: Path, path: Path) -> bool:
+    return any((asset_dir / f"{path.stem}{suffix}").exists() for suffix in IMAGE_SUFFIXES)
+
+
 def _locked_traits(role: str) -> list[str]:
     match role:
         case "cast":
@@ -83,6 +97,18 @@ def _locked_traits(role: str) -> list[str]:
             return ["vehicle shape", "scale", "color", "wheel count"]
         case "approved_reference":
             return ["style", "camera", "lighting", "texture"]
+        case "person_reference":
+            return ["pose", "gaze", "ppe", "role action"]
+        case "work_situation_reference":
+            return ["hazard control", "safe route", "worker placement", "vehicle state"]
+        case "space_reference":
+            return ["site layout", "lane markings", "pedestrian route", "hazard zone"]
+        case "style_reference":
+            return ["visual style", "line quality", "color palette", "rendering texture"]
+        case "camera_reference":
+            return ["framing", "angle", "lens feel", "camera distance"]
+        case "lighting_reference":
+            return ["lighting direction", "exposure", "shadow softness", "time of day"]
         case _:
             return ["visual identity"]
 
@@ -97,6 +123,18 @@ def _usage_for(role: str) -> str:
             return "equipment_reference"
         case "approved_reference":
             return "style_reference"
+        case "person_reference":
+            return "person_reference"
+        case "work_situation_reference":
+            return "work_situation_reference"
+        case "space_reference":
+            return "space_reference"
+        case "style_reference":
+            return "style_reference"
+        case "camera_reference":
+            return "camera_reference"
+        case "lighting_reference":
+            return "lighting_reference"
         case _:
             return "visual_reference"
 

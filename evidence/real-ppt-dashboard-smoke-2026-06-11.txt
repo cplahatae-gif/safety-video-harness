@@ -1,0 +1,45 @@
+Real PPT dashboard smoke test - 2026-06-11
+
+Project:
+- projects/real-ppt-dashboard-smoke
+
+Interview assumptions:
+- topic_id: topic-002
+- topic: 신호수 배치와 후방카메라 확인 절차
+- target_seconds: 30
+- image_density: normal
+- aspect_ratio: 16:9
+- resolution: 1080p
+- reference images provided: false
+- live video allowed: false
+
+Source:
+- fixtures/sources/remicon-collision-guide.pptx
+
+Commands and outcomes:
+- init_project: created project projects/real-ppt-dashboard-smoke
+- register_sources: registered src-001
+- render_pptx_sources --dry-run --mode media_extract: dry-run rendered 1 source(s)
+- extract_topics: extracted 2 topic(s)
+- select_topic topic-002: selected topic topic-002
+- search_references --dry-run: prepared reference search queries
+- extract_style_dna: extracted style DNA
+- analyze_reference_assets --dry-run: profiled 0 reference asset(s)
+- plan_storyboard --duration 30 --image-density normal: planned 6 story beat(s)
+- evaluate_storyboard: storyboard QA passed 6 scene(s)
+- validate_scene_links: validated 6 scene link(s)
+- approve_gate storyboard: approved gate storyboard
+- generate_images --live: imagegen job(s) prepared 6; expected imagegen call(s): 6
+- Codex built-in imagegen: failed with server error; no API/CLI fallback used.
+- Local smoke keyframes: generated 6 readable 16:9 PNGs under tmp_generated.
+- record_image_output sc01-sc06: recorded draft images.
+- validate_images: validated 6 image plan(s)
+- approve_image sc01-sc06: approved 6 images.
+- generate_seedance --dry-run: Seedance dry-run prepared 6 clip plan(s)
+- approve_gate image_to_video: initially blocked by missing images/approved/sc07.png.
+- sc07 final hold frame: copied from sc06 for smoke-test Gate 2 continuity.
+- approve_gate image_to_video --estimated-credits 12: approved gate image_to_video
+- dashboard: projects/real-ppt-dashboard-smoke/dashboard.html
+
+Finding:
+- The storyboard contract has clip_count=6 and keyframe_count=7, but imagegen jobs currently produce sc01-sc06 only. A real production run needs automatic final end-keyframe generation or a sc07 job.

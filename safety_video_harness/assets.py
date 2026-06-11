@@ -8,6 +8,12 @@ ASSET_DIRS = {
     "ppe": "model/ppe",
     "equipment": "product/equipment",
     "approved_reference": "ref/approved",
+    "person_reference": "ref/approved/person",
+    "work_situation_reference": "ref/approved/work",
+    "space_reference": "ref/approved/space",
+    "style_reference": "ref/approved/style",
+    "camera_reference": "ref/approved/camera",
+    "lighting_reference": "ref/approved/lighting",
 }
 
 

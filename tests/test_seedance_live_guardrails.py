@@ -4,6 +4,8 @@ import json
 import subprocess
 from pathlib import Path
 
+import safety_video_harness.seedance_live as seedance_live
+
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURE = ROOT / "fixtures" / "sources" / "remicon-collision-guide.pptx"
@@ -145,3 +147,38 @@ def test_validation_run_prompt_matches_10_second_duration(tmp_path: Path) -> Non
     command = plan["jobs"][0]["create_command"]
     prompt = command[command.index("--prompt") + 1]
     assert "Generate a 10 second Seedance clip" in prompt
+
+
+def test_seedance_live_run_log_redacts_public_output_url(tmp_path: Path, monkeypatch) -> None:
+    project = tmp_path / "seedance-redaction"
+    prepare_project(project)
+    assert run_cli(
+        "scripts/generate_seedance.py",
+        "--project",
+        str(project),
+        "--live",
+        "--execute-paid",
+        "--test-seconds",
+        "10",
+        "--plan-only",
+    ).returncode == 0
+    plan = load_json(project / "video" / "seedance_live_plan.json")
+
+    def fake_run_cli(command: list[str]) -> subprocess.CompletedProcess[str]:
+        if "cost" in command:
+            return subprocess.CompletedProcess(command, 0, "17.5 credits\n", "")
+        return subprocess.CompletedProcess(
+            command,
+            0,
+            "https://d8j0ntlcm91z4.cloudfront.net/user_abc/hf_example.mp4\n",
+            "",
+        )
+
+    monkeypatch.setattr(seedance_live, "_run_cli", fake_run_cli)
+
+    result = seedance_live.run_seedance_live_plan(project, {"jobs": plan["jobs"][:1]})
+
+    assert result == "created 1 Seedance live job(s)"
+    log = (project / "video" / "seedance_live_runs.jsonl").read_text(encoding="utf-8")
+    assert "cloudfront.net" not in log
+    assert "[redacted-url]" in log
