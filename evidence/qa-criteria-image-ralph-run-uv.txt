@@ -1,0 +1,2 @@
+validated 1 image plan(s)
+{'passed': True, 'ralph': 'passed', 'blockers': []}

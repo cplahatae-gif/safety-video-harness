@@ -1,0 +1,101 @@
+{
+    "passed": true,
+    "thresholds": {
+        "minimum_field_score": 4,
+        "minimum_total_score": 20
+    },
+    "reviews": [
+        {
+            "scene_id": "sc01",
+            "criteria": {
+                "source_grounding_score": 5,
+                "causal_flow_score": 5,
+                "granularity_score": 5,
+                "text_delivery_score": 5,
+                "continuity_score": 5
+            },
+            "total_score": 25,
+            "blocking_issues": [],
+            "decision": "approve_storyboard",
+            "revision_prompt": ""
+        },
+        {
+            "scene_id": "sc02",
+            "criteria": {
+                "source_grounding_score": 5,
+                "causal_flow_score": 5,
+                "granularity_score": 5,
+                "text_delivery_score": 5,
+                "continuity_score": 5
+            },
+            "total_score": 25,
+            "blocking_issues": [],
+            "decision": "approve_storyboard",
+            "revision_prompt": ""
+        },
+        {
+            "scene_id": "sc03",
+            "criteria": {
+                "source_grounding_score": 5,
+                "causal_flow_score": 5,
+                "granularity_score": 5,
+                "text_delivery_score": 5,
+                "continuity_score": 5
+            },
+            "total_score": 25,
+            "blocking_issues": [],
+            "decision": "approve_storyboard",
+            "revision_prompt": ""
+        },
+        {
+            "scene_id": "sc04",
+            "criteria": {
+                "source_grounding_score": 5,
+                "causal_flow_score": 5,
+                "granularity_score": 5,
+                "text_delivery_score": 5,
+                "continuity_score": 5
+            },
+            "total_score": 25,
+            "blocking_issues": [],
+            "decision": "approve_storyboard",
+            "revision_prompt": ""
+        },
+        {
+            "scene_id": "sc05",
+            "criteria": {
+                "source_grounding_score": 5,
+                "causal_flow_score": 5,
+                "granularity_score": 5,
+                "text_delivery_score": 5,
+                "continuity_score": 5
+            },
+            "total_score": 25,
+            "blocking_issues": [],
+            "decision": "approve_storyboard",
+            "revision_prompt": ""
+        },
+        {
+            "scene_id": "sc06",
+            "criteria": {
+                "source_grounding_score": 5,
+                "causal_flow_score": 5,
+                "granularity_score": 5,
+                "text_delivery_score": 5,
+                "continuity_score": 5
+            },
+            "total_score": 25,
+            "blocking_issues": [],
+            "decision": "approve_storyboard",
+            "revision_prompt": ""
+        }
+    ],
+    "blockers": [],
+    "algorithm": {
+        "source_grounding": "Every scene must cite source facts.",
+        "causal_flow": "Every scene must show a prevention cause/effect beat.",
+        "granularity": "Scene duration must be short enough for controllable keyframes.",
+        "text_delivery": "Teaching point must be expressed as subtitle/overlay, not narration.",
+        "continuity": "Start/end keyframes and continuity constraints must be present."
+    }
+}

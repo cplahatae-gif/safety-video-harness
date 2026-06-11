@@ -1,0 +1,8 @@
+分析时间：2026-06-11 10:48:38 +0900
+输入视频：projects/remicon-collision-guide/video/clips/sc01_sc02_seedance.mp4
+输出目录：evidence/video-frame-analysis-smoke
+抽帧数量：3
+抽帧策略：fps=1/2
+OCR 语言：kor+eng
+产物：ffprobe.txt, contact.png, ocr.txt, ocr.json, frame_*.jpg
+OCR 预览：--- frame_01.jpg   --- frame_02.jpg   --- frame_03.jpg  

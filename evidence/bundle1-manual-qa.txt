@@ -1,0 +1,24 @@
+created project /var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.OAJLfPiAaj/
+manual
+registered src-001
+dry-run rendered 1 source(s)
+extracted 2 topic(s)
+QA_TOPIC_MISSING
+topic must be selected before storyboard generation
+QA_INVALID_TOPIC
+unknown topic_id: topic-999
+QA_SELECT_TOPIC
+selected topic topic-001
+extracted style DNA
+planned 6 scenes
+approved gate storyboard
+image dry-run prepared 6 prompt(s)
+Seedance dry-run prepared 6 clip plan(s)
+QA_GATE2_UPLOAD_BLOCK
+image_to_video approval requires external_upload_allowed=true
+QA_LOCK_BLOCK
+single-writer lock is held: /var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp
+.OAJLfPiAaj/manual/approvals.json.lock
+QA_CLEANUP_DONE
+
+

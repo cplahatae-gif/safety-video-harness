@@ -1,0 +1,55 @@
+{
+  "project": "레미콘 트럭 후진·협착 예방",
+  "style": "cinematic realistic safety education film still, 16:9, warm industrial daylight, consistent ready-mix concrete truck and consistent workers across all cuts",
+  "site_ref": "storyboard/sc01.png",
+  "cast": {
+    "A_worker": {
+      "ref": "storyboard/character.png",
+      "spec": "작업자 A — Korean male construction worker, mid-30s, WHITE hard hat, hi-visibility ORANGE safety vest with silver reflective stripes over a navy-blue long-sleeve work shirt, navy work trousers, tan work boots, gray gloves. The at-risk pedestrian worker; appears in sc03, sc04, sc05 as the same person.",
+      "appears": ["03", "04", "05"]
+    },
+    "B_flagger": {
+      "ref": "storyboard/character_b.png",
+      "spec": "신호수 B (유도자) — Korean male signal person, 40s, RED hard hat, RED hi-visibility safety vest with silver stripes over a navy-blue long-sleeve shirt, navy trousers, tan boots, gray gloves, holding a RED signal baton. Visually distinct from worker A. The solution; appears in sc04, sc05.",
+      "appears": ["04", "05"]
+    }
+  },
+  "caption_burn": "ffmpeg",
+  "scenes": [
+    {
+      "id": "01",
+      "image_prompt": "A white ready-mix concrete mixer truck slowly reversing on a dirt construction site access road, viewed from the rear three-quarter angle. Reverse warning lights on. Scaffolding and a batching plant in the background. Cinematic realistic, 16:9, warm industrial daylight.",
+      "caption_ko": "레미콘 트럭 후진 중 협착 사고가 발생합니다",
+      "narration_ko": "건설 현장에서 레미콘 트럭이 후진할 때, 협착 사고가 자주 발생합니다.",
+      "motion": "slow dolly-in toward the reversing truck, dust rising"
+    },
+    {
+      "id": "02",
+      "image_prompt": "View from directly behind the same white ready-mix concrete mixer truck as it reverses. The large rotating drum blocks the driver's rear view. A red shaded zone illustrates the driver's blind spot directly behind the truck. Same construction site. Cinematic realistic, 16:9.",
+      "caption_ko": "후방은 운전자가 볼 수 없는 사각지대입니다",
+      "narration_ko": "트럭 후방은 운전자가 거울로도 확인할 수 없는 사각지대입니다.",
+      "motion": "static wide shot, subtle camera shake, truck slowly backing toward camera"
+    },
+    {
+      "id": "03",
+      "image_prompt": "A male construction worker in a white hard hat and orange safety vest walks across the path behind the same reversing ready-mix concrete truck, unaware of the truck, looking down at a clipboard. Tense framing showing the gap between worker and truck closing. Same site. Cinematic realistic, 16:9. Warning/prevention tone, no blood, no impact.",
+      "caption_ko": "작업자가 사각지대에 들어오면 협착 위험이 큽니다",
+      "narration_ko": "작업자가 이 사각지대에 들어오면, 운전자는 알아채지 못하고 협착 위험이 커집니다.",
+      "motion": "tension push-in, worker walking, truck reversing"
+    },
+    {
+      "id": "04",
+      "image_prompt": "A dedicated signal person (flagger) wearing a hi-visibility orange vest and white hard hat stands to the side in clear view of the driver's mirror, giving a clear hand signal to guide the same reversing ready-mix concrete truck. The worker from before now stands safely away. Same site. Cinematic realistic, 16:9.",
+      "caption_ko": "유도자(신호수)를 반드시 배치하세요",
+      "narration_ko": "후진 작업에는 반드시 유도자, 신호수를 배치해 운전자를 유도해야 합니다.",
+      "motion": "steady shot, flagger signaling, truck reversing slowly under guidance"
+    },
+    {
+      "id": "05",
+      "image_prompt": "The same white ready-mix concrete mixer truck stopped safely. Orange traffic cones mark a clearly defined no-entry exclusion zone behind the truck. The signal person and worker stand safely outside the zone. Calm, resolved composition. Same site. Cinematic realistic, 16:9.",
+      "caption_ko": "접근금지 구역 설정과 후방 경보를 확인하세요",
+      "narration_ko": "트럭 후방에 접근금지 구역을 설정하고, 후방 감지·경보장치를 확인하면 협착 사고를 예방할 수 있습니다.",
+      "motion": "slow pull-back revealing the cordoned safe zone"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+# Safety Video Harness Rules
+
+- Never run live image or video generation without approval.
+- Use Codex built-in `imagegen` skill/tool as the default image generation path.
+- Do not implement OpenAI Image API/CLI image generation unless the user explicitly asks for that fallback.
+- Never leave project image assets only under `$CODEX_HOME/generated_images`; move or copy selected outputs into the project.
+- Never make a safety claim without a source citation.
+- Never overwrite approved artifacts.
+- Keep generated-image text out of keyframes unless explicitly approved.
+- Deliver required Korean text through subtitle/overlay/title-card artifacts, not generated text inside image keyframes.
+- Build keyframes as one causal story flow, not disconnected checklist panels.
+- Each image prompt must state previous-scene continuity, current story beat, and next-scene setup.
+- Validate sliding-chain continuity before video work: scNN must end at scNN+1 so adjacent clips share a keyframe.
+- Use score-based QA before regeneration or video: story match, identity, PPE, equipment, story flow, and technical readiness.
+- Treat RALPH as an early-stopping loop: stop immediately when thresholds pass, and never exceed 20 image QA iterations per scene.
+- Evaluate generated assets from an isolated QA context using an evidence bundle; do not let the generator approve its own output.
+- Append every storyboard, image, and video QA round to project evidence and `llm-wiki/evaluation-rounds.md`.
+- Do not pass video QA from metadata alone; sampled-frame inspection evidence plus visual QA must approve character continuity, gaze motivation, education clarity, and storyboard alignment.
+- Treat unclear gaze direction, unexplained character appearance/disappearance, or generic factory footage as video blockers.
+- Use dry-run before live work.
+- Treat 30 seconds as a cost guardrail, not a technical limit.
+- Inspect video through sampled frames, not direct MP4 understanding.

@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "required": ["schema_version", "project_type", "project_name", "slug", "target_seconds"],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "project_type": {"type": "string"},
+    "project_name": {"type": "string"},
+    "slug": {"type": "string"},
+    "target_seconds": {"type": "integer"}
+  }
+}

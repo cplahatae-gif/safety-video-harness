@@ -1,0 +1,36 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+____________ test_validation_run_prompt_matches_10_second_duration _____________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-104/test_validation_run_prompt_mat0')
+
+    def test_validation_run_prompt_matches_10_second_duration(tmp_path: Path) -> None:
+        project = tmp_path / "seedance-validation-duration"
+        prepare_project(project)
+    
+        result = run_cli(
+            "scripts/generate_seedance.py",
+            "--project",
+            str(project),
+            "--live",
+            "--execute-paid",
+            "--test-seconds",
+            "10",
+            "--max-attempts",
+            "1",
+            "--validation-run",
+            "--plan-only",
+        )
+    
+        assert result.returncode == 0
+        plan = load_json(project / "video" / "seedance_live_plan.json")
+        assert plan["jobs"][0]["duration"] == 10
+        command = plan["jobs"][0]["create_command"]
+        prompt = command[command.index("--prompt") + 1]
+>       assert "Generate a 10 second Seedance clip" in prompt
+E       AssertionError: assert 'Generate a 10 second Seedance clip' in 'Generate a 5 second Seedance clip for an industrial safety education video.\nScene ID: sc01.\nStart keyframe: images/...nly.\nCamera: slow 35mm documentary training frame, stable tripod or gentle dolly, no stylized cinematic exaggeration.'
+
+tests/test_seedance_live_guardrails.py:147: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_seedance_live_guardrails.py::test_validation_run_prompt_matches_10_second_duration
+1 failed in 0.34s

@@ -1,0 +1,6 @@
+python3: found
+ffmpeg: found
+ffprobe: found
+node: found
+npm: found
+higgsfield: missing

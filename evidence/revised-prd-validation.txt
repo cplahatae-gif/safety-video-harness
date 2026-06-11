@@ -1,0 +1,4 @@
+file: /Users/hatae/임시작업/안전영상 제작/테스트_코덱스/plans/safety-video-harness-revised-prd.md
+lines: 895
+missing: []
+PASS: True

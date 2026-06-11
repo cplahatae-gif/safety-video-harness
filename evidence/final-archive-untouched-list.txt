@@ -1,0 +1,3 @@
+plans/archive/safety-video-automation-integrated-prd.md
+plans/archive/safety-video-automation-prd.ko.md
+plans/archive/safety-video-automation-prd.md

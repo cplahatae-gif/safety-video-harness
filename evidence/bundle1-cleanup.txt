@@ -1,0 +1,3 @@
+./.DS_Store
+./projects/.DS_Store
+./projects/remicon-collision-guide/.DS_Store

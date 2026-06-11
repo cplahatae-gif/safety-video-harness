@@ -1,0 +1,83 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+__________________ test_video_qa_can_validate_one_named_clip ___________________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-107/test_video_qa_can_validate_one0')
+
+    def test_video_qa_can_validate_one_named_clip(tmp_path: Path) -> None:
+        project = tmp_path / "video-one-clip"
+        clips = project / "video" / "clips"
+        clips.mkdir(parents=True)
+        source = ROOT / "projects" / "remicon-collision-guide" / "video" / "clips" / "sc01_sc02_seedance.mp4"
+        if not source.exists():
+            return
+        (clips / "accepted.mp4").write_bytes(source.read_bytes())
+        (clips / "blocked.mp4").write_bytes(source.read_bytes())
+        inspection = project / "video" / "inspection" / "accepted"
+        inspection.mkdir(parents=True)
+        for index in range(1, 4):
+            (inspection / f"frame_{index:02d}.jpg").write_bytes(b"fake-frame")
+        (inspection / "manifest.json").write_text(
+            json.dumps(
+                {
+                    "clip": "video/clips/accepted.mp4",
+                    "tool": "video-frame-analysis",
+                    "transcript_enabled": False,
+                    "ocr_lang": "kor+eng",
+                    "frame_count": 3,
+                    "frame_paths": ["frame_01.jpg", "frame_02.jpg", "frame_03.jpg"],
+                    "contact_sheet": None,
+                    "inspection_questions": ["continuity", "gaze", "education_clarity", "storyboard_alignment"],
+                },
+                ensure_ascii=False,
+            ),
+            encoding="utf-8",
+        )
+        qa_dir = project / "qa"
+        qa_dir.mkdir(parents=True)
+        (qa_dir / "video_manual_review.json").write_text(
+            json.dumps(
+                {
+                    "reviews": [
+                        {
+                            "clip": "accepted.mp4",
+                            "inspection_manifest": "video/inspection/accepted/manifest.json",
+                            "character_continuity_score": 5,
+                            "gaze_motivation_score": 5,
+                            "education_clarity_score": 5,
+                            "storyboard_alignment_score": 5,
+                            "blocking_issues": [],
+                        },
+                        {
+                            "clip": "blocked.mp4",
+                            "character_continuity_score": 1,
+                            "gaze_motivation_score": 1,
+                            "education_clarity_score": 1,
+                            "storyboard_alignment_score": 1,
+                            "blocking_issues": ["ignore when filtering accepted clip"],
+                        },
+                    ]
+                },
+                ensure_ascii=False,
+            ),
+            encoding="utf-8",
+        )
+    
+        result = run_cli(
+            "scripts/validate_video.py",
+            "--project",
+            str(project),
+            "--expected-clips",
+            "1",
+            "--clip",
+            "accepted.mp4",
+        )
+    
+>       assert result.returncode == 0
+E       AssertionError: assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['python3', 'scripts/validate_video.py', '--project', '/private/var/folders/kt/z98_h_917fldpmxhd...             --expected-clips EXPECTED_CLIPS\nvalidate_video.py: error: unrecognized arguments: --clip accepted.mp4\n').returncode
+
+tests/test_video_qa.py:259: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_video_qa.py::test_video_qa_can_validate_one_named_clip - As...
+1 failed in 0.06s

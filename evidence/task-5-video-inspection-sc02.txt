@@ -1,0 +1,1 @@
+manifest written: projects/remicon-collision-guide/video/inspection/sc02_sc03_seedance/manifest.json

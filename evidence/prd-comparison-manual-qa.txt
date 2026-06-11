@@ -1,0 +1,24 @@
+QA: integrated PRD manual check
+27:### 1.1 A가 더 나은 점
+49:### 1.2 B가 더 나은 점
+92:## 3. 충돌하는 설계
+181:## 4. 합쳐야 할 설계
+193:## 5. 버려야 할 설계
+212:## 6. 최종 통합 제품 목표
+5:현재 실행 기준 문서는 [plans/safety-video-automation-integrated-prd.md](./plan
+s/safety-video-automation-integrated-prd.md)이다.
+hatae@hataejun-ui-Macmini 테스트_코덱스 %
+
+
+
+
+
+
+
+
+
+
+
+
+
+

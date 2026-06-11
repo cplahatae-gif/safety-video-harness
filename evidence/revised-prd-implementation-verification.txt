@@ -1,0 +1,18 @@
+# safety-video-harness revised PRD verification
+date: 2026-06-11T04:21:33Z
+
+## pytest
+.....................................................                    [100%]
+53 passed in 12.14s
+
+## generate_images dry-run
+image dry-run prepared 6 prompt(s)
+
+## validate_images dry-run
+validated 6 image plan(s)
+
+## generate_seedance dry-run
+Seedance dry-run prepared 6 clip plan(s)
+
+## validate_video dry-run/no paid
+video QA blockers: worker position changes during the clip without a clear story reason; character gaze does not clearly point to the active hazard, signal person, or route cue; the clip reads as generic yard footage rather than a clear safety lesson; hazard-zone approach is visible but the prevention intervention is not explicit enough; character_continuity_score below minimum 4; gaze_motivation_score below minimum 4; education_clarity_score below minimum 4; storyboard_alignment_score below minimum 4

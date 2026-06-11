@@ -1,0 +1,24 @@
+python3: found
+ffmpeg: found
+ffprobe: found
+node: found
+npm: found
+tesseract: found
+higgsfield: found
+ocr_lang_kor: found
+ocr_lang_eng: found
+scenelens: found
+video-frame-analysis: found
+understand-video: found
+seedance-expert: found
+
+
+
+
+
+
+
+
+
+
+

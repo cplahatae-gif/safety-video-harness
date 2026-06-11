@@ -1,0 +1,8 @@
+README.md:36:- [x] 나레이션/TTS 제외 정책: 현재 목표는 영상+자막/오버레이 전달
+README.md:224:현재 범위에서 나레이션, TTS, Whisper/API 전사는 구현하지 않는다. 필요한 교육 문구는
+safety_video_harness/validation.py:40:    if "narration_ko" in scene:
+safety_video_harness/validation.py:41:        errors.append(f"{scene_id}: narration_ko is not allowed")
+safety_video_harness/validation.py:42:    if "narration_char_limit" in scene:
+safety_video_harness/validation.py:43:        errors.append(f"{scene_id}: narration_char_limit is not allowed")
+agents/video-qa.md:16:- education_clarity_score: the safety lesson must be understandable from the frame sequence plus subtitles/overlays, without voiceover.
+skills/story-writer/SKILL.md:6:and a short closing rule. Do not write narration or voiceover. Use short Korean

@@ -1,0 +1,34 @@
+{
+    "iteration": 1,
+    "thresholds": {
+        "minimum_field_score": 4,
+        "minimum_total_score": 24,
+        "maximum_live_video_attempts": 3,
+        "test_video_seconds": 10
+    },
+    "average_total_score": 0.0,
+    "passed": false,
+    "blockers": [
+        {
+            "scene_id": "sc01",
+            "blocking_issues": [
+                "Pillow is required for readable image QA; run through uv or install pillow"
+            ]
+        }
+    ],
+    "ralph_loop": {
+        "status": "needs_regeneration",
+        "max_iterations": 20,
+        "blocked_scenes": [
+            {
+                "scene_id": "sc01",
+                "deficiencies": [
+                    "Pillow is required for readable image QA; run through uv or install pillow"
+                ],
+                "regeneration_prompt": "Regenerate sc01 and directly fix these deficiencies: Pillow is required for readable image QA; run through uv or install pillow. Preserve approved character, PPE, equipment, site layout, story beat, and adjacent-scene continuity."
+            }
+        ],
+        "instruction": "Run RALPH loop for images only: regenerate blocked scene images, record new draft version, re-run validate_images, and repeat until all scores meet thresholds."
+    },
+    "next_action": "regenerate_blocked_scenes"
+}

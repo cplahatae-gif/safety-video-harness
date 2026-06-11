@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "required": ["schema_version", "target_seconds", "scenes"],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "target_seconds": {"type": "integer"},
+    "scenes": {"type": "array"}
+  }
+}

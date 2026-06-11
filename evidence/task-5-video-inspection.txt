@@ -1,0 +1,24 @@
+manifest written: projects/remicon-collision-guide/video/inspection/sc01_sc02_se
+edance/manifest.json
+{
+    "clip": "video/clips/sc01_sc02_seedance.mp4",
+    "tool": "video-frame-analysis",
+    "transcript_enabled": false,
+    "ocr_lang": "kor+eng",
+    "frame_count": 3,
+    "frame_paths": [
+        "frame_01.jpg",
+        "frame_02.jpg",
+        "frame_03.jpg"
+    ],
+    "contact_sheet": "contact.png",
+    "inspection_questions": [
+        "continuity",
+        "gaze",
+        "education_clarity",
+        "storyboard_alignment"
+    ]
+}
+
+
+

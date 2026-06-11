@@ -1,0 +1,21 @@
+[project]
+name = "safety-video-harness"
+version = "0.1.0"
+description = "Dry-run first safety training video automation harness."
+requires-python = ">=3.13"
+dependencies = [
+    "pillow>=12.2.0",
+]
+
+[dependency-groups]
+dev = [
+  "pytest>=9.0.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+

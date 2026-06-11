@@ -1,0 +1,20 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_______________ test_subtitle_plan_generates_srt_from_storyboard _______________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-111/test_subtitle_plan_generates_s0')
+
+    def test_subtitle_plan_generates_srt_from_storyboard(tmp_path: Path) -> None:
+        project = tmp_path / "subtitle-plan"
+        prepare_project(project)
+    
+        result = run_cli("scripts/plan_subtitles.py", "--project", str(project), "--dry-run")
+    
+>       assert result.returncode == 0
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['python3', 'scripts/plan_subtitles.py', '--project', '/private/var/folders/kt/z98_h_917fldpmxhd...hatae/임시작업/안전영상 제작/테스트_코덱스/scripts/plan_subtitles.py': [Errno 2] No such file or directory\n").returncode
+
+tests/test_subtitle_contract.py:36: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_subtitle_contract.py::test_subtitle_plan_generates_srt_from_storyboard
+1 failed in 0.27s

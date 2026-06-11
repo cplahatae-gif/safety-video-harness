@@ -1,0 +1,6 @@
+{
+    "mode": "none",
+    "paid_generation_allowed": false,
+    "reason": "Video generation is paid. The harness only proposes fixes; user approval is required before another live run.",
+    "proposals": []
+}

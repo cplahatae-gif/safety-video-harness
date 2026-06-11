@@ -1,0 +1,83 @@
+created project /var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.wt3fXk8ohe/
+manual
+registered src-001
+dry-run rendered 1 source(s)
+extracted 2 topic(s)
+selected topic topic-001
+extracted style DNA
+planned 6 scenes
+QA_MISSING_GATE
+Gate storyboard is not approved
+approved gate storyboard
+QA_MISSING_UPLOAD
+live generation requires external_upload_allowed=true
+QA_IMAGEGEN_JOB
+imagegen job(s) prepared 1; expected imagegen call(s): 1
+{
+    "execution_mode": "codex_builtin_imagegen",
+    "status": "pending_imagegen",
+    "created_at": "2026-06-10T15:14:52.134372+00:00",
+    "instruction": "Use Codex built-in imagegen skill/tool for each job. After g
+eneration, move or copy the selected output into the job output path. Do not use
+ an API or CLI fallback unless explicitly requested.",
+    "jobs": [
+        {
+            "scene_id": "sc01",
+            "tool": "codex_builtin_imagegen",
+            "status": "pending_imagegen",
+            "prompt": "Create one keyframe for a Korean industrial safety traini
+ng animation.\nScene ID: sc01.\nPrimary action: Korean industrial safety trainin
+g animation style, ready-mix concrete plant, BCT bulk cement trailer and dump tr
+uck, signal person with orange vest, hard hat, scene action: separated traffic l
+anes for a BCT bulk cement trailer and a dump truck at a ready-mix concrete plan
+t entrance, clear blind spot zone, safe pedestrian route, no text, no injury, no
+ impact frame.\nFixed character lock: same worker-001 across every keyframe: Kor
+ean adult industrial worker, average build, white hard hat, orange reflective sa
+fety vest, navy work pants, black safety boots, neutral focused expression\nFixe
+d equipment lock: same BCT bulk cement trailer and same yellow dump truck across
+ every keyframe; keep vehicle scale, wheel count, cab color, and trailer silhoue
+tte consistent\nFixed site lock: same ready-mix concrete plant entrance, concret
+e yard, marked pedestrian route, vehicle lane markings, blind spot hazard zone,
+daylight overcast sky\nCamera and composition: 35mm documentary training frame,
+eye-level wide shot, clear foreground worker, visible vehicle path, no extreme c
+lose-up, no Dutch angle\nLighting and color: neutral daylight, clean industrial
+palette, safety orange and yellow accents, moderate contrast, no dramatic shadow
+s\nApproved reference assets to preserve:\nNo approved visual reference assets p
+rovided; use the continuity bible only.\nSafety framing: show a near-miss preven
+tion moment, not an accident impact.\nOutput must be clean, readable, realistic
+enough for worker education, and free of generated text.",
+            "negative_prompt": "No Korean text, no English text, no logos, no br
+and marks, no gore, no injury, no collision impact, no crushed body, no distorte
+d hands, no extra limbs, no duplicate workers, no inconsistent helmet color, no
+different vehicle model, no fantasy style, no dark horror lighting, no blurry lo
+w-resolution frame.",
+            "reference_assets": {
+                "cast": [],
+                "ppe": [],
+                "equipment": [],
+                "approved_reference": []
+            },
+            "output": "images/draft/sc01_v001.png",
+            "version": "001",
+            "preserve_project_output": true
+        }
+    ]
+}
+QA_MISSING_DRAFT_QA
+validated 1 image plan(s)
+QA_RECORD_AND_APPROVE
+recorded image output sc01 -> images/draft/sc01_v001.png
+validated 1 image plan(s)
+approved image sc01
+total 8
+-rw-r--r--@ 1 hatae  staff  8  6월 11 00:14 sc01.png
+QA_REGENERATE_PRESERVE
+imagegen job(s) prepared 1; expected imagegen call(s): 1
+recorded image output sc01 -> images/draft/sc01_v002.png
+approved image sc01
+total 16
+-rw-r--r--@ 1 hatae  staff  8  6월 11 00:14 sc01_v001.png
+-rw-r--r--@ 1 hatae  staff  8  6월 11 00:14 sc01.png
+fake-two
+fake-oneQA_CLEANUP_DONE
+

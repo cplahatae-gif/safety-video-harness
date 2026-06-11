@@ -1,0 +1,8 @@
+{
+  "type": "object",
+  "required": ["style", "negative_constraints"],
+  "properties": {
+    "style": {"type": "object"},
+    "negative_constraints": {"type": "array"}
+  }
+}

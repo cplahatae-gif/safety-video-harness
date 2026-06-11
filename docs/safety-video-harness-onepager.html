@@ -1,0 +1,883 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Safety Video Harness One-Pager</title>
+  <style>
+    :root {
+      --paper: #f7f5ef;
+      --panel: #fffdf8;
+      --ink: #1f252b;
+      --muted: #63707a;
+      --line: #d6d0c2;
+      --steel: #2f5f73;
+      --green: #276f55;
+      --orange: #c45d21;
+      --red: #a43f35;
+      --yellow: #d49a28;
+      --shadow: 0 18px 50px rgba(31, 37, 43, 0.10);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(90deg, rgba(47, 95, 115, 0.06) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(47, 95, 115, 0.05) 1px, transparent 1px),
+        var(--paper);
+      background-size: 28px 28px;
+      font-family: "Apple SD Gothic Neo", "Pretendard", "Avenir Next", "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .page {
+      width: min(1480px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 34px 0 56px;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
+      gap: 18px;
+      align-items: stretch;
+      margin-bottom: 18px;
+    }
+
+    .hero,
+    .status-panel,
+    .section,
+    .metric,
+    .node,
+    .compact-card,
+    .lane {
+      border: 1px solid var(--line);
+      background: rgba(255, 253, 248, 0.94);
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      padding: 26px 30px 24px;
+      border-left: 8px solid var(--orange);
+    }
+
+    .eyebrow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 13px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 2px 9px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fbf3de;
+      white-space: nowrap;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 980px;
+      font-family: "Iowan Old Style", "Palatino", "Apple SD Gothic Neo", serif;
+      font-size: clamp(34px, 5vw, 72px);
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      max-width: 960px;
+      margin: 18px 0 0;
+      color: #35414a;
+      font-size: 17px;
+    }
+
+    .status-panel {
+      padding: 18px;
+      display: grid;
+      align-content: start;
+      gap: 12px;
+    }
+
+    .status-title {
+      margin: 0 0 2px;
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .metric {
+      padding: 12px;
+      box-shadow: none;
+      background: #ffffff;
+    }
+
+    .metric b {
+      display: block;
+      margin-bottom: 2px;
+      font-size: 20px;
+      line-height: 1.1;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .warning-strip {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 12px 13px;
+      border: 1px solid rgba(164, 63, 53, 0.28);
+      background: #fff3ed;
+      color: #6d2f2a;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 18px;
+    }
+
+    .section {
+      margin-top: 18px;
+      padding: 20px;
+      overflow: hidden;
+    }
+
+    .section h2 {
+      margin: 0 0 14px;
+      font-size: 21px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    .section-intro {
+      margin: -5px 0 16px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .architecture {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .compact-card {
+      min-height: 172px;
+      padding: 15px;
+      box-shadow: none;
+      background: #ffffff;
+      border-radius: 6px;
+    }
+
+    .compact-card h3 {
+      margin: 0 0 10px;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 4px;
+      background: var(--steel);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 900;
+      flex: 0 0 auto;
+    }
+
+    .tag.orange {
+      background: var(--orange);
+    }
+
+    .tag.green {
+      background: var(--green);
+    }
+
+    .tag.red {
+      background: var(--red);
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    li {
+      margin: 5px 0;
+    }
+
+    code {
+      padding: 2px 5px;
+      border: 1px solid #dfd7c6;
+      border-radius: 4px;
+      background: #f4efe3;
+      color: #263238;
+      font-size: 0.92em;
+      white-space: nowrap;
+    }
+
+    .pipeline {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(72px, 1fr));
+      gap: 8px;
+      align-items: stretch;
+      overflow-x: auto;
+      padding-bottom: 3px;
+    }
+
+    .node {
+      min-width: 104px;
+      min-height: 110px;
+      padding: 12px;
+      box-shadow: none;
+      border-radius: 6px;
+      position: relative;
+      background: #ffffff;
+    }
+
+    .node::after {
+      content: "";
+      position: absolute;
+      right: -8px;
+      top: 50%;
+      width: 8px;
+      border-top: 2px solid var(--line);
+    }
+
+    .node:last-child::after {
+      display: none;
+    }
+
+    .node strong {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 13px;
+      line-height: 1.25;
+    }
+
+    .node span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .gate {
+      border-color: rgba(196, 93, 33, 0.55);
+      background: #fff5e6;
+    }
+
+    .loop {
+      border-color: rgba(39, 111, 85, 0.5);
+      background: #eef8f2;
+    }
+
+    .paid {
+      border-color: rgba(164, 63, 53, 0.45);
+      background: #fff0ee;
+    }
+
+    .lanes {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .lane {
+      padding: 16px;
+      box-shadow: none;
+      border-radius: 6px;
+      background: #ffffff;
+    }
+
+    .lane h3 {
+      margin: 0 0 9px;
+      font-size: 16px;
+    }
+
+    .score-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      background: #ffffff;
+      border: 1px solid var(--line);
+    }
+
+    .score-table th,
+    .score-table td {
+      padding: 10px 11px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .score-table th {
+      background: #eee6d6;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    .score-table tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .algorithm {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .formula {
+      padding: 16px;
+      border: 1px solid rgba(47, 95, 115, 0.28);
+      background: #eef6f7;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .formula pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: keep-all;
+      font-family: "SFMono-Regular", "Consolas", monospace;
+      line-height: 1.55;
+    }
+
+    .commands {
+      margin-top: 14px;
+      padding: 15px;
+      border: 1px solid #2b3540;
+      background: #162027;
+      color: #ecf2f2;
+      border-radius: 6px;
+      overflow-x: auto;
+    }
+
+    .commands pre {
+      margin: 0;
+      font-family: "SFMono-Regular", "Consolas", monospace;
+      font-size: 12px;
+      line-height: 1.6;
+      white-space: pre;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 9px;
+      border: 1px solid var(--line);
+      background: #ffffff;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      background: #ffffff;
+      border: 1px solid var(--line);
+    }
+
+    .swatch.gate {
+      background: #fff5e6;
+      border-color: var(--orange);
+    }
+
+    .swatch.loop {
+      background: #eef8f2;
+      border-color: var(--green);
+    }
+
+    .swatch.paid {
+      background: #fff0ee;
+      border-color: var(--red);
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: right;
+    }
+
+    @media (max-width: 1160px) {
+      .topbar,
+      .grid,
+      .algorithm {
+        grid-template-columns: 1fr;
+      }
+
+      .architecture,
+      .lanes {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        width: min(100% - 24px, 1480px);
+        padding-top: 18px;
+      }
+
+      .hero {
+        padding: 22px 20px;
+      }
+
+      h1 {
+        font-size: 36px;
+      }
+
+      .status-grid,
+      .architecture,
+      .lanes {
+        grid-template-columns: 1fr;
+      }
+
+      .section {
+        padding: 16px;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .page {
+        width: 100%;
+        padding: 0;
+      }
+
+      .hero,
+      .status-panel,
+      .section,
+      .metric,
+      .node,
+      .compact-card,
+      .lane {
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <section class="hero">
+        <div class="eyebrow">
+          <span class="pill">Codex plugin-style harness</span>
+          <span class="pill">Safety training video</span>
+          <span class="pill">Story-first automation</span>
+        </div>
+        <h1>안전교육 영상 자동제작 하네스 원페이지</h1>
+        <p class="subtitle">
+          PPTX/SOP 교육자료에서 주제를 뽑고, 스토리보드와 키프레임 이미지를 먼저 검증한 뒤,
+          승인된 경우에만 Higgsfield CLI / Seedance 영상 생성을 실행하는 플러그인형 작업 구조다.
+          영상은 유료이므로 RALPH loop는 이미지 단계에서 적극적으로 돌리고, 영상 단계에서는
+          자동 재생성이 아니라 제안만 남긴다. 모든 평가 라운드는 프로젝트 evidence와
+          <code>llm-wiki/evaluation-rounds.md</code>에 누적된다.
+        </p>
+      </section>
+
+      <aside class="status-panel" aria-label="현재 운영 기준">
+        <h2 class="status-title">현재 운영 기준</h2>
+        <div class="status-grid">
+          <div class="metric"><b>53 pass</b><span>최근 전체 테스트 기준</span></div>
+          <div class="metric"><b>30초</b><span>기본 비용 가드레일</span></div>
+          <div class="metric"><b>10초</b><span>유료 검증 실행 제한</span></div>
+          <div class="metric"><b>3회</b><span>동일 blocker escalation</span></div>
+        </div>
+        <div class="warning-strip">
+          <strong>비용 잠금</strong>
+          <span>현재 커밋 범위에서는 live imagegen, live Seedance, live TTS, 유료 호출을 모두 금지한다.</span>
+        </div>
+      </aside>
+    </div>
+
+    <section class="section">
+      <h2>1. 전체 파이프라인</h2>
+      <p class="section-intro">스토리보드는 자유롭게 반복 수정하고, 이미지는 점수 기준을 맞출 때까지 재생성하며, 영상은 사용자가 승인한 1회성 짧은 테스트만 실행한다.</p>
+      <div class="pipeline" aria-label="자동제작 파이프라인">
+        <div class="node"><strong>자료 등록</strong><span>PPTX/SOP를 프로젝트에 등록하고 원본을 보존한다.</span></div>
+        <div class="node"><strong>자료 렌더링</strong><span>PPTX 이미지, 슬라이드, 텍스트를 추출한다.</span></div>
+        <div class="node"><strong>주제 추출</strong><span>교육자료에서 복수 주제를 뽑고 사용자가 선택한다.</span></div>
+        <div class="node"><strong>레퍼런스 분석</strong><span>인물, 장비, 작업상황, 스타일 DNA를 수동 md 우선으로 읽는다.</span></div>
+        <div class="node"><strong>스토리보드</strong><span>영상 길이와 이미지 분량에 맞춰 컷과 키프레임을 설계한다.</span></div>
+        <div class="node loop"><strong>스토리 QA</strong><span>자료 근거, 인과 흐름, 장면 세분화, 자막 전달성을 평가한다.</span></div>
+        <div class="node gate"><strong>Gate 1</strong><span>스토리 승인 전 live 이미지 생성 차단.</span></div>
+        <div class="node loop"><strong>이미지 생성/QA</strong><span>Codex imagegen 작업 명세를 만들고 역할별 평가자와 Arbiter로 판정한다.</span></div>
+        <div class="node"><strong>이미지 승인</strong><span>승인본은 보존하고 기존 승인 파일은 덮어쓰지 않는다.</span></div>
+        <div class="node gate"><strong>Gate 2</strong><span>비용 명세와 외부 업로드 허용 확인.</span></div>
+        <div class="node paid"><strong>Seedance 생성</strong><span>10초, 최대 1회 검증 실행을 기본으로 제한한다.</span></div>
+        <div class="node loop"><strong>영상 QA</strong><span>프레임 검사 후 미달 시 자동 재생성 없이 propose-only 수정 제안만 작성.</span></div>
+      </div>
+      <div class="legend">
+        <span class="legend-item"><span class="swatch gate"></span>승인 게이트</span>
+        <span class="legend-item"><span class="swatch loop"></span>점수 검증/루프</span>
+        <span class="legend-item"><span class="swatch paid"></span>유료 가능 구간</span>
+      </div>
+    </section>
+
+    <div class="grid">
+      <section class="section">
+        <h2>2. 플러그인 구조</h2>
+        <p class="section-intro">Codex 플러그인처럼 역할을 분리했다. 스킬은 작업 지식, 에이전트는 검토 관점, 훅은 위험 작업 차단과 증거 수집, 스크립트는 반복 가능한 실행 단위다.</p>
+        <div class="architecture">
+          <article class="compact-card">
+            <h3><span class="tag">SK</span>Skills</h3>
+            <ul>
+              <li><code>topic-extractor</code>: 교육자료 주제 후보 추출</li>
+              <li><code>story-writer</code>: 안전교육 시나리오/스토리보드</li>
+              <li><code>style-ref-search</code>: 레퍼런스/스타일 DNA</li>
+              <li><code>image-consistency-check</code>: 인물, PPE, 장비 일관성</li>
+              <li><code>seedance-prompting</code>, <code>video-inspect</code>: 영상 프롬프트와 검사</li>
+            </ul>
+          </article>
+
+          <article class="compact-card">
+            <h3><span class="tag green">AG</span>Agents</h3>
+            <ul>
+              <li><code>storyteller</code>: 자료 기반 안전교육 흐름 설계</li>
+              <li><code>continuity-qa</code>: 씬 연결, 인물 등장/퇴장, 시선 검토</li>
+              <li><code>visual-continuity-director</code>: 이미지-영상 키프레임 연결</li>
+              <li><code>video-qa</code>: 영상 결과물의 교육성/재현성 평가</li>
+            </ul>
+          </article>
+
+          <article class="compact-card">
+            <h3><span class="tag orange">HK</span>Hooks</h3>
+            <ul>
+              <li><code>pretooluse-live-veto</code>: 승인 전 live/유료 호출 차단</li>
+              <li><code>pretooluse-protected-path-veto</code>: archive 등 보호 경로 차단</li>
+              <li><code>posttooluse-schema-validation</code>: 산출물 스키마 피드백</li>
+              <li><code>posttooluse-scene-link-validation</code>: 슬라이딩 체인 연결 검증</li>
+              <li><code>stop-sentinel-guard</code>: 완료 전 필수 증거 확인</li>
+            </ul>
+          </article>
+
+          <article class="compact-card">
+            <h3><span class="tag red">EX</span>External Skills</h3>
+            <ul>
+              <li><code>imagegen</code>: 기본 이미지 생성 경로</li>
+              <li><code>seedance-expert</code>: 영상 프롬프트 설계 지침</li>
+              <li><code>scenelens</code>, <code>video-frame-analysis</code>, <code>understand-video</code>: 로컬 프레임/OCR 기반 영상 검사</li>
+            </ul>
+          </article>
+
+          <article class="compact-card">
+            <h3><span class="tag">PY</span>Core Modules</h3>
+            <ul>
+              <li><code>storyboard_qa.py</code>: 스토리보드 점수화</li>
+              <li><code>image_qa.py</code>: 이미지 점수와 RALPH loop 계약</li>
+              <li><code>evaluation_arbiter.py</code>: 역할별 평가 집계와 최종 판단</li>
+              <li><code>blocker_signatures.py</code>: 반복 blocker 정규화</li>
+              <li><code>video_inspection.py</code>, <code>video_qa.py</code>: 영상 검사와 제안</li>
+              <li><code>gates.py</code>, <code>locks.py</code>: 승인/동시쓰기 통제</li>
+            </ul>
+          </article>
+
+          <article class="compact-card">
+            <h3><span class="tag green">IO</span>Evidence</h3>
+            <ul>
+              <li><code>qa/storyboard_quality_reviews.json</code></li>
+              <li><code>qa/image_qa_loop.json</code></li>
+              <li><code>qa/role_evaluations/&lt;stage&gt;/&lt;item&gt;/round_NNN.json</code></li>
+              <li><code>qa/arbiter_decisions/&lt;stage&gt;/&lt;item&gt;/round_NNN.json</code></li>
+              <li><code>qa/debates/&lt;stage&gt;/&lt;item&gt;/round_NNN.json</code></li>
+              <li><code>qa/video_inspection_manifest.json</code></li>
+              <li><code>qa/video_reviews.json</code></li>
+              <li><code>qa/video_regeneration_proposals.json</code></li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>3. 인테이크와 컷 수 알고리즘</h2>
+        <p class="section-intro">영상 시간과 이미지 분량은 사용자에게 먼저 묻는다. 이미지가 많을수록 스토리보드가 촘촘해지고 영상 생성 전 검증할 키프레임이 늘어난다.</p>
+        <div class="algorithm">
+          <div class="formula">
+            <pre>질문 1. 몇 초짜리 영상을 만드시겠습니까?
+- 기본값: 30초
+- 30초 초과는 기술 제한이 아니라 비용/품질 가드레일
+
+질문 2. 이미지의 분량을 어떻게 하시겠습니까?
+- 보통: density_factor = 1
+- 많이: density_factor = 2
+- 더 많이: density_factor = 4
+
+base_segments = ceil(target_duration_sec / 5)
+story_beats = base_segments * density_factor
+keyframe_count = story_beats + 1
+
+Seedance validation run:
+test_seconds = 10
+max_attempts = 1
+density_factor와 무관하게 짧게 검증</pre>
+          </div>
+          <div class="lane">
+            <h3>슬라이딩 체인 전제</h3>
+            <ul>
+              <li><code>sc01</code> 이미지와 <code>sc02</code> 이미지는 첫 클립의 start/end frame이다.</li>
+              <li><code>sc02</code>와 <code>sc03</code>은 다음 클립의 start/end frame이다.</li>
+              <li>따라서 중간 키프레임은 앞 클립의 끝이자 다음 클립의 시작이다.</li>
+              <li>사람이 갑자기 나타나거나 사라지는 경우는 continuity blocker다.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="section">
+      <h2>4. 평가 기준과 RALPH loop 발생 시점</h2>
+      <p class="section-intro">루프는 전부 같은 방식으로 돌지 않는다. 스토리보드는 비용 없이 수정, 이미지는 점수 기준을 맞출 때까지 재생성, 영상은 유료이므로 제안만 남긴다.</p>
+      <table class="score-table">
+        <thead>
+          <tr>
+            <th>단계</th>
+            <th>평가 항목</th>
+            <th>통과 기준</th>
+            <th>미달 시 알고리즘</th>
+            <th>증거 파일</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>시나리오/스토리보드</strong></td>
+            <td>자료 근거, 인과 흐름, 장면 세분화, 자막/오버레이 전달, start/end keyframe 연속성</td>
+            <td>각 항목 4점 이상, blocker 없음</td>
+            <td>무료 수정 루프. 컷을 더 잘게 쪼개거나 원인-예방-결과 구조를 다시 쓴다.</td>
+            <td><code>qa/storyboard_quality_reviews.json</code></td>
+          </tr>
+          <tr>
+            <td><strong>이미지</strong></td>
+            <td>스토리 일치, 인물 일관성, PPE, 장비, 장면 연결, 16:9 기술 조건</td>
+            <td>필드별 4점 이상, 총점 24점 이상</td>
+            <td><strong>RALPH loop 실행.</strong> 부족한 지점을 재생성 프롬프트로 기록하고 <code>scNN_vNNN.png</code> 새 버전으로 반복 검증한다. 기준 통과 시 즉시 종료한다. 장면별 최대 20회이며, 같은 blocker가 3회 반복되면 upstream escalation.</td>
+            <td><code>qa/image_qa_loop.json</code>, <code>qa/arbiter_decisions/image/scNN/round_NNN.json</code></td>
+          </tr>
+          <tr>
+            <td><strong>영상</strong></td>
+            <td>메타데이터, 프레임 검사, 인물 연속성, 시선 동기, 교육자료 명확성, 스토리보드 반영</td>
+            <td>총점 20점 이상, 수동 시각 검토 통과, inspection frame 3개 이상</td>
+            <td><strong>자동 재생성 금지.</strong> 비용이 발생하므로 <code>propose_only</code>로 다음 수정 제안만 남기고 사용자 승인 후 재실행한다.</td>
+            <td><code>qa/video_reviews.json</code>, <code>qa/video_regeneration_proposals.json</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <div class="grid">
+      <section class="section">
+        <h2>5. 유료/외부 호출 가드레일</h2>
+        <div class="lanes">
+          <article class="lane">
+            <h3>이미지 Gate 1</h3>
+            <ul>
+              <li>스토리보드 승인 전 <code>--live</code> 차단</li>
+              <li>Codex 내장 <code>imagegen</code>이 기본 경로</li>
+              <li>OpenAI API/CLI 어댑터는 구현하지 않음</li>
+            </ul>
+          </article>
+          <article class="lane">
+            <h3>영상 Gate 2</h3>
+            <ul>
+              <li><code>external_upload_allowed=true</code> 필요</li>
+              <li><code>--execute-paid</code> 없으면 Seedance live 차단</li>
+              <li>현재 구현 검증에서는 live/유료 호출을 실행하지 않음</li>
+            </ul>
+          </article>
+          <article class="lane">
+            <h3>나레이션 제외</h3>
+            <ul>
+              <li>TTS, voiceover, Whisper/API 전사 제외</li>
+              <li>교육 문구는 자막, 오버레이, 텍스트 카드로 전달</li>
+              <li>이미지 안의 생성 텍스트는 기본 금지</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>6. 역할별 평가와 Arbiter</h2>
+        <p class="section-intro">평가 결과는 다음 생성 라운드의 입력으로 다시 쓰인다. 원본 evidence는 프로젝트 폴더가 source of truth이고, llm-wiki는 반복 실패를 빠르게 읽는 요약 인덱스다.</p>
+        <div class="lanes">
+          <article class="lane">
+            <h3>Role Evaluators</h3>
+            <ul>
+              <li><code>qa/role_evaluations/&lt;stage&gt;/&lt;item&gt;/round_NNN.json</code></li>
+              <li>기술, 시각 연속성, 스토리 일치 관점을 분리한다.</li>
+              <li>평균 대신 관점별 최저점과 blocker를 Arbiter에 전달한다.</li>
+            </ul>
+          </article>
+          <article class="lane">
+            <h3>Arbiter</h3>
+            <ul>
+              <li><code>qa/arbiter_decisions/&lt;stage&gt;/&lt;item&gt;/round_NNN.json</code></li>
+              <li>승인, 재생성, 토론, upstream escalation을 결정한다.</li>
+              <li>같은 signature가 3회 반복되면 이미지 재생성을 멈춘다.</li>
+            </ul>
+          </article>
+          <article class="lane">
+            <h3>Conditional Debate</h3>
+            <ul>
+              <li><code>qa/debates/&lt;stage&gt;/&lt;item&gt;/round_NNN.json</code></li>
+              <li>평가자 점수 차이가 크거나 반복 blocker가 있을 때만 기록한다.</li>
+              <li>새 생성이 아니라 판단 근거와 다음 조치를 정리하는 단계다.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+    </div>
+
+    <section class="section">
+      <h2>7. 라운드 기록 활용</h2>
+      <p class="section-intro">평가 결과는 다음 생성 라운드의 입력으로 다시 쓰인다. 원본 evidence는 프로젝트 폴더가 source of truth이고, llm-wiki는 반복 실패를 빠르게 읽는 요약 인덱스다.</p>
+      <div class="lanes">
+        <article class="lane">
+            <h3>Evidence Bundle</h3>
+            <ul>
+              <li><code>qa/evaluation_bundles/&lt;stage&gt;/&lt;item&gt;/round_NNN.json</code></li>
+              <li>장면, 리뷰, blocker, 필요한 증거 목록을 묶는다.</li>
+              <li>평가자는 생성자의 의도 설명 없이 이 bundle만 보고 채점한다.</li>
+            </ul>
+          </article>
+          <article class="lane">
+            <h3>Round Ledger</h3>
+            <ul>
+              <li><code>qa/evaluation_rounds.jsonl</code></li>
+              <li>스토리보드, 이미지, 영상 평가 라운드를 append-only로 저장한다.</li>
+              <li>RALPH 현재 횟수, 남은 횟수, repeated blocker signature 판단에 사용한다.</li>
+            </ul>
+          </article>
+          <article class="lane">
+            <h3>LLM Wiki</h3>
+            <ul>
+              <li><code>llm-wiki/evaluation-rounds.md</code></li>
+              <li>이전 blocker를 다음 이미지 프롬프트의 <code>Previous QA blockers</code> 섹션에 주입한다.</li>
+              <li>같은 문제가 반복되면 재생성이 아니라 스토리보드/레퍼런스/프롬프트 계약 수정으로 에스컬레이션한다.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+    <section class="section">
+      <h2>8. 운영 명령 예시</h2>
+      <p class="section-intro">실제 운영에서는 dry-run과 검증 파일을 먼저 남기고, 승인 후에만 live 경로를 연다.</p>
+      <div class="commands" aria-label="운영 명령">
+        <pre>uv run pytest -q
+
+uv run python scripts/generate_images.py \
+  --project projects/remicon-collision-guide \
+  --dry-run
+
+uv run python scripts/evaluate_storyboard.py --project projects/remicon-collision-guide
+
+uv run python scripts/validate_images.py \
+  --project projects/remicon-collision-guide \
+  --only sc01
+
+python3 scripts/inspect_video.py \
+  --project projects/remicon-collision-guide \
+  --clip projects/remicon-collision-guide/video/clips/sc01_sc02_seedance_validation_10s.mp4 \
+  --tool scenelens \
+  --no-transcript
+
+python3 scripts/validate_video.py \
+  --project projects/remicon-collision-guide \
+  --expected-clips 1 \
+  --clip sc01_sc02_seedance_validation_10s.mp4
+
+# live/paid 호출은 현재 검증 범위에서 금지. 필요 시 Gate 2와 사용자 승인 후 별도 실행.</pre>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>9. 품질 실패를 막는 핵심 규칙</h2>
+      <div class="lanes">
+        <article class="lane">
+          <h3>스토리</h3>
+          <ul>
+            <li>교육자료 출처 없는 안전 주장은 금지한다.</li>
+            <li>각 장면은 이전 장면의 결과와 다음 장면의 원인을 연결해야 한다.</li>
+            <li>스토리보드는 영상 생성 전에 충분히 세밀하게 만든다.</li>
+          </ul>
+        </article>
+        <article class="lane">
+          <h3>이미지</h3>
+          <ul>
+            <li>프롬프트에는 인물 특징, PPE, 장비, 작업장 구조, 시선 대상, 이전/다음 장면 연결을 넣는다.</li>
+            <li>이전 QA blocker는 다음 프롬프트에 명시적으로 들어간다.</li>
+            <li>승인 이미지는 덮어쓰지 않고 새 버전으로 보존한다.</li>
+            <li>같은 blocker가 3회 반복되면 이미지 재생성이 아니라 upstream 수정으로 전환한다.</li>
+          </ul>
+        </article>
+        <article class="lane">
+          <h3>영상</h3>
+          <ul>
+            <li>MP4 메타데이터만으로는 통과하지 않는다.</li>
+            <li>샘플 프레임과 OCR evidence를 보고 수동 시각 점수를 기록한다.</li>
+            <li>시선이 위험원, 신호수, 운전원, 동선 중 무엇을 보는지 설명되어야 한다.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <p class="footer-note">
+      Source of truth: <code>README.md</code>, <code>AGENTS.md</code>, <code>safety_video_harness/*</code>, <code>scripts/*</code>. Updated for the current MVP harness structure.
+    </p>
+  </main>
+</body>
+</html>
