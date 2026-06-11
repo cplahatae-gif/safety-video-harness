@@ -23,6 +23,7 @@ from safety_video_harness.io import read_json, write_json
 from safety_video_harness.prompt_contract import build_image_prompt_plan, build_video_prompt_plan
 from safety_video_harness.scene_links import validate_scene_links
 from safety_video_harness.seedance_live import SeedanceLiveOptions, build_seedance_live_plan, run_seedance_live_plan
+from safety_video_harness.stage_role_reviews import image_role_reviews
 
 
 def generate_images(project: Path, dry_run: bool, live: bool, scene_filter: str | None, regenerate: bool) -> str:
@@ -149,7 +150,7 @@ def _record_image_evaluation_rounds(
             continue
         iteration = prior_iterations + 1
         counts[scene_id] = iteration
-        role_reviews = _image_role_reviews(review)
+        role_reviews = image_role_reviews(review)
         arbiter_decision = aggregate_arbiter_decision(
             project,
             "image",
@@ -186,34 +187,6 @@ def _build_image_prompt_with_memory(
         len(scene_items),
         previous_blocking_issues(project, "image", scene_id),
     )
-
-
-def _image_role_reviews(review: dict) -> list[dict]:
-    blockers = list(review.get("blocking_issues", []))
-    return [
-        {
-            "role": "technical",
-            "scores": {"technical": int(review.get("technical_score", 0))},
-            "blocking_issues": blockers,
-        },
-        {
-            "role": "visual_continuity",
-            "scores": {
-                "identity_consistency": int(review.get("identity_consistency_score", 0)),
-                "ppe": int(review.get("ppe_score", 0)),
-                "equipment": int(review.get("equipment_score", 0)),
-            },
-            "blocking_issues": blockers,
-        },
-        {
-            "role": "story_match",
-            "scores": {
-                "story_match": int(review.get("story_match_score", 0)),
-                "story_flow": int(review.get("story_flow_score", 0)),
-            },
-            "blocking_issues": blockers,
-        },
-    ]
 
 
 def _image_evaluation_bundle(scene: dict, review: dict, iteration: int) -> dict:

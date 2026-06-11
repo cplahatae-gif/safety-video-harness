@@ -7,6 +7,7 @@ from pathlib import Path
 from PIL import Image
 
 from safety_video_harness.evaluation_arbiter import aggregate_arbiter_decision
+from safety_video_harness.role_evaluators import run_role_evaluators_parallel
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -66,6 +67,72 @@ def test_arbiter_triggers_debate_when_role_scores_disagree(tmp_path: Path) -> No
     assert (project / "qa" / "arbiter_decisions" / "image" / "sc03" / "round_001.json").exists()
     assert (project / "qa" / "role_evaluations" / "image" / "sc03" / "round_001.json").exists()
     assert (project / "qa" / "debates" / "image" / "sc03" / "round_001.json").exists()
+
+
+def test_parallel_role_evaluator_outputs_round_files_and_consensus(tmp_path: Path) -> None:
+    project = tmp_path / "parallel-consensus"
+    role_reviews = run_role_evaluators_parallel(
+        [
+            ("technical", lambda: {"role": "technical", "scores": {"technical": 5}, "blocking_issues": []}),
+            (
+                "visual_continuity",
+                lambda: {"role": "visual_continuity", "scores": {"visual_continuity": 5}, "blocking_issues": []},
+            ),
+            ("story_match", lambda: {"role": "story_match", "scores": {"story_match": 5}, "blocking_issues": []}),
+            (
+                "safety_education",
+                lambda: {"role": "safety_education", "scores": {"safety": 5}, "blocking_issues": []},
+            ),
+            (
+                "devils_advocate",
+                lambda: {
+                    "role": "devils_advocate",
+                    "scores": {"risk": 4},
+                    "blocking_issues": [],
+                    "vote": "conditional",
+                },
+            ),
+        ]
+    )
+
+    decision = aggregate_arbiter_decision(project, "image", "sc04", 2, role_reviews)
+
+    assert decision["decision"] == "conditional_approval"
+    assert decision["consensus"]["rule_result"] == "conditional_approval"
+    assert decision["consensus"]["approve_count"] == 4
+    assert decision["consensus"]["conditional_count"] == 1
+    round_dir = project / "qa" / "role_evaluations" / "image" / "sc04" / "round_002"
+    assert (round_dir / "technical.json").exists()
+    assert (round_dir / "technical.md").exists()
+    aggregate = load_json(project / "qa" / "role_evaluations" / "image" / "sc04" / "round_002.json")
+    assert aggregate["execution_mode"] == "parallel_role_evaluators"
+
+
+def test_critical_safety_veto_overrides_consensus(tmp_path: Path) -> None:
+    project = tmp_path / "critical-veto"
+    role_reviews = [
+        {"role": "technical", "scores": {"technical": 5}, "blocking_issues": [], "vote": "approve"},
+        {"role": "visual_continuity", "scores": {"visual_continuity": 5}, "blocking_issues": [], "vote": "approve"},
+        {"role": "story_match", "scores": {"story_match": 5}, "blocking_issues": [], "vote": "approve"},
+        {
+            "role": "safety_education",
+            "scores": {"safety": 2},
+            "blocking_issues": ["hazard prevention is not visible"],
+            "critical_blockers": ["hazard prevention is not visible"],
+            "vote": "reject",
+        },
+        {"role": "devils_advocate", "scores": {"risk": 5}, "blocking_issues": [], "vote": "approve"},
+    ]
+
+    decision = aggregate_arbiter_decision(project, "image", "sc05", 1, role_reviews)
+
+    assert decision["decision"] == "revise_storyboard"
+    assert decision["consensus"]["rule_result"] == "critical_veto"
+    assert "critical_veto" in decision["debate_triggers"]
+    assert decision["next_action"] == "stop_and_escalate"
+    debate_dir = project / "qa" / "debates" / "image" / "sc05" / "round_001"
+    assert (debate_dir / "moderator-brief.md").exists()
+    assert (debate_dir / "consensus.md").exists()
 
 
 def test_validate_images_escalates_after_three_repeated_blockers(tmp_path: Path) -> None:

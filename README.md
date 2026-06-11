@@ -233,9 +233,16 @@ python3 scripts/validate_video.py --project projects/fall-prevention --expected-
 - 기계용 원장: `qa/evaluation_rounds.jsonl`
 - 라운드별 evidence bundle: `qa/evaluation_bundles/<stage>/<item>/round_NNN.json`
 - 역할별 독립 평가 산출물: `qa/role_evaluations/<stage>/<item>/round_NNN.json`
+- 역할별 개별 발언/판정: `qa/role_evaluations/<stage>/<item>/round_NNN/<role>.json|md`
 - Arbiter 최종 판단: `qa/arbiter_decisions/<stage>/<item>/round_NNN.json`
 - 조건부 토론 기록: `qa/debates/<stage>/<item>/round_NNN.json`
+- 조건부 토론 md 라운드: `qa/debates/<stage>/<item>/round_NNN/*.md`
 - LLM/사람용 누적 노트: `llm-wiki/evaluation-rounds.md`
+
+새 세션이나 재개 시에는 `hooks/session-start-anchor.py`가 짧은 mission anchor를 출력한다.
+이 앵커는 live/유료 호출 금지, no narration/TTS, 스토리보드 우선, 병렬 role evaluator,
+Arbiter consensus, critical veto, RALPH escalation, evidence 보존 규칙을 다시 주입하기 위한
+세션 시작용 안전장치다.
 
 `llm-wiki/evaluation-rounds.md`는 원본 evidence의 복사본이 아니라 다음 라운드 판단을 돕는
 요약 인덱스다. 이미지 재생성 프롬프트를 만들 때 반복 blocker를 확인하고, 같은 문제가 여러
@@ -280,7 +287,9 @@ early-stopping loop이며, 기준을 통과하면 즉시 종료한다. 20회에 
 
 이미지 평가는 생성자가 직접 승인하지 않는다. `qa/evaluation_bundles/image/scNN/round_NNN.json`
 에 현재 장면, 이전/다음 장면 맥락, 리뷰 결과, 필요한 증거 목록을 묶고, 이 evidence bundle만
-보는 격리 평가자 관점으로 채점한다.
+보는 격리 평가자 관점으로 채점한다. 스토리보드, 이미지, 영상 QA는 모두 role evaluator를
+병렬 실행 가능한 단위로 분리하고, Arbiter가 consensus rule을 적용한다. 기본 통과 규칙은
+전체 승인 또는 1개 조건부 승인까지이며, safety/continuity critical veto는 다수결보다 우선한다.
 
 3. 스토리보드-이미지-영상 QA와 제안 전용 루프
 

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from safety_video_harness.evaluation_arbiter import aggregate_arbiter_decision
 from safety_video_harness.evaluation_rounds import (
     completed_iterations,
     record_evaluation_round,
@@ -9,6 +10,7 @@ from safety_video_harness.evaluation_rounds import (
 )
 from safety_video_harness.errors import HarnessError
 from safety_video_harness.io import read_json, write_json
+from safety_video_harness.stage_role_reviews import storyboard_role_reviews
 
 
 MINIMUM_FIELD_SCORE = 4
@@ -111,6 +113,14 @@ def _record_storyboard_evaluation_rounds(
     for review in reviews:
         scene_id = str(review["scene_id"])
         iteration = completed_iterations(project, "storyboard", scene_id) + 1
+        role_reviews = storyboard_role_reviews(review, MINIMUM_FIELD_SCORE)
+        review["arbiter_decision"] = aggregate_arbiter_decision(
+            project,
+            "storyboard",
+            scene_id,
+            iteration,
+            role_reviews,
+        )
         bundle = {
             "stage": "storyboard",
             "iteration": iteration,
@@ -127,3 +137,4 @@ def _record_storyboard_evaluation_rounds(
         }
         bundle_path = write_evaluation_bundle(project, "storyboard", scene_id, iteration, bundle)
         record_evaluation_round(project, "storyboard", scene_id, iteration, review, bundle_path)
+

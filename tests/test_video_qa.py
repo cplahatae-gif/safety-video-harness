@@ -162,6 +162,9 @@ def test_video_qa_passes_with_clean_visual_review(tmp_path: Path) -> None:
         / "round_001.json"
     )
     assert bundle.exists()
+    role_dir = project / "qa" / "role_evaluations" / "video" / "sc01_sc02_seedance.mp4" / "round_001"
+    assert (role_dir / "technical.json").exists()
+    assert (project / "qa" / "arbiter_decisions" / "video" / "sc01_sc02_seedance.mp4" / "round_001.json").exists()
     wiki = (project / "llm-wiki" / "evaluation-rounds.md").read_text(encoding="utf-8")
     assert "## video / sc01_sc02_seedance.mp4 / round 1" in wiki
 

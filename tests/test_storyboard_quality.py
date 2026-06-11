@@ -44,6 +44,8 @@ def test_storyboard_quality_passes_complete_fixture(tmp_path: Path) -> None:
     assert '"item_id": "sc01"' in rounds
     bundle = project / "qa" / "evaluation_bundles" / "storyboard" / "sc01" / "round_001.json"
     assert bundle.exists()
+    assert (project / "qa" / "role_evaluations" / "storyboard" / "sc01" / "round_001" / "source_grounding.json").exists()
+    assert (project / "qa" / "arbiter_decisions" / "storyboard" / "sc01" / "round_001.json").exists()
     wiki = (project / "llm-wiki" / "evaluation-rounds.md").read_text(encoding="utf-8")
     assert "## storyboard / sc01 / round 1" in wiki
 

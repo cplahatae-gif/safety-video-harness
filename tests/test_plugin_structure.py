@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import subprocess
 from pathlib import Path
 
 
@@ -36,3 +37,21 @@ def test_schema_files_are_valid_json() -> None:
     for path in (ROOT / "schemas").glob("*.json"):
         data = json.loads(path.read_text(encoding="utf-8"))
         assert data["type"] == "object"
+
+
+def test_session_start_anchor_reloads_nonnegotiable_mission_rules() -> None:
+    result = subprocess.run(
+        ["python3", "hooks/session-start-anchor.py"],
+        cwd=ROOT,
+        check=False,
+        text=True,
+        capture_output=True,
+    )
+
+    assert result.returncode == 0
+    output = result.stdout
+    assert "Safety Video Harness Mission Anchor" in output
+    assert "No live imagegen, live Seedance, live TTS, or paid calls" in output
+    assert "parallel role evaluators" in output
+    assert "critical veto" in output
+    assert "Video failures are propose-only" in output

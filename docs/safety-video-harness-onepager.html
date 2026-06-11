@@ -534,7 +534,7 @@
       <aside class="status-panel" aria-label="현재 운영 기준">
         <h2 class="status-title">현재 운영 기준</h2>
         <div class="status-grid">
-          <div class="metric"><b>53 pass</b><span>최근 전체 테스트 기준</span></div>
+          <div class="metric"><b>56 pass</b><span>최근 전체 테스트 기준</span></div>
           <div class="metric"><b>30초</b><span>기본 비용 가드레일</span></div>
           <div class="metric"><b>10초</b><span>유료 검증 실행 제한</span></div>
           <div class="metric"><b>3회</b><span>동일 blocker escalation</span></div>
@@ -555,7 +555,7 @@
         <div class="node"><strong>주제 추출</strong><span>교육자료에서 복수 주제를 뽑고 사용자가 선택한다.</span></div>
         <div class="node"><strong>레퍼런스 분석</strong><span>인물, 장비, 작업상황, 스타일 DNA를 수동 md 우선으로 읽는다.</span></div>
         <div class="node"><strong>스토리보드</strong><span>영상 길이와 이미지 분량에 맞춰 컷과 키프레임을 설계한다.</span></div>
-        <div class="node loop"><strong>스토리 QA</strong><span>자료 근거, 인과 흐름, 장면 세분화, 자막 전달성을 평가한다.</span></div>
+        <div class="node loop"><strong>스토리 QA</strong><span>역할별 평가자를 병렬 실행하고 Arbiter가 통과/수정 여부를 정한다.</span></div>
         <div class="node gate"><strong>Gate 1</strong><span>스토리 승인 전 live 이미지 생성 차단.</span></div>
         <div class="node loop"><strong>이미지 생성/QA</strong><span>Codex imagegen 작업 명세를 만들고 역할별 평가자와 Arbiter로 판정한다.</span></div>
         <div class="node"><strong>이미지 승인</strong><span>승인본은 보존하고 기존 승인 파일은 덮어쓰지 않는다.</span></div>
@@ -599,6 +599,7 @@
           <article class="compact-card">
             <h3><span class="tag orange">HK</span>Hooks</h3>
             <ul>
+              <li><code>session-start-anchor</code>: 새 세션/재개 시 mission anchor 주입</li>
               <li><code>pretooluse-live-veto</code>: 승인 전 live/유료 호출 차단</li>
               <li><code>pretooluse-protected-path-veto</code>: archive 등 보호 경로 차단</li>
               <li><code>posttooluse-schema-validation</code>: 산출물 스키마 피드백</li>
@@ -621,6 +622,7 @@
             <ul>
               <li><code>storyboard_qa.py</code>: 스토리보드 점수화</li>
               <li><code>image_qa.py</code>: 이미지 점수와 RALPH loop 계약</li>
+              <li><code>role_evaluators.py</code>: 병렬 role evaluator runner</li>
               <li><code>evaluation_arbiter.py</code>: 역할별 평가 집계와 최종 판단</li>
               <li><code>blocker_signatures.py</code>: 반복 blocker 정규화</li>
               <li><code>video_inspection.py</code>, <code>video_qa.py</code>: 영상 검사와 제안</li>
@@ -634,8 +636,9 @@
               <li><code>qa/storyboard_quality_reviews.json</code></li>
               <li><code>qa/image_qa_loop.json</code></li>
               <li><code>qa/role_evaluations/&lt;stage&gt;/&lt;item&gt;/round_NNN.json</code></li>
+              <li><code>qa/role_evaluations/&lt;stage&gt;/&lt;item&gt;/round_NNN/&lt;role&gt;.md</code></li>
               <li><code>qa/arbiter_decisions/&lt;stage&gt;/&lt;item&gt;/round_NNN.json</code></li>
-              <li><code>qa/debates/&lt;stage&gt;/&lt;item&gt;/round_NNN.json</code></li>
+              <li><code>qa/debates/&lt;stage&gt;/&lt;item&gt;/round_NNN/*.md</code></li>
               <li><code>qa/video_inspection_manifest.json</code></li>
               <li><code>qa/video_reviews.json</code></li>
               <li><code>qa/video_regeneration_proposals.json</code></li>
@@ -696,22 +699,22 @@ density_factor와 무관하게 짧게 검증</pre>
         <tbody>
           <tr>
             <td><strong>시나리오/스토리보드</strong></td>
-            <td>자료 근거, 인과 흐름, 장면 세분화, 자막/오버레이 전달, start/end keyframe 연속성</td>
-            <td>각 항목 4점 이상, blocker 없음</td>
+            <td>자료 근거, 인과 흐름, 생성 준비도, 교육 전달, Devil's Advocate 리스크</td>
+            <td>각 항목 4점 이상, critical veto 없음, consensus 통과</td>
             <td>무료 수정 루프. 컷을 더 잘게 쪼개거나 원인-예방-결과 구조를 다시 쓴다.</td>
             <td><code>qa/storyboard_quality_reviews.json</code></td>
           </tr>
           <tr>
             <td><strong>이미지</strong></td>
-            <td>스토리 일치, 인물 일관성, PPE, 장비, 장면 연결, 16:9 기술 조건</td>
-            <td>필드별 4점 이상, 총점 24점 이상</td>
+            <td>기술 조건, 시각 연속성, 스토리 일치, 안전교육성, Devil's Advocate 리스크</td>
+            <td>필드별 4점 이상, 총점 24점 이상, consensus 통과</td>
             <td><strong>RALPH loop 실행.</strong> 부족한 지점을 재생성 프롬프트로 기록하고 <code>scNN_vNNN.png</code> 새 버전으로 반복 검증한다. 기준 통과 시 즉시 종료한다. 장면별 최대 20회이며, 같은 blocker가 3회 반복되면 upstream escalation.</td>
             <td><code>qa/image_qa_loop.json</code>, <code>qa/arbiter_decisions/image/scNN/round_NNN.json</code></td>
           </tr>
           <tr>
             <td><strong>영상</strong></td>
-            <td>메타데이터, 프레임 검사, 인물 연속성, 시선 동기, 교육자료 명확성, 스토리보드 반영</td>
-            <td>총점 20점 이상, 수동 시각 검토 통과, inspection frame 3개 이상</td>
+            <td>메타데이터, 프레임 검사, 인물 연속성, 시선 동기, 교육 명확성, Devil's Advocate 리스크</td>
+            <td>총점 20점 이상, 수동 시각 검토 통과, inspection frame 3개 이상, critical veto 없음</td>
             <td><strong>자동 재생성 금지.</strong> 비용이 발생하므로 <code>propose_only</code>로 다음 수정 제안만 남기고 사용자 승인 후 재실행한다.</td>
             <td><code>qa/video_reviews.json</code>, <code>qa/video_regeneration_proposals.json</code></td>
           </tr>
@@ -723,6 +726,14 @@ density_factor와 무관하게 짧게 검증</pre>
       <section class="section">
         <h2>5. 유료/외부 호출 가드레일</h2>
         <div class="lanes">
+          <article class="lane">
+            <h3>SessionStart Anchor</h3>
+            <ul>
+              <li>새 세션/재개 시 핵심 미션과 금지사항을 재주입한다.</li>
+              <li>no live/paid, no narration/TTS, storyboard-first를 고정한다.</li>
+              <li>병렬 role evaluator, Arbiter, critical veto, evidence 보존 규칙을 다시 상기시킨다.</li>
+            </ul>
+          </article>
           <article class="lane">
             <h3>이미지 Gate 1</h3>
             <ul>
@@ -758,24 +769,25 @@ density_factor와 무관하게 짧게 검증</pre>
             <h3>Role Evaluators</h3>
             <ul>
               <li><code>qa/role_evaluations/&lt;stage&gt;/&lt;item&gt;/round_NNN.json</code></li>
-              <li>기술, 시각 연속성, 스토리 일치 관점을 분리한다.</li>
-              <li>평균 대신 관점별 최저점과 blocker를 Arbiter에 전달한다.</li>
+              <li>각 role은 병렬 실행 가능한 독립 함수로 분리한다.</li>
+              <li>개별 role의 JSON과 Markdown 발언 파일을 모두 저장한다.</li>
             </ul>
           </article>
           <article class="lane">
             <h3>Arbiter</h3>
             <ul>
               <li><code>qa/arbiter_decisions/&lt;stage&gt;/&lt;item&gt;/round_NNN.json</code></li>
-              <li>승인, 재생성, 토론, upstream escalation을 결정한다.</li>
+              <li>5/5 승인 또는 4/5+조건부 승인 consensus를 계산한다.</li>
+              <li>critical veto는 다수결보다 우선한다.</li>
               <li>같은 signature가 3회 반복되면 이미지 재생성을 멈춘다.</li>
             </ul>
           </article>
           <article class="lane">
             <h3>Conditional Debate</h3>
             <ul>
-              <li><code>qa/debates/&lt;stage&gt;/&lt;item&gt;/round_NNN.json</code></li>
-              <li>평가자 점수 차이가 크거나 반복 blocker가 있을 때만 기록한다.</li>
-              <li>새 생성이 아니라 판단 근거와 다음 조치를 정리하는 단계다.</li>
+              <li><code>qa/debates/&lt;stage&gt;/&lt;item&gt;/round_NNN/*.md</code></li>
+              <li>점수 불일치, repeated blocker, critical veto 때만 기록한다.</li>
+              <li>Moderator brief, role position, consensus 파일을 남긴다.</li>
             </ul>
           </article>
         </div>

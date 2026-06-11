@@ -4,6 +4,7 @@ import json
 import subprocess
 from pathlib import Path
 
+from safety_video_harness.evaluation_arbiter import aggregate_arbiter_decision
 from safety_video_harness.evaluation_rounds import (
     completed_iterations,
     record_evaluation_round,
@@ -11,6 +12,7 @@ from safety_video_harness.evaluation_rounds import (
 )
 from safety_video_harness.errors import HarnessError
 from safety_video_harness.io import read_json, write_json
+from safety_video_harness.stage_role_reviews import video_role_reviews
 
 
 MINIMUM_TOTAL_SCORE = 20
@@ -202,6 +204,14 @@ def _record_video_evaluation_rounds(project: Path, reviews: list[dict]) -> None:
         clip_path = Path(str(review["clip"]))
         item_id = clip_path.name
         iteration = completed_iterations(project, "video", item_id) + 1
+        role_reviews = video_role_reviews(review)
+        review["arbiter_decision"] = aggregate_arbiter_decision(
+            project,
+            "video",
+            item_id,
+            iteration,
+            role_reviews,
+        )
         bundle = {
             "stage": "video",
             "iteration": iteration,
@@ -218,3 +228,4 @@ def _record_video_evaluation_rounds(project: Path, reviews: list[dict]) -> None:
         }
         bundle_path = write_evaluation_bundle(project, "video", item_id, iteration, bundle)
         record_evaluation_round(project, "video", item_id, iteration, review, bundle_path)
+
