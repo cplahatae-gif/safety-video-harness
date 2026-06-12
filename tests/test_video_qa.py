@@ -33,6 +33,8 @@ def test_video_qa_blocks_when_clip_folder_is_empty(tmp_path: Path) -> None:
     report = load_json(project / "qa" / "video_reviews.json")
     assert report["passed"] is False
     assert report["next_action"] == "regenerate_or_reinspect"
+    assert report["rubric_source"] == "docs/evaluation-rubrics.md"
+    assert report["few_shot_source"] == "docs/few-shot-examples.md"
 
 
 def test_video_qa_scores_existing_clips(tmp_path: Path) -> None:
@@ -84,6 +86,12 @@ def test_video_qa_blocks_visual_review_findings(tmp_path: Path) -> None:
     assert result.returncode != 0
     report = load_json(project / "qa" / "video_reviews.json")
     assert report["passed"] is False
+    review = report["reviews"][0]
+    assert review["rubric_source"] == "docs/evaluation-rubrics.md"
+    assert review["few_shot_source"] == "docs/few-shot-examples.md"
+    assert review["artifact_path"].endswith("video/clips/sc01_sc02_seedance.mp4")
+    assert review["blocker_categories"]
+    assert "Do not regenerate automatically" in review["regeneration_delta"]
     assert "person appears or disappears without motivation" in json.dumps(report, ensure_ascii=False)
 
 

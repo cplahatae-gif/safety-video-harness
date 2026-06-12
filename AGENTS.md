@@ -6,6 +6,7 @@
 - Before writing a new storyboard, prompt, QA finding, or video prompt, check `docs/few-shot-examples.md` for the expected specificity level.
 - Before any Higgsfield/Seedance planning or dry-run, read `docs/higgsfield-seedance-local-reference.md`.
 - Start each new safety-video project with an intake interview before storyboard, image, or video generation.
+- Each new safety-video project must include a generated project-level `HANDOFF.md` from `templates/project/HANDOFF.md`.
 - Intake must ask for source files, topic, target seconds, image density, reference images, selected style guide, aspect ratio, text delivery, and approval scope.
 - Use Codex built-in `imagegen` skill/tool as the default image generation path.
 - Do not implement OpenAI Image API/CLI image generation unless the user explicitly asks for that fallback.

@@ -2,6 +2,13 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from safety_video_harness.qa_contract import (
+    artifact_path,
+    blocker_categories,
+    critical_blockers,
+    guide_sources,
+)
+
 
 MINIMUM_FIELD_SCORE = 4
 MINIMUM_TOTAL_SCORE = 24
@@ -12,8 +19,11 @@ def review_scene_image(project: Path, scene: dict) -> dict:
     scene_id = str(scene["id"])
     draft = _latest_draft(project, scene_id)
     if draft is None:
+        issues = ["missing draft image"]
         return {
             "scene_id": scene_id,
+            **guide_sources(),
+            "artifact_path": "images/draft/" + scene_id + "_v*.png",
             "story_match_score": 0,
             "identity_consistency_score": 0,
             "ppe_score": 0,
@@ -21,7 +31,11 @@ def review_scene_image(project: Path, scene: dict) -> dict:
             "story_flow_score": 0,
             "technical_score": 0,
             "total_score": 0,
-            "blocking_issues": ["missing draft image"],
+            "blocking_issues": issues,
+            "blocker_categories": blocker_categories(issues),
+            "critical_blockers": critical_blockers(issues),
+            "regeneration_delta": _regeneration_prompt(scene_id, issues),
+            "previous_blockers_applied": False,
             "decision": "regenerate",
             "scoring_rubric": _scoring_rubric(),
         }
@@ -41,9 +55,15 @@ def review_scene_image(project: Path, scene: dict) -> dict:
     blockers = _score_blockers(scores, total_score)
     return {
         "scene_id": scene_id,
+        **guide_sources(),
+        "artifact_path": artifact_path(project, draft, f"images/draft/{scene_id}_v*.png"),
         **scores,
         "total_score": total_score,
         "blocking_issues": blockers,
+        "blocker_categories": blocker_categories(blockers),
+        "critical_blockers": critical_blockers(blockers),
+        "regeneration_delta": _regeneration_prompt(scene_id, blockers) if blockers else "",
+        "previous_blockers_applied": False,
         "decision": "approve_for_video" if not blockers else "regenerate",
         "reviewed_asset": str(draft.relative_to(project)),
         "scoring_rubric": _scoring_rubric(),
@@ -53,6 +73,8 @@ def review_scene_image(project: Path, scene: dict) -> dict:
 def dry_run_review(scene: dict) -> dict:
     return {
         "scene_id": scene["id"],
+        **guide_sources(),
+        "artifact_path": "dry-run",
         "story_match_score": 4,
         "identity_consistency_score": 4,
         "ppe_score": 4,
@@ -61,6 +83,10 @@ def dry_run_review(scene: dict) -> dict:
         "technical_score": 4,
         "total_score": 24,
         "blocking_issues": [],
+        "blocker_categories": [],
+        "critical_blockers": [],
+        "regeneration_delta": "",
+        "previous_blockers_applied": False,
         "decision": "approve_for_dry_run",
         "scoring_rubric": _scoring_rubric(),
     }
@@ -103,6 +129,7 @@ def build_loop_summary(
         },
         "average_total_score": average_score,
         "passed": passed,
+        "reviews": reviews,
         "blockers": blockers,
         "ralph_loop": _ralph_loop(blockers, counts, maxed_scenes, escalations),
         "next_action": _next_action(passed, maxed_scenes, escalations),
@@ -184,6 +211,8 @@ def _regeneration_prompt(scene_id: str, deficiencies: list[str]) -> str:
 def _blocked_review(scene_id: str, issues: list[str], draft: Path) -> dict:
     return {
         "scene_id": scene_id,
+        **guide_sources(),
+        "artifact_path": artifact_path(draft.parent.parent.parent, draft, str(draft)),
         "story_match_score": 0,
         "identity_consistency_score": 0,
         "ppe_score": 0,
@@ -192,6 +221,10 @@ def _blocked_review(scene_id: str, issues: list[str], draft: Path) -> dict:
         "technical_score": 0,
         "total_score": 0,
         "blocking_issues": issues,
+        "blocker_categories": blocker_categories(issues),
+        "critical_blockers": critical_blockers(issues),
+        "regeneration_delta": _regeneration_prompt(scene_id, issues),
+        "previous_blockers_applied": False,
         "decision": "regenerate",
         "reviewed_asset": str(draft),
         "scoring_rubric": _scoring_rubric(),

@@ -43,6 +43,14 @@ def test_image_qa_writes_ralph_loop_regeneration_prompts(tmp_path: Path) -> None
     assert loop["ralph_loop"]["blocked_scenes"][0]["scene_id"] == "sc01"
     assert "missing draft image" in loop["ralph_loop"]["blocked_scenes"][0]["deficiencies"]
     assert "Regenerate sc01" in loop["ralph_loop"]["blocked_scenes"][0]["regeneration_prompt"]
+    review = loop["reviews"][0]
+    assert review["rubric_source"] == "docs/evaluation-rubrics.md"
+    assert review["few_shot_source"] == "docs/few-shot-examples.md"
+    assert review["artifact_path"] == "images/draft/sc01_v*.png"
+    assert review["critical_blockers"] == ["missing draft image"]
+    assert review["blocker_categories"][0]["category"] == "missing_artifact"
+    assert "Regenerate sc01" in review["regeneration_delta"]
+    assert review["previous_blockers_applied"] is False
 
 
 def test_image_qa_records_round_bundle_and_wiki_summary(tmp_path: Path) -> None:

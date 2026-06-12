@@ -10,6 +10,7 @@ from safety_video_harness.evaluation_rounds import (
 )
 from safety_video_harness.errors import HarnessError
 from safety_video_harness.io import read_json, write_json
+from safety_video_harness.qa_contract import blocker_categories, critical_blockers, guide_sources
 from safety_video_harness.stage_role_reviews import storyboard_role_reviews
 
 
@@ -25,6 +26,7 @@ def evaluate_storyboard(project: Path) -> str:
     blockers = [issue for review in reviews for issue in review["blocking_issues"]]
     total_scores = [int(review["total_score"]) for review in reviews]
     report = {
+        **guide_sources(),
         "passed": not blockers and all(score >= MINIMUM_TOTAL_SCORE for score in total_scores),
         "thresholds": {
             "minimum_field_score": MINIMUM_FIELD_SCORE,
@@ -62,9 +64,13 @@ def _review_scene(scene: dict) -> dict:
     blockers = _blockers(scene, criteria)
     return {
         "scene_id": scene_id,
+        **guide_sources(),
+        "artifact_path": f"storyboard/scenes.json#{scene_id}",
         "criteria": criteria,
         "total_score": sum(criteria.values()),
         "blocking_issues": blockers,
+        "blocker_categories": blocker_categories(blockers),
+        "critical_blockers": critical_blockers(blockers),
         "decision": "approve_storyboard" if not blockers else "revise_storyboard",
         "revision_prompt": _revision_prompt(scene_id, blockers),
     }
@@ -137,4 +143,3 @@ def _record_storyboard_evaluation_rounds(
         }
         bundle_path = write_evaluation_bundle(project, "storyboard", scene_id, iteration, bundle)
         record_evaluation_round(project, "storyboard", scene_id, iteration, review, bundle_path)
-

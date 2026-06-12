@@ -1,0 +1,31 @@
+Local QA contract dry-run verification
+Date: 2026-06-12
+
+Project: projects/remicon-guide-local-qa-dryrun
+Source: fixtures/sources/remicon-collision-guide.pptx
+
+Executed dry-run steps:
+- init_project
+- register_sources
+- render_pptx_sources --dry-run --mode media_extract
+- extract_topics
+- intake_project --defaults
+- extract_style_dna
+- plan_storyboard --duration 30
+- evaluate_storyboard
+- approve_gate --gate storyboard
+- generate_images --dry-run
+- validate_images --dry-run
+- generate_seedance --dry-run
+- validate_scene_links
+
+Observed outputs:
+- HANDOFF.md exists: True
+- storyboard rubric source: docs/evaluation-rubrics.md
+- storyboard few-shot source: docs/few-shot-examples.md
+- storyboard reviews: 6
+- image reviews: 7
+- image rubric source all present: True
+- image regeneration delta all present: True
+
+Result: PASS

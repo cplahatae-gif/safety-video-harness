@@ -4,6 +4,7 @@ from pathlib import Path
 
 from safety_video_harness.errors import HarnessError
 from safety_video_harness.io import ensure_dirs, read_json, sha256_file, write_json
+from safety_video_harness.project_handoff import write_project_handoff
 from safety_video_harness.source_facts import facts_for_sources, topics_from_facts
 from safety_video_harness.source_rendering import extract_rendered_assets
 from safety_video_harness.style_guides import default_style_guide_id, reference_intake_defaults, style_interview_defaults
@@ -46,6 +47,7 @@ def init_project(project: Path, name: str) -> str:
     ensure_dirs(project, PROJECT_DIRS)
     (project / "PLAN.md").write_text(_plan_template(name), encoding="utf-8")
     (project / "AGENTS.md").write_text(_agents_template(), encoding="utf-8")
+    write_project_handoff(project, name)
     write_json(project / "project_config.json", _project_config(project, name))
     write_json(project / "sources" / "sources.json", {"sources": []})
     write_json(project / "sources" / "extracted_topics.json", {"topics": []})

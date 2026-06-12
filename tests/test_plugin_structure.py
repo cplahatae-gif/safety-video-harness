@@ -42,6 +42,7 @@ def test_plugin_manifest_and_harness_assets_exist() -> None:
         "style-guides/korean-industrial-webtoon/STYLE_GUIDE.md",
         "templates/project/PLAN.md",
         "templates/project/AGENTS.safety.md",
+        "templates/project/HANDOFF.md",
         "docs/generative-media-reference-index.md",
         "docs/reference-sources.md",
         "docs/evaluation-rubrics.md",

@@ -12,6 +12,12 @@ from safety_video_harness.evaluation_rounds import (
 )
 from safety_video_harness.errors import HarnessError
 from safety_video_harness.io import read_json, write_json
+from safety_video_harness.qa_contract import (
+    artifact_path,
+    blocker_categories,
+    critical_blockers,
+    guide_sources,
+)
 from safety_video_harness.stage_role_reviews import video_role_reviews
 
 
@@ -32,6 +38,7 @@ def validate_video_outputs(project: Path, expected_clips: int, clip_name: str | 
     blockers.extend(issue for review in reviews for issue in review["blocking_issues"])
     passed = not blockers and all(int(review["total_score"]) >= MINIMUM_TOTAL_SCORE for review in reviews)
     report = {
+        **guide_sources(include_higgsfield=True),
         "passed": passed,
         "thresholds": {
             "minimum_total_score": MINIMUM_TOTAL_SCORE,
@@ -101,6 +108,8 @@ def _review_clip(project: Path, path: Path, manual_review: dict | None) -> dict:
     blockers.extend(visual["blocking_issues"])
     return {
         "clip": str(path),
+        **guide_sources(include_higgsfield=True),
+        "artifact_path": artifact_path(project, path, str(path)),
         "duration_sec": round(duration, 3),
         "width": width,
         "height": height,
@@ -114,6 +123,9 @@ def _review_clip(project: Path, path: Path, manual_review: dict | None) -> dict:
         "inspection_frame_count": inspection["frame_count"],
         "total_score": total_score,
         "blocking_issues": blockers,
+        "blocker_categories": blocker_categories(blockers),
+        "critical_blockers": critical_blockers(blockers),
+        "regeneration_delta": _video_proposal(blockers),
         "scoring_rubric": {
             "technical_score": "Duration and resolution match the bounded Seedance test contract.",
             "continuity_score": "People and vehicles do not appear, disappear, or change roles without story motivation.",
@@ -228,4 +240,3 @@ def _record_video_evaluation_rounds(project: Path, reviews: list[dict]) -> None:
         }
         bundle_path = write_evaluation_bundle(project, "video", item_id, iteration, bundle)
         record_evaluation_round(project, "video", item_id, iteration, review, bundle_path)
-

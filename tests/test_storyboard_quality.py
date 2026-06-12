@@ -37,8 +37,14 @@ def test_storyboard_quality_passes_complete_fixture(tmp_path: Path) -> None:
     assert result.returncode == 0
     report = json.loads((project / "qa" / "storyboard_quality_reviews.json").read_text(encoding="utf-8"))
     assert report["passed"] is True
+    assert report["rubric_source"] == "docs/evaluation-rubrics.md"
+    assert report["few_shot_source"] == "docs/few-shot-examples.md"
     assert report["thresholds"]["minimum_total_score"] == 20
     assert report["reviews"][0]["criteria"]["source_grounding_score"] >= 4
+    assert report["reviews"][0]["rubric_source"] == "docs/evaluation-rubrics.md"
+    assert report["reviews"][0]["artifact_path"] == "storyboard/scenes.json#sc01"
+    assert report["reviews"][0]["blocker_categories"] == []
+    assert report["reviews"][0]["critical_blockers"] == []
     rounds = (project / "qa" / "evaluation_rounds.jsonl").read_text(encoding="utf-8")
     assert '"stage": "storyboard"' in rounds
     assert '"item_id": "sc01"' in rounds
@@ -64,6 +70,8 @@ def test_storyboard_quality_blocks_missing_citations(tmp_path: Path) -> None:
     assert "storyboard QA blockers" in result.stderr
     report = json.loads((project / "qa" / "storyboard_quality_reviews.json").read_text(encoding="utf-8"))
     assert report["passed"] is False
+    assert report["reviews"][0]["blocker_categories"][0]["category"] == "source_grounding"
+    assert "missing source citation" in report["reviews"][0]["critical_blockers"][0]
 
 
 def test_storyboard_gate_requires_passing_storyboard_qa(tmp_path: Path) -> None:

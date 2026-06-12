@@ -1,0 +1,23 @@
+Safety video harness handoff and QA contract verification
+Date: 2026-06-12
+
+Scope:
+- Added repository handoff guidance.
+- Added generated project HANDOFF.md template and project bootstrap wiring.
+- Added storyboard, image, and video QA output contract fields for local guide sources, artifact paths, blocker categories, critical blockers, and regeneration deltas.
+- Preserved no-live/no-paid constraints.
+
+Verification commands:
+- uv run pytest -q
+- Real fixture dry-run with projects/remicon-guide-local-qa-dryrun:
+  init_project -> register_sources -> render_pptx_sources --dry-run --mode media_extract -> extract_topics -> intake_project --defaults -> extract_style_dna -> plan_storyboard --duration 30 -> evaluate_storyboard -> approve_gate --gate storyboard -> generate_images --dry-run -> validate_images --dry-run -> generate_seedance --dry-run -> validate_scene_links
+
+Results:
+- uv run pytest -q: 76 passed in 14.80s
+- Real fixture dry-run: passed through storyboard, image plan, Seedance dry-run, and scene-link validation.
+- No live imagegen, live Seedance, live TTS, upload, or paid call was executed.
+
+Review notes:
+- Context-gap review found no blocking missing-context issue.
+- Root AGENTS.md was updated to explicitly require generated project-level HANDOFF.md from templates/project/HANDOFF.md.
+- handoff.md now labels the previous commit as the pushed commit before the handoff was created, avoiding stale-current-commit ambiguity after later pushes.
