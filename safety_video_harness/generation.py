@@ -15,6 +15,7 @@ from safety_video_harness.image_evaluation_flow import record_image_evaluation_r
 from safety_video_harness.imagegen_jobs import build_imagegen_jobs
 from safety_video_harness.io import read_json, write_json
 from safety_video_harness.prompt_contract import build_final_image_prompt_plan, build_image_prompt_plan, build_video_prompt_plan
+from safety_video_harness.prompt_team import ensure_image_prompt_team_plan, prompt_team_prompt_block
 from safety_video_harness.scene_links import validate_scene_links
 from safety_video_harness.seedance_live import SeedanceLiveOptions, build_seedance_live_plan, run_seedance_live_plan
 from safety_video_harness.style_guides import selected_style_prompt_block
@@ -25,6 +26,7 @@ def generate_images(project: Path, dry_run: bool, live: bool, scene_filter: str 
         require_gate(project, "storyboard")
         _require_external_upload(project)
     scenes = read_json(project / "storyboard" / "scenes.json")
+    ensure_image_prompt_team_plan(project)
     reference_assets = load_reference_assets(project)
     reference_block = _style_and_reference_prompt_block(project, reference_assets)
     scene_items = list(scenes.get("scenes", []))
@@ -149,6 +151,8 @@ def _style_and_reference_prompt_block(project: Path, reference_assets: dict[str,
         [
             "Selected reusable style guide:",
             selected_style_prompt_block(project),
+            "Image prompt production team:",
+            prompt_team_prompt_block(project),
             "Project-approved visual reference assets:",
             reference_assets_prompt_block(reference_assets),
         ]
@@ -227,4 +231,3 @@ def _build_image_prompt_with_memory(
         len(scene_items),
         previous_blocking_issues(project, "image", scene_id),
     )
-

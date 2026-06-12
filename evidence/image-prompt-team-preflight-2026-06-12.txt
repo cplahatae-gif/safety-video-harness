@@ -1,0 +1,21 @@
+Image prompt team preflight integration
+
+Commands:
+- uv run pytest -q tests/test_style_guides.py tests/test_plugin_structure.py
+- uv run python scripts/plan_image_prompt_team.py --project projects/remicon-collision-guide
+- uv run python scripts/generate_images.py --project projects/remicon-collision-guide --dry-run --only sc02
+- uv run pytest -q
+
+Results:
+- targeted tests: 8 passed
+- remicon prompt-team plan: prepared image prompt team plan for 7 scene brief(s)
+- remicon generate_images dry-run: image dry-run prepared 1 prompt(s)
+- prompt contains Image prompt production team preflight: true
+- official/reference links included: OpenAI Image generation guide, OpenAI Video generation guide, Higgsfield CLI/MCP, local Codex imagegen skill
+- full test suite: 71 passed
+
+Scope:
+- Added Lead Style Agent, Scene Prompt Agent, and Visual Director Arbiter as pre-image-generation production roles.
+- Parallel work is limited to prompt drafting and review.
+- Actual imagegen execution remains centralized under one coordinator to preserve continuity.
+- Parallel consistency-evaluation agents for generated images remain deferred.

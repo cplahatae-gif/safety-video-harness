@@ -15,6 +15,19 @@
 - 스토리보드, 이미지, 영상의 3자 일치 여부를 검증한 뒤 최종 합본으로 이동한다.
 - 하네스는 플러그인 형태로 구성하며 skills, hooks, agents, MCP, scripts를 명시적으로 나눈다.
 
+## 작업 전 필수 가이드
+
+에이전트나 스킬을 실행하기 전에는 링크 원장만 보지 말고, 아래 로컬 운영 문서를 먼저 읽는다.
+
+- 전체 규칙: [AGENTS.md](./AGENTS.md)
+- 점수 기준과 blocker 기준: [docs/evaluation-rubrics.md](./docs/evaluation-rubrics.md)
+- 좋은/나쁜 산출물 예시: [docs/few-shot-examples.md](./docs/few-shot-examples.md)
+- Higgsfield/Seedance 로컬 운영 기준: [docs/higgsfield-seedance-local-reference.md](./docs/higgsfield-seedance-local-reference.md)
+- 각 역할별 운영 레퍼런스: `agents/<agent-id>/references/*.md`
+- 각 스킬별 운영 레퍼런스: `skills/<skill-id>/references/*.md`
+
+이 문서들은 공식문서를 매번 열어 확인하지 않아도 작업을 진행할 수 있도록, 프로젝트에서 실제로 써야 하는 판단 기준을 로컬화한 것이다.
+
 ## 현재 상태
 
 - [x] 독립형 한국어 PRD 작성
@@ -34,6 +47,7 @@
 - [x] Higgsfield CLI / Seedance 10초 제한 테스트 경로
 - [x] 실제 이미지/영상 생성 파일럿 실행
 - [x] 나레이션/TTS 제외 정책: 현재 목표는 영상+자막/오버레이 전달
+- [x] 에이전트/스킬별 로컬 운영 레퍼런스, 점수 루브릭, few-shot 예시, Higgsfield/Seedance 운영 노트 보강
 
 ## 플러그인 구조
 
@@ -45,10 +59,10 @@
 ├── AGENTS.md                          # 전체 작업 규칙, no narration, 게이트, evidence 정책
 ├── README.md                          # 운영자용 플러그인 설명서
 ├── agents/                            # 역할별 평가자/기획자 지침
-│   ├── storyteller.md                 # 교육자료 기반 시나리오/스토리보드 역할
-│   ├── continuity-qa.md               # 장면 연결/일관성 검토
-│   ├── visual-continuity-director.md  # 이미지·영상 시각 연속성 검토
-│   └── video-qa.md                    # 영상 품질 평가
+│   ├── storyteller/AGENT.md           # 교육자료 기반 시나리오/스토리보드 역할
+│   ├── continuity-qa/AGENT.md         # 장면 연결/일관성 검토
+│   ├── visual-continuity-director/AGENT.md
+│   └── video-qa/AGENT.md              # 영상 품질 평가
 ├── hooks/
 │   └── session-start-anchor.py        # 새 세션 시작 시 미션 앵커 주입
 ├── safety_video_harness/              # 핵심 파이썬 하네스 로직
@@ -101,14 +115,15 @@ projects/<slug>/
 6. 스타일 DNA 및 자료 근거 정리
 7. 스토리보드 생성
 8. 스토리보드 QA와 Gate 1 승인
-9. 이미지 프롬프트 생성
-10. Codex imagegen으로 이미지 생성
-11. 이미지 QA와 RALPH loop
-12. 승인 이미지를 start/end keyframe으로 연결
-13. Seedance dry-run, 비용 산정, Gate 2 승인
-14. 짧은 live Seedance 검증 영상 생성
-15. 프레임 추출, 영상 QA, 재생성 제안
-16. 최종 합본/자막/오버레이는 별도 후처리 단계
+9. 이미지 프롬프트 제작팀 preflight 생성
+10. 이미지 프롬프트 생성
+11. Codex imagegen으로 이미지 생성
+12. 이미지 QA와 RALPH loop
+13. 승인 이미지를 start/end keyframe으로 연결
+14. Seedance dry-run, 비용 산정, Gate 2 승인
+15. 짧은 live Seedance 검증 영상 생성
+16. 프레임 추출, 영상 QA, 재생성 제안
+17. 최종 합본/자막/오버레이는 별도 후처리 단계
 ```
 
 핵심 제약:
@@ -119,6 +134,7 @@ projects/<slug>/
 - 영상은 유료이므로 자동 RALPH 재생성을 하지 않는다. 하네스는 `propose_only`로 수정 제안만 남긴다.
 - 나레이션/TTS는 현재 범위에서 제외한다. 전달 문구는 자막, 오버레이, 텍스트 카드로 처리한다.
 - OMO는 반복 실행자/작업 관리자이고, 점수 판정은 하네스 role evaluator와 Arbiter가 한다.
+- 이미지 병렬화는 장면별 프롬프트 초안과 검토까지만 허용한다. 실제 imagegen 호출은 한 coordinator가 순차 통제한다.
 
 ## 시작 인터뷰
 
@@ -191,6 +207,7 @@ python3 scripts/search_references.py --project projects/fall-prevention --dry-ru
 python3 scripts/analyze_reference_assets.py --project projects/fall-prevention --dry-run
 python3 scripts/extract_style_dna.py --project projects/fall-prevention
 python3 scripts/plan_storyboard.py --project projects/fall-prevention --duration 30 --image-density normal
+python3 scripts/plan_image_prompt_team.py --project projects/fall-prevention
 python3 scripts/validate_project.py projects/fall-prevention
 python3 scripts/approve_gate.py --project projects/fall-prevention --gate storyboard
 python3 scripts/generate_images.py --project projects/fall-prevention --dry-run
@@ -236,6 +253,39 @@ style-guides/
 `generate_images.py`와 `generate_seedance.py`는 선택된 `STYLE_GUIDE.md`를 프롬프트에 자동으로
 주입한다. 따라서 프로젝트마다 `style_guide_id`만 바꾸면 같은 교육자료라도 웹툰풍, 3D,
 벡터풍 등으로 분기할 수 있다.
+
+## 이미지 프롬프트 제작팀
+
+일관성을 위해 “여러 에이전트가 각자 이미지를 생성”하지 않는다. 병렬화는 이미지 생성 전
+프롬프트 설계 단계에만 쓴다.
+
+```text
+sc01 Lead Style Agent
+  └─ style/character/vehicle/space/camera/rendering bible 확정
+
+sc02~scNN Scene Prompt Agents
+  └─ 장면별 previous/current/next, visible cast, gaze target, hazard logic 작성
+
+Visual Director Arbiter
+  └─ 모든 장면 프롬프트를 통합 검토하고 ready_for_generation 여부 결정
+
+Imagegen Coordinator
+  └─ 통합된 프롬프트 기준으로 Codex imagegen을 순차 실행
+```
+
+구성 파일:
+
+- `agents/lead-style-agent/AGENT.md`
+- `agents/scene-prompt-agent/AGENT.md`
+- `agents/visual-director-arbiter/AGENT.md`
+- `scripts/plan_image_prompt_team.py`
+- `prompts/image_prompt_team_plan.json`
+
+`generate_images.py`는 `prompts/image_prompt_team_plan.json`이 없으면 자동으로 생성한다.
+이 preflight 블록은 이미지 프롬프트에 주입되어 “첫 장면 기준, 중앙 통제, 병렬 생성 금지”
+규칙을 반복 적용한다.
+
+참고/공식 문서는 [docs/generative-media-reference-index.md](./docs/generative-media-reference-index.md)에 모은다.
 
 ## 레퍼런스 배치
 

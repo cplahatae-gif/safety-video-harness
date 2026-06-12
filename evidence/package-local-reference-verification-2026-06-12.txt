@@ -1,0 +1,109 @@
+Package-local agent/skill reference verification
+Date: 2026-06-12
+
+Scope
+- Verify every active agent package has AGENT.md plus package-local references/*.md.
+- Verify every active skill package has SKILL.md plus package-local references/*.md.
+- Verify every local reference summary has source links, checked date, harness usage, operational rules, and output expectations.
+- Verify stale flat agent paths are not referenced by active docs/code/tests.
+- Run the full test suite after verification.
+
+Commands and results
+
+1. Package reference structure and required marker check
+
+Command:
+python3 - <<'PY'
+from pathlib import Path
+
+required_markers = [
+    'Source links:',
+    'Checked: 2026-06-12',
+    '## Use In This Harness',
+    '## Operational Rules',
+    '## Output Expectations',
+]
+official_domains = [
+    'developers.openai.com',
+    'higgsfield.ai',
+    'modelcontextprotocol.io',
+    'ffmpeg.org',
+    'json-schema.org',
+]
+local_ref_ok = [
+    '/.codex/skills/',
+    '/Users/hatae/.codex/skills/',
+    '/Users/hatae/.codex/plugins/',
+]
+...
+PY
+
+Result:
+agents=7, agent_refs=7, skills=6, skill_refs=6
+reference package verification: PASS
+
+2. Stale flat agent path check
+
+Command:
+rg -n "agents/(storyteller|continuity-qa|lead-style-agent|scene-prompt-agent|visual-director-arbiter|visual-continuity-director|video-qa)\\.md|storyteller\\.md|continuity-qa\\.md|lead-style-agent\\.md|scene-prompt-agent\\.md|visual-director-arbiter\\.md|visual-continuity-director\\.md|video-qa\\.md" README.md docs agents skills safety_video_harness tests -S
+
+Result:
+No matches in active docs/code/tests.
+
+3. Package file inventory
+
+Result:
+agents/continuity-qa/AGENT.md
+agents/continuity-qa/references/continuity-qa-reference.md
+agents/lead-style-agent/AGENT.md
+agents/lead-style-agent/references/lead-style-reference.md
+agents/scene-prompt-agent/AGENT.md
+agents/scene-prompt-agent/references/scene-prompt-reference.md
+agents/storyteller/AGENT.md
+agents/storyteller/references/storyteller-reference.md
+agents/video-qa/AGENT.md
+agents/video-qa/references/video-qa-reference.md
+agents/visual-continuity-director/AGENT.md
+agents/visual-continuity-director/references/visual-continuity-reference.md
+agents/visual-director-arbiter/AGENT.md
+agents/visual-director-arbiter/references/visual-director-arbiter-reference.md
+skills/image-consistency-check/SKILL.md
+skills/image-consistency-check/references/image-consistency-reference.md
+skills/seedance-prompting/SKILL.md
+skills/seedance-prompting/references/seedance-prompting-reference.md
+skills/story-writer/SKILL.md
+skills/story-writer/references/story-writer-reference.md
+skills/style-ref-search/SKILL.md
+skills/style-ref-search/references/style-ref-search-reference.md
+skills/topic-extractor/SKILL.md
+skills/topic-extractor/references/topic-extractor-reference.md
+skills/video-inspect/SKILL.md
+skills/video-inspect/references/video-inspect-reference.md
+
+4. Full test suite
+
+Command:
+uv run pytest -q
+
+Result:
+72 passed in 14.17s
+
+5. OpenAI official docs index spot check
+
+Tool:
+mcp__openaiDeveloperDocs.search_openai_docs
+
+Queries:
+- image generation guide prompt engineering video generation images vision OpenAI API
+- Prompt engineering OpenAI API guide
+
+Result:
+- Confirmed `https://developers.openai.com/api/docs/guides/image-generation`
+- Confirmed `https://developers.openai.com/api/docs/guides/images-vision`
+- Confirmed `https://developers.openai.com/api/docs/guides/video-generation`
+- Confirmed `https://developers.openai.com/api/docs/guides/prompt-engineering`
+
+Quality notes
+- The package-local summaries are not just URL ledgers. Each one explains how the reference applies to this harness, role-specific operational rules, and expected outputs.
+- Official sources are centralized in docs/reference-sources.md and selectively mirrored into each agent/skill package reference.
+- The current structure matches the requested plugin-like shape: each capability owns its own instruction file and its own reference summary.

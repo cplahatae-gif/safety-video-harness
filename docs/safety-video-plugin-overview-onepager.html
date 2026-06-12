@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Safety Video Harness Plugin Overview</title>
+  <style>
+    :root {
+      --bg: #eef2ed;
+      --paper: #fffdf6;
+      --ink: #172128;
+      --muted: #60706d;
+      --line: #bdc8bd;
+      --blue: #315f7f;
+      --green: #2f7d62;
+      --orange: #c87025;
+      --red: #b84d3e;
+      --yellow: #d7aa3f;
+      --violet: #66576f;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(90deg, rgba(23, 33, 40, 0.06) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(23, 33, 40, 0.045) 1px, transparent 1px),
+        var(--bg);
+      background-size: 28px 28px;
+      font-family: "Avenir Next", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+      line-height: 1.42;
+    }
+
+    main {
+      width: min(1600px, calc(100% - 34px));
+      margin: 0 auto;
+      padding: 22px 0 36px;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+
+    .panel,
+    .hero {
+      border: 1px solid var(--line);
+      background: rgba(255, 253, 246, 0.97);
+      box-shadow: 0 16px 38px rgba(23, 33, 40, 0.12);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) 520px;
+      gap: 1px;
+      overflow: hidden;
+      background: var(--line);
+    }
+
+    .title,
+    .metrics {
+      background: var(--paper);
+    }
+
+    .title {
+      padding: 28px;
+      border-left: 9px solid var(--green);
+    }
+
+    h1 {
+      max-width: 920px;
+      font-size: clamp(34px, 4.4vw, 66px);
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 940px;
+      margin-top: 14px;
+      color: #344246;
+      font-size: 16px;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1px;
+      background: var(--line);
+    }
+
+    .metric {
+      min-height: 110px;
+      padding: 18px;
+      background: var(--paper);
+    }
+
+    .metric b {
+      display: block;
+      font-size: 31px;
+      line-height: 1;
+    }
+
+    .metric span {
+      display: block;
+      margin-top: 9px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .panel {
+      margin-top: 16px;
+      padding: 18px;
+    }
+
+    .panel h2 {
+      margin-bottom: 14px;
+      font-size: 20px;
+    }
+
+    .rail {
+      display: grid;
+      grid-template-columns: repeat(8, minmax(130px, 1fr));
+      gap: 10px;
+    }
+
+    .step {
+      position: relative;
+      min-height: 156px;
+      padding: 13px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .step::after {
+      content: "";
+      position: absolute;
+      top: 30px;
+      right: -15px;
+      width: 18px;
+      height: 2px;
+      background: var(--line);
+    }
+
+    .step:last-child::after { display: none; }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 25px;
+      padding: 0 8px;
+      color: #fff;
+      background: var(--blue);
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .step h3 {
+      margin-top: 10px;
+      font-size: 15px;
+      line-height: 1.22;
+    }
+
+    .step p {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .card {
+      min-height: 176px;
+      padding: 15px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .agent { border-left: 7px solid var(--blue); }
+    .skill { border-left: 7px solid var(--orange); }
+    .guard { border-left: 7px solid var(--red); }
+    .asset { border-left: 7px solid var(--violet); }
+    .ok { border-left: 7px solid var(--green); }
+    .cost { border-left: 7px solid var(--yellow); }
+
+    .card h3 {
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+
+    .card p,
+    .card li {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    ul {
+      margin: 8px 0 0;
+      padding-left: 18px;
+    }
+
+    .badge {
+      display: inline-flex;
+      margin: 0 5px 7px 0;
+      padding: 4px 8px;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 900;
+      background: var(--violet);
+    }
+
+    .badge.agent { background: var(--blue); }
+    .badge.skill { background: var(--orange); }
+    .badge.guard { background: var(--red); }
+    .badge.ok { background: var(--green); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+    }
+
+    th, td {
+      padding: 12px;
+      border: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    th {
+      color: var(--ink);
+      background: #f3f6f1;
+    }
+
+    td {
+      color: var(--muted);
+    }
+
+    code {
+      padding: 2px 5px;
+      border: 1px solid #d3ddd3;
+      background: #eef1ed;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 12px;
+    }
+
+    a {
+      color: #234e73;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(35, 78, 115, 0.28);
+    }
+
+    @media (max-width: 1240px) {
+      .hero, .grid { grid-template-columns: 1fr; }
+      .rail { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 720px) {
+      main { width: min(100% - 20px, 1600px); }
+      .title { padding: 20px; }
+      .metrics, .rail, .cards { grid-template-columns: 1fr; }
+      .step::after { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <div class="title">
+        <h1>Safety Video Harness Plugin</h1>
+        <p class="lead">교육자료를 넣으면 주제 추출, 스토리보드, 스타일 잠금, Codex imagegen 키프레임, QA/RALPH, Seedance 계획까지 이어지는 산업안전 영상 제작 플러그인 구조다. 유료 영상 생성은 Gate 2 이후에만 실행한다.</p>
+      </div>
+      <div class="metrics">
+        <div class="metric"><b>7</b><span>에이전트 패키지</span></div>
+        <div class="metric"><b>6</b><span>로컬 스킬</span></div>
+        <div class="metric"><b>13</b><span>내장 reference 요약</span></div>
+        <div class="metric"><b>71</b><span>현재 테스트 통과 수</span></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>실행 흐름</h2>
+      <div class="rail">
+        <div class="step"><span class="tag">01</span><h3>인터뷰</h3><p>자료, 주제, 길이, 이미지 분량, 레퍼런스, 스타일, 승인 범위를 묻는다.</p></div>
+        <div class="step"><span class="tag">02</span><h3>자료 추출</h3><p>PPTX/SOP를 등록하고 렌더링한 뒤 주제 후보와 source facts를 만든다.</p></div>
+        <div class="step"><span class="tag">03</span><h3>스토리보드</h3><p>교육자료 근거로 장면, 자막, start/end keyframe 계약을 작성한다.</p></div>
+        <div class="step"><span class="tag">04</span><h3>스타일 잠금</h3><p>첫 장면과 style guide로 인물, 차량, 공간, 카메라 bible을 고정한다.</p></div>
+        <div class="step"><span class="tag">05</span><h3>프롬프트 팀</h3><p>장면별 프롬프트 초안은 병렬화하고 최종 imagegen은 중앙 통제한다.</p></div>
+        <div class="step"><span class="tag">06</span><h3>이미지 생성</h3><p>Codex 내장 imagegen으로 프로젝트 draft 이미지를 만들고 버전을 보존한다.</p></div>
+        <div class="step"><span class="tag">07</span><h3>QA/RALPH</h3><p>점수, blocker, 반복 이력, llm-wiki memory로 기준 미달 이미지를 개선한다.</p></div>
+        <div class="step"><span class="tag">08</span><h3>영상 계획</h3><p>승인 이미지로 Seedance dry-run과 비용 산정 후 Gate 2에서 live 여부를 결정한다.</p></div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="panel">
+        <h2>에이전트</h2>
+        <div class="cards">
+          <div class="card agent"><h3>storyteller</h3><span class="badge agent">story</span><p>교육자료 근거로 영상 장면 흐름을 만든다.</p></div>
+          <div class="card agent"><h3>lead-style-agent</h3><span class="badge agent">style bible</span><p>첫 키프레임을 기준으로 스타일과 identity lock을 만든다.</p></div>
+          <div class="card agent"><h3>scene-prompt-agent</h3><span class="badge agent">prompt draft</span><p>장면별 previous/current/next 프롬프트 초안을 작성한다.</p></div>
+          <div class="card agent"><h3>visual-director-arbiter</h3><span class="badge agent">arbiter</span><p>프롬프트 세트를 통합하고 생성 가능 여부를 결정한다.</p></div>
+          <div class="card agent"><h3>continuity-qa</h3><span class="badge agent">QA</span><p>스토리, identity, sliding chain, 출처 근거를 채점한다.</p></div>
+          <div class="card agent"><h3>video-qa</h3><span class="badge agent">video</span><p>샘플 프레임과 inspection manifest로 영상 결과를 검토한다.</p></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>스킬</h2>
+        <div class="cards">
+          <div class="card skill"><h3>topic-extractor</h3><span class="badge skill">source</span><p>교육자료에서 여러 안전 주제를 추출한다.</p></div>
+          <div class="card skill"><h3>story-writer</h3><span class="badge skill">storyboard</span><p>주제를 장면 단위 교육 스토리로 바꾼다.</p></div>
+          <div class="card skill"><h3>style-ref-search</h3><span class="badge skill">reference</span><p>레퍼런스 후보를 수집하되 승인 전에는 inert 상태로 둔다.</p></div>
+          <div class="card skill"><h3>image-consistency-check</h3><span class="badge skill">image QA</span><p>이미지의 스토리/스타일/장비/PPE 일관성을 평가한다.</p></div>
+          <div class="card skill"><h3>seedance-prompting</h3><span class="badge skill">video prompt</span><p>start/end keyframe 기반 영상 프롬프트를 만든다.</p></div>
+          <div class="card skill"><h3>video-inspect</h3><span class="badge skill">frames</span><p>ffprobe/ffmpeg/프레임 추출로 영상 검사 증거를 만든다.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>패키지 구조</h2>
+      <table>
+        <thead><tr><th>영역</th><th>구조</th><th>역할</th></tr></thead>
+        <tbody>
+          <tr><td>Agent package</td><td><code>agents/&lt;agent-id&gt;/AGENT.md</code><br><code>agents/&lt;agent-id&gt;/references/*.md</code></td><td>독립 실행 가능한 역할 문서와 역할 전용 로컬 운영 레퍼런스</td></tr>
+          <tr><td>Skill package</td><td><code>skills/&lt;skill-id&gt;/SKILL.md</code><br><code>skills/&lt;skill-id&gt;/references/*.md</code></td><td>Codex 스킬 실행 지침과 스킬 전용 레퍼런스</td></tr>
+          <tr><td>Style guide</td><td><code>style-guides/&lt;style-id&gt;/STYLE_GUIDE.md</code><br><code>style-guides/&lt;style-id&gt;/references/</code></td><td>재사용 가능한 그림체, 색감, 선화, QA 규칙</td></tr>
+          <tr><td>Project output</td><td><code>projects/&lt;slug&gt;/storyboard</code>, <code>prompts</code>, <code>images</code>, <code>qa</code>, <code>video</code></td><td>실제 교육자료별 산출물. git ignore 대상</td></tr>
+          <tr><td>Operating guides</td><td><code>docs/evaluation-rubrics.md</code><br><code>docs/few-shot-examples.md</code><br><code>docs/higgsfield-seedance-local-reference.md</code></td><td>점수 기준, 예시, Higgsfield/Seedance 실행 정책을 로컬화한다.</td></tr>
+          <tr><td>Reference ledger</td><td><code>docs/reference-sources.md</code></td><td>원문 URL 원장. 실행 기준은 각 패키지 내부와 운영 가이드에 둔다.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="grid">
+      <div class="panel">
+        <h2>가드레일</h2>
+        <div class="cards">
+          <div class="card guard"><h3>Live 차단</h3><p>Gate 승인과 외부 업로드 허용 전에는 live imagegen/Seedance/TTS를 차단한다.</p></div>
+          <div class="card guard"><h3>No Narration</h3><p>현재 범위는 영상+자막/오버레이. TTS와 나레이션은 후속 과제다.</p></div>
+          <div class="card guard"><h3>Paid Guard</h3><p>영상 생성은 비용 고지와 Gate 2 승인 후에만 진행한다.</p></div>
+          <div class="card guard"><h3>Version Preserve</h3><p>draft/approved 이미지와 산출물은 덮어쓰지 않고 버전을 보존한다.</p></div>
+          <div class="card guard"><h3>Evidence</h3><p>테스트, dry-run, QA 결과는 <code>evidence/</code>와 <code>qa/</code>에 남긴다.</p></div>
+          <div class="card guard"><h3>RALPH</h3><p>이미지 루프는 최대 20회 early stop, 같은 blocker 3회면 upstream 수정으로 전환한다.</p></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>레퍼런스</h2>
+        <div class="cards">
+          <div class="card ok"><h3>OpenAI Image</h3><p>이미지 생성, 참조 이미지, 일관성 한계, 텍스트 렌더링 한계.</p></div>
+          <div class="card ok"><h3>OpenAI Prompt</h3><p>구조화 지시, 복잡한 작업 분해, 참조 텍스트 제공.</p></div>
+          <div class="card ok"><h3>OpenAI Video</h3><p>이미지 레퍼런스, 캐릭터 재사용, 영상 연속성 개념.</p></div>
+          <div class="card ok"><h3>Higgsfield CLI</h3><p>Seedance/Higgsfield 인증, 생성 명령, 크레딧 정책.</p></div>
+          <div class="card ok"><h3>MCP</h3><p>플러그인형 도구, 리소스, 프롬프트 연결 구조.</p></div>
+          <div class="card ok"><h3>FFmpeg / JSON Schema</h3><p>영상 검사, 메타데이터, 프레임 추출, 계약 검증.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>주요 명령</h2>
+      <table>
+        <tbody>
+          <tr><th>프로젝트 생성</th><td><code>python3 scripts/init_project.py --name "..." --slug projects/&lt;slug&gt;</code></td></tr>
+          <tr><th>자료 등록/주제 추출</th><td><code>register_sources.py</code> → <code>render_pptx_sources.py</code> → <code>extract_topics.py</code></td></tr>
+          <tr><th>스토리보드</th><td><code>python3 scripts/plan_storyboard.py --project projects/&lt;slug&gt; --duration 30 --image-density normal</code></td></tr>
+          <tr><th>프롬프트 팀</th><td><code>python3 scripts/plan_image_prompt_team.py --project projects/&lt;slug&gt;</code></td></tr>
+          <tr><th>이미지 dry-run</th><td><code>python3 scripts/generate_images.py --project projects/&lt;slug&gt; --dry-run</code></td></tr>
+          <tr><th>이미지 QA</th><td><code>python3 scripts/validate_images.py --project projects/&lt;slug&gt;</code></td></tr>
+          <tr><th>영상 dry-run</th><td><code>python3 scripts/generate_seedance.py --project projects/&lt;slug&gt; --dry-run</code></td></tr>
+          <tr><th>전체 테스트</th><td><code>uv run pytest -q</code></td></tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,6 +1,10 @@
 # Safety Video Harness Rules
 
 - Never run live image or video generation without approval.
+- Before using any local agent or skill, read its `AGENT.md`/`SKILL.md` and package-local `references/*.md`.
+- Before scoring storyboard, image, or video outputs, read `docs/evaluation-rubrics.md`.
+- Before writing a new storyboard, prompt, QA finding, or video prompt, check `docs/few-shot-examples.md` for the expected specificity level.
+- Before any Higgsfield/Seedance planning or dry-run, read `docs/higgsfield-seedance-local-reference.md`.
 - Start each new safety-video project with an intake interview before storyboard, image, or video generation.
 - Intake must ask for source files, topic, target seconds, image density, reference images, selected style guide, aspect ratio, text delivery, and approval scope.
 - Use Codex built-in `imagegen` skill/tool as the default image generation path.

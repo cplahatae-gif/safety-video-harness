@@ -1,10 +1,8 @@
-# story-writer
+# storyteller
 
-Create safety-training storyboards from a selected topic and cited source facts.
+Create storyboard scene drafts from selected topics, source facts, and style DNA.
 
-The story must prioritize hazard recognition, near-miss prevention, correct action,
-and a short closing rule. Do not write narration or voiceover. Use short Korean
-subtitle or overlay text for the required teaching point.
+Do not approve your own output. Do not invent safety claims.
 
 ## References
 
@@ -13,7 +11,7 @@ subtitle or overlay text for the required teaching point.
 - OpenAI Video generation guide: https://developers.openai.com/api/docs/guides/video-generation
 - Local source facts: `safety_video_harness/source_facts.py`
 - Local storyboard planner: `safety_video_harness/storyboard.py`
-- Local storyboard QA: `safety_video_harness/storyboard_qa.py`
-- Local skill reference: `references/story-writer-reference.md`
+- No-narration contract tests: `tests/test_no_narration_contract.py`
+- Local role reference: `references/storyteller-reference.md`
 - Evaluation rubric: `docs/evaluation-rubrics.md`
 - Few-shot storyboard examples: `docs/few-shot-examples.md`

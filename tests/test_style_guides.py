@@ -71,3 +71,25 @@ def test_selected_style_guide_is_injected_into_image_prompts(tmp_path: Path) -> 
     assert "modern Korean webtoon safety-training style" in prompt
     assert "crisp clean line art" in prompt
     assert "Approved style guide and reference assets to preserve:" in prompt
+
+
+def test_image_prompt_team_plan_is_created_and_injected(tmp_path: Path) -> None:
+    project = tmp_path / "prompt-team"
+    prepare_storyboard_project(project)
+
+    result = run_cli("scripts/plan_image_prompt_team.py", "--project", str(project))
+
+    assert result.returncode == 0
+    team_plan = load_json(project / "prompts" / "image_prompt_team_plan.json")
+    assert team_plan["agent_team"]["lead_style_agent"]["agent_file"] == "agents/lead-style-agent/AGENT.md"
+    assert team_plan["agent_team"]["visual_director_arbiter"]["agent_file"] == "agents/visual-director-arbiter/AGENT.md"
+    assert len(team_plan["agent_team"]["scene_prompt_agents"]) == 7
+    assert "OpenAI Image generation guide" in json.dumps(team_plan["references"], ensure_ascii=False)
+
+    image_result = run_cli("scripts/generate_images.py", "--project", str(project), "--dry-run", "--only", "sc02")
+
+    assert image_result.returncode == 0
+    prompt = load_json(project / "prompts" / "image_prompts.json")["plans"][0]["prompt"]
+    assert "Image prompt production team preflight:" in prompt
+    assert "Scene prompt agents draft scene-specific briefs" in prompt
+    assert "use one imagegen coordinator" in prompt

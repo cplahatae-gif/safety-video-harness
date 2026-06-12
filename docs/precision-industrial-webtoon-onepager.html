@@ -261,7 +261,7 @@
     <section class="hero">
       <div class="panel title">
         <h1>정밀 산업 웹툰 키프레임 제작 맵</h1>
-        <p class="lead">레미콘 사업장 충돌 예방 교육 영상을 위해 스토리보드 기준 7장 키프레임을 만든 현재 흐름이다. 첫 장은 확정 스타일 기준으로 재사용하고, 나머지 6장은 같은 현장·차량·PPE·동선이 이어지도록 생성했다.</p>
+        <p class="lead">레미콘 사업장 충돌 예방 교육 영상을 위해 스토리보드 기준 7장 키프레임을 만든 현재 흐름이다. 첫 장은 리드 스타일 기준으로 재사용하고, 나머지 장면은 제작팀 preflight가 프롬프트 일관성을 잠근 뒤 한 coordinator가 순차 생성한다.</p>
       </div>
       <div class="panel metrics">
         <div class="metric"><b>7</b><span>총 키프레임 수</span></div>
@@ -307,11 +307,20 @@
     </section>
 
     <section class="panel section">
+      <h2>에이전트 앞단</h2>
+      <div class="rules">
+        <div class="rule style"><h3>Lead Style Agent</h3><p><code>agents/lead-style-agent/AGENT.md</code>가 첫 키프레임을 기준으로 style, character, vehicle, space, camera, rendering bible을 만든다.</p></div>
+        <div class="rule ok"><h3>Scene Prompt Agents</h3><p><code>agents/scene-prompt-agent/AGENT.md</code>가 장면별 프롬프트 초안을 병렬 작성하되, 직접 이미지를 생성하지 않는다.</p></div>
+        <div class="rule hold"><h3>Visual Director Arbiter</h3><p><code>agents/visual-director-arbiter/AGENT.md</code>가 전체 프롬프트 세트를 통합 검토하고 중앙 imagegen 실행 가능 여부를 결정한다.</p></div>
+      </div>
+    </section>
+
+    <section class="panel section">
       <h2>현재 상태</h2>
       <div class="status">
         <div class="status-card ok"><h3>완료</h3><p>로컬 최신 이미지: <code>projects/remicon-collision-guide/images/draft/sc01_v002.png</code> ~ <code>sc07_v002.png</code></p></div>
         <div class="status-card ok"><h3>검토용 시트</h3><p>전체 확인용 contact sheet: <code>projects/remicon-collision-guide/images/draft/contact_sheet_v002.png</code></p></div>
-        <div class="status-card defer"><h3>후속</h3><p>여러 일관성 평가 에이전트 병렬 실행은 이번 커밋에서 제외하고 다음 작업으로 넘긴다.</p></div>
+        <div class="status-card defer"><h3>후속</h3><p>여러 이미지 결과물 일관성 평가 에이전트 병렬 실행은 다음 작업으로 넘긴다. 현재는 생성 전 프롬프트 제작팀 preflight까지만 붙였다.</p></div>
         <div class="status-card hold"><h3>주의</h3><p><code>projects/</code>는 git ignore 대상이므로 생성 이미지 원본은 로컬 산출물이다. GitHub에는 하네스와 문서, 스타일 가이드만 푸시한다.</p></div>
       </div>
     </section>
