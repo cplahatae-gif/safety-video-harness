@@ -1,0 +1,15 @@
+# Claude Code conversion verification — 2026-06-12
+
+## pytest
+......                                                                   [100%]
+78 passed in 14.59s
+
+## hook smoke (stdin JSON protocol)
+10/10 PASS (live-veto deny/allow, protected-path deny/allow, secret-veto deny/allow,
+schema-validation additionalContext, evidence-feedback additionalContext,
+stop-guard pass-through, scene-link pass-through)
+Registered hook events: SessionStart, PreToolUse, PostToolUse, Stop
+
+## structure
+agents: continuity-qa.md, lead-style-agent.md, scene-prompt-agent.md, storyteller.md, video-qa.md, visual-continuity-director.md, visual-director-arbiter.md
+skills: image-consistency-check, seedance-prompting, story-writer, style-ref-search, topic-extractor, video-inspect

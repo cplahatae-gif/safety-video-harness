@@ -53,7 +53,7 @@ def test_omo_ralph_plan_uses_omo_as_runner_and_harness_as_judge(tmp_path: Path) 
 
     assert result.returncode == 0
     plan = load_json(project / "qa" / "omo_image_ralph_plan.json")
-    assert plan["execution_model"] == "omo_ulw_loop_as_orchestrator"
+    assert plan["execution_model"] == "claude_ralph_loop_as_orchestrator"
     assert plan["decision_source"] == "harness_internal_qa_only"
     assert plan["target_scenes"] == ["sc01"]
     assert "uv run python scripts/validate_images.py" in plan["omo_prompt"]

@@ -29,7 +29,7 @@ This is the local operating reference for Higgsfield/Seedance usage in the safet
 - Live Higgsfield/Seedance calls are paid work and require Gate 2 approval.
 - Dry-run may create prompt specs, cost-estimate command specs, upload specs, and job specs without executing them.
 - Do not auto-run paid video regeneration after QA failure. Produce a proposal first.
-- Do not use Higgsfield for image keyframes by default. Codex built-in `imagegen` is the default image path unless the user asks for Higgsfield image generation.
+- Do not use Higgsfield for image keyframes by default. `scripts/codex_image.sh` (Codex CLI) is the default image path unless the user asks for Higgsfield image generation.
 - Do not upload reference images, generated images, source documents, or videos unless `external_upload_allowed=true` and the relevant gate is approved.
 - For cost control, use short test clips first. The project policy is a short live test, normally around 10 seconds, and only with explicit user approval.
 

@@ -1,14 +1,14 @@
 # Imagegen Prompting References
 
-This harness uses Codex built-in `imagegen` as the default image generation path.
+This harness uses `scripts/codex_image.sh` (Codex CLI `codex exec` image generation) as the default image generation path. `scripts/gemini_image.sh` (Gemini Nano Banana) is the explicit-request fallback.
 It does not call the OpenAI Image API or CLI fallback unless explicitly requested.
 
-## Local Codex Skill
+## Local Image Generation Path
 
-- `/Users/hatae/.codex/skills/.system/imagegen/SKILL.md`
+- `scripts/codex_image.sh <output.png> "<prompt>" [reference images...]`
 - Required behavior:
   - Use built-in `image_gen` by default.
-  - Copy project-bound outputs from `$CODEX_HOME/generated_images/...` into the project.
+  - Save outputs directly into the project tree (`projects/<slug>/images/draft/...`).
   - Use one built-in call per distinct asset or keyframe.
   - Preserve outputs non-destructively with versioned names.
 

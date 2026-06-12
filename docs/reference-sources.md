@@ -23,10 +23,10 @@ Checked: 2026-06-12
 
 ## Local Sources
 
-- Codex imagegen skill: `$CODEX_HOME/skills/.system/imagegen/SKILL.md`
-- Seedance expert skill: `$CODEX_HOME/skills/seedance-expert/SKILL.md`
-- Video frame analysis skill: `$CODEX_HOME/skills/video-frame-analysis/SKILL.md`
-- Understand video skill: `$CODEX_HOME/skills/understand-video/SKILL.md`
+- Codex CLI image generation script: `scripts/codex_image.sh` (Gemini fallback: `scripts/gemini_image.sh`)
+- Seedance expert skill: `~/.claude/skills/seedance-expert/SKILL.md`
+- Video frame analysis skill: `~/.claude/skills/video-frame-analysis/SKILL.md`
+- Understand video skill: `~/.claude/skills/understand-video/SKILL.md`
 - Style guide catalog: `style-guides/README.md`
 - Current webtoon style: `style-guides/korean-industrial-webtoon/STYLE_GUIDE.md`
 - Image prompt rules: `docs/imagegen-prompting-references.md`

@@ -1,3 +1,8 @@
+---
+name: image-consistency-check
+description: 생성된 키프레임을 스토리보드·연속성 기준으로 검수할 때 사용. 이미지 QA, 키프레임 검증, validate_images 요청 시 트리거.
+---
+
 # image-consistency-check
 
 Review generated keyframes against the storyboard and continuity constraints.
@@ -29,7 +34,7 @@ connect to the previous and next storyboard beat.
 - Local style guide catalog: `style-guides/README.md`
 - Current industrial webtoon style: `style-guides/korean-industrial-webtoon/STYLE_GUIDE.md`
 - Local image QA: `safety_video_harness/image_qa.py`
-- Local visual continuity agent: `agents/visual-continuity-director/AGENT.md`
+- Local visual continuity agent: `.claude/agents/visual-continuity-director.md`
 - Local skill reference: `references/image-consistency-reference.md`
 - Evaluation rubric: `docs/evaluation-rubrics.md`
 - Few-shot QA examples: `docs/few-shot-examples.md`

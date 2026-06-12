@@ -14,12 +14,12 @@ def build_imagegen_jobs(project: Path, plans: list[dict], scene_filter: str | No
         raise HarnessError(f"unknown scene_id: {scene_filter}")
     jobs = [_job_for_plan(project, plan, regenerate) for plan in selected]
     return {
-        "execution_mode": "codex_builtin_imagegen",
+        "execution_mode": "codex_cli_imagegen",
         "status": "pending_imagegen",
         "created_at": datetime.now(UTC).isoformat(),
         "instruction": (
-            "Use Codex built-in imagegen skill/tool for each job. After generation, move or copy "
-            "the selected output into the job output path. Do not use an API or CLI fallback unless explicitly requested."
+            "Run scripts/codex_image.sh <output> \"<prompt>\" [reference images...] for each job. "
+            "Save the output directly at the job output path. Use scripts/gemini_image.sh only when the user explicitly requests the Gemini fallback."
         ),
         "jobs": jobs,
     }
@@ -72,7 +72,7 @@ def _job_for_plan(project: Path, plan: dict, regenerate: bool) -> dict:
     output = _next_draft_path(project, scene_id, regenerate)
     return {
         "scene_id": scene_id,
-        "tool": "codex_builtin_imagegen",
+        "tool": "codex_cli_imagegen",
         "status": "pending_imagegen",
         "prompt": plan["prompt"],
         "negative_prompt": plan.get("negative_prompt", ""),

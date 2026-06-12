@@ -42,9 +42,9 @@ The source URL ledger is `docs/reference-sources.md`; role-specific operational 
   - Use before writing storyboard scenes, image prompts, QA findings, or video prompts.
 - Higgsfield/Seedance local reference: `docs/higgsfield-seedance-local-reference.md`
   - Use before any Higgsfield/Seedance planning, dry-run, cost estimate, upload, or paid-generation proposal.
-- Codex imagegen skill: `$CODEX_HOME/skills/.system/imagegen/SKILL.md`
-  - This harness uses Codex built-in `imagegen` as the default image path, not OpenAI API/CLI fallback.
-- Seedance expert skill: `$CODEX_HOME/skills/seedance-expert/SKILL.md`
+- Codex CLI image generation script: `scripts/codex_image.sh`
+  - This harness uses Codex CLI (`codex exec`) as the default image path; `scripts/gemini_image.sh` (Gemini Nano Banana) is the explicit-request fallback.
+- Seedance expert skill: `~/.claude/skills/seedance-expert/SKILL.md`
   - Use when writing Seedance/Higgsfield video prompts.
 - Style guide catalog: `style-guides/README.md`
   - Use for project-level style choices.
@@ -68,7 +68,7 @@ The source URL ledger is `docs/reference-sources.md`; role-specific operational 
 | `topic-extractor` | OpenAI Prompt engineering, JSON Schema docs, project source facts |
 | `story-writer` | OpenAI Prompt engineering, OpenAI Video generation, local no-narration contract |
 | `style-ref-search` | OpenAI Image generation, OpenAI Images and vision, style guide catalog |
-| `lead-style-agent` | OpenAI Image generation, local Codex imagegen skill, selected style guide |
+| `lead-style-agent` | OpenAI Image generation, local codex_image.sh script, selected style guide |
 | `scene-prompt-agent` | OpenAI Prompt engineering, OpenAI Image generation, style bible |
 | `visual-director-arbiter` | OpenAI Image generation limitations, OpenAI Video generation continuity, MCP prompts |
 | `image-consistency-check` | OpenAI Image generation limitations, local style guide, visual continuity agents |

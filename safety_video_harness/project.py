@@ -47,6 +47,7 @@ def init_project(project: Path, name: str) -> str:
     ensure_dirs(project, PROJECT_DIRS)
     (project / "PLAN.md").write_text(_plan_template(name), encoding="utf-8")
     (project / "AGENTS.md").write_text(_agents_template(), encoding="utf-8")
+    (project / "CLAUDE.md").write_text("# Project Rules\n\n@AGENTS.md\n", encoding="utf-8")
     write_project_handoff(project, name)
     write_json(project / "project_config.json", _project_config(project, name))
     write_json(project / "sources" / "sources.json", {"sources": []})
@@ -202,7 +203,7 @@ def _project_config(project: Path, name: str) -> dict:
         "audio_policy": "no_narration_video_only",
         "live_generation_requires_approval": True,
         "credit_budget": {"total": 0, "estimated": 0, "spent": 0, "unit": "credits"},
-        "tools": {"image": "codex_builtin_imagegen", "image_fallback": "explicit_openai_api_or_cli", "video": "higgsfield_cli_seedance"},
+        "tools": {"image": "codex_cli_imagegen", "image_fallback": "explicit_gemini_nano_banana", "video": "higgsfield_cli_seedance"},
     }
 
 

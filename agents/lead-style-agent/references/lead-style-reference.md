@@ -3,7 +3,7 @@
 Source links:
 - OpenAI Image generation: https://developers.openai.com/api/docs/guides/image-generation
 - OpenAI Prompt engineering: https://developers.openai.com/api/docs/guides/prompt-engineering
-- Local Codex imagegen skill: `$CODEX_HOME/skills/.system/imagegen/SKILL.md`
+- Local Codex CLI image generation script: `scripts/codex_image.sh`
 - Central source list: `docs/reference-sources.md`
 
 Checked: 2026-06-12

@@ -6,7 +6,7 @@ from pathlib import Path
 
 
 def check_tools(skills_root: Path | None = None) -> str:
-    root = skills_root or Path.home() / ".codex" / "skills"
+    root = skills_root or Path.home() / ".claude" / "skills"
     required = ["python3", "ffmpeg", "ffprobe", "node", "npm", "tesseract"]
     statuses = [f"{tool}: {'found' if shutil.which(tool) else 'missing'}" for tool in required]
     optional = "higgsfield: found" if shutil.which("higgsfield") else "higgsfield: missing"

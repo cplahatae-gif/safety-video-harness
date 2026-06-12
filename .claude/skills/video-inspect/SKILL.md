@@ -1,3 +1,8 @@
+---
+name: video-inspect
+description: 생성된 영상 클립을 메타데이터와 샘플 프레임으로 검사할 때 사용. 영상 검사, 프레임 추출, inspect_video 요청 시 트리거.
+---
+
 # video-inspect
 
 Inspect videos by metadata and sampled frames.
@@ -21,8 +26,8 @@ Video QA must have an inspection manifest before manual scores can pass.
 - OpenAI Video generation guide: https://developers.openai.com/api/docs/guides/video-generation
 - Local video inspection: `safety_video_harness/video_inspection.py`
 - Local video QA: `safety_video_harness/video_qa.py`
-- Local video-frame-analysis skill: `$CODEX_HOME/skills/video-frame-analysis/SKILL.md`
-- Local understand-video skill: `$CODEX_HOME/skills/understand-video/SKILL.md`
+- Local video-frame-analysis skill: `~/.claude/skills/video-frame-analysis/SKILL.md`
+- Local understand-video skill: `~/.claude/skills/understand-video/SKILL.md`
 - Local skill reference: `references/video-inspect-reference.md`
 - Evaluation rubric: `docs/evaluation-rubrics.md`
 - Few-shot video QA examples: `docs/few-shot-examples.md`

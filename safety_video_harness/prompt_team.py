@@ -23,9 +23,9 @@ REFERENCE_LINKS: Final[list[dict[str, str]]] = [
         "use": "CLI auth, model catalog, generate/upload commands, credit-based video generation",
     },
     {
-        "name": "Local Codex imagegen skill",
-        "url": "$CODEX_HOME/skills/.system/imagegen/SKILL.md",
-        "use": "built-in imagegen workflow and save-path policy",
+        "name": "Local Codex CLI image generation script",
+        "url": "scripts/codex_image.sh",
+        "use": "codex exec image generation workflow and save-path policy",
     },
 ]
 

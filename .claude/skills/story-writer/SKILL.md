@@ -1,3 +1,8 @@
+---
+name: story-writer
+description: 선택된 주제와 출처 근거로 안전교육 스토리보드를 작성할 때 사용. 스토리보드 생성, 시나리오 작성, 장면 구성 요청 시 트리거.
+---
+
 # story-writer
 
 Create safety-training storyboards from a selected topic and cited source facts.

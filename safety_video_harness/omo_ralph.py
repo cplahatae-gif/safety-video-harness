@@ -14,7 +14,7 @@ def build_omo_image_ralph_plan(project: Path, scene_filter: str | None = None) -
     target_scenes = _target_scenes(loop, scene_filter)
     next_action = str(loop.get("next_action", ""))
     plan: JsonObject = {
-        "execution_model": "omo_ulw_loop_as_orchestrator",
+        "execution_model": "claude_ralph_loop_as_orchestrator",
         "decision_source": "harness_internal_qa_only",
         "target_scenes": target_scenes,
         "next_omo_action": _next_omo_action(loop, next_action),
@@ -103,15 +103,15 @@ def _run_prompt(project: Path, target_scenes: list[str]) -> str:
     scene_text = ", ".join(target_scenes) if target_scenes else "none"
     return "\n".join(
         [
-            "$omo:ulw-loop",
+            "/ralph-loop",
             f"Project: {project}",
             f"Target image scenes: {scene_text}",
-            "Use OMO only as the repeated execution manager.",
+            "Use the ralph-loop runner only as the repeated execution manager.",
             "Do not score images yourself; the harness is the only judge.",
             f"Start each round with: uv run python scripts/validate_images.py --project {project}",
             "Read qa/image_qa_loop.json and qa/arbiter_decisions before choosing the next command.",
-            "For each blocked scene, prepare Codex imagegen job specs with generate_images.py --live --regenerate.",
-            "After the user or Codex imagegen provides a PNG, record it with record_image_output.py --generated-file.",
+            "For each blocked scene, prepare codex_image.sh job specs with generate_images.py --live --regenerate.",
+            "After the user or scripts/codex_image.sh provides a PNG, record it with record_image_output.py --generated-file.",
             "Re-run validate_images.py and stop when the harness says passed or stop_and_escalate.",
             "Never call live Seedance, live TTS, or any paid video command inside this image loop.",
         ]
@@ -122,7 +122,7 @@ def _stop_prompt(project: Path, target_scenes: list[str]) -> str:
     scene_text = ", ".join(target_scenes) if target_scenes else "blocked scenes"
     return "\n".join(
         [
-            "$omo:ulw-loop",
+            "/ralph-loop",
             f"Project: {project}",
             f"Target image scenes: {scene_text}",
             "Do not regenerate. The harness returned stop_and_escalate.",

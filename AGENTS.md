@@ -1,16 +1,16 @@
 # Safety Video Harness Rules
 
 - Never run live image or video generation without approval.
-- Before using any local agent or skill, read its `AGENT.md`/`SKILL.md` and package-local `references/*.md`.
+- Before using any local agent or skill, read its definition (`.claude/agents/<id>.md` / `.claude/skills/<id>/SKILL.md`) and package-local `references/*.md`.
 - Before scoring storyboard, image, or video outputs, read `docs/evaluation-rubrics.md`.
 - Before writing a new storyboard, prompt, QA finding, or video prompt, check `docs/few-shot-examples.md` for the expected specificity level.
 - Before any Higgsfield/Seedance planning or dry-run, read `docs/higgsfield-seedance-local-reference.md`.
 - Start each new safety-video project with an intake interview before storyboard, image, or video generation.
 - Each new safety-video project must include a generated project-level `HANDOFF.md` from `templates/project/HANDOFF.md`.
 - Intake must ask for source files, topic, target seconds, image density, reference images, selected style guide, aspect ratio, text delivery, and approval scope.
-- Use Codex built-in `imagegen` skill/tool as the default image generation path.
-- Do not implement OpenAI Image API/CLI image generation unless the user explicitly asks for that fallback.
-- Never leave project image assets only under `$CODEX_HOME/generated_images`; move or copy selected outputs into the project.
+- Use `scripts/codex_image.sh` (Codex CLI image generation) as the default image generation path.
+- Use `scripts/gemini_image.sh` (Gemini Nano Banana) only when the user explicitly asks for that fallback; do not implement other API/CLI image paths.
+- Never leave generated image assets outside the project tree; save or copy selected outputs into `projects/<slug>/images/`.
 - Never make a safety claim without a source citation.
 - Never overwrite approved artifacts.
 - Keep generated-image text out of keyframes unless explicitly approved.

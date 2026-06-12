@@ -63,7 +63,7 @@ def build_image_prompt_plan(
             "Safety framing: show a near-miss prevention moment, not an accident impact.",
             "Output must be clean, readable, realistic enough for worker education, and free of generated text.",
             (
-                "Prompting reference: follow the local Codex imagegen skill and the official image generation guide; "
+                "Prompting reference: follow scripts/codex_image.sh (Codex CLI image generation) and the official image generation guide; "
                 "avoid precise in-image text because image models can struggle with exact text rendering and layout."
             ),
         ]

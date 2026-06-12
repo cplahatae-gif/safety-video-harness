@@ -1,3 +1,8 @@
+---
+name: style-ref-search
+description: 스타일 레퍼런스 이미지 후보를 검색·수집할 때 사용. 레퍼런스 검색, 스타일 후보, search_references 요청 시 트리거. 승인 전 후보는 프롬프트에 반영하지 않는다.
+---
+
 # style-ref-search
 
 Collect style reference candidates without automatically using downloaded assets.

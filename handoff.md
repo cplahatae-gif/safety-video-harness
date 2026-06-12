@@ -73,7 +73,7 @@ Before using a specific agent or skill, also read:
 
 Important root folders:
 
-- `.codex-plugin/`: plugin manifest
+- `.claude/`: Claude Code settings.json(훅 등록), agents, skills
 - `agents/`: role-specific agent packages
 - `skills/`: plugin skill packages
 - `hooks/`: live-call veto and session-start anchor hooks

@@ -7,37 +7,50 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
+SKILL_IDS = [
+    "topic-extractor",
+    "story-writer",
+    "seedance-prompting",
+    "image-consistency-check",
+    "video-inspect",
+    "style-ref-search",
+]
 
-def test_plugin_manifest_and_harness_assets_exist() -> None:
-    manifest = json.loads((ROOT / ".codex-plugin" / "plugin.json").read_text(encoding="utf-8"))
+AGENT_IDS = [
+    "storyteller",
+    "lead-style-agent",
+    "scene-prompt-agent",
+    "visual-director-arbiter",
+    "continuity-qa",
+    "video-qa",
+    "visual-continuity-director",
+]
 
-    assert manifest["name"] == "safety-video-harness"
+
+def test_claude_settings_and_harness_assets_exist() -> None:
+    settings = json.loads((ROOT / ".claude" / "settings.json").read_text(encoding="utf-8"))
+    hooks = settings["hooks"]
+    for event in ["SessionStart", "PreToolUse", "PostToolUse", "Stop"]:
+        assert event in hooks, event
+
+    assert (ROOT / "CLAUDE.md").exists()
     assert (ROOT / "AGENTS.md").exists()
     for path in [
-        "skills/topic-extractor/SKILL.md",
-        "skills/story-writer/SKILL.md",
-        "skills/seedance-prompting/SKILL.md",
-        "skills/image-consistency-check/SKILL.md",
-        "skills/video-inspect/SKILL.md",
-        "skills/style-ref-search/SKILL.md",
-        "agents/storyteller/AGENT.md",
+        *[f".claude/skills/{skill_id}/SKILL.md" for skill_id in SKILL_IDS],
+        *[f".claude/agents/{agent_id}.md" for agent_id in AGENT_IDS],
         "agents/storyteller/references/storyteller-reference.md",
-        "agents/lead-style-agent/AGENT.md",
         "agents/lead-style-agent/references/lead-style-reference.md",
-        "agents/scene-prompt-agent/AGENT.md",
         "agents/scene-prompt-agent/references/scene-prompt-reference.md",
-        "agents/visual-director-arbiter/AGENT.md",
         "agents/visual-director-arbiter/references/visual-director-arbiter-reference.md",
-        "agents/continuity-qa/AGENT.md",
         "agents/continuity-qa/references/continuity-qa-reference.md",
-        "agents/video-qa/AGENT.md",
         "agents/video-qa/references/video-qa-reference.md",
-        "agents/visual-continuity-director/AGENT.md",
         "agents/visual-continuity-director/references/visual-continuity-reference.md",
         "hooks/pretooluse-live-veto.py",
         "hooks/protected_paths.json",
         "schemas/project_config.schema.json",
         "schemas/scenes.schema.json",
+        "scripts/codex_image.sh",
+        "scripts/gemini_image.sh",
         "style-guides/catalog.json",
         "style-guides/korean-industrial-webtoon/STYLE_GUIDE.md",
         "templates/project/PLAN.md",
@@ -54,21 +67,30 @@ def test_plugin_manifest_and_harness_assets_exist() -> None:
         assert (ROOT / path).exists(), path
 
 
+def test_skills_and_agents_have_frontmatter() -> None:
+    for skill_id in SKILL_IDS:
+        text = (ROOT / ".claude" / "skills" / skill_id / "SKILL.md").read_text(encoding="utf-8")
+        assert text.startswith("---\n"), skill_id
+        frontmatter = text.split("---", 2)[1]
+        assert f"name: {skill_id}" in frontmatter, skill_id
+        assert "description:" in frontmatter, skill_id
+    for agent_id in AGENT_IDS:
+        text = (ROOT / ".claude" / "agents" / f"{agent_id}.md").read_text(encoding="utf-8")
+        assert text.startswith("---\n"), agent_id
+        frontmatter = text.split("---", 2)[1]
+        assert f"name: {agent_id}" in frontmatter, agent_id
+        assert "description:" in frontmatter, agent_id
+
+
 def test_skills_package_local_references_exist() -> None:
-    for path in [
-        "skills/topic-extractor/references/topic-extractor-reference.md",
-        "skills/story-writer/references/story-writer-reference.md",
-        "skills/style-ref-search/references/style-ref-search-reference.md",
-        "skills/seedance-prompting/references/seedance-prompting-reference.md",
-        "skills/image-consistency-check/references/image-consistency-reference.md",
-        "skills/video-inspect/references/video-inspect-reference.md",
-    ]:
-        assert (ROOT / path).exists(), path
+    for skill_id in SKILL_IDS:
+        references = sorted((ROOT / ".claude" / "skills" / skill_id / "references").glob("*.md"))
+        assert references, skill_id
 
 
 def test_agent_and_skill_references_contain_local_operating_notes() -> None:
     reference_paths = sorted((ROOT / "agents").glob("*/references/*.md")) + sorted(
-        (ROOT / "skills").glob("*/references/*.md")
+        (ROOT / ".claude" / "skills").glob("*/references/*.md")
     )
 
     assert len(reference_paths) == 13
@@ -94,7 +116,9 @@ def test_project_rules_force_local_guides_before_execution() -> None:
 
 
 def test_agent_and_skill_docs_link_required_local_guides() -> None:
-    docs = sorted((ROOT / "agents").glob("*/AGENT.md")) + sorted((ROOT / "skills").glob("*/SKILL.md"))
+    docs = sorted((ROOT / ".claude" / "agents").glob("*.md")) + sorted(
+        (ROOT / ".claude" / "skills").glob("*/SKILL.md")
+    )
 
     assert len(docs) == 13
     for path in docs:
@@ -149,6 +173,18 @@ def test_session_start_anchor_reloads_nonnegotiable_mission_rules() -> None:
     assert "selected style guide" in output
 
 
+def _run_live_veto(command: str) -> subprocess.CompletedProcess[str]:
+    payload = json.dumps({"tool_name": "Bash", "tool_input": {"command": command}})
+    return subprocess.run(
+        ["python3", "hooks/pretooluse-live-veto.py"],
+        cwd=ROOT,
+        check=False,
+        text=True,
+        capture_output=True,
+        input=payload,
+    )
+
+
 def test_live_veto_hook_allows_approved_project_live_command(tmp_path: Path) -> None:
     project = tmp_path / "approved-live-hook"
     project.mkdir()
@@ -166,23 +202,21 @@ def test_live_veto_hook_allows_approved_project_live_command(tmp_path: Path) -> 
         encoding="utf-8",
     )
 
-    result = subprocess.run(
-        [
-            "python3",
-            "hooks/pretooluse-live-veto.py",
-            "uv",
-            "run",
-            "python",
-            "scripts/generate_images.py",
-            "--project",
-            str(project),
-            "--live",
-        ],
-        cwd=ROOT,
-        check=False,
-        text=True,
-        capture_output=True,
-    )
+    result = _run_live_veto(f"uv run python scripts/generate_images.py --project {project} --live")
 
     assert result.returncode == 0
-    assert "allow" in result.stdout
+
+
+def test_live_veto_hook_blocks_unapproved_live_command(tmp_path: Path) -> None:
+    project = tmp_path / "unapproved-live-hook"
+    project.mkdir()
+    (project / "project_config.json").write_text('{"external_upload_allowed": true}', encoding="utf-8")
+    (project / "approvals.json").write_text(
+        json.dumps({"gates": {"storyboard": {"approved": False}}}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+
+    result = _run_live_veto(f"uv run python scripts/generate_images.py --project {project} --live")
+
+    assert result.returncode == 2
+    assert "approved gate storyboard" in result.stderr

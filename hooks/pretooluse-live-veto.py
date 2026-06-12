@@ -1,6 +1,14 @@
+"""PreToolUse hook (matcher: Bash).
+
+Blocks --live generation commands unless the project gate is approved and
+external upload is allowed. Reads the Claude Code hook JSON payload from stdin
+and denies by exiting 2 with the reason on stderr.
+"""
+
 from __future__ import annotations
 
 import json
+import shlex
 import sys
 from pathlib import Path
 
@@ -34,30 +42,39 @@ def _upload_allowed(project: Path) -> bool:
     return bool(config.get("external_upload_allowed", False))
 
 
-def _required_gate(args: list[str]) -> str:
-    command = " ".join(args)
+def _required_gate(command: str) -> str:
     if "generate_seedance.py" in command:
         return "image_to_video"
     return "storyboard"
 
 
+def _deny(reason: str) -> int:
+    print(f"deny: {reason}", file=sys.stderr)
+    return 2
+
+
 def main() -> int:
-    args = sys.argv[1:]
-    if "--live" not in args:
-        print("allow")
+    try:
+        payload = json.load(sys.stdin)
+    except json.JSONDecodeError:
         return 0
+    if payload.get("tool_name") != "Bash":
+        return 0
+    command = str(payload.get("tool_input", {}).get("command", ""))
+    if "--live" not in command:
+        return 0
+    try:
+        args = shlex.split(command)
+    except ValueError:
+        args = command.split()
     project = _project_path(args)
     if project is None:
-        print("deny: live generation requires --project")
-        return 2
-    gate = _required_gate(args)
+        return _deny("live generation requires --project")
+    gate = _required_gate(command)
     if not _approved(project, gate):
-        print(f"deny: live generation requires approved gate {gate}")
-        return 2
+        return _deny(f"live generation requires approved gate {gate}")
     if not _upload_allowed(project):
-        print("deny: live generation requires external_upload_allowed=true")
-        return 2
-    print("allow")
+        return _deny("live generation requires external_upload_allowed=true")
     return 0
 
 

@@ -64,7 +64,7 @@ def test_imagegen_jobs_and_only_filter_are_written_after_approval(tmp_path: Path
 
     assert result.returncode == 0
     jobs = load_json(project / "prompts" / "imagegen_jobs.json")
-    assert jobs["execution_mode"] == "codex_builtin_imagegen"
+    assert jobs["execution_mode"] == "codex_cli_imagegen"
     assert len(jobs["jobs"]) == 1
     job = jobs["jobs"][0]
     assert job["scene_id"] == "sc03"

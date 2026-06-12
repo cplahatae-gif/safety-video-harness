@@ -21,7 +21,7 @@ Paid calls, live imagegen, live Seedance, and live TTS are forbidden before expl
 3. Build or revise `storyboard/scenes.json`.
 4. Run storyboard QA before image work.
 5. Generate image prompts and imagegen job specs.
-6. Use Codex built-in `imagegen` only after the storyboard gate allows it.
+6. Use `scripts/codex_image.sh` (Codex CLI image generation) only after the storyboard gate allows it.
 7. Run image QA and RALPH early-stopping loops.
 8. Generate Seedance/Higgsfield prompt specs only from approved keyframes.
 9. Run live video only after Gate 2 approval, external upload permission, and cost disclosure.
