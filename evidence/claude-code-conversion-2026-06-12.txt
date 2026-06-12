@@ -13,3 +13,11 @@ Registered hook events: SessionStart, PreToolUse, PostToolUse, Stop
 ## structure
 agents: continuity-qa.md, lead-style-agent.md, scene-prompt-agent.md, storyteller.md, video-qa.md, visual-continuity-director.md, visual-director-arbiter.md
 skills: image-consistency-check, seedance-prompting, story-writer, style-ref-search, topic-extractor, video-inspect
+## codex_image.sh live smoke (2026-06-12 16:38)
+command: scripts/codex_image.sh /tmp/claude-conversion-smoke.png "yellow safety helmet, flat vector"
+result: PNG image data, 1536 x 1024, 8-bit/color RGB — prompt followed, visual check passed
+tokens used: 32,448 (Codex subscription, no extra cost)
+
+## pending user verification
+- gemini_image.sh: requires `load-keys` (Bitwarden locked at test time)
+- new-session check: SessionStart anchor output + 7 subagents recognized
