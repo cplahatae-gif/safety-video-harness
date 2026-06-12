@@ -17,7 +17,12 @@ from safety_video_harness.io import read_json, write_json
 from safety_video_harness.prompt_contract import build_final_image_prompt_plan, build_image_prompt_plan, build_video_prompt_plan
 from safety_video_harness.prompt_team import ensure_image_prompt_team_plan, prompt_team_prompt_block
 from safety_video_harness.scene_links import validate_scene_links
-from safety_video_harness.seedance_live import SeedanceLiveOptions, build_seedance_live_plan, run_seedance_live_plan
+from safety_video_harness.seedance_live import (
+    SeedanceLiveOptions,
+    build_seedance_live_plan,
+    run_seedance_live_plan,
+    validate_seedance_live_options,
+)
 from safety_video_harness.style_guides import selected_style_prompt_block
 
 
@@ -122,11 +127,12 @@ def generate_seedance(
             plan_only=plan_only,
             validation_run=validation_run,
         )
+        validate_seedance_live_options(options)
+        require_gate(project, "image_to_video")
+        _require_external_upload(project)
         plan = build_seedance_live_plan(project, options)
         if plan_only:
             return f"Seedance live plan prepared {len(plan['jobs'])} job(s)"
-        require_gate(project, "image_to_video")
-        _require_external_upload(project)
         validate_scene_links(project)
         return run_seedance_live_plan(project, plan)
     scenes = read_json(project / "storyboard" / "scenes.json")

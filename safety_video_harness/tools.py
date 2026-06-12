@@ -1,8 +1,9 @@
 from __future__ import annotations
 
-import subprocess
 import shutil
 from pathlib import Path
+
+from safety_video_harness.external_tools import run_tool
 
 
 def check_tools(skills_root: Path | None = None) -> str:
@@ -22,12 +23,7 @@ def check_tools(skills_root: Path | None = None) -> str:
 def _ocr_language_status(language: str) -> str:
     if shutil.which("tesseract") is None:
         return f"ocr_lang_{language}: missing"
-    result = subprocess.run(
-        ["tesseract", "--list-langs"],
-        check=False,
-        text=True,
-        capture_output=True,
-    )
+    result = run_tool(["tesseract", "--list-langs"], 30, "tesseract language check")
     languages = result.stdout.splitlines()
     status = "found" if language in languages else "missing"
     return f"ocr_lang_{language}: {status}"

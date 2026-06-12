@@ -17,6 +17,7 @@ class VideoPromptPlan(TypedDict):
     scene_id: str
     start_keyframe: str
     end_keyframe: str
+    duration_sec: int
     prompt: str
     subtitle_plan_ko: str
     reference_assets: dict[str, list[dict[str, str]]]
@@ -141,7 +142,7 @@ def build_video_prompt_plan(scene: dict, reference_assets: dict[str, list[dict[s
     subtitle = str(scene.get("subtitle_ko", scene.get("caption_ko", "")))
     prompt = "\n".join(
         [
-            "Generate a 5 second Seedance clip for an industrial safety education video.",
+            "Create a Seedance clip for an industrial safety education video.",
             f"Scene ID: {scene_id}.",
             f"Start keyframe: {scene['start_keyframe']}.",
             f"End keyframe: {scene['end_keyframe']}.",
@@ -162,6 +163,7 @@ def build_video_prompt_plan(scene: dict, reference_assets: dict[str, list[dict[s
         "scene_id": scene_id,
         "start_keyframe": str(scene["start_keyframe"]),
         "end_keyframe": str(scene["end_keyframe"]),
+        "duration_sec": 5,
         "prompt": prompt,
         "subtitle_plan_ko": subtitle,
         "reference_assets": reference_assets,

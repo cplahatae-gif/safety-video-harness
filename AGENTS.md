@@ -1,6 +1,7 @@
 # Safety Video Harness Rules
 
 - Never run live image or video generation without approval.
+- Before changing architecture, pipeline terminology, RALPH semantics, or QA ledger behavior, read `CONTEXT.md`.
 - Before using any local agent or skill, read its `AGENT.md`/`SKILL.md` and package-local `references/*.md`.
 - Before scoring storyboard, image, or video outputs, read `docs/evaluation-rubrics.md`.
 - Before writing a new storyboard, prompt, QA finding, or video prompt, check `docs/few-shot-examples.md` for the expected specificity level.

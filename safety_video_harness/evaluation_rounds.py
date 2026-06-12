@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 from safety_video_harness.blocker_signatures import blocker_signature
+from safety_video_harness.errors import HarnessError
 from safety_video_harness.evaluation_markdown import (
     markdown_artifacts,
     markdown_key_values,
@@ -11,8 +12,8 @@ from safety_video_harness.evaluation_markdown import (
     markdown_repeated,
     string_dict,
 )
-from safety_video_harness.io import JsonObject, write_json, write_jsonl
-from safety_video_harness.locks import assert_unlocked
+from safety_video_harness.io import JsonObject, read_json, write_json, write_jsonl
+from safety_video_harness.locks import file_lock
 
 
 LEDGER_PATH = Path("qa") / "evaluation_rounds.jsonl"
@@ -102,10 +103,16 @@ def _read_round_entries(project: Path) -> list[JsonObject]:
     if not ledger.exists():
         return []
     entries: list[JsonObject] = []
-    for line in ledger.read_text(encoding="utf-8").splitlines():
+    lines = ledger.read_text(encoding="utf-8").splitlines()
+    for index, line in enumerate(lines, start=1):
         if not line.strip():
             continue
-        value = json.loads(line)
+        try:
+            value = json.loads(line)
+        except json.JSONDecodeError as exc:
+            if index == len(lines):
+                continue
+            raise HarnessError(f"corrupt evaluation ledger: {ledger}: line {index}: {exc}") from exc
         if isinstance(value, dict):
             entries.append(value)
     return entries
@@ -131,10 +138,7 @@ def _review_blocker_signatures(
 
 def _append_wiki_summary(project: Path, record: JsonObject) -> None:
     path = project / WIKI_PATH
-    assert_unlocked(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    if not path.exists():
-        path.write_text("# Evaluation Rounds\n\n", encoding="utf-8")
     issues = list(record.get("blocking_issues", []))
     signatures = list(record.get("blocker_signatures", []))
     score_breakdown = string_dict(record.get("score_breakdown", {}))
@@ -171,15 +175,17 @@ def _append_wiki_summary(project: Path, record: JsonObject) -> None:
             "",
         ]
     )
-    with path.open("a", encoding="utf-8") as handle:
-        handle.write(block)
+    with file_lock(path):
+        if not path.exists():
+            path.write_text("# Evaluation Rounds\n\n", encoding="utf-8")
+        with path.open("a", encoding="utf-8") as handle:
+            handle.write(block)
 
 
 def _read_bundle(bundle_path: Path) -> JsonObject:
     if not bundle_path.exists():
         return {}
-    value = json.loads(bundle_path.read_text(encoding="utf-8"))
-    return value if isinstance(value, dict) else {}
+    return read_json(bundle_path)
 
 
 def _score_breakdown(review: JsonObject) -> JsonObject:
@@ -267,6 +273,6 @@ def _repeated_blockers(
             and entry.get("item_id") == item_id
             and signature in list(entry.get("blocker_signatures", []))
         )
-        if count >= 2:
+        if count >= 3:
             repeated[signature] = count
     return repeated

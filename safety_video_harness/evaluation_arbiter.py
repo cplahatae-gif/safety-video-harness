@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-import json
 from collections import Counter
 from pathlib import Path
 
 from safety_video_harness.blocker_signatures import blocker_signature
 from safety_video_harness.evaluation_consensus import consensus, debate_triggers, decision, next_action
 from safety_video_harness.evaluation_outputs import write_debate_record, write_role_reviews
+from safety_video_harness.evaluation_rounds import _read_round_entries
 from safety_video_harness.io import JsonObject, write_json
 
 
@@ -127,15 +127,7 @@ def _repeated_blockers(project: Path, stage: str, item_id: str, signatures: list
 
 def _prior_signature_counts(project: Path, stage: str, item_id: str) -> Counter[str]:
     counts: Counter[str] = Counter()
-    ledger = project / "qa" / "evaluation_rounds.jsonl"
-    if not ledger.exists():
-        return counts
-    for line in ledger.read_text(encoding="utf-8").splitlines():
-        if not line.strip():
-            continue
-        entry = json.loads(line)
-        if not isinstance(entry, dict):
-            continue
+    for entry in _read_round_entries(project):
         if entry.get("stage") != stage or entry.get("item_id") != item_id:
             continue
         for signature in list(entry.get("blocker_signatures", [])):

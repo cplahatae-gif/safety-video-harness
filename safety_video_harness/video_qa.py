@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import json
-import subprocess
 from pathlib import Path
 
 from safety_video_harness.evaluation_arbiter import aggregate_arbiter_decision
@@ -11,6 +9,7 @@ from safety_video_harness.evaluation_rounds import (
     write_evaluation_bundle,
 )
 from safety_video_harness.errors import HarnessError
+from safety_video_harness.external_tools import run_tool_json
 from safety_video_harness.io import read_json, write_json
 from safety_video_harness.qa_contract import (
     artifact_path,
@@ -91,7 +90,9 @@ def _video_proposal(deficiencies: list[str]) -> str:
 def _review_clip(project: Path, path: Path, manual_review: dict | None) -> dict:
     metadata = _probe(path)
     duration = float(metadata["format"]["duration"])
-    video_stream = next(stream for stream in metadata["streams"] if stream.get("codec_name") == "h264")
+    video_stream = next((stream for stream in metadata["streams"] if stream.get("codec_name") == "h264"), None)
+    if video_stream is None:
+        raise HarnessError(f"no h264 video stream found in {path}")
     width = int(video_stream["width"])
     height = int(video_stream["height"])
     duration_ok = 4.5 <= duration <= 6.5 or 9.5 <= duration <= 10.6
@@ -183,13 +184,13 @@ def _inspection_review(project: Path, clip: Path, manual_review: dict | None) ->
     issues = []
     if frame_count < 3:
         issues.append("inspection manifest must contain at least 3 frames")
-    if bool(manifest.get("transcript_enabled", True)):
+    if bool(manifest.get("transcript_enabled", False)):
         issues.append("inspection transcript must be disabled")
     return {"manifest": str(manifest_path), "frame_count": frame_count, "blocking_issues": issues}
 
 
 def _probe(path: Path) -> dict:
-    result = subprocess.run(
+    return run_tool_json(
         [
             "ffprobe",
             "-v",
@@ -202,13 +203,9 @@ def _probe(path: Path) -> dict:
             "json",
             str(path),
         ],
-        check=False,
-        text=True,
-        capture_output=True,
+        30,
+        f"ffprobe failed for {path}",
     )
-    if result.returncode != 0:
-        raise HarnessError(result.stderr.strip() or f"ffprobe failed for {path}")
-    return json.loads(result.stdout)
 
 
 def _record_video_evaluation_rounds(project: Path, reviews: list[dict]) -> None:

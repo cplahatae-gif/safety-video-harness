@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Final
 
 from safety_video_harness.errors import HarnessError
+from safety_video_harness.external_tools import run_tool
 from safety_video_harness.io import read_json, write_json, write_jsonl
 
 
@@ -25,7 +26,7 @@ class SeedanceLiveOptions:
 
 
 def build_seedance_live_plan(project: Path, options: SeedanceLiveOptions) -> dict:
-    _validate_options(options)
+    validate_seedance_live_options(options)
     prompts_path = project / "prompts" / "video_prompts.json"
     if not prompts_path.exists():
         raise HarnessError("live Seedance requires prompts/video_prompts.json")
@@ -70,6 +71,10 @@ def run_seedance_live_plan(project: Path, plan: dict) -> str:
 
 
 def _validate_options(options: SeedanceLiveOptions) -> None:
+    validate_seedance_live_options(options)
+
+
+def validate_seedance_live_options(options: SeedanceLiveOptions) -> None:
     if options.test_seconds > MAX_TEST_SECONDS:
         raise HarnessError("test-seconds must be <= 10")
     if options.test_seconds < SECONDS_PER_CLIP or options.test_seconds % SECONDS_PER_CLIP != 0:
@@ -85,10 +90,11 @@ def _validate_options(options: SeedanceLiveOptions) -> None:
 
 
 def _build_job(project: Path, plan: dict, duration: int) -> dict:
-    prompt = str(plan["prompt"]).replace(
-        "Generate a 5 second Seedance clip",
-        f"Generate a {duration} second Seedance clip",
-        1,
+    prompt = "\n".join(
+        [
+            f"Generate a {duration} second Seedance clip.",
+            str(plan["prompt"]),
+        ]
     )
     start_image = str(project / str(plan["start_keyframe"]))
     end_image = str(project / str(plan["end_keyframe"]))
@@ -127,10 +133,7 @@ def _build_job(project: Path, plan: dict, duration: int) -> dict:
 
 
 def _run_cli(command: list[str]) -> subprocess.CompletedProcess[str]:
-    result = subprocess.run(command, check=False, text=True, capture_output=True)
-    if result.returncode != 0:
-        raise HarnessError(result.stderr.strip() or result.stdout.strip() or "higgsfield command failed")
-    return result
+    return run_tool(command, 1500, "higgsfield command failed")
 
 
 def _redact_public_urls(text: str) -> str:

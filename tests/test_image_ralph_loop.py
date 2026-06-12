@@ -4,6 +4,8 @@ import json
 import subprocess
 from pathlib import Path
 
+from PIL import Image
+
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURE = ROOT / "fixtures" / "sources" / "remicon-collision-guide.pptx"
@@ -102,3 +104,22 @@ def test_image_qa_stops_ralph_after_max_iterations(tmp_path: Path) -> None:
     assert loop["ralph_loop"]["current_iterations"]["sc01"] == 20
     assert loop["ralph_loop"]["remaining_iterations"]["sc01"] == 0
     assert loop["next_action"] == "stop_and_escalate"
+
+
+def test_validate_images_does_not_increment_iterations_for_passing_scenes(tmp_path: Path) -> None:
+    project = tmp_path / "image-ralph-passing"
+    prepare_project(project)
+    draft = project / "images" / "draft" / "sc01_v001.png"
+    draft.parent.mkdir(parents=True, exist_ok=True)
+    Image.new("RGB", (1600, 900), color=(120, 140, 160)).save(draft)
+
+    first = run_cli("scripts/validate_images.py", "--project", str(project), "--only", "sc01")
+    second = run_cli("scripts/validate_images.py", "--project", str(project), "--only", "sc01")
+
+    assert first.returncode == 0
+    assert second.returncode == 0
+    rounds_path = project / "qa" / "evaluation_rounds.jsonl"
+    rounds = rounds_path.read_text(encoding="utf-8") if rounds_path.exists() else ""
+    assert '"item_id": "sc01"' not in rounds
+    loop = json.loads((project / "qa" / "image_qa_loop.json").read_text(encoding="utf-8"))
+    assert loop["ralph_loop"]["status"] == "passed"

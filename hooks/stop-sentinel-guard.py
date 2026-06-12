@@ -5,7 +5,8 @@ from pathlib import Path
 
 
 def main() -> int:
-    sentinel = Path(".harness/DONE")
+    root = Path(__file__).resolve().parents[1]
+    sentinel = root / ".harness" / "DONE"
     if sentinel.exists():
         print("allow stop")
         return 0
@@ -15,4 +16,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
-

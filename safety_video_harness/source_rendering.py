@@ -15,7 +15,9 @@ def extract_rendered_assets(rendered_dir: Path, entry: dict, index: int, mode: s
                 assets = _extract_pptx_media(rendered_dir, source, str(entry["source_id"]))
                 return assets, "media_extract", "soffice missing; used PPTX media extraction fallback"
             raise HarnessError("slide_render via soffice is not implemented yet; use --mode media_extract")
-        return _extract_pptx_media(rendered_dir, source, str(entry["source_id"])), mode, ""
+        assets = _extract_pptx_media(rendered_dir, source, str(entry["source_id"]))
+        warning = "invalid pptx; used placeholder rendered asset" if _is_placeholder_asset(assets) else ""
+        return assets, mode, warning
     output = rendered_dir / f"{entry['source_id']}_source_{index:02d}.txt"
     output.write_text(f"dry-run rendered asset for {entry['path']}\n", encoding="utf-8")
     return [output], mode, ""
@@ -40,3 +42,7 @@ def _extract_pptx_media(rendered_dir: Path, source: Path, source_id: str) -> lis
     if not assets:
         raise HarnessError(f"no renderable media found in {source}")
     return assets
+
+
+def _is_placeholder_asset(assets: list[Path]) -> bool:
+    return len(assets) == 1 and assets[0].suffix.lower() == ".txt"

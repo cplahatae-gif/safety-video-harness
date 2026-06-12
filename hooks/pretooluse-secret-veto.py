@@ -3,7 +3,7 @@ from __future__ import annotations
 import re
 import sys
 
-SECRET_RE = re.compile(r"API_KEY|SECRET|TOKEN|Bearer ")
+SECRET_RE = re.compile(r"(?i)(api[_-]?key|secret|token|bearer\s+|sk-[A-Za-z0-9_-]+|eyJ[A-Za-z0-9_-]+\.)")
 
 
 def main() -> int:
@@ -17,4 +17,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
-

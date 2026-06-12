@@ -20,6 +20,9 @@ def record_image_evaluation_rounds(
         scene_id = str(review["scene_id"])
         prior_iterations = completed_iterations(project, "image", scene_id)
         blocked = bool(review.get("blocking_issues"))
+        if not blocked:
+            counts[scene_id] = prior_iterations
+            continue
         if blocked and prior_iterations >= MAX_RALPH_ITERATIONS:
             counts[scene_id] = prior_iterations
             continue

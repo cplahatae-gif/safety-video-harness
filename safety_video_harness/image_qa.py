@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from safety_video_harness.image_versions import latest_draft_or_none
 from safety_video_harness.qa_contract import (
     artifact_path,
     blocker_categories,
@@ -17,7 +18,7 @@ MAX_RALPH_ITERATIONS = 20
 
 def review_scene_image(project: Path, scene: dict) -> dict:
     scene_id = str(scene["id"])
-    draft = _latest_draft(project, scene_id)
+    draft = latest_draft_or_none(project, scene_id)
     if draft is None:
         issues = ["missing draft image"]
         return {
@@ -31,6 +32,7 @@ def review_scene_image(project: Path, scene: dict) -> dict:
             "story_flow_score": 0,
             "technical_score": 0,
             "total_score": 0,
+            "score_source": "harness_file_and_story_flow_rules",
             "blocking_issues": issues,
             "blocker_categories": blocker_categories(issues),
             "critical_blockers": critical_blockers(issues),
@@ -59,6 +61,7 @@ def review_scene_image(project: Path, scene: dict) -> dict:
         "artifact_path": artifact_path(project, draft, f"images/draft/{scene_id}_v*.png"),
         **scores,
         "total_score": total_score,
+        "score_source": "placeholder_until_isolated_vision_evaluator",
         "blocking_issues": blockers,
         "blocker_categories": blocker_categories(blockers),
         "critical_blockers": critical_blockers(blockers),
@@ -82,6 +85,7 @@ def dry_run_review(scene: dict) -> dict:
         "story_flow_score": 4,
         "technical_score": 4,
         "total_score": 24,
+        "score_source": "dry_run_placeholder",
         "blocking_issues": [],
         "blocker_categories": [],
         "critical_blockers": [],
@@ -90,14 +94,6 @@ def dry_run_review(scene: dict) -> dict:
         "decision": "approve_for_dry_run",
         "scoring_rubric": _scoring_rubric(),
     }
-
-
-def _latest_draft(project: Path, scene_id: str) -> Path | None:
-    drafts = sorted((project / "images" / "draft").glob(f"{scene_id}_v*.png"))
-    if not drafts:
-        return None
-    return drafts[-1]
-
 
 def build_loop_summary(
     reviews: list[dict],
@@ -220,6 +216,7 @@ def _blocked_review(scene_id: str, issues: list[str], draft: Path) -> dict:
         "story_flow_score": 0,
         "technical_score": 0,
         "total_score": 0,
+        "score_source": "harness_file_and_story_flow_rules",
         "blocking_issues": issues,
         "blocker_categories": blocker_categories(issues),
         "critical_blockers": critical_blockers(issues),

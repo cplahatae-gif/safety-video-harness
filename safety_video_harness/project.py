@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import UTC, datetime
 from pathlib import Path
 
 from safety_video_harness.errors import HarnessError
@@ -74,7 +75,7 @@ def register_source(project: Path, source: Path) -> str:
         "sha256": sha256_file(source),
         "page_count": 0,
         "rendered_assets": [],
-        "registered_at": "dry-run",
+        "registered_at": datetime.now(UTC).isoformat(),
     }
     entries.append(entry)
     write_json(sources_path, {"sources": entries})
