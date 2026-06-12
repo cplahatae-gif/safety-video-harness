@@ -8,6 +8,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def load_json(path: Path) -> dict:
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
 def run_cli(*args: str) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
         ["python3", *args],
@@ -16,6 +20,51 @@ def run_cli(*args: str) -> subprocess.CompletedProcess[str]:
         text=True,
         capture_output=True,
     )
+
+
+def test_assembly_plan_is_written_from_existing_clips(tmp_path: Path) -> None:
+    project = tmp_path / "assembly"
+    clips = project / "video" / "clips"
+    clips.mkdir(parents=True)
+    (clips / "sc01_sc02.mp4").write_bytes(b"fake")
+    (clips / "sc02_sc03.mp4").write_bytes(b"fake")
+
+    result = run_cli("scripts/assemble_video.py", "--project", str(project), "--dry-run")
+
+    assert result.returncode == 0
+    plan = load_json(project / "video" / "final" / "assembly_plan.json")
+    assert plan["dry_run"] is True
+    assert plan["clips"] == ["video/clips/sc01_sc02.mp4", "video/clips/sc02_sc03.mp4"]
+    assert plan["output"] == "video/final/final.mp4"
+
+
+def test_story_video_alignment_reports_missing_artifacts(tmp_path: Path) -> None:
+    project = tmp_path / "alignment"
+    storyboard = project / "storyboard" / "scenes.json"
+    storyboard.parent.mkdir(parents=True)
+    storyboard.write_text(
+        json.dumps(
+            {
+                "scenes": [
+                    {
+                        "id": "sc01",
+                        "start_keyframe": "images/approved/sc01.png",
+                        "end_keyframe": "images/approved/sc02.png",
+                        "subtitle_ko": "정지 후 확인",
+                    }
+                ]
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    result = run_cli("scripts/check_story_video_alignment.py", "--project", str(project))
+
+    assert result.returncode == 0
+    report = load_json(project / "qa" / "story_video_alignment.json")
+    assert report["passed"] is False
+    assert "missing start keyframe" in report["reviews"][0]["blocking_issues"][0]
 
 
 def test_video_qa_writes_propose_only_regeneration_plan(tmp_path: Path) -> None:

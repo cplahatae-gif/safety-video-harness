@@ -202,11 +202,13 @@ python3 scripts/init_project.py --name "추락 예방" --slug projects/fall-prev
 python3 scripts/register_sources.py --project projects/fall-prevention --source /path/to/source.pptx
 python3 scripts/render_pptx_sources.py --project projects/fall-prevention --dry-run --mode media_extract
 python3 scripts/extract_topics.py --project projects/fall-prevention
+python3 scripts/intake_project.py --project projects/fall-prevention --target-seconds 30 --image-density normal --text-delivery subtitles_overlay
 python3 scripts/select_topic.py --project projects/fall-prevention --topic-id topic-001
 python3 scripts/search_references.py --project projects/fall-prevention --dry-run
 python3 scripts/analyze_reference_assets.py --project projects/fall-prevention --dry-run
 python3 scripts/extract_style_dna.py --project projects/fall-prevention
 python3 scripts/plan_storyboard.py --project projects/fall-prevention --duration 30 --image-density normal
+python3 scripts/build_storyboard_dashboard.py --project projects/fall-prevention
 python3 scripts/plan_image_prompt_team.py --project projects/fall-prevention
 python3 scripts/validate_project.py projects/fall-prevention
 python3 scripts/approve_gate.py --project projects/fall-prevention --gate storyboard
@@ -215,6 +217,9 @@ python3 scripts/validate_images.py --project projects/fall-prevention --dry-run
 python3 scripts/validate_scene_links.py --project projects/fall-prevention
 python3 scripts/generate_seedance.py --project projects/fall-prevention --dry-run
 python3 scripts/estimate_video_cost.py --project projects/fall-prevention --estimated-credits 0
+python3 scripts/plan_subtitles.py --project projects/fall-prevention --dry-run
+python3 scripts/check_story_video_alignment.py --project projects/fall-prevention
+python3 scripts/assemble_video.py --project projects/fall-prevention --dry-run
 ```
 
 영상 길이와 이미지 분량은 운영 인테이크에서 먼저 결정한다.
@@ -232,7 +237,10 @@ CLI 값은 `--duration`과 `--image-density normal|high|very_high`로 반영한�
 `korean-industrial-webtoon`이며, 좋은 결과물이 나오면 `style-guides/<style-id>/STYLE_GUIDE.md`
 와 `style-guides/<style-id>/references/`에 추가한다.
 
-`intake_project.py --defaults`는 테스트와 샘플용이다. 운영 프로젝트에서는 `extract_topics.py` 이후 `select_topic.py --topic-id ...`로 명시 선택한다.
+`intake_project.py --defaults`는 테스트와 샘플용이다. 운영 프로젝트에서는 `intake_project.py`에
+`--target-seconds`, `--image-density`, `--style-guide-id`, `--text-delivery`,
+`--approval-scope`, `--reference-notes`를 명시하고, `extract_topics.py` 이후
+`select_topic.py --topic-id ...`로 주제를 명시 선택한다.
 
 ## 스타일 가이드 카탈로그
 
@@ -348,7 +356,8 @@ projects/<slug>/
 `ref/candidates`는 검색 후보 보관용이다. 실제 프롬프트에는 자동 반영하지 않으므로, 사용할 이미지는 `approve_reference.py`로 승인하거나 `ref/approved`로 옮긴 뒤 실행한다.
 
 ```bash
-python3 scripts/approve_reference.py --project projects/fall-prevention --candidate animation-style.png
+python3 scripts/approve_reference.py --project projects/fall-prevention --candidate animation-style.png --role style
+python3 scripts/approve_reference.py --project projects/fall-prevention --candidate work-scene.png --role work
 python3 scripts/analyze_reference_assets.py --project projects/fall-prevention --dry-run
 ```
 
@@ -371,7 +380,7 @@ fixtures/sources/remicon-collision-guide.pptx
 - 덤프트럭
 - 후진
 
-현재 MVP는 이 파일에서 PPTX 내부 이미지 미디어 12개를 추출하고, 해당 자료에 맞는 주제와 30초/6컷 스토리보드를 생성한다.
+현재 하네스는 이 파일에서 PPTX 내부 이미지 미디어와 슬라이드 텍스트를 추출하고, 해당 자료에 맞는 주제와 30초/6컷 스토리보드를 생성한다.
 
 ## 금지된 기본 동작
 
@@ -411,6 +420,10 @@ python3 scripts/record_image_output.py \
   --scene-id sc01 \
   --generated-file /path/to/generated-image.png
 
+python3 scripts/collect_image_outputs.py \
+  --project projects/fall-prevention \
+  --source-dir "$CODEX_HOME/generated_images/latest"
+
 python3 scripts/validate_images.py --project projects/fall-prevention --only sc01
 python3 scripts/approve_image.py --project projects/fall-prevention --scene-id sc01
 ```
@@ -428,6 +441,8 @@ python3 scripts/generate_images.py --project projects/fall-prevention --live --o
 ```bash
 python3 scripts/generate_seedance.py --project projects/fall-prevention --dry-run
 python3 scripts/validate_scene_links.py --project projects/fall-prevention
+python3 scripts/check_story_video_alignment.py --project projects/fall-prevention
+python3 scripts/plan_subtitles.py --project projects/fall-prevention --dry-run
 python3 scripts/approve_gate.py --project projects/fall-prevention --gate image_to_video --estimated-credits 35
 
 python3 scripts/generate_seedance.py \
@@ -462,6 +477,7 @@ python3 scripts/inspect_video.py \
   --no-transcript
 
 python3 scripts/validate_video.py --project projects/fall-prevention --expected-clips 1
+python3 scripts/assemble_video.py --project projects/fall-prevention --dry-run
 ```
 
 `validate_video.py`는 MP4 메타데이터나 수동 점수만으로 통과하지 않는다. 먼저

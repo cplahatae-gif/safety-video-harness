@@ -1,12 +1,17 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 
 def facts_for_sources(source_entries: list) -> list[dict]:
     facts: list[dict] = []
     for entry in source_entries:
         path = str(entry["path"])
         source_id = str(entry["source_id"])
-        if is_remicon_collision_source(path):
+        text_facts = facts_from_text_assets(entry)
+        if text_facts:
+            facts.extend(text_facts)
+        elif is_remicon_collision_source(path):
             facts.extend(remicon_collision_facts(source_id))
         else:
             facts.append(
@@ -18,6 +23,56 @@ def facts_for_sources(source_entries: list) -> list[dict]:
                 }
             )
     return facts
+
+
+def facts_from_text_assets(entry: dict) -> list[dict]:
+    facts: list[dict] = []
+    source_id = str(entry["source_id"])
+    for index, asset in enumerate(list(entry.get("extracted_text_assets", [])), start=1):
+        path = Path(str(asset))
+        if not path.exists():
+            continue
+        claim = _claim_from_slide_text(path.read_text(encoding="utf-8"))
+        if not claim:
+            continue
+        facts.append(
+            {
+                "source_id": source_id,
+                "page_or_slide": index,
+                "claim": claim,
+                "keywords": _keywords_from_claim(claim),
+            }
+        )
+    return facts
+
+
+def _claim_from_slide_text(text: str) -> str:
+    lines = [line.strip() for line in text.splitlines() if line.strip()]
+    if not lines:
+        return ""
+    selected = lines[:4]
+    claim = " / ".join(selected)
+    return claim[:240]
+
+
+def _keywords_from_claim(claim: str) -> list[str]:
+    candidates = [
+        "레미콘",
+        "충돌",
+        "접촉",
+        "후진",
+        "신호수",
+        "사각지대",
+        "추락",
+        "낙석",
+        "중장비",
+        "PPE",
+        "보행",
+        "위험",
+        "예방",
+    ]
+    found = [keyword for keyword in candidates if keyword.lower() in claim.lower()]
+    return found or ["안전", "교육자료", "예방"]
 
 
 def topics_from_facts(citations: list[dict]) -> list[dict]:

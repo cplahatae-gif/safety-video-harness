@@ -515,16 +515,16 @@
     <div class="flow">
       <div class="step"><b>01</b><h3>인터뷰</h3><p>자료, 주제, 길이, 이미지 밀도, 스타일, 레퍼런스, 승인 범위를 묻는다.</p></div>
       <div class="step"><b>02</b><h3>프로젝트 생성</h3><p><code>init_project</code>가 PLAN, AGENTS, HANDOFF, 기본 상태 파일을 만든다.</p></div>
-      <div class="step"><b>03</b><h3>자료 등록</h3><p>PPTX/SOP를 등록하고 렌더링 또는 media extract로 근거 자료를 만든다.</p></div>
+      <div class="step"><b>03</b><h3>자료 등록</h3><p>PPTX/SOP를 등록하고 media extract와 slide text extraction으로 근거 자료를 만든다.</p></div>
       <div class="step ai"><b>04</b><h3>주제 추출</h3><p><code>topic-extractor</code>가 교육 주제 후보와 source citation을 만든다.</p></div>
-      <div class="step ai"><b>05</b><h3>스토리보드</h3><p><code>story-writer</code>와 storyteller가 source 기반 장면 계약을 작성한다.</p></div>
+      <div class="step ai"><b>05</b><h3>스토리보드</h3><p><code>story-writer</code>와 storyteller가 source 기반 장면 계약을 작성하고 review dashboard를 만든다.</p></div>
       <div class="step qa"><b>06</b><h3>스토리 QA</h3><p>rubric, few-shot, role evaluator, Arbiter로 Gate 1 후보를 검토한다.</p></div>
       <div class="step gate"><b>G1</b><h3>사용자 승인</h3><p>스토리보드 승인 전 imagegen 또는 영상 단계로 넘어가지 않는다.</p></div>
       <div class="step ai"><b>07</b><h3>이미지 설계</h3><p>lead-style, scene-prompt, arbiter가 장면별 imagegen job spec을 만든다.</p></div>
-      <div class="step asset"><b>08</b><h3>키프레임</h3><p>Codex imagegen 결과를 <code>images/draft</code>에 저장하고 승인본은 <code>images/approved</code>로 이동한다.</p></div>
+      <div class="step asset"><b>08</b><h3>키프레임</h3><p>Codex imagegen 결과를 collect/record하여 <code>images/draft</code>에 저장하고 승인본은 <code>images/approved</code>로 이동한다.</p></div>
       <div class="step qa"><b>09</b><h3>이미지 RALPH</h3><p>early-stop max 20. 같은 blocker 3회 반복 시 upstream 수정으로 에스컬레이션한다.</p></div>
       <div class="step gate"><b>G2</b><h3>비용 승인</h3><p>Seedance live는 비용 고지, upload 허용, Gate 2 승인 뒤에만 가능하다.</p></div>
-      <div class="step qa"><b>10</b><h3>영상 QA</h3><p>ffprobe/ffmpeg sampled frames로 스토리보드, 이미지, 영상 3자 일치를 검토한다.</p></div>
+      <div class="step qa"><b>10</b><h3>영상 QA/조립</h3><p>sampled frames, story-video alignment, subtitles, final assembly plan으로 최종 산출물을 검토한다.</p></div>
     </div>
     <div class="retry">
       실패 루프: 스토리보드 QA 실패는 storyboard 수정, 이미지 QA 실패는 RALPH 재생성 또는 upstream escalation,
@@ -1142,16 +1142,16 @@
       <tbody>
         <tr><td>1</td><td>사용자 요청</td><td>인터뷰 + <code>handoff.md</code></td><td>자료, 주제, 길이, 밀도, 스타일, 레퍼런스, 승인 범위 확정</td></tr>
         <tr><td>2</td><td><code>init_project.py</code></td><td>project bootstrap</td><td><code>PLAN.md</code>, <code>AGENTS.md</code>, <code>HANDOFF.md</code>, config 생성</td></tr>
-        <tr><td>3</td><td><code>register_sources.py</code>, <code>render_pptx_sources.py</code></td><td>source pipeline</td><td>근거 이미지/파일과 source registry 생성</td></tr>
+        <tr><td>3</td><td><code>register_sources.py</code>, <code>render_pptx_sources.py</code></td><td>source pipeline</td><td>근거 이미지, slide text assets, source registry 생성</td></tr>
         <tr><td>4</td><td><code>extract_topics.py</code>, <code>select_topic.py</code></td><td>topic-extractor</td><td>사용자가 고른 주제와 citations</td></tr>
-        <tr><td>5</td><td><code>plan_storyboard.py</code></td><td>story-writer + storyteller</td><td><code>storyboard/scenes.json</code></td></tr>
+        <tr><td>5</td><td><code>plan_storyboard.py</code>, <code>build_storyboard_dashboard.py</code></td><td>story-writer + storyteller</td><td><code>storyboard/scenes.json</code>, Gate 1 review HTML</td></tr>
         <tr><td>6</td><td><code>evaluate_storyboard.py</code></td><td>QA contract + Arbiter</td><td><code>qa/storyboard_quality_reviews.json</code>, Gate 1 후보</td></tr>
         <tr><td>7</td><td><code>approve_gate.py --gate storyboard</code></td><td>Gate 1</td><td>이미지 프롬프트와 imagegen dry-run 허용</td></tr>
         <tr><td>8</td><td><code>plan_image_prompt_team.py</code>, <code>generate_images.py --dry-run</code></td><td>lead-style + scene-prompt + visual arbiter</td><td>imagegen job spec, 상세 image prompts</td></tr>
-        <tr><td>9</td><td>Codex imagegen 또는 fake file</td><td>imagegen + image QA</td><td><code>images/draft</code>, <code>images/approved</code>, RALPH decision</td></tr>
+        <tr><td>9</td><td>Codex imagegen + <code>collect_image_outputs.py</code></td><td>imagegen + image QA</td><td><code>images/draft</code>, <code>images/approved</code>, RALPH decision</td></tr>
         <tr><td>10</td><td><code>generate_seedance.py --dry-run</code>, 비용 산정</td><td>seedance-prompting</td><td>영상 prompt plan, 비용/clip 계획</td></tr>
         <tr><td>11</td><td>사용자 Gate 2 승인</td><td>live veto + cost guard</td><td>짧은 validation-run 또는 전체 생성 실행 가능</td></tr>
-        <tr><td>12</td><td><code>inspect_video.py</code>, <code>validate_video.py</code></td><td>video-inspect + video-qa</td><td>sampled frame evidence, triad alignment, 재생성 제안</td></tr>
+        <tr><td>12</td><td><code>inspect_video.py</code>, <code>validate_video.py</code>, <code>assemble_video.py</code></td><td>video-inspect + video-qa + assembly</td><td>sampled frame evidence, triad alignment, subtitles/final assembly plan</td></tr>
       </tbody>
     </table>
   </section>

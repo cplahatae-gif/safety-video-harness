@@ -7,7 +7,7 @@ from safety_video_harness.errors import HarnessError
 from safety_video_harness.io import ensure_dirs, read_json, sha256_file, write_json
 from safety_video_harness.project_handoff import write_project_handoff
 from safety_video_harness.source_facts import facts_for_sources, topics_from_facts
-from safety_video_harness.source_rendering import extract_rendered_assets
+from safety_video_harness.source_rendering import extract_pptx_text_assets, extract_rendered_assets
 from safety_video_harness.style_guides import default_style_guide_id, reference_intake_defaults, style_interview_defaults
 
 PROJECT_DIRS = [
@@ -89,10 +89,12 @@ def render_sources(project: Path, dry_run: bool, mode: str = "media_extract") ->
     rendered_dir.mkdir(parents=True, exist_ok=True)
     for index, entry in enumerate(entries, start=1):
         assets, rendering_mode, warning = extract_rendered_assets(rendered_dir, entry, index, mode)
+        text_assets, text_warning = extract_pptx_text_assets(rendered_dir, entry)
         entry["rendered_assets"] = [str(asset) for asset in assets]
+        entry["extracted_text_assets"] = [str(asset) for asset in text_assets]
         entry["page_count"] = len(assets)
         entry["rendering_mode"] = rendering_mode
-        entry["render_warning"] = warning
+        entry["render_warning"] = "; ".join(item for item in [warning, text_warning] if item)
     write_json(project / "sources" / "sources.json", {"sources": entries})
     run_mode = "dry-run" if dry_run else "rendered"
     return f"{run_mode} rendered {len(entries)} source(s)"
@@ -126,6 +128,44 @@ def apply_default_intake(project: Path) -> str:
     config["style_interview"] = style_interview_defaults(style_guide_id)
     write_json(project / "project_config.json", config)
     return "applied default intake"
+
+
+def apply_intake(
+    project: Path,
+    target_seconds: int | None = None,
+    image_density: str | None = None,
+    style_guide_id: str | None = None,
+    aspect_ratio: str | None = None,
+    resolution: str | None = None,
+    text_delivery: str | None = None,
+    approval_scope: str | None = None,
+    reference_notes: str | None = None,
+) -> str:
+    config = read_json(project / "project_config.json")
+    if target_seconds is not None:
+        config["target_seconds"] = target_seconds
+        config["target_duration_sec"] = target_seconds
+    if image_density is not None:
+        config["image_density"] = image_density
+    if style_guide_id is not None:
+        config["style_guide_id"] = style_guide_id
+    if aspect_ratio is not None:
+        config["aspect_ratio"] = aspect_ratio
+    if resolution is not None:
+        config["resolution"] = resolution
+    if text_delivery is not None:
+        config["text_delivery"] = text_delivery
+    if approval_scope is not None:
+        config["approval_scope"] = approval_scope
+    config["reference_intake"] = reference_intake_defaults()
+    if reference_notes is not None:
+        reference_intake = dict(config["reference_intake"])
+        reference_intake["operator_notes"] = reference_notes
+        config["reference_intake"] = reference_intake
+    style_id = str(config.get("style_guide_id", default_style_guide_id()))
+    config["style_interview"] = style_interview_defaults(style_id)
+    write_json(project / "project_config.json", config)
+    return "applied intake"
 
 
 def select_topic(project: Path, topic_id: str) -> str:

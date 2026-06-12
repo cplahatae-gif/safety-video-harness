@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import subprocess
 from pathlib import Path
+from zipfile import ZipFile
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -57,6 +58,30 @@ def test_rendering_mode_is_recorded_for_media_extract_fallback(tmp_path: Path) -
     assert sources[0]["rendering_mode"] == "media_extract"
     assert sources[0]["render_warning"] == ""
     assert len(sources[0]["rendered_assets"]) == 12
+    assert "extracted_text_assets" in sources[0]
+
+
+def test_pptx_slide_text_assets_are_extracted(tmp_path: Path) -> None:
+    project = tmp_path / "render-text"
+    source = tmp_path / "source-with-text.pptx"
+    with ZipFile(source, "w") as archive:
+        archive.writestr("ppt/media/image1.png", b"fake image")
+        archive.writestr(
+            "ppt/slides/slide1.xml",
+            '<p:sld xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" '
+            'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">'
+            "<p:cSld><p:spTree><p:sp><p:txBody><a:p><a:r><a:t>중장비 추락 예방</a:t></a:r></a:p>"
+            "<a:p><a:r><a:t>작업 전 정지선을 확인한다</a:t></a:r></a:p></p:txBody></p:sp></p:spTree></p:cSld></p:sld>",
+        )
+
+    assert run_cli("scripts/init_project.py", "--name", "텍스트 추출", "--slug", str(project)).returncode == 0
+    assert run_cli("scripts/register_sources.py", "--project", str(project), "--source", str(source)).returncode == 0
+    assert run_cli("scripts/render_pptx_sources.py", "--project", str(project), "--dry-run", "--mode", "media_extract").returncode == 0
+
+    sources = load_json(project / "sources" / "sources.json")["sources"]
+    text_assets = sources[0]["extracted_text_assets"]
+    assert len(text_assets) == 1
+    assert "중장비 추락 예방" in Path(text_assets[0]).read_text(encoding="utf-8")
 
 
 def test_reference_profile_manifest_and_approval_workflow(tmp_path: Path) -> None:
