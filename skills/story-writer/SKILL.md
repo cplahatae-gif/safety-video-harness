@@ -1,3 +1,8 @@
+---
+name: story-writer
+description: Create storyboard-first Korean safety training video scenarios from cited education material without narration or TTS, using subtitles and overlays for teaching points.
+---
+
 # story-writer
 
 Create safety-training storyboards from a selected topic and cited source facts.

@@ -1,3 +1,8 @@
+---
+name: seedance-prompting
+description: Write detailed Seedance/Higgsfield video prompts from approved storyboard and keyframes while preserving start-end continuity and paid/live gate constraints.
+---
+
 # seedance-prompting
 
 Write English image and motion prompts for keyframe and Seedance planning.

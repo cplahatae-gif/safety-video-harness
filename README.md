@@ -28,6 +28,39 @@
 
 이 문서들은 공식문서를 매번 열어 확인하지 않아도 작업을 진행할 수 있도록, 프로젝트에서 실제로 써야 하는 판단 기준을 로컬화한 것이다.
 
+## 다음번에 사용하는 방법
+
+이 저장소는 Codex 플러그인 매니페스트를 포함한다.
+
+```text
+.codex-plugin/plugin.json
+```
+
+다음 세션에서 가장 안정적인 사용 방식은 이 저장소 폴더를 작업 폴더로 열고 아래처럼 요청하는 것이다.
+
+```text
+AGENTS.md, CONTEXT.md, docs/evaluation-rubrics.md, docs/few-shot-examples.md를 읽고
+safety-video-harness 방식으로 새 안전교육 영상 프로젝트를 시작해줘.
+먼저 intake interview부터 진행하고, live imagegen/live Seedance/live TTS는 승인 전 금지야.
+```
+
+운영 시작 시 Codex는 바로 이미지를 만들지 않고 다음 순서로 진행해야 한다.
+
+```text
+1. intake interview
+2. 교육자료 등록
+3. 주제 후보 추출과 사용자 선택
+4. 스타일 가이드와 레퍼런스 분류
+5. 스토리보드 작성
+6. 스토리보드 QA와 Gate 1 승인
+7. 이미지 프롬프트/job spec 작성
+8. 승인 후 Codex imagegen 실행과 이미지 QA
+9. Gate 2 승인 후 Seedance dry-run 또는 짧은 validation-run
+```
+
+실제 live 작업은 별도 승인 문구가 필요하다. 특히 Seedance는 유료 호출이므로 영상 길이,
+최대 시도 횟수, 예상 크레딧, 외부 업로드 허용 여부가 함께 정해져야 한다.
+
 ## 현재 상태
 
 - [x] 독립형 한국어 PRD 작성

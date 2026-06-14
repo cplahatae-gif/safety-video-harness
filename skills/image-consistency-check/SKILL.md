@@ -1,3 +1,8 @@
+---
+name: image-consistency-check
+description: Review generated safety-video keyframes against storyboard, continuity, PPE, equipment, style, and source-grounded safety constraints before approval or regeneration.
+---
+
 # image-consistency-check
 
 Review generated keyframes against the storyboard and continuity constraints.

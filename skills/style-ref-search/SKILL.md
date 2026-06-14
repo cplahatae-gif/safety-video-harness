@@ -1,3 +1,8 @@
+---
+name: style-ref-search
+description: Collect, classify, and approve style/reference candidates for safety-video projects without allowing unapproved assets to affect prompt style DNA.
+---
+
 # style-ref-search
 
 Collect style reference candidates without automatically using downloaded assets.

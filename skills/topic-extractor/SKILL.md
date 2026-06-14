@@ -1,3 +1,8 @@
+---
+name: topic-extractor
+description: Extract multiple source-cited safety education topic candidates from rendered PPTX, SOP, or guide materials for user selection before storyboard planning.
+---
+
 # topic-extractor
 
 Use rendered education material to propose multiple safety-training topics.

@@ -1,3 +1,8 @@
+---
+name: video-inspect
+description: Inspect generated safety-video clips through ffprobe metadata and sampled frames, then prepare evidence for storyboard, gaze, continuity, and education-clarity QA.
+---
+
 # video-inspect
 
 Inspect videos by metadata and sampled frames.
