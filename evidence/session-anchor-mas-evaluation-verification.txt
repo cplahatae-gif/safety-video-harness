@@ -1,0 +1,33 @@
+# session anchor and MAS evaluation verification
+date: 2026-06-11T05:18:57Z
+
+## session-start-anchor
+Safety Video Harness Mission Anchor
+
+You are working on a plugin-style harness for Korean industrial safety training videos.
+
+Non-negotiables:
+- No live imagegen, live Seedance, live TTS, or paid calls unless explicitly approved.
+- No narration/TTS in active scope; use subtitles, overlays, or text cards.
+- Storyboard first. Image generation second. Video generation last.
+- QA uses parallel role evaluators, Arbiter consensus, critical veto, and evidence bundles.
+- Image RALPH is early-stopping max 20; the same blocker 3 times escalates upstream.
+- Video failures are propose-only; never auto-regenerate paid video.
+- Preserve evidence under qa/, evidence/, and llm-wiki/.
+
+
+## html parser
+html parser: ok
+
+## pytest
+........................................................                 [100%]
+56 passed in 12.08s
+
+## fixture storyboard QA
+storyboard QA passed 6 scene(s)
+
+## fixture image QA dry-run
+validated 6 image plan(s)
+
+## fixture Seedance prompt dry-run
+Seedance dry-run prepared 6 clip plan(s)

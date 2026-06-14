@@ -30,3 +30,15 @@ Owns visual continuity before and after video generation.
   - a viewer cannot infer the prevention action from the visuals plus subtitles/overlays
 
 Write findings to `qa/video_manual_review.json`.
+
+## References
+
+- Reference index: `docs/generative-media-reference-index.md`
+- OpenAI Image generation guide: https://developers.openai.com/api/docs/guides/image-generation
+- OpenAI Video generation guide: https://developers.openai.com/api/docs/guides/video-generation
+- Local image prompt team: `safety_video_harness/prompt_team.py`
+- Local scene-link validation: `safety_video_harness/scene_links.py`
+- Local video inspection: `safety_video_harness/video_inspection.py`
+- Local role reference: `references/visual-continuity-reference.md`
+- Evaluation rubric: `docs/evaluation-rubrics.md`
+- Few-shot examples: `docs/few-shot-examples.md`

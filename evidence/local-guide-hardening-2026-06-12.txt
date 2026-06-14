@@ -1,0 +1,74 @@
+Local guide hardening verification
+Date: 2026-06-12
+
+Purpose
+- Fill gaps that made agent/skill guidance insufficient for execution.
+- Reduce dependency on reopening official websites during normal harness work.
+- Make local guide usage enforceable by project rules and tests.
+
+Implemented
+- Added `docs/evaluation-rubrics.md`
+  - 0-5 scoring scale.
+  - Storyboard QA axes and critical blockers.
+  - Image QA axes and critical blockers.
+  - Video QA axes and critical blockers.
+  - RALPH early-stopping and repeated-blocker escalation policy.
+- Added `docs/few-shot-examples.md`
+  - Bad/good storyboard example.
+  - Bad/good scene prompt example.
+  - Bad/good image QA finding example.
+  - Bad/good video prompt example.
+  - Good video QA finding example.
+- Added `docs/higgsfield-seedance-local-reference.md`
+  - Higgsfield CLI install/auth and command-family notes.
+  - Seedance dry-run/live policy.
+  - Gate 2, external upload, cost disclosure, and paid-regeneration restrictions.
+  - Video job dry-run contract and post-generation QA requirements.
+- Updated `AGENTS.md`
+  - Requires reading local agent/skill docs and package-local references.
+  - Requires reading rubrics before scoring.
+  - Requires checking few-shot examples before writing outputs.
+  - Requires reading Higgsfield/Seedance local reference before video planning/dry-run.
+- Updated all 7 agent docs and 6 skill docs to link required local guides.
+- Updated README and onepagers to expose the new guide structure.
+- Added tests so link-only or guide-missing regressions fail.
+
+Verification
+
+Command:
+uv run pytest -q tests/test_plugin_structure.py
+
+Result:
+9 passed in 0.05s
+
+Command:
+python3 - <<'PY'
+from pathlib import Path
+required = [
+    'docs/evaluation-rubrics.md',
+    'docs/few-shot-examples.md',
+    'docs/higgsfield-seedance-local-reference.md',
+]
+for p in required:
+    path = Path(p)
+    text = path.read_text(encoding='utf-8')
+    print(f'{p}: words={len(text.split())}, bytes={path.stat().st_size}')
+for p in sorted(Path('agents').glob('*/AGENT.md')) + sorted(Path('skills').glob('*/SKILL.md')):
+    text = p.read_text(encoding='utf-8')
+    missing = [r for r in ['docs/evaluation-rubrics.md','docs/few-shot-examples.md','references/'] if r not in text]
+    if missing:
+        raise SystemExit(f'{p}: missing {missing}')
+print('guide linkage verification: PASS')
+PY
+
+Result:
+docs/evaluation-rubrics.md: words=795, bytes=5398
+docs/few-shot-examples.md: words=652, bytes=4651
+docs/higgsfield-seedance-local-reference.md: words=465, bytes=3391
+guide linkage verification: PASS
+
+Command:
+uv run pytest -q
+
+Result:
+76 passed in 15.45s

@@ -55,8 +55,8 @@ total: 35 credits
 
 Returned URLs:
 
-- `https://d8j0ntlcm91z4.cloudfront.net/user_35uBdfZYgGavGhb20prdIUZZwes/hf_20260610_161419_c56ad985-f7bf-4f78-8e74-4cb9f2e94796.mp4`
-- `https://d8j0ntlcm91z4.cloudfront.net/user_35uBdfZYgGavGhb20prdIUZZwes/hf_20260610_161825_8c0f33eb-f733-44e6-a646-8119d789868a.mp4`
+- `[redacted-url]`
+- `[redacted-url]`
 
 ## Video Metadata
 

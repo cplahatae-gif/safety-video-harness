@@ -15,8 +15,9 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--project", required=True)
     parser.add_argument("--candidate", required=True)
+    parser.add_argument("--role", default="root")
     args = parser.parse_args()
-    return run_boundary(lambda: approve_reference(Path(args.project), str(args.candidate)))
+    return run_boundary(lambda: approve_reference(Path(args.project), str(args.candidate), str(args.role)))
 
 
 if __name__ == "__main__":

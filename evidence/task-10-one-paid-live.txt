@@ -72,4 +72,4 @@ before_runs:       2
 
 
        3 projects/remicon-collision-guide/video/seedance_live_runs.jsonl
-{"scene_id": "sc01", "cost_stdout": "35 credits", "create_stdout": "https://d8j0ntlcm91z4.cloudfront.net/user_35uBdfZYgGavGhb20prdIUZZwes/hf_20260611_020811_a8960ff4-280b-4bff-88bc-1c622e0dd207.mp4"}
+{"scene_id": "sc01", "cost_stdout": "35 credits", "create_stdout": "[redacted-url]"}

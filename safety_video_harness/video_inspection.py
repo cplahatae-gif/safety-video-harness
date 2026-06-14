@@ -2,11 +2,11 @@ from __future__ import annotations
 
 import os
 import shutil
-import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 
 from safety_video_harness.errors import HarnessError
+from safety_video_harness.external_tools import run_tool
 from safety_video_harness.io import write_json
 
 
@@ -85,9 +85,13 @@ def _run_understand_video(skills_root: Path, clip: Path, output: Path) -> None:
     generated = clip.with_name(f"{clip.stem}-breakdown")
     if not generated.exists():
         raise HarnessError("understand-video did not create a breakdown folder")
+    staged = output.with_name(f"{output.name}.new")
+    if staged.exists():
+        shutil.rmtree(staged)
+    shutil.move(str(generated), str(staged))
     if output.exists():
         shutil.rmtree(output)
-    shutil.move(str(generated), str(output))
+    shutil.move(str(staged), str(output))
 
 
 def _write_manifest(project: Path, clip: Path, tool: str, output: Path) -> Path:
@@ -115,6 +119,4 @@ def _write_manifest(project: Path, clip: Path, tool: str, output: Path) -> Path:
 
 
 def _run(command: list[str], env: dict[str, str] | None = None) -> None:
-    result = subprocess.run(command, check=False, text=True, capture_output=True, env=env)
-    if result.returncode != 0:
-        raise HarnessError(result.stderr.strip() or result.stdout.strip() or "video inspection failed")
+    run_tool(command, 300, "video inspection failed", env=env, start_new_session=True)

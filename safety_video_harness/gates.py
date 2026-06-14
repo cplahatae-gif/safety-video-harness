@@ -7,6 +7,7 @@ from safety_video_harness.errors import HarnessError
 from safety_video_harness.gate_validation import validate_image_to_video_gate
 from safety_video_harness.io import read_json, write_json
 from safety_video_harness.locks import assert_unlocked
+from safety_video_harness.storyboard_qa import evaluate_storyboard
 from safety_video_harness.validation import validate_project
 
 
@@ -19,6 +20,7 @@ def approve_gate(project: Path, gate: str, estimated_credits: int | None) -> str
         raise HarnessError(f"unknown gate: {gate}")
     if gate == "storyboard":
         validate_project(project)
+        _require_storyboard_qa(project)
     if gate == "image_to_video":
         validate_image_to_video_gate(project, estimated_credits)
     record = gates[gate]
@@ -38,6 +40,13 @@ def approve_gate(project: Path, gate: str, estimated_credits: int | None) -> str
         }
     write_json(approvals_path, approvals)
     return f"approved gate {gate}"
+
+
+def _require_storyboard_qa(project: Path) -> None:
+    try:
+        evaluate_storyboard(project)
+    except HarnessError as error:
+        raise HarnessError(f"storyboard QA must pass before Gate 1 approval: {error}") from error
 
 
 def require_gate(project: Path, gate: str) -> None:

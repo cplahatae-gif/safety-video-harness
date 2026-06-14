@@ -5,6 +5,12 @@ from pathlib import Path
 from shutil import copyfile
 
 from safety_video_harness.errors import HarnessError
+from safety_video_harness.image_versions import (
+    latest_draft,
+    next_draft,
+    next_preserved_approved,
+    project_relative_output,
+)
 from safety_video_harness.io import read_json, write_json, write_jsonl
 
 
@@ -36,9 +42,11 @@ def record_image_output(project: Path, scene_id: str, generated_file: Path) -> s
     job = next((item for item in jobs if item.get("scene_id") == scene_id), None)
     if job is None:
         raise HarnessError(f"imagegen job not found for {scene_id}")
-    output = project / str(job["output"])
+    output = project_relative_output(project, str(job["output"]))
     if output.exists():
-        raise HarnessError(f"draft image already exists: {output}")
+        output = next_draft(project, scene_id, regenerate=True)
+        job["output"] = str(output.relative_to(project))
+        job["version"] = output.stem.removeprefix(f"{scene_id}_v")
     output.parent.mkdir(parents=True, exist_ok=True)
     copyfile(generated_file, output)
     job["status"] = "recorded"
@@ -52,12 +60,32 @@ def record_image_output(project: Path, scene_id: str, generated_file: Path) -> s
     return f"recorded image output {scene_id} -> {output.relative_to(project)}"
 
 
+def collect_image_outputs(project: Path, source_dir: Path) -> str:
+    if not source_dir.exists():
+        raise HarnessError(f"generated image directory does not exist: {source_dir}")
+    jobs_path = project / "prompts" / "imagegen_jobs.json"
+    if not jobs_path.exists():
+        raise HarnessError("imagegen_jobs.json is missing")
+    jobs_payload = read_json(jobs_path)
+    recorded: list[str] = []
+    for job in list(jobs_payload.get("jobs", [])):
+        scene_id = str(job.get("scene_id", ""))
+        candidate = _generated_candidate(source_dir, scene_id)
+        if candidate is None:
+            continue
+        record_image_output(project, scene_id, candidate)
+        recorded.append(scene_id)
+    if not recorded:
+        raise HarnessError(f"no generated image files matched pending jobs in {source_dir}")
+    return f"collected {len(recorded)} generated image output(s): {', '.join(recorded)}"
+
+
 def approve_image(project: Path, scene_id: str) -> str:
-    draft = _latest_draft(project, scene_id)
+    draft = latest_draft(project, scene_id)
     approved = project / "images" / "approved" / f"{scene_id}.png"
     approved.parent.mkdir(parents=True, exist_ok=True)
     if approved.exists():
-        preserved = _next_preserved_approved(project, scene_id)
+        preserved = next_preserved_approved(project, scene_id)
         approved.replace(preserved)
     copyfile(draft, approved)
     write_jsonl(
@@ -67,9 +95,25 @@ def approve_image(project: Path, scene_id: str) -> str:
     return f"approved image {scene_id}"
 
 
+def _generated_candidate(source_dir: Path, scene_id: str) -> Path | None:
+    suffixes = [".png", ".jpg", ".jpeg", ".webp"]
+    exact = [source_dir / f"{scene_id}{suffix}" for suffix in suffixes]
+    for path in exact:
+        if path.exists():
+            return path
+    matches = sorted(
+        path
+        for path in source_dir.iterdir()
+        if path.is_file() and path.suffix.lower() in suffixes and scene_id in path.stem
+    )
+    if not matches:
+        return None
+    return matches[0]
+
+
 def _job_for_plan(project: Path, plan: dict, regenerate: bool) -> dict:
     scene_id = str(plan["scene_id"])
-    output = _next_draft_path(project, scene_id, regenerate)
+    output = next_draft(project, scene_id, regenerate)
     return {
         "scene_id": scene_id,
         "tool": "codex_builtin_imagegen",
@@ -81,26 +125,3 @@ def _job_for_plan(project: Path, plan: dict, regenerate: bool) -> dict:
         "version": output.stem.removeprefix(f"{scene_id}_v"),
         "preserve_project_output": True,
     }
-
-
-def _next_draft_path(project: Path, scene_id: str, regenerate: bool) -> Path:
-    draft_dir = project / "images" / "draft"
-    draft_dir.mkdir(parents=True, exist_ok=True)
-    existing = sorted(draft_dir.glob(f"{scene_id}_v*.png"))
-    if existing and not regenerate:
-        raise HarnessError(f"draft image already exists for {scene_id}; use --regenerate")
-    version = len(existing) + 1
-    return draft_dir / f"{scene_id}_v{version:03d}.png"
-
-
-def _latest_draft(project: Path, scene_id: str) -> Path:
-    drafts = sorted((project / "images" / "draft").glob(f"{scene_id}_v*.png"))
-    if not drafts:
-        raise HarnessError(f"draft image missing for {scene_id}")
-    return drafts[-1]
-
-
-def _next_preserved_approved(project: Path, scene_id: str) -> Path:
-    approved_dir = project / "images" / "approved"
-    existing = sorted(approved_dir.glob(f"{scene_id}_v*.png"))
-    return approved_dir / f"{scene_id}_v{len(existing) + 1:03d}.png"

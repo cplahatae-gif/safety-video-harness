@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "default_style_guide_id": "korean-industrial-webtoon",
+  "reference_question_ko": "레퍼런스 이미지가 있으십니까?",
+  "style_question_ko": "어떤 스타일을 원하십니까?",
+  "options": [
+    {
+      "style_guide_id": "korean-industrial-webtoon",
+      "label_ko": "한국 웹툰풍 안전교육",
+      "description_ko": "네이버 웹툰에서 볼 법한 현대 한국 웹툰풍. 선명한 선화, 셀 셰이딩, 안전 색상 강조.",
+      "recommended_for_ko": "교육 몰입감과 장면 이해도를 동시에 높이고 싶을 때"
+    },
+    {
+      "style_guide_id": "clean-instructional-3d",
+      "label_ko": "깔끔한 3D 교육 렌더",
+      "description_ko": "현장 구조와 장비를 입체적으로 보여주는 밝고 정돈된 3D 교육 이미지.",
+      "recommended_for_ko": "장비 배치, 동선, 사각지대 같은 공간 관계를 설명할 때"
+    },
+    {
+      "style_guide_id": "flat-vector-safety",
+      "label_ko": "플랫 벡터 안전교육",
+      "description_ko": "단순한 도형, 높은 대비, 명확한 위험구역 표현을 쓰는 벡터 스타일.",
+      "recommended_for_ko": "짧은 카드뉴스형 교육, 표준 절차 요약, 사내 배포용"
+    },
+    {
+      "style_guide_id": "semi-realistic-industrial",
+      "label_ko": "준실사 산업현장",
+      "description_ko": "실제 현장감은 유지하되 과도한 사진풍 노이즈를 줄인 산업 교육 스타일.",
+      "recommended_for_ko": "작업자들이 실제 현장과 유사하게 받아들여야 하는 교육"
+    },
+    {
+      "style_guide_id": "minimal-pictogram-training",
+      "label_ko": "미니멀 픽토그램",
+      "description_ko": "인물과 장비를 상징화하고 핵심 행동만 남기는 표지판/매뉴얼형 스타일.",
+      "recommended_for_ko": "언어 의존도를 낮추고 핵심 금지/허용 행동만 전달할 때"
+    }
+  ]
+}

@@ -62,7 +62,7 @@ def test_validate_images_writes_scored_loop_summary(tmp_path: Path) -> None:
     assert run_cli("scripts/generate_images.py", "--project", str(project), "--dry-run").returncode == 0
     draft_dir = project / "images" / "draft"
     draft_dir.mkdir(parents=True, exist_ok=True)
-    for index in range(1, 7):
+    for index in range(1, 8):
         write_test_png(draft_dir / f"sc{index:02d}_v001.png")
 
     result = run_cli("scripts/validate_images.py", "--project", str(project))

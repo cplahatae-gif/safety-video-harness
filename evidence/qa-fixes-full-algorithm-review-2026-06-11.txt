@@ -1,0 +1,42 @@
+Safety video harness QA fix verification - 2026-06-11
+
+Scope:
+- Gate 1 must not approve a storyboard that fails storyboard QA.
+- Gate 2 must not approve video generation with partial image QA coverage.
+- OMO image RALPH plan must use executable harness commands.
+- Live veto hook must allow approved live commands and deny unapproved live commands.
+- Seedance live run logs must redact public output URLs.
+- Reference manifest must include md-only approved references used by prompts.
+
+Regression tests:
+$ uv run pytest -q tests/test_storyboard_quality.py::test_storyboard_gate_requires_passing_storyboard_qa tests/test_roadmap_bundle1.py::test_gate2_rejects_partial_image_qa_coverage tests/test_omo_ralph_orchestrator.py::test_omo_ralph_plan_uses_omo_as_runner_and_harness_as_judge tests/test_plugin_structure.py::test_live_veto_hook_allows_approved_project_live_command tests/test_seedance_live_guardrails.py::test_seedance_live_run_log_redacts_public_output_url
+5 passed in 1.12s
+
+Full test suite:
+$ uv run pytest -q
+66 passed in 13.51s
+
+Real fixture dry-run:
+$ uv run python scripts/evaluate_storyboard.py --project projects/remicon-collision-guide
+storyboard QA passed 6 scene(s)
+
+$ uv run python scripts/analyze_reference_assets.py --project projects/remicon-collision-guide --dry-run
+profiled 5 reference asset(s)
+
+$ uv run python scripts/generate_images.py --project projects/remicon-collision-guide --dry-run
+image dry-run prepared 6 prompt(s)
+
+$ uv run python scripts/generate_seedance.py --project projects/remicon-collision-guide --dry-run
+Seedance dry-run prepared 6 clip plan(s)
+
+$ uv run python scripts/validate_images.py --project projects/remicon-collision-guide --dry-run
+validated 6 image plan(s)
+
+$ uv run python scripts/validate_scene_links.py --project projects/remicon-collision-guide
+validated 6 scene link(s)
+
+$ uv run python scripts/plan_omo_image_ralph.py --project projects/remicon-collision-guide
+planned OMO image RALPH orchestration for 0 scene(s)
+
+$ uv run python scripts/approve_gate.py --project projects/remicon-collision-guide --gate image_to_video --estimated-credits 12
+approved gate image_to_video

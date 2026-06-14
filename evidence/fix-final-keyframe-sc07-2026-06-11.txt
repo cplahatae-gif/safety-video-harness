@@ -1,0 +1,35 @@
+Final keyframe sc07 fix verification - 2026-06-11
+
+Bug:
+- A 30 second storyboard created 6 clips and 7 keyframes.
+- Image generation jobs produced sc01-sc06 only.
+- Gate 2 then blocked because images/approved/sc07.png was missing.
+
+Fix:
+- generate_images now appends a final end-keyframe plan when storyboard keyframe_count is greater than scene count.
+- The generated final keyframe uses scene_id sc07 and output images/draft/sc07_v001.png for a 6-clip storyboard.
+- The prompt explicitly marks the image as the final end keyframe for the sliding chain.
+- validate_images now includes the final end keyframe in image QA.
+- Gate 2 image QA coverage now uses keyframe_count, so sc07 must be reviewed, not merely present as a file.
+
+Regression:
+$ uv run pytest -q tests/test_roadmap_bundle2.py::test_imagegen_jobs_include_final_end_keyframe_when_generating_all tests/test_roadmap_bundle2.py::test_imagegen_jobs_and_only_filter_are_written_after_approval tests/test_roadmap_bundle2.py::test_fake_generated_file_is_recorded_without_overwrite_and_regenerate_versions
+3 passed in 1.04s
+
+Full suite:
+$ uv run pytest -q
+67 passed in 13.36s
+
+Real PPT verification:
+- Project: projects/real-ppt-dashboard-smoke-fixed2
+- Source: fixtures/sources/remicon-collision-guide.pptx
+- Topic: topic-002, 신호수 배치와 후방카메라 확인 절차
+- Storyboard: 6 story beats, keyframe_count=7
+- generate_images --live: imagegen job(s) prepared 7; expected imagegen call(s): 7
+- Last imagegen job: sc07 -> images/draft/sc07_v001.png
+- Recorded and approved sc01-sc07.
+- validate_images: validated 7 image plan(s)
+- image_reviews: review_count=7, last_review=sc07 approve_for_video
+- generate_seedance --dry-run: Seedance dry-run prepared 6 clip plan(s)
+- approve_gate image_to_video --estimated-credits 12: approved gate image_to_video
+- Dashboard: projects/real-ppt-dashboard-smoke-fixed2/dashboard.html

@@ -6,6 +6,9 @@
     "project_type": {"type": "string"},
     "project_name": {"type": "string"},
     "slug": {"type": "string"},
-    "target_seconds": {"type": "integer"}
+    "target_seconds": {"type": "integer"},
+    "style_guide_id": {"type": "string"},
+    "reference_intake": {"type": "object"},
+    "style_interview": {"type": "object"}
   }
 }

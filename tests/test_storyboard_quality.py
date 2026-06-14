@@ -37,13 +37,21 @@ def test_storyboard_quality_passes_complete_fixture(tmp_path: Path) -> None:
     assert result.returncode == 0
     report = json.loads((project / "qa" / "storyboard_quality_reviews.json").read_text(encoding="utf-8"))
     assert report["passed"] is True
+    assert report["rubric_source"] == "docs/evaluation-rubrics.md"
+    assert report["few_shot_source"] == "docs/few-shot-examples.md"
     assert report["thresholds"]["minimum_total_score"] == 20
     assert report["reviews"][0]["criteria"]["source_grounding_score"] >= 4
+    assert report["reviews"][0]["rubric_source"] == "docs/evaluation-rubrics.md"
+    assert report["reviews"][0]["artifact_path"] == "storyboard/scenes.json#sc01"
+    assert report["reviews"][0]["blocker_categories"] == []
+    assert report["reviews"][0]["critical_blockers"] == []
     rounds = (project / "qa" / "evaluation_rounds.jsonl").read_text(encoding="utf-8")
     assert '"stage": "storyboard"' in rounds
     assert '"item_id": "sc01"' in rounds
     bundle = project / "qa" / "evaluation_bundles" / "storyboard" / "sc01" / "round_001.json"
     assert bundle.exists()
+    assert (project / "qa" / "role_evaluations" / "storyboard" / "sc01" / "round_001" / "source_grounding.json").exists()
+    assert (project / "qa" / "arbiter_decisions" / "storyboard" / "sc01" / "round_001.json").exists()
     wiki = (project / "llm-wiki" / "evaluation-rounds.md").read_text(encoding="utf-8")
     assert "## storyboard / sc01 / round 1" in wiki
 
@@ -62,4 +70,22 @@ def test_storyboard_quality_blocks_missing_citations(tmp_path: Path) -> None:
     assert "storyboard QA blockers" in result.stderr
     report = json.loads((project / "qa" / "storyboard_quality_reviews.json").read_text(encoding="utf-8"))
     assert report["passed"] is False
-    assert "missing source citation" in json.dumps(report, ensure_ascii=False)
+    assert report["reviews"][0]["blocker_categories"][0]["category"] == "source_grounding"
+    assert "missing source citation" in report["reviews"][0]["critical_blockers"][0]
+
+
+def test_storyboard_gate_requires_passing_storyboard_qa(tmp_path: Path) -> None:
+    project = tmp_path / "storyboard-gate-qa"
+    prepare_project(project)
+    path = project / "storyboard" / "scenes.json"
+    scenes = json.loads(path.read_text(encoding="utf-8"))
+    scenes["scenes"][0]["visual_action_ko"] = ""
+    path.write_text(json.dumps(scenes, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    qa = run_cli("scripts/evaluate_storyboard.py", "--project", str(project))
+    approved = run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard")
+
+    assert qa.returncode != 0
+    assert approved.returncode != 0
+    assert "storyboard QA" in approved.stderr
+    assert "weak causal prevention beat" in approved.stderr

@@ -28,6 +28,12 @@ def test_mvp_happy_path_dry_run_when_project_created(tmp_path: Path) -> None:
     source.write_bytes(b"fake pptx")
 
     assert run_cli("scripts/init_project.py", "--name", "추락 예방", "--slug", str(project)).returncode == 0
+    handoff = project / "HANDOFF.md"
+    assert handoff.exists()
+    handoff_text = handoff.read_text(encoding="utf-8")
+    assert "AGENTS.md" in handoff_text
+    assert "docs/evaluation-rubrics.md" in handoff_text
+    assert "live Seedance" in handoff_text
     assert run_cli("scripts/validate_plan.py", str(project / "PLAN.md")).returncode == 0
     assert run_cli("scripts/register_sources.py", "--project", str(project), "--source", str(source)).returncode == 0
     assert run_cli("scripts/render_pptx_sources.py", "--project", str(project), "--dry-run").returncode == 0

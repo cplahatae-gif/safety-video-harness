@@ -4,6 +4,8 @@ import json
 import subprocess
 from pathlib import Path
 
+from PIL import Image
+
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURE = ROOT / "fixtures" / "sources" / "remicon-collision-guide.pptx"
@@ -43,6 +45,14 @@ def test_image_qa_writes_ralph_loop_regeneration_prompts(tmp_path: Path) -> None
     assert loop["ralph_loop"]["blocked_scenes"][0]["scene_id"] == "sc01"
     assert "missing draft image" in loop["ralph_loop"]["blocked_scenes"][0]["deficiencies"]
     assert "Regenerate sc01" in loop["ralph_loop"]["blocked_scenes"][0]["regeneration_prompt"]
+    review = loop["reviews"][0]
+    assert review["rubric_source"] == "docs/evaluation-rubrics.md"
+    assert review["few_shot_source"] == "docs/few-shot-examples.md"
+    assert review["artifact_path"] == "images/draft/sc01_v*.png"
+    assert review["critical_blockers"] == ["missing draft image"]
+    assert review["blocker_categories"][0]["category"] == "missing_artifact"
+    assert "Regenerate sc01" in review["regeneration_delta"]
+    assert review["previous_blockers_applied"] is False
 
 
 def test_image_qa_records_round_bundle_and_wiki_summary(tmp_path: Path) -> None:
@@ -94,3 +104,22 @@ def test_image_qa_stops_ralph_after_max_iterations(tmp_path: Path) -> None:
     assert loop["ralph_loop"]["current_iterations"]["sc01"] == 20
     assert loop["ralph_loop"]["remaining_iterations"]["sc01"] == 0
     assert loop["next_action"] == "stop_and_escalate"
+
+
+def test_validate_images_does_not_increment_iterations_for_passing_scenes(tmp_path: Path) -> None:
+    project = tmp_path / "image-ralph-passing"
+    prepare_project(project)
+    draft = project / "images" / "draft" / "sc01_v001.png"
+    draft.parent.mkdir(parents=True, exist_ok=True)
+    Image.new("RGB", (1600, 900), color=(120, 140, 160)).save(draft)
+
+    first = run_cli("scripts/validate_images.py", "--project", str(project), "--only", "sc01")
+    second = run_cli("scripts/validate_images.py", "--project", str(project), "--only", "sc01")
+
+    assert first.returncode == 0
+    assert second.returncode == 0
+    rounds_path = project / "qa" / "evaluation_rounds.jsonl"
+    rounds = rounds_path.read_text(encoding="utf-8") if rounds_path.exists() else ""
+    assert '"item_id": "sc01"' not in rounds
+    loop = json.loads((project / "qa" / "image_qa_loop.json").read_text(encoding="utf-8"))
+    assert loop["ralph_loop"]["status"] == "passed"

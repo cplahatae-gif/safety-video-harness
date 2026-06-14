@@ -1,0 +1,26 @@
+Agent and skill reference map verification
+
+Commands:
+- Checked every agents/*.md and skills/*/SKILL.md for a References section.
+- uv run pytest -q tests/test_plugin_structure.py tests/test_style_guides.py
+- uv run pytest -q
+- open docs/agent-skill-reference-onepager.html
+
+Results:
+- all 7 local agent documents include References.
+- all 6 local skill documents include References.
+- targeted tests: 8 passed.
+- full test suite: 71 passed.
+- HTML onepager opened successfully.
+
+Official/reference documents linked:
+- OpenAI Image generation guide: https://developers.openai.com/api/docs/guides/image-generation
+- OpenAI Prompt engineering guide: https://developers.openai.com/api/docs/guides/prompt-engineering
+- OpenAI Images and vision guide: https://developers.openai.com/api/docs/guides/images-vision
+- OpenAI Video generation guide: https://developers.openai.com/api/docs/guides/video-generation
+- Higgsfield CLI/MCP page: https://higgsfield.ai/cli
+- Model Context Protocol docs: https://modelcontextprotocol.io/docs/getting-started/intro
+- MCP tools/resources/prompts specifications
+- FFmpeg documentation: https://ffmpeg.org/documentation.html
+- ffprobe documentation: https://ffmpeg.org/ffprobe.html
+- JSON Schema docs/specification

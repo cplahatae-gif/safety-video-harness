@@ -20,9 +20,12 @@ def assert_unlocked(path: Path) -> None:
 @contextmanager
 def file_lock(path: Path) -> Iterator[None]:
     marker = lock_path(path)
-    if marker.exists():
-        raise HarnessError(f"single-writer lock is held: {marker}")
-    marker.write_text("held by current process\n", encoding="utf-8")
+    marker.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        with marker.open("x", encoding="utf-8") as handle:
+            handle.write("held by current process\n")
+    except FileExistsError as exc:
+        raise HarnessError(f"single-writer lock is held: {marker}") from exc
     try:
         yield
     finally:

@@ -74,6 +74,61 @@ def test_imagegen_jobs_and_only_filter_are_written_after_approval(tmp_path: Path
     assert "OpenAI" not in json.dumps(jobs, ensure_ascii=False)
 
 
+def test_imagegen_jobs_include_final_end_keyframe_when_generating_all(tmp_path: Path) -> None:
+    project = tmp_path / "imagegen-final-keyframe"
+    prepare_storyboard_project(project)
+    assert run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard").returncode == 0
+    allow_upload(project)
+
+    result = run_cli("scripts/generate_images.py", "--project", str(project), "--live")
+
+    assert result.returncode == 0
+    scenes = load_json(project / "storyboard" / "scenes.json")
+    jobs = load_json(project / "prompts" / "imagegen_jobs.json")
+    scene_ids = [job["scene_id"] for job in jobs["jobs"]]
+    assert len(jobs["jobs"]) == scenes["keyframe_count"]
+    assert scene_ids[-1] == "sc07"
+    assert jobs["jobs"][-1]["output"] == "images/draft/sc07_v001.png"
+    assert "final end keyframe" in jobs["jobs"][-1]["prompt"]
+
+
+def test_storyboard_dashboard_is_written_for_gate_review(tmp_path: Path) -> None:
+    project = tmp_path / "storyboard-dashboard"
+    prepare_storyboard_project(project)
+
+    result = run_cli("scripts/build_storyboard_dashboard.py", "--project", str(project))
+
+    assert result.returncode == 0
+    dashboard = project / "dashboard" / "storyboard-review.html"
+    assert dashboard.exists()
+    html = dashboard.read_text(encoding="utf-8")
+    assert "Storyboard Review" in html
+    assert "sc01" in html
+    assert "레미콘" in html
+
+
+def test_collect_image_outputs_records_matching_generated_files(tmp_path: Path) -> None:
+    project = tmp_path / "collect-imagegen"
+    prepare_storyboard_project(project)
+    assert run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard").returncode == 0
+    allow_upload(project)
+    assert run_cli("scripts/generate_images.py", "--project", str(project), "--live", "--only", "sc01").returncode == 0
+    generated_dir = tmp_path / "generated"
+    generated_dir.mkdir()
+    (generated_dir / "sc01.png").write_bytes(b"fake generated image")
+
+    result = run_cli(
+        "scripts/collect_image_outputs.py",
+        "--project",
+        str(project),
+        "--source-dir",
+        str(generated_dir),
+    )
+
+    assert result.returncode == 0
+    assert (project / "images" / "draft" / "sc01_v001.png").read_bytes() == b"fake generated image"
+
+
 def test_fake_generated_file_is_recorded_without_overwrite_and_regenerate_versions(tmp_path: Path) -> None:
     project = tmp_path / "record-output"
     prepare_storyboard_project(project)

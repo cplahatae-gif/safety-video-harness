@@ -21,3 +21,15 @@ characters while showing a clear cause-and-effect progression:
 
 When reviewing images, mark a blocker if a frame is visually polished but does not
 connect to the previous and next storyboard beat.
+
+## References
+
+- Reference index: `docs/generative-media-reference-index.md`
+- OpenAI Image generation guide: https://developers.openai.com/api/docs/guides/image-generation
+- Local style guide catalog: `style-guides/README.md`
+- Current industrial webtoon style: `style-guides/korean-industrial-webtoon/STYLE_GUIDE.md`
+- Local image QA: `safety_video_harness/image_qa.py`
+- Local visual continuity agent: `agents/visual-continuity-director/AGENT.md`
+- Local skill reference: `references/image-consistency-reference.md`
+- Evaluation rubric: `docs/evaluation-rubrics.md`
+- Few-shot QA examples: `docs/few-shot-examples.md`

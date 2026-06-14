@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from safety_video_harness.evaluation_arbiter import aggregate_arbiter_decision
 from safety_video_harness.evaluation_rounds import (
     completed_iterations,
     record_evaluation_round,
@@ -9,6 +10,8 @@ from safety_video_harness.evaluation_rounds import (
 )
 from safety_video_harness.errors import HarnessError
 from safety_video_harness.io import read_json, write_json
+from safety_video_harness.qa_contract import blocker_categories, critical_blockers, guide_sources
+from safety_video_harness.stage_role_reviews import storyboard_role_reviews
 
 
 MINIMUM_FIELD_SCORE = 4
@@ -23,6 +26,7 @@ def evaluate_storyboard(project: Path) -> str:
     blockers = [issue for review in reviews for issue in review["blocking_issues"]]
     total_scores = [int(review["total_score"]) for review in reviews]
     report = {
+        **guide_sources(),
         "passed": not blockers and all(score >= MINIMUM_TOTAL_SCORE for score in total_scores),
         "thresholds": {
             "minimum_field_score": MINIMUM_FIELD_SCORE,
@@ -60,9 +64,13 @@ def _review_scene(scene: dict) -> dict:
     blockers = _blockers(scene, criteria)
     return {
         "scene_id": scene_id,
+        **guide_sources(),
+        "artifact_path": f"storyboard/scenes.json#{scene_id}",
         "criteria": criteria,
         "total_score": sum(criteria.values()),
         "blocking_issues": blockers,
+        "blocker_categories": blocker_categories(blockers),
+        "critical_blockers": critical_blockers(blockers),
         "decision": "approve_storyboard" if not blockers else "revise_storyboard",
         "revision_prompt": _revision_prompt(scene_id, blockers),
     }
@@ -111,6 +119,14 @@ def _record_storyboard_evaluation_rounds(
     for review in reviews:
         scene_id = str(review["scene_id"])
         iteration = completed_iterations(project, "storyboard", scene_id) + 1
+        role_reviews = storyboard_role_reviews(review, MINIMUM_FIELD_SCORE)
+        review["arbiter_decision"] = aggregate_arbiter_decision(
+            project,
+            "storyboard",
+            scene_id,
+            iteration,
+            role_reviews,
+        )
         bundle = {
             "stage": "storyboard",
             "iteration": iteration,

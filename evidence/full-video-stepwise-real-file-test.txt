@@ -1,0 +1,165 @@
+Full pipeline real-file video test
+timestamp: 2026-06-11T15:04:32+09:00
+project: projects/remicon-collision-guide
+policy: actual files, shortest paid video only if gate/CLI allow it
+
+..........................................................               [100%]
+58 passed in 13.20s
+
+===== check_tools =====
+$ uv run python scripts/check_tools.py
+python3: found
+ffmpeg: found
+ffprobe: found
+node: found
+npm: found
+tesseract: found
+higgsfield: found
+ocr_lang_kor: found
+ocr_lang_eng: found
+scenelens: found
+video-frame-analysis: found
+understand-video: found
+seedance-expert: found
+exit_code=0
+
+===== validate_project =====
+$ uv run python scripts/validate_project.py projects/remicon-collision-guide
+project valid
+exit_code=0
+
+===== render_pptx_sources_dry_run =====
+$ uv run python scripts/render_pptx_sources.py --project projects/remicon-collision-guide --dry-run --mode media_extract
+dry-run rendered 1 source(s)
+exit_code=0
+
+===== evaluate_storyboard =====
+$ uv run python scripts/evaluate_storyboard.py --project projects/remicon-collision-guide
+storyboard QA passed 6 scene(s)
+exit_code=0
+
+===== generate_images_dry_run =====
+$ uv run python scripts/generate_images.py --project projects/remicon-collision-guide --dry-run
+image dry-run prepared 6 prompt(s)
+exit_code=0
+
+===== validate_images_actual =====
+$ uv run python scripts/validate_images.py --project projects/remicon-collision-guide
+validated 6 image plan(s)
+exit_code=0
+
+===== plan_omo_image_ralph =====
+$ uv run python scripts/plan_omo_image_ralph.py --project projects/remicon-collision-guide
+planned OMO image RALPH orchestration for 0 scene(s)
+exit_code=0
+
+===== validate_scene_links =====
+$ uv run python scripts/validate_scene_links.py --project projects/remicon-collision-guide
+validated 6 scene link(s)
+exit_code=0
+
+===== generate_seedance_dry_run =====
+$ uv run python scripts/generate_seedance.py --project projects/remicon-collision-guide --dry-run
+Seedance dry-run prepared 6 clip plan(s)
+exit_code=0
+
+===== estimate_video_cost =====
+$ uv run python scripts/estimate_video_cost.py --project projects/remicon-collision-guide --estimated-credits 35
+estimated video cost 35 credit(s)
+exit_code=0
+
+===== seedance_live_plan_only_short =====
+$ uv run python scripts/generate_seedance.py --project projects/remicon-collision-guide --live --execute-paid --test-seconds 5 --max-attempts 1 --validation-run --plan-only
+Seedance live plan prepared 1 job(s)
+exit_code=0
+
+===== inspect_existing_10s_video =====
+$ uv run python scripts/inspect_video.py --project projects/remicon-collision-guide --clip projects/remicon-collision-guide/video/clips/sc01_sc02_seedance_validation_10s.mp4 --tool video-frame-analysis --no-transcript
+manifest written: projects/remicon-collision-guide/video/inspection/sc01_sc02_seedance_validation_10s/manifest.json
+exit_code=0
+
+===== validate_existing_10s_video =====
+$ uv run python scripts/validate_video.py --project projects/remicon-collision-guide --expected-clips 1 --clip sc01_sc02_seedance_validation_10s.mp4
+validated 1 video clip(s)
+exit_code=0
+
+===== higgsfield_account =====
+$ higgsfield account --no-color
+View the signed-in account's balance, subscription plan, and recent credit transactions.
+
+Usage:
+  higgsfield account [command]
+
+Aliases:
+  account, acc
+
+Examples:
+  higgsfield account status
+  higgsfield account transactions --size 50
+
+Available Commands:
+  status       Show account email, plan, and available credits
+  transactions List recent credit transactions
+
+Flags:
+  -h, --help   help for account
+
+Global Flags:
+      --json       print raw JSON responses
+      --no-color   disable color output
+
+Use "higgsfield account [command] --help" for more information about a command.
+exit_code=0
+
+===== seedance_live_generate_short_5s =====
+$ uv run python scripts/generate_seedance.py --project projects/remicon-collision-guide --live --execute-paid --test-seconds 5 --max-attempts 1 --validation-run
+created 1 Seedance live job(s)
+exit_code=0
+
+===== download_live_5s_clip =====
+$ curl -L [redacted-url] -o projects/remicon-collision-guide/video/clips/sc01_sc02_seedance_validation_5s_live.mp4
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  1 2029k    1 33322    0     0  32438      0  0:01:04  0:00:01  0:01:03 32445 38 2029k   38  782k    0     0   391k      0  0:00:05  0:00:01  0:00:04  391k100 2029k  100 2029k    0     0   901k      0  0:00:02  0:00:02 --:--:--  901k
+exit_code=0
+
+===== ffprobe_live_5s_clip =====
+$ ffprobe -v error -show_entries format=duration -show_entries stream=width,height,codec_name -of json projects/remicon-collision-guide/video/clips/sc01_sc02_seedance_validation_5s_live.mp4
+{
+    "programs": [
+
+    ],
+    "stream_groups": [
+
+    ],
+    "streams": [
+        {
+            "codec_name": "h264",
+            "width": 1280,
+            "height": 720
+        },
+        {
+            "codec_name": "aac"
+        }
+    ],
+    "format": {
+        "duration": "5.061950"
+    }
+}
+exit_code=0
+
+===== inspect_live_5s_clip =====
+$ uv run python scripts/inspect_video.py --project projects/remicon-collision-guide --clip projects/remicon-collision-guide/video/clips/sc01_sc02_seedance_validation_5s_live.mp4 --tool video-frame-analysis --no-transcript
+manifest written: projects/remicon-collision-guide/video/inspection/sc01_sc02_seedance_validation_5s_live/manifest.json
+exit_code=0
+
+===== validate_live_5s_video =====
+$ uv run python scripts/validate_video.py --project projects/remicon-collision-guide --expected-clips 1 --clip sc01_sc02_seedance_validation_5s_live.mp4
+validated 1 video clip(s)
+exit_code=0
+
+===== pytest_after_live_video =====
+$ uv run pytest -q
+..........................................................               [100%]
+58 passed in 11.48s
+exit_code=0

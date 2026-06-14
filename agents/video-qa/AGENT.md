@@ -26,3 +26,17 @@ python3 scripts/validate_video.py --project <project> --expected-clips <n>
 ```
 
 The video cannot move to final assembly until this validation passes.
+
+## References
+
+- Reference index: `docs/generative-media-reference-index.md`
+- FFmpeg documentation: https://ffmpeg.org/documentation.html
+- ffprobe documentation: https://ffmpeg.org/ffprobe.html
+- OpenAI Video generation guide: https://developers.openai.com/api/docs/guides/video-generation
+- Higgsfield CLI/MCP page: https://higgsfield.ai/cli
+- Local video inspection: `safety_video_harness/video_inspection.py`
+- Local video QA: `safety_video_harness/video_qa.py`
+- Local role reference: `references/video-qa-reference.md`
+- Evaluation rubric: `docs/evaluation-rubrics.md`
+- Few-shot video QA examples: `docs/few-shot-examples.md`
+- Higgsfield/Seedance local reference: `docs/higgsfield-seedance-local-reference.md`

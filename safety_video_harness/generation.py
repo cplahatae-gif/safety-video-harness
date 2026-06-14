@@ -4,25 +4,26 @@ from pathlib import Path
 
 from safety_video_harness.errors import HarnessError
 from safety_video_harness.assets import load_reference_assets, reference_assets_prompt_block
-from safety_video_harness.evaluation_arbiter import aggregate_arbiter_decision
-from safety_video_harness.evaluation_rounds import (
-    completed_iterations,
-    previous_blocking_issues,
-    record_evaluation_round,
-    write_evaluation_bundle,
-)
+from safety_video_harness.evaluation_rounds import previous_blocking_issues
 from safety_video_harness.gates import require_gate
 from safety_video_harness.image_qa import (
-    MAX_RALPH_ITERATIONS,
     build_loop_summary,
     dry_run_review,
     review_scene_image,
 )
+from safety_video_harness.image_evaluation_flow import record_image_evaluation_rounds
 from safety_video_harness.imagegen_jobs import build_imagegen_jobs
 from safety_video_harness.io import read_json, write_json
-from safety_video_harness.prompt_contract import build_image_prompt_plan, build_video_prompt_plan
+from safety_video_harness.prompt_contract import build_final_image_prompt_plan, build_image_prompt_plan, build_video_prompt_plan
+from safety_video_harness.prompt_team import ensure_image_prompt_team_plan, prompt_team_prompt_block
 from safety_video_harness.scene_links import validate_scene_links
-from safety_video_harness.seedance_live import SeedanceLiveOptions, build_seedance_live_plan, run_seedance_live_plan
+from safety_video_harness.seedance_live import (
+    SeedanceLiveOptions,
+    build_seedance_live_plan,
+    run_seedance_live_plan,
+    validate_seedance_live_options,
+)
+from safety_video_harness.style_guides import selected_style_prompt_block
 
 
 def generate_images(project: Path, dry_run: bool, live: bool, scene_filter: str | None, regenerate: bool) -> str:
@@ -30,21 +31,11 @@ def generate_images(project: Path, dry_run: bool, live: bool, scene_filter: str 
         require_gate(project, "storyboard")
         _require_external_upload(project)
     scenes = read_json(project / "storyboard" / "scenes.json")
+    ensure_image_prompt_team_plan(project)
     reference_assets = load_reference_assets(project)
-    reference_block = reference_assets_prompt_block(reference_assets)
+    reference_block = _style_and_reference_prompt_block(project, reference_assets)
     scene_items = list(scenes.get("scenes", []))
-    plans = [
-        _build_image_prompt_with_memory(
-            project,
-            scene,
-            reference_assets,
-            reference_block,
-            scene_items,
-            index,
-        )
-        for index, scene in enumerate(scene_items)
-        if scene_filter is None or scene["id"] == scene_filter
-    ]
+    plans = _image_prompt_plans(project, scenes, scene_items, reference_assets, reference_block, scene_filter)
     if scene_filter is not None and not plans:
         raise HarnessError(f"unknown scene_id: {scene_filter}")
     write_json(project / "prompts" / "image_prompts.json", {"dry_run": dry_run, "plans": plans})
@@ -55,17 +46,45 @@ def generate_images(project: Path, dry_run: bool, live: bool, scene_filter: str 
     return f"image dry-run prepared {len(plans)} prompt(s)"
 
 
+def _image_prompt_plans(
+    project: Path,
+    scenes: dict,
+    scene_items: list[dict],
+    reference_assets: dict[str, list[dict[str, str]]],
+    reference_block: str,
+    scene_filter: str | None,
+) -> list[dict]:
+    plans = [
+        _build_image_prompt_with_memory(
+            project,
+            scene,
+            reference_assets,
+            reference_block,
+            scene_items,
+            index,
+        )
+        for index, scene in enumerate(scene_items)
+    ]
+    final_plan = _final_keyframe_plan(project, scenes, scene_items, reference_assets, reference_block)
+    if final_plan is not None:
+        plans.append(final_plan)
+    if scene_filter is None:
+        return plans
+    return [plan for plan in plans if plan["scene_id"] == scene_filter]
+
+
 def validate_images(project: Path, dry_run: bool, scene_filter: str | None) -> str:
     scenes = read_json(project / "storyboard" / "scenes.json")
+    review_items = _image_review_items(scenes)
     selected = [
-        scene
-        for scene in scenes.get("scenes", [])
-        if scene_filter is None or scene["id"] == scene_filter
+        item
+        for item in review_items
+        if scene_filter is None or item["id"] == scene_filter
     ]
     if scene_filter is not None and not selected:
         raise HarnessError(f"unknown scene_id: {scene_filter}")
     reviews = [dry_run_review(scene) if dry_run else review_scene_image(project, scene) for scene in selected]
-    iteration_counts, escalated_scenes = _record_image_evaluation_rounds(project, selected, reviews)
+    iteration_counts, escalated_scenes = record_image_evaluation_rounds(project, selected, reviews)
     story_image_reviews = {
         "dry_run": dry_run,
         "reviews": [
@@ -108,16 +127,17 @@ def generate_seedance(
             plan_only=plan_only,
             validation_run=validation_run,
         )
+        validate_seedance_live_options(options)
+        require_gate(project, "image_to_video")
+        _require_external_upload(project)
         plan = build_seedance_live_plan(project, options)
         if plan_only:
             return f"Seedance live plan prepared {len(plan['jobs'])} job(s)"
-        require_gate(project, "image_to_video")
-        _require_external_upload(project)
         validate_scene_links(project)
         return run_seedance_live_plan(project, plan)
     scenes = read_json(project / "storyboard" / "scenes.json")
     reference_assets = load_reference_assets(project)
-    reference_block = reference_assets_prompt_block(reference_assets)
+    reference_block = _style_and_reference_prompt_block(project, reference_assets)
     plans = [
         build_video_prompt_plan(scene, reference_assets, reference_block)
         for scene in scenes.get("scenes", [])
@@ -132,39 +152,70 @@ def _require_external_upload(project: Path) -> None:
         raise HarnessError("live generation requires external_upload_allowed=true")
 
 
-def _record_image_evaluation_rounds(
+def _style_and_reference_prompt_block(project: Path, reference_assets: dict[str, list[dict[str, str]]]) -> str:
+    return "\n\n".join(
+        [
+            "Selected reusable style guide:",
+            selected_style_prompt_block(project),
+            "Image prompt production team:",
+            prompt_team_prompt_block(project),
+            "Project-approved visual reference assets:",
+            reference_assets_prompt_block(reference_assets),
+        ]
+    )
+
+
+def _final_keyframe_plan(
     project: Path,
-    scenes: list[dict],
-    reviews: list[dict],
-) -> tuple[dict[str, int], list[str]]:
-    counts: dict[str, int] = {}
-    escalated_scenes: list[str] = []
-    scene_by_id = {str(scene["id"]): scene for scene in scenes}
-    for review in reviews:
-        scene_id = str(review["scene_id"])
-        prior_iterations = completed_iterations(project, "image", scene_id)
-        blocked = bool(review.get("blocking_issues"))
-        if blocked and prior_iterations >= MAX_RALPH_ITERATIONS:
-            counts[scene_id] = prior_iterations
-            continue
-        iteration = prior_iterations + 1
-        counts[scene_id] = iteration
-        role_reviews = _image_role_reviews(review)
-        arbiter_decision = aggregate_arbiter_decision(
-            project,
-            "image",
-            scene_id,
-            iteration,
-            role_reviews,
-        )
-        review["arbiter_decision"] = arbiter_decision
-        review["blocker_signatures"] = list(arbiter_decision.get("blocker_signatures", []))
-        if arbiter_decision.get("decision") == "revise_storyboard":
-            escalated_scenes.append(scene_id)
-        bundle = _image_evaluation_bundle(scene_by_id[scene_id], review, iteration)
-        bundle_path = write_evaluation_bundle(project, "image", scene_id, iteration, bundle)
-        record_evaluation_round(project, "image", scene_id, iteration, review, bundle_path)
-    return counts, escalated_scenes
+    scenes: dict,
+    scene_items: list[dict],
+    reference_assets: dict[str, list[dict[str, str]]],
+    reference_block: str,
+) -> dict | None:
+    keyframe_count = int(scenes.get("keyframe_count", len(scene_items)))
+    if keyframe_count <= len(scene_items) or not scene_items:
+        return None
+    scene_id = f"sc{keyframe_count:02d}"
+    return build_final_image_prompt_plan(
+        scene_id,
+        scene_items[-1],
+        reference_assets,
+        reference_block,
+        keyframe_count,
+        keyframe_count,
+        previous_blocking_issues(project, "image", scene_id),
+    )
+
+
+def _image_review_items(scenes: dict) -> list[dict]:
+    scene_items = list(scenes.get("scenes", []))
+    final_scene = _final_keyframe_scene(scenes, scene_items)
+    if final_scene is None:
+        return scene_items
+    return [*scene_items, final_scene]
+
+
+def _final_keyframe_scene(scenes: dict, scene_items: list[dict]) -> dict | None:
+    keyframe_count = int(scenes.get("keyframe_count", len(scene_items)))
+    if keyframe_count <= len(scene_items) or not scene_items:
+        return None
+    scene_id = f"sc{keyframe_count:02d}"
+    previous = scene_items[-1]
+    citation = list(previous.get("source_citations", []))
+    return {
+        "id": scene_id,
+        "duration_sec": 1,
+        "educational_goal_ko": "마지막 장면을 안전하게 종료한다.",
+        "source_citations": citation,
+        "visual_action_ko": "차량 동선과 보행자 동선이 통제된 상태로 교육 장면이 종료된다.",
+        "caption_ko": "최종 안전 상태",
+        "subtitle_ko": "통제된 상태로 작업을 마무리하세요.",
+        "start_keyframe": previous.get("end_keyframe", f"images/approved/{scene_id}.png"),
+        "end_keyframe": f"images/approved/{scene_id}.png",
+        "continuity_constraints": previous.get("continuity_constraints", {}),
+        "approval_state": "draft",
+        "asset_version": 1,
+    }
 
 
 def _build_image_prompt_with_memory(
@@ -186,53 +237,3 @@ def _build_image_prompt_with_memory(
         len(scene_items),
         previous_blocking_issues(project, "image", scene_id),
     )
-
-
-def _image_role_reviews(review: dict) -> list[dict]:
-    blockers = list(review.get("blocking_issues", []))
-    return [
-        {
-            "role": "technical",
-            "scores": {"technical": int(review.get("technical_score", 0))},
-            "blocking_issues": blockers,
-        },
-        {
-            "role": "visual_continuity",
-            "scores": {
-                "identity_consistency": int(review.get("identity_consistency_score", 0)),
-                "ppe": int(review.get("ppe_score", 0)),
-                "equipment": int(review.get("equipment_score", 0)),
-            },
-            "blocking_issues": blockers,
-        },
-        {
-            "role": "story_match",
-            "scores": {
-                "story_match": int(review.get("story_match_score", 0)),
-                "story_flow": int(review.get("story_flow_score", 0)),
-            },
-            "blocking_issues": blockers,
-        },
-    ]
-
-
-def _image_evaluation_bundle(scene: dict, review: dict, iteration: int) -> dict:
-    return {
-        "stage": "image",
-        "iteration": iteration,
-        "evaluator_context_policy": "isolated_evaluator_with_evidence_bundle",
-        "evaluator_instruction": (
-            "Evaluate only the supplied evidence. Do not rely on the generator's intent. "
-            "Score the produced image against storyboard, references, continuity, and QA rubric."
-        ),
-        "scene": scene,
-        "review": review,
-        "required_evidence": [
-            "selected education topic",
-            "current scene",
-            "previous and next scene continuity",
-            "approved reference assets and character profiles",
-            "draft image path or missing-image blocker",
-            "scoring rubric",
-        ],
-    }
