@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Final
 
+from safety_video_harness.asset_lock import media_paths
 from safety_video_harness.errors import HarnessError
 from safety_video_harness.external_tools import run_tool
 from safety_video_harness.io import read_json, write_json, write_jsonl
@@ -98,6 +99,12 @@ def _build_job(project: Path, plan: dict, duration: int) -> dict:
     )
     start_image = str(project / str(plan["start_keyframe"]))
     end_image = str(project / str(plan["end_keyframe"]))
+    reference_media_pack = list(plan.get("reference_media_pack", []))
+    reference_images = [
+        str(project / relative_path)
+        for relative_path in media_paths(reference_media_pack)
+        if (project / relative_path).exists()
+    ]
     common = [
         "higgsfield",
         "generate",
@@ -109,6 +116,7 @@ def _build_job(project: Path, plan: dict, duration: int) -> dict:
         start_image,
         "--end-image",
         end_image,
+        *_reference_image_args(reference_images),
         "--duration",
         str(duration),
         "--aspect_ratio",
@@ -127,6 +135,13 @@ def _build_job(project: Path, plan: dict, duration: int) -> dict:
         "duration": duration,
         "start_image": start_image,
         "end_image": end_image,
+        "reference_media_pack": reference_media_pack,
+        "reference_images": reference_images,
+        "media_lock_policy": {
+            "text_only_seedance_allowed": False,
+            "required": ["start_image", "end_image"],
+            "recommended": ["cast_or_soul_id_reference", "equipment_reference", "space_reference", "style_reference"],
+        },
         "cost_command": cost_command,
         "create_command": create_command,
     }
@@ -134,6 +149,13 @@ def _build_job(project: Path, plan: dict, duration: int) -> dict:
 
 def _run_cli(command: list[str]) -> subprocess.CompletedProcess[str]:
     return run_tool(command, 1500, "higgsfield command failed")
+
+
+def _reference_image_args(reference_images: list[str]) -> list[str]:
+    args: list[str] = []
+    for path in reference_images:
+        args.extend(["--image", path])
+    return args
 
 
 def _redact_public_urls(text: str) -> str:

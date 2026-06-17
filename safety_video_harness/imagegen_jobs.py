@@ -25,7 +25,9 @@ def build_imagegen_jobs(project: Path, plans: list[dict], scene_filter: str | No
         "created_at": datetime.now(UTC).isoformat(),
         "instruction": (
             "Use Codex built-in imagegen skill/tool for each job. After generation, move or copy "
-            "the selected output into the job output path. Do not use an API or CLI fallback unless explicitly requested."
+            "the selected output into the job output path. Do not use an API or CLI fallback unless explicitly requested. "
+            "For production keyframes, do not rely on independent text-only generation; use asset-lock references, "
+            "edit/reference conditioning, or deterministic compositing."
         ),
         "jobs": jobs,
     }
@@ -121,6 +123,18 @@ def _job_for_plan(project: Path, plan: dict, regenerate: bool) -> dict:
         "prompt": plan["prompt"],
         "negative_prompt": plan.get("negative_prompt", ""),
         "reference_assets": plan.get("reference_assets", {}),
+        "asset_lock": plan.get("asset_lock", {}),
+        "production_consistency_policy": {
+            "text_only_multi_frame_production_allowed": False,
+            "independent_text_to_image_generation": "draft_exploration_only",
+            "final_keyframes_require": "asset lock, reference/edit chain, or deterministic compositing",
+            "preferred_generation_order": [
+                "use approved cast/equipment/space/style references as inputs",
+                "derive from the previous approved keyframe when continuity is more important than novelty",
+                "use deterministic compositing for fixed background plates, lane markings, hazard zones, and stable vehicle placement",
+                "run build_image_visual_review.py before Gate 2 and fix any visual-lock blocker",
+            ],
+        },
         "output": str(output.relative_to(project)),
         "version": output.stem.removeprefix(f"{scene_id}_v"),
         "preserve_project_output": True,

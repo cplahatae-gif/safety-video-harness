@@ -65,6 +65,9 @@ def _allowed_actions(project: Path, target_scenes: list[str]) -> list[str]:
         actions.append(
             f"uv run python scripts/record_image_output.py --project {project_arg} --scene-id {scene_id} --generated-file <generated_png>"
         )
+        actions.append(
+            f"uv run python scripts/build_image_visual_review.py --project {project_arg} --only {scene_id}"
+        )
         actions.append(f"uv run python scripts/validate_images.py --project {project_arg} --only {scene_id}")
     return actions
 
@@ -112,6 +115,7 @@ def _run_prompt(project: Path, target_scenes: list[str]) -> str:
             "Read qa/image_qa_loop.json and qa/arbiter_decisions before choosing the next command.",
             "For each blocked scene, prepare Codex imagegen job specs with generate_images.py --live --regenerate.",
             "After the user or Codex imagegen provides a PNG, record it with record_image_output.py --generated-file.",
+            "Run build_image_visual_review.py to create contact-sheet evidence and visual-lock review guidance.",
             "Re-run validate_images.py and stop when the harness says passed or stop_and_escalate.",
             "Never call live Seedance, live TTS, or any paid video command inside this image loop.",
         ]

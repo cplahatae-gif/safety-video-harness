@@ -12,6 +12,9 @@ This is the local operating reference for Higgsfield/Seedance usage in the safet
 - Login command: `higgsfield auth login`
 - Skill install command shown by Higgsfield: `npx skills add higgsfield-ai/skills`
 - Auth, uploads, polling, and result fetching are handled by the CLI.
+- `generate create` accepts media flags including `--image`, `--start-image`, `--end-image`, `--video`, and `--audio`.
+- `seedance_2_0` exposes a `medias` parameter, and the CLI can attach local files or uploaded IDs through media flags.
+- `soul-id create` trains reusable Soul references from multiple uploaded images; use this for recurring human identity when allowed.
 - Higgsfield uses credits; generation cost depends on model, duration, resolution, and asset type.
 - Generation is asynchronous; video jobs can take longer depending on duration and model.
 - The command families exposed by the CLI page are:
@@ -32,6 +35,26 @@ This is the local operating reference for Higgsfield/Seedance usage in the safet
 - Do not use Higgsfield for image keyframes by default. Codex built-in `imagegen` is the default image path unless the user asks for Higgsfield image generation.
 - Do not upload reference images, generated images, source documents, or videos unless `external_upload_allowed=true` and the relevant gate is approved.
 - For cost control, use short test clips first. The project policy is a short live test, normally around 10 seconds, and only with explicit user approval.
+- Do not create production Seedance clips from text prompt alone. Use approved `start_image`, approved `end_image`, and available reference media.
+- Treat Soul ID, cast sheets, equipment references, and space/background plates as the lock layer; prompt text is orchestration, not identity storage.
+
+## Consistency Lessons
+
+The local imagegen tests showed the same limitation reported by common AI video workflows:
+
+- Text-only multi-frame generation drifts in face, body, PPE, vehicle geometry, road markings, and background.
+- A single 2x2 storyboard sheet reduces drift but still does not guarantee production-grade identity or background continuity.
+- Production-grade continuity requires reference conditioning or deterministic composition before video generation.
+
+Recommended production order:
+
+1. Build an asset lock manifest.
+2. Create or approve cast, equipment, space/background, style, and work-situation references.
+3. If recurring human identity matters and external upload is approved, create a Higgsfield Soul ID from multiple cast images.
+4. Generate or compose approved keyframes from locked assets.
+5. Use those approved keyframes as `--start-image` and `--end-image`.
+6. Attach the available reference media pack with `--image` flags when building Higgsfield jobs.
+7. Keep clips short and chained: `sc01 -> sc02`, `sc02 -> sc03`, and so on.
 
 ## Recommended Dry-Run Contract
 
@@ -48,6 +71,12 @@ For each intended clip, write a job spec before any live action:
   "start_keyframe": "images/approved/sc03.png",
   "end_keyframe": "images/approved/sc04.png",
   "prompt_path": "video_prompts/sc03_to_sc04.md",
+  "reference_media_pack": [
+    "model/cast/signal-worker.png",
+    "product/equipment/bct-truck.png",
+    "ref/approved/space/plant-entry.png",
+    "ref/approved/style/webtoon-style.png"
+  ],
   "cost_estimate_required": true,
   "gate_required": "image_to_video",
   "external_upload_allowed_required": true
@@ -66,6 +95,8 @@ Each video prompt must include:
 - timing and duration
 - forbidden motion
 - continuity locks
+- reference media roles: cast, equipment, space/background, style, and work-situation references
+- explicit statement that start/end keyframes and media references are the lock layer
 - no narration/TTS statement
 - subtitle/overlay plan if text is needed
 
@@ -80,4 +111,3 @@ After live generation, inspect locally before approval:
 5. Compare sampled frames with storyboard and approved keyframes.
 6. Write video QA findings.
 7. If failed, produce a paid-regeneration proposal only.
-

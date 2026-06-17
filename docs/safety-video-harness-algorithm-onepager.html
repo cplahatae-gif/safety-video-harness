@@ -437,7 +437,7 @@
         <div class="metric"><b>1st</b><span>스토리보드가 기준 계약</span></div>
         <div class="metric"><b>9</b><span>레퍼런스 타입 자동 스캔</span></div>
         <div class="metric"><b>20 max</b><span>이미지 RALPH early stop</span></div>
-        <div class="metric"><b>66</b><span>자동 테스트 통과</span></div>
+        <div class="metric"><b>103</b><span>자동 테스트 통과</span></div>
       </aside>
     </section>
 
@@ -525,14 +525,14 @@
 
           <rect x="670" y="416" width="180" height="70" rx="8" fill="#ffffff" stroke="#dfb773"></rect>
           <text x="709" y="444" class="svg-label">Image QA</text>
-          <text x="709" y="463" class="svg-small">story · identity · PPE</text>
+          <text x="694" y="463" class="svg-small">44/55 · manual visual QA</text>
 
           <rect x="900" y="400" width="230" height="108" rx="22" fill="#fff8ee" stroke="#b76a24" stroke-width="3"></rect>
           <path d="M1110 426 C1140 452 1138 492 1110 514" fill="none" stroke="#b76a24" stroke-width="2.4" marker-end="url(#arrow)"></path>
           <text x="946" y="431" class="svg-label">RALPH loop</text>
           <text x="924" y="453" class="svg-small">최대 20회, 통과 시 즉시 종료</text>
-          <text x="918" y="473" class="svg-small">같은 blocker 3회면 upstream 수정</text>
-          <text x="930" y="493" class="svg-small">유료 영상 재시도는 금지</text>
+          <text x="918" y="473" class="svg-small">critique block을 다음 프롬프트에 주입</text>
+          <text x="914" y="493" class="svg-small">같은 blocker 3회면 upstream 수정</text>
 
           <rect x="1200" y="416" width="180" height="70" rx="8" fill="#ffffff" stroke="#dfb773"></rect>
           <text x="1232" y="444" class="svg-label">Approved images</text>
@@ -542,7 +542,7 @@
         <g filter="url(#shadow)">
           <rect x="190" y="586" width="210" height="74" rx="8" fill="#ffffff" stroke="#a9b5d4"></rect>
           <text x="218" y="616" class="svg-label">Evaluation Bundles</text>
-          <text x="218" y="636" class="svg-small">stage/item/round_NNN.json</text>
+          <text x="218" y="636" class="svg-small">contact sheet + round_NNN.json</text>
 
           <rect x="460" y="586" width="210" height="74" rx="8" fill="#ffffff" stroke="#a9b5d4"></rect>
           <text x="487" y="616" class="svg-label">Role Evaluations</text>
@@ -560,7 +560,7 @@
         <g filter="url(#shadow)">
           <path d="M335 740 L420 785 L335 830 L250 785 Z" fill="#ece8df" stroke="#20262b" stroke-width="2"></path>
           <text x="310" y="783" class="svg-label">Gate 2</text>
-          <text x="282" y="801" class="svg-mini">전체 이미지 QA 필수</text>
+          <text x="272" y="801" class="svg-mini">전체 이미지 QA + 수동 시각 QA</text>
 
           <rect x="500" y="752" width="210" height="66" rx="8" fill="#ffffff" stroke="#dfaaa4"></rect>
           <text x="534" y="779" class="svg-label">Seedance validation</text>
@@ -666,7 +666,7 @@
           <div class="step image">
             <strong>06</strong>
             <h3>이미지 RALPH</h3>
-            <p>이미지 QA가 통과할 때까지 최대 20회 반복하고, 같은 blocker 3회면 upstream 수정으로 넘긴다.</p>
+            <p>44/55, 필드별 4점, 수동/휴리스틱 시각 QA가 통과할 때까지 최대 20회 반복한다. 실패 시 RALPH critique block을 다음 프롬프트에 넣고, 같은 blocker 3회면 upstream 수정으로 넘긴다.</p>
           </div>
           <div class="step qa">
             <strong>07</strong>
@@ -676,7 +676,7 @@
           <div class="step video">
             <strong>08</strong>
             <h3>Gate 2와 영상 검증</h3>
-            <p>전체 이미지 QA, 비용, 업로드 허용이 모두 맞을 때 짧은 Seedance 검증 영상만 실행한다.</p>
+            <p>전체 이미지 QA, contact sheet/시각 QA, 비용, 업로드 허용이 모두 맞을 때 짧은 Seedance 검증 영상만 실행한다.</p>
           </div>
         </div>
       </section>

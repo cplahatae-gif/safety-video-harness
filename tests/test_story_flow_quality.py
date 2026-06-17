@@ -29,6 +29,28 @@ def write_test_png(path: Path) -> None:
     image.save(path)
 
 
+def write_manual_reviews(project: Path, scene_count: int) -> None:
+    qa_dir = project / "qa"
+    qa_dir.mkdir(parents=True, exist_ok=True)
+    reviews = []
+    for index in range(1, scene_count + 1):
+        reviews.append(
+            {
+                "scene_id": f"sc{index:02d}",
+                "floor_lane_consistency_score": 5,
+                "background_consistency_score": 5,
+                "character_identity_lock_score": 5,
+                "vehicle_geometry_lock_score": 5,
+                "hazard_zone_consistency_score": 5,
+                "blocking_issues": [],
+                "reviewer": "test_manual_visual_qa",
+                "notes": "Fixture image is treated as visually locked for pass-path regression.",
+            }
+        )
+    payload = {"reviews": reviews}
+    (qa_dir / "image_manual_reviews.json").write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
 def prepare_project(project: Path) -> None:
     assert run_cli("scripts/init_project.py", "--name", "레미콘 충돌 예방", "--slug", str(project)).returncode == 0
     assert run_cli("scripts/register_sources.py", "--project", str(project), "--source", str(FIXTURE)).returncode == 0
@@ -64,6 +86,7 @@ def test_validate_images_writes_scored_loop_summary(tmp_path: Path) -> None:
     draft_dir.mkdir(parents=True, exist_ok=True)
     for index in range(1, 8):
         write_test_png(draft_dir / f"sc{index:02d}_v001.png")
+    write_manual_reviews(project, 7)
 
     result = run_cli("scripts/validate_images.py", "--project", str(project))
 
@@ -71,10 +94,11 @@ def test_validate_images_writes_scored_loop_summary(tmp_path: Path) -> None:
     loop = load_json(project / "qa" / "image_qa_loop.json")
     assert loop["passed"] is True
     assert loop["next_action"] == "approve_or_manual_review"
-    assert loop["thresholds"]["minimum_total_score"] == 24
+    assert loop["thresholds"]["minimum_total_score"] == 44
     review = load_json(project / "qa" / "image_reviews.json")["reviews"][0]
-    assert review["total_score"] >= 24
+    assert review["total_score"] >= 44
     assert review["story_flow_score"] == 5
+    assert review["floor_lane_consistency_score"] == 5
     assert "scoring_rubric" in review
 
 

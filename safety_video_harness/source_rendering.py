@@ -1,11 +1,14 @@
 from __future__ import annotations
 
 from pathlib import Path
+from shutil import copyfile
 from shutil import which
+from tempfile import TemporaryDirectory
 from xml.etree import ElementTree
 from zipfile import BadZipFile, ZipFile
 
 from safety_video_harness.errors import HarnessError
+from safety_video_harness.external_tools import run_tool
 
 
 def extract_rendered_assets(rendered_dir: Path, entry: dict, index: int, mode: str) -> tuple[list[Path], str, str]:
@@ -15,7 +18,10 @@ def extract_rendered_assets(rendered_dir: Path, entry: dict, index: int, mode: s
             if which("soffice") is None:
                 assets = _extract_pptx_media(rendered_dir, source, str(entry["source_id"]))
                 return assets, "media_extract", "soffice missing; used PPTX media extraction fallback"
-            raise HarnessError("slide_render via soffice is not implemented yet; use --mode media_extract")
+            if which("pdftoppm") is None:
+                assets = _extract_pptx_media(rendered_dir, source, str(entry["source_id"]))
+                return assets, "media_extract", "pdftoppm missing; used PPTX media extraction fallback"
+            return _render_pptx_slides(rendered_dir, source, str(entry["source_id"])), "slide_render", ""
         assets = _extract_pptx_media(rendered_dir, source, str(entry["source_id"]))
         warning = "invalid pptx; used placeholder rendered asset" if _is_placeholder_asset(assets) else ""
         return assets, mode, warning
@@ -55,6 +61,42 @@ def _extract_pptx_media(rendered_dir: Path, source: Path, source_id: str) -> lis
     if not assets:
         raise HarnessError(f"no renderable media found in {source}")
     return assets
+
+
+def _render_pptx_slides(rendered_dir: Path, source: Path, source_id: str) -> list[Path]:
+    with TemporaryDirectory() as tmp:
+        tmp_dir = Path(tmp)
+        run_tool(
+            [
+                "soffice",
+                "--headless",
+                "--convert-to",
+                "pdf",
+                "--outdir",
+                str(tmp_dir),
+                str(source),
+            ],
+            120,
+            "PPTX slide_render failed during PDF conversion",
+        )
+        pdfs = sorted(tmp_dir.glob("*.pdf"))
+        if not pdfs:
+            raise HarnessError("PPTX slide_render failed: no PDF produced by soffice")
+        prefix = tmp_dir / f"{source_id}_slide"
+        run_tool(
+            ["pdftoppm", "-png", "-r", "160", str(pdfs[0]), str(prefix)],
+            120,
+            "PPTX slide_render failed during PNG conversion",
+        )
+        rendered = sorted(tmp_dir.glob(f"{source_id}_slide-*.png"))
+        if not rendered:
+            raise HarnessError("PPTX slide_render failed: no PNG slides produced")
+        outputs: list[Path] = []
+        for index, image in enumerate(rendered, start=1):
+            output = rendered_dir / f"{source_id}_rendered_slide_{index:02d}.png"
+            copyfile(image, output)
+            outputs.append(output)
+        return outputs
 
 
 def _extract_pptx_text(rendered_dir: Path, source: Path, source_id: str) -> list[Path]:

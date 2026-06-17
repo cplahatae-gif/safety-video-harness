@@ -49,6 +49,19 @@ def approve_video_gate_for_plan(project: Path) -> None:
     approvals_path.write_text(json.dumps(approvals, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
+def add_seedance_reference_pack(project: Path) -> None:
+    assets = {
+        "model/cast/signal-worker.png": b"fake cast image",
+        "product/equipment/bct-truck.png": b"fake equipment image",
+        "ref/approved/space/plant-entry.png": b"fake space image",
+    }
+    for relative_path, content in assets.items():
+        path = project / relative_path
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(content)
+        path.with_suffix(".md").write_text(f"Use {path.stem} as a locked reference.\n", encoding="utf-8")
+
+
 def test_live_seedance_requires_paid_execute_flag(tmp_path: Path) -> None:
     project = tmp_path / "seedance-no-execute"
     prepare_project(project)
@@ -133,6 +146,33 @@ def test_seedance_live_plan_uses_two_five_second_clips_for_10s(tmp_path: Path) -
     assert plan["jobs"][0]["duration"] == 5
     assert plan["jobs"][0]["start_image"].endswith("images/approved/sc01.png")
     assert plan["jobs"][1]["end_image"].endswith("images/approved/sc03.png")
+
+
+def test_seedance_plan_includes_reference_media_pack_when_available(tmp_path: Path) -> None:
+    project = tmp_path / "seedance-reference-pack"
+    prepare_project(project)
+    add_seedance_reference_pack(project)
+    assert run_cli("scripts/generate_seedance.py", "--project", str(project), "--dry-run").returncode == 0
+    approve_video_gate_for_plan(project)
+
+    result = run_cli(
+        "scripts/generate_seedance.py",
+        "--project",
+        str(project),
+        "--live",
+        "--execute-paid",
+        "--test-seconds",
+        "10",
+        "--plan-only",
+    )
+
+    assert result.returncode == 0
+    plan = load_json(project / "video" / "seedance_live_plan.json")
+    job = plan["jobs"][0]
+    assert len(job["reference_media_pack"]) == 3
+    assert job["media_lock_policy"]["text_only_seedance_allowed"] is False
+    assert "--image" in job["create_command"]
+    assert any(item.endswith("model/cast/signal-worker.png") for item in job["reference_images"])
 
 
 def test_validation_run_requires_one_attempt(tmp_path: Path) -> None:

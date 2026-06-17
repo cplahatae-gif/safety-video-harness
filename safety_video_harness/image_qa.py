@@ -3,16 +3,24 @@ from __future__ import annotations
 from pathlib import Path
 
 from safety_video_harness.image_versions import latest_draft_or_none
+from safety_video_harness.image_manual_review import (
+    VISUAL_LOCK_SCORE_FIELDS,
+    empty_visual_scores,
+    load_image_manual_review,
+    manual_review_payload,
+    missing_manual_review_issue,
+)
 from safety_video_harness.qa_contract import (
     artifact_path,
     blocker_categories,
     critical_blockers,
     guide_sources,
 )
+from safety_video_harness.ralph_prompt import regeneration_prompt
 
 
 MINIMUM_FIELD_SCORE = 4
-MINIMUM_TOTAL_SCORE = 24
+MINIMUM_TOTAL_SCORE = 44
 MAX_RALPH_ITERATIONS = 20
 
 
@@ -31,12 +39,13 @@ def review_scene_image(project: Path, scene: dict) -> dict:
             "equipment_score": 0,
             "story_flow_score": 0,
             "technical_score": 0,
+            **empty_visual_scores(),
             "total_score": 0,
             "score_source": "harness_file_and_story_flow_rules",
             "blocking_issues": issues,
             "blocker_categories": blocker_categories(issues),
             "critical_blockers": critical_blockers(issues),
-            "regeneration_delta": _regeneration_prompt(scene_id, issues),
+            "regeneration_delta": regeneration_prompt(scene_id, issues),
             "previous_blockers_applied": False,
             "decision": "regenerate",
             "scoring_rubric": _scoring_rubric(),
@@ -45,6 +54,10 @@ def review_scene_image(project: Path, scene: dict) -> dict:
     if image_issues:
         return _blocked_review(scene_id, image_issues, draft)
     story_flow_score = _story_flow_score(scene)
+    manual_review = load_image_manual_review(project, scene_id)
+    manual_blockers = [] if manual_review else [missing_manual_review_issue()]
+    if manual_review:
+        manual_blockers.extend(manual_review.blocking_issues)
     scores = {
         "story_match_score": 5,
         "identity_consistency_score": 5,
@@ -52,20 +65,22 @@ def review_scene_image(project: Path, scene: dict) -> dict:
         "equipment_score": 5,
         "story_flow_score": story_flow_score,
         "technical_score": 5,
+        **(manual_review.scores if manual_review else empty_visual_scores()),
     }
     total_score = sum(scores.values())
-    blockers = _score_blockers(scores, total_score)
+    blockers = [*manual_blockers, *_score_blockers(scores, total_score)]
     return {
         "scene_id": scene_id,
         **guide_sources(),
         "artifact_path": artifact_path(project, draft, f"images/draft/{scene_id}_v*.png"),
         **scores,
         "total_score": total_score,
-        "score_source": "placeholder_until_isolated_vision_evaluator",
+        "score_source": "harness_file_story_flow_and_manual_visual_consistency_review",
+        "manual_visual_review": manual_review_payload(manual_review),
         "blocking_issues": blockers,
         "blocker_categories": blocker_categories(blockers),
         "critical_blockers": critical_blockers(blockers),
-        "regeneration_delta": _regeneration_prompt(scene_id, blockers) if blockers else "",
+            "regeneration_delta": regeneration_prompt(scene_id, blockers) if blockers else "",
         "previous_blockers_applied": False,
         "decision": "approve_for_video" if not blockers else "regenerate",
         "reviewed_asset": str(draft.relative_to(project)),
@@ -84,7 +99,8 @@ def dry_run_review(scene: dict) -> dict:
         "equipment_score": 4,
         "story_flow_score": 4,
         "technical_score": 4,
-        "total_score": 24,
+        **{field: 4 for field in VISUAL_LOCK_SCORE_FIELDS},
+        "total_score": 44,
         "score_source": "dry_run_placeholder",
         "blocking_issues": [],
         "blocker_categories": [],
@@ -149,7 +165,7 @@ def _ralph_loop(
         {
             "scene_id": str(blocker["scene_id"]),
             "deficiencies": list(blocker["blocking_issues"]),
-            "regeneration_prompt": _regeneration_prompt(
+            "regeneration_prompt": regeneration_prompt(
                 str(blocker["scene_id"]),
                 list(blocker["blocking_issues"]),
             ),
@@ -196,14 +212,6 @@ def _next_action(passed: bool, maxed_scenes: list[str], escalated_scenes: list[s
     return "regenerate_blocked_scenes"
 
 
-def _regeneration_prompt(scene_id: str, deficiencies: list[str]) -> str:
-    return (
-        f"Regenerate {scene_id} and directly fix these deficiencies: "
-        + "; ".join(deficiencies)
-        + ". Preserve approved character, PPE, equipment, site layout, story beat, and adjacent-scene continuity."
-    )
-
-
 def _blocked_review(scene_id: str, issues: list[str], draft: Path) -> dict:
     return {
         "scene_id": scene_id,
@@ -215,12 +223,13 @@ def _blocked_review(scene_id: str, issues: list[str], draft: Path) -> dict:
         "equipment_score": 0,
         "story_flow_score": 0,
         "technical_score": 0,
+        **empty_visual_scores(),
         "total_score": 0,
         "score_source": "harness_file_and_story_flow_rules",
         "blocking_issues": issues,
         "blocker_categories": blocker_categories(issues),
         "critical_blockers": critical_blockers(issues),
-        "regeneration_delta": _regeneration_prompt(scene_id, issues),
+        "regeneration_delta": regeneration_prompt(scene_id, issues),
         "previous_blockers_applied": False,
         "decision": "regenerate",
         "reviewed_asset": str(draft),
@@ -271,4 +280,5 @@ def _scoring_rubric() -> dict[str, str]:
         "equipment_score": "Preserves BCT, dump truck, lanes, cones, and plant layout.",
         "story_flow_score": "Connects causally to adjacent scenes instead of acting as an isolated checklist panel.",
         "technical_score": "Readable 16:9 image file suitable for video keyframe use.",
+        **VISUAL_LOCK_SCORE_FIELDS,
     }

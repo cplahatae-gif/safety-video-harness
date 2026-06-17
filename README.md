@@ -148,15 +148,16 @@ projects/<slug>/
 6. 스타일 DNA 및 자료 근거 정리
 7. 스토리보드 생성
 8. 스토리보드 QA와 Gate 1 승인
-9. 이미지 프롬프트 제작팀 preflight 생성
-10. 이미지 프롬프트 생성
-11. Codex imagegen으로 이미지 생성
-12. 이미지 QA와 RALPH loop
-13. 승인 이미지를 start/end keyframe으로 연결
-14. Seedance dry-run, 비용 산정, Gate 2 승인
-15. 짧은 live Seedance 검증 영상 생성
-16. 프레임 추출, 영상 QA, 재생성 제안
-17. 최종 합본/자막/오버레이는 별도 후처리 단계
+9. Asset lock 생성: 고정 배경 plate, 인물/장비/PPE/공간 레퍼런스, 필요 시 Higgsfield Soul ID
+10. 이미지 프롬프트 제작팀 preflight 생성
+11. 이미지 프롬프트 또는 reference/edit/compositing 계획 생성
+12. Codex imagegen으로 draft 이미지 생성 또는 승인 asset 기반 편집/조립
+13. 이미지 QA와 RALPH loop
+14. 승인 이미지를 start/end keyframe으로 연결
+15. Seedance dry-run, reference media pack, 비용 산정, Gate 2 승인
+16. 짧은 live Seedance 검증 영상 생성
+17. 프레임 추출, 영상 QA, 재생성 제안
+18. 최종 합본/자막/오버레이는 별도 후처리 단계
 ```
 
 핵심 제약:
@@ -168,6 +169,9 @@ projects/<slug>/
 - 나레이션/TTS는 현재 범위에서 제외한다. 전달 문구는 자막, 오버레이, 텍스트 카드로 처리한다.
 - OMO는 반복 실행자/작업 관리자이고, 점수 판정은 하네스 role evaluator와 Arbiter가 한다.
 - 이미지 병렬화는 장면별 프롬프트 초안과 검토까지만 허용한다. 실제 imagegen 호출은 한 coordinator가 순차 통제한다.
+- production keyframe은 텍스트 프롬프트만으로 여러 장을 독립 생성하지 않는다. 순수 text-to-image 다중 컷 생성은 draft exploration으로만 취급한다.
+- production keyframe은 asset lock, reference/edit chain, 또는 Pillow/ImageMagick 등 deterministic compositing을 통해 같은 인물·장비·배경·위험구역을 유지해야 한다.
+- Seedance/Higgsfield 영상은 prompt-only로 생성하지 않는다. 승인된 `start_image`, `end_image`, 가능하면 cast/equipment/space/style reference media pack 또는 Soul ID를 함께 사용한다.
 
 ## 시작 인터뷰
 
@@ -414,6 +418,8 @@ fixtures/sources/remicon-collision-guide.pptx
 - 후진
 
 현재 하네스는 이 파일에서 PPTX 내부 이미지 미디어와 슬라이드 텍스트를 추출하고, 해당 자료에 맞는 주제와 30초/6컷 스토리보드를 생성한다.
+`--mode slide_render`를 쓰면 로컬에 LibreOffice `soffice`와 Poppler `pdftoppm`이 있을 때 슬라이드 전체를 PNG로 렌더링한다.
+도구가 없으면 기존 `media_extract`로 안전하게 fallback한다.
 
 ## 금지된 기본 동작
 
@@ -438,6 +444,30 @@ python3 scripts/generate_seedance.py --project projects/fall-prevention --live
 OpenAI Image API 또는 CLI fallback은 사용자가 명시적으로 API/CLI 경로를 요청할 때만 사용한다.
 
 이미지 프롬프트 작성 기준은 [docs/imagegen-prompting-references.md](./docs/imagegen-prompting-references.md)에 둔다. 프롬프트는 이전 장면, 현재 예방 행동, 다음 장면 연결을 모두 포함해야 하며, 고립된 체크리스트 이미지처럼 만들지 않는다.
+
+### Asset Lock 정책
+
+최근 테스트에서 확인한 한계:
+
+- 텍스트 프롬프트만으로 `sc01~scNN`을 독립 생성하면 사람 얼굴, 체형, PPE, 차량 구조, 배경 설비, 차선, 위험구역이 미세하게 바뀐다.
+- 2x2 시트로 한 번에 생성해도 production-grade 동일성은 보장되지 않는다.
+- 따라서 하네스는 순수 text-to-image multi-frame 생성을 production 경로로 보지 않는다.
+
+production 경로는 아래 순서다.
+
+```text
+1. fixed background/space plate
+2. cast character sheet 또는 Higgsfield Soul ID source
+3. equipment reference: BCT, dump truck, PPE, hazard-zone markings
+4. scene keyframe derivation: reference/edit chain 또는 deterministic compositing
+5. image QA: identity, equipment, space, hazard-zone blocker 검사
+6. Seedance: approved start/end keyframes + reference media pack
+```
+
+`generate_images.py --live`는 `prompts/imagegen_jobs.json`에 `asset_lock`과
+`production_consistency_policy`를 함께 기록한다. `asset_lock.status`가
+`draft_exploration_only`이면 산출물은 분위기/스토리 테스트용이며, 바로 Seedance production
+keyframe으로 쓰면 안 된다.
 
 Codex imagegen 실행 준비 명령:
 
@@ -470,6 +500,13 @@ python3 scripts/generate_images.py --project projects/fall-prevention --live --o
 ## 영상 생성 경로
 
 영상 생성은 Higgsfield CLI의 `seedance_2_0`을 사용한다. 비용 통제 때문에 기본 테스트 경로는 10초, 5초 클립 2개, 최대 3회 이하로 제한한다.
+
+Seedance/Higgsfield 고정 원칙:
+
+- `--start-image`와 `--end-image`는 필수 lock layer다.
+- cast/equipment/space/style reference가 있으면 `reference_media_pack`으로 job spec에 포함하고, 실제 CLI 명령에는 존재하는 이미지 파일을 `--image`로 추가한다.
+- 인물 동일성이 중요한 경우 Higgsfield Soul ID 또는 equivalent character reference를 먼저 만든다.
+- prompt는 “무엇을 움직일지”를 설명하고, 동일성은 start/end keyframe과 reference media가 담당한다.
 
 ```bash
 python3 scripts/generate_seedance.py --project projects/fall-prevention --dry-run
@@ -597,6 +634,52 @@ uv run python scripts/validate_images.py --project projects/fall-prevention --on
 `needs_regeneration` 상태와 함께 부족한 지점, 재생성 프롬프트가 남는다. 이미지
 단계는 비용이 영상보다 낮고 수정 효과가 크므로, blocked scene은 점수 기준을 넘을
 때까지 재생성/검증 루프를 반복한다.
+
+RALPH 재생성 프롬프트는 단순히 blocker를 나열하지 않는다. `RALPH critique` 블록으로
+품질 압박 문구, 실패 기준, 반드시 보존할 요소, 반드시 바꿀 요소, 반복 금지 항목을 함께
+다음 imagegen 프롬프트에 주입한다.
+
+```text
+RALPH critique for sc01:
+Quality pressure: This result is not acceptable for a safety training video...
+Failed criteria and required fixes:
+- floor_lane_consistency_score below minimum 4: 3
+Must preserve:
+- approved character identity, helmet, vest, body proportion, and role
+Must change this round:
+- make every listed blocker visually impossible to miss
+Do not repeat:
+- floor_lane_consistency_score below minimum 4: 3
+```
+
+현재 production 이미지 통과 기준은 11개 축 `44/55` 이상이며, 모든 축이 4점 이상이어야 한다.
+기본 6개 축은 스토리 매칭, 인물/장비/PPE, 스토리 흐름, 기술 준비도를 본다. 추가 5개 축은
+`qa/image_manual_reviews.json`에 기록되는 수동/격리 시각 QA 기준이다.
+
+- `floor_lane_consistency_score`: 바닥, 차선, 보행로, 콘, 볼라드 일관성
+- `background_consistency_score`: 플랜트 구조물, 게이트, 반사경, 표지판, 카메라 방향 일관성
+- `character_identity_lock_score`: 작업자 체형, PPE, 역할, 시각 단서 고정
+- `vehicle_geometry_lock_score`: BCT, 덤프트럭, 거울, 바퀴, 크기, 상대 위치 고정
+- `hazard_zone_consistency_score`: 위험구역, 보행자 동선, 정지선, 통제점 고정
+
+자동 비전 평가자가 붙기 전까지는 `qa/image_manual_reviews.json`이 없으면 draft 이미지가 존재해도
+production 통과가 되지 않는다. 이 경우 RALPH 상태는 `needs_regeneration`으로 남고, 수동 시각 QA
+또는 이미지 재생성이 필요하다는 blocker가 기록된다.
+
+로컬 휴리스틱 시각 QA 보조 산출물은 아래 명령으로 만든다. 이 명령은 이미지를 유료 업로드하지
+않고 contact sheet와 점수 초안을 만든다. `--write-review`를 붙이면 `qa/image_manual_reviews.json`까지
+작성하지만, 의미론적 인물/시선 판단은 사람 또는 별도 비전 평가자가 최종 확인해야 한다.
+
+```bash
+uv run python scripts/build_image_visual_review.py --project projects/fall-prevention --only sc01
+uv run python scripts/build_image_visual_review.py --project projects/fall-prevention --only sc01 --write-review
+```
+
+산출물:
+
+- `qa/visual_review/image_contact_sheet.png`
+- `qa/image_visual_review_draft.json`
+- 선택 시 `qa/image_manual_reviews.json`
 
 RALPH loop는 무조건 20회 실행하는 루프가 아니다. 장면별 최대 20회까지 허용하는
 early-stopping loop이며, 기준을 통과하면 즉시 종료한다. 20회에 도달해도 blocker가

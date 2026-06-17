@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import TypedDict
 
+from safety_video_harness.ralph_prompt import previous_blocker_prompt_lines
+
 
 class ImagePromptPlan(TypedDict):
     scene_id: str
@@ -21,6 +23,8 @@ class VideoPromptPlan(TypedDict):
     prompt: str
     subtitle_plan_ko: str
     reference_assets: dict[str, list[dict[str, str]]]
+    reference_media_pack: list[dict[str, str]]
+    asset_lock: dict
     sliding_chain_contract: dict[str, str]
     continuity_checklist: list[str]
 
@@ -59,6 +63,10 @@ def build_image_prompt_plan(
             f"Camera and composition: {continuity['camera_lock']}",
             f"Lighting and color: {continuity['lighting_color_lock']}",
             "Visual style contract: obey the selected reusable style guide while preserving storyboard continuity.",
+            (
+                "Production warning: if this keyframe is for final Seedance use, do not rely on this text prompt alone. "
+                "Use the project asset-lock manifest, approved reference media, or edit/compositing derivation from a prior approved frame."
+            ),
             "Approved style guide and reference assets to preserve:",
             reference_block,
             "Safety framing: show a near-miss prevention moment, not an accident impact.",
@@ -111,6 +119,10 @@ def build_final_image_prompt_plan(
             f"Camera and composition: {continuity['camera_lock']}",
             f"Lighting and color: {continuity['lighting_color_lock']}",
             "Visual style contract: obey the selected reusable style guide while preserving storyboard continuity.",
+            (
+                "Production warning: this final keyframe must be derived from approved locked assets or reference/edit conditioning; "
+                "pure text-to-image generation is draft exploration only."
+            ),
             "Approved style guide and reference assets to preserve:",
             reference_block,
             "Safety framing: show a completed near-miss prevention moment, not an accident impact.",
@@ -128,7 +140,12 @@ def build_final_image_prompt_plan(
     }
 
 
-def build_video_prompt_plan(scene: dict, reference_assets: dict[str, list[dict[str, str]]], reference_block: str) -> VideoPromptPlan:
+def build_video_prompt_plan(
+    scene: dict,
+    reference_assets: dict[str, list[dict[str, str]]],
+    reference_block: str,
+    asset_lock: dict,
+) -> VideoPromptPlan:
     scene_id = str(scene["id"])
     motion = str(scene["motion_prompt_en"])
     contract = {
@@ -146,6 +163,8 @@ def build_video_prompt_plan(scene: dict, reference_assets: dict[str, list[dict[s
             f"Scene ID: {scene_id}.",
             f"Start keyframe: {scene['start_keyframe']}.",
             f"End keyframe: {scene['end_keyframe']}.",
+            "Reference media policy: use the approved start keyframe, approved end keyframe, and all available Higgsfield media references as identity, equipment, space, and style locks.",
+            "If a Higgsfield Soul ID exists for a worker, use it as the identity lock; otherwise use the cast reference sheet from the media pack.",
             f"Motion objective: {motion}",
             f"Sliding chain contract: {contract['start_frame_rule']} {contract['end_frame_rule']}",
             f"Continuity lock: {contract['identity_rule']}",
@@ -156,6 +175,7 @@ def build_video_prompt_plan(scene: dict, reference_assets: dict[str, list[dict[s
             "Visual style contract: preserve the selected reusable style guide from the keyframes.",
             "Approved style guide and reference assets to preserve:",
             reference_block,
+            "Do not treat the text prompt as the only source of truth; the media references and start/end keyframes are the lock layer.",
             "Camera: slow 35mm documentary training frame, stable tripod or gentle dolly, no stylized cinematic exaggeration.",
         ]
     )
@@ -167,6 +187,8 @@ def build_video_prompt_plan(scene: dict, reference_assets: dict[str, list[dict[s
         "prompt": prompt,
         "subtitle_plan_ko": subtitle,
         "reference_assets": reference_assets,
+        "reference_media_pack": list(asset_lock.get("reference_media_pack", [])),
+        "asset_lock": asset_lock,
         "sliding_chain_contract": contract,
         "continuity_checklist": _video_continuity_checklist(),
     }
@@ -241,19 +263,7 @@ def _image_quality_checklist() -> list[str]:
 
 
 def _previous_blocker_prompt_lines(blockers: list[str]) -> list[str]:
-    if not blockers:
-        return ["Previous QA blockers for this scene: none recorded."]
-    blocker_lines = [f"- {blocker}" for blocker in blockers]
-    return [
-        "Previous QA blockers for this scene:",
-        *blocker_lines,
-        "Do not repeat:",
-        *blocker_lines,
-        (
-            "Required correction this round: make the blocker visibly impossible to miss while preserving "
-            "character identity, PPE, equipment layout, and adjacent-scene continuity."
-        ),
-    ]
+    return previous_blocker_prompt_lines(blockers)
 
 
 def _video_continuity_checklist() -> list[str]:

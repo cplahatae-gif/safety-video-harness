@@ -40,6 +40,19 @@ def allow_upload(project: Path) -> None:
     config_path.write_text(json.dumps(config, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
+def add_asset_lock_references(project: Path) -> None:
+    assets = {
+        "model/cast/signal-worker.png": b"fake cast image",
+        "product/equipment/bct-truck.png": b"fake equipment image",
+        "ref/approved/space/plant-entry.png": b"fake space image",
+    }
+    for relative_path, content in assets.items():
+        path = project / relative_path
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(content)
+        path.with_suffix(".md").write_text(f"Lock {path.stem} for production continuity.\n", encoding="utf-8")
+
+
 def test_live_imagegen_jobs_require_gate_and_upload(tmp_path: Path) -> None:
     project = tmp_path / "imagegen-gates"
     prepare_storyboard_project(project)
@@ -72,6 +85,25 @@ def test_imagegen_jobs_and_only_filter_are_written_after_approval(tmp_path: Path
     assert job["output"] == "images/draft/sc03_v001.png"
     assert "imagegen" in job["tool"]
     assert "OpenAI" not in json.dumps(jobs, ensure_ascii=False)
+
+
+def test_imagegen_jobs_include_asset_lock_policy(tmp_path: Path) -> None:
+    project = tmp_path / "imagegen-asset-lock"
+    prepare_storyboard_project(project)
+    add_asset_lock_references(project)
+    assert run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard").returncode == 0
+    allow_upload(project)
+
+    result = run_cli("scripts/generate_images.py", "--project", str(project), "--live", "--only", "sc01")
+
+    assert result.returncode == 0
+    jobs = load_json(project / "prompts" / "imagegen_jobs.json")
+    job = jobs["jobs"][0]
+    assert job["asset_lock"]["status"] == "production_locked"
+    assert job["production_consistency_policy"]["text_only_multi_frame_production_allowed"] is False
+    assert "Production consistency policy" in job["prompt"]
+    manifest = load_json(project / "asset-lock" / "asset_lock_manifest.json")
+    assert manifest["higgsfield_seedance_strategy"]["required_inputs"] == ["start_image", "end_image"]
 
 
 def test_imagegen_jobs_include_final_end_keyframe_when_generating_all(tmp_path: Path) -> None:

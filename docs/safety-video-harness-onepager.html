@@ -707,8 +707,8 @@ density_factor와 무관하게 짧게 검증</pre>
           <tr>
             <td><strong>이미지</strong></td>
             <td>기술 조건, 시각 연속성, 스토리 일치, 안전교육성, Devil's Advocate 리스크</td>
-            <td>필드별 4점 이상, 총점 24점 이상, consensus 통과</td>
-            <td><strong>RALPH loop 실행.</strong> 부족한 지점을 재생성 프롬프트로 기록하고 <code>scNN_vNNN.png</code> 새 버전으로 반복 검증한다. 기준 통과 시 즉시 종료한다. 장면별 최대 20회이며, 같은 blocker가 3회 반복되면 upstream escalation.</td>
+            <td>필드별 4점 이상, 총점 44/55 이상, 수동 시각 QA 증거, consensus 통과</td>
+            <td><strong>RALPH loop 실행.</strong> 부족한 지점을 RALPH critique block으로 기록하고 <code>scNN_vNNN.png</code> 새 버전으로 반복 검증한다. contact sheet/시각 QA 증거를 남기며, 기준 통과 시 즉시 종료한다. 장면별 최대 20회이며, 같은 blocker가 3회 반복되면 upstream escalation.</td>
             <td><code>qa/image_qa_loop.json</code>, <code>qa/arbiter_decisions/image/scNN/round_NNN.json</code></td>
           </tr>
           <tr>
@@ -818,7 +818,7 @@ density_factor와 무관하게 짧게 검증</pre>
             <h3>LLM Wiki</h3>
             <ul>
               <li><code>llm-wiki/evaluation-rounds.md</code></li>
-              <li>이전 blocker를 다음 이미지 프롬프트의 <code>Previous QA blockers</code> 섹션에 주입한다.</li>
+              <li>이전 blocker를 다음 이미지 프롬프트의 <code>RALPH previous-round critique</code> 섹션에 주입한다.</li>
               <li>같은 문제가 반복되면 재생성이 아니라 스토리보드/레퍼런스/프롬프트 계약 수정으로 에스컬레이션한다.</li>
             </ul>
           </article>

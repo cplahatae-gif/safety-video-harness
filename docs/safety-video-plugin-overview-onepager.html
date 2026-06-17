@@ -520,11 +520,12 @@
       <div class="step ai"><b>05</b><h3>스토리보드</h3><p><code>story-writer</code>와 storyteller가 source 기반 장면 계약을 작성하고 review dashboard를 만든다.</p></div>
       <div class="step qa"><b>06</b><h3>스토리 QA</h3><p>rubric, few-shot, role evaluator, Arbiter로 Gate 1 후보를 검토한다.</p></div>
       <div class="step gate"><b>G1</b><h3>사용자 승인</h3><p>스토리보드 승인 전 imagegen 또는 영상 단계로 넘어가지 않는다.</p></div>
-      <div class="step ai"><b>07</b><h3>이미지 설계</h3><p>lead-style, scene-prompt, arbiter가 장면별 imagegen job spec을 만든다.</p></div>
-      <div class="step asset"><b>08</b><h3>키프레임</h3><p>Codex imagegen 결과를 collect/record하여 <code>images/draft</code>에 저장하고 승인본은 <code>images/approved</code>로 이동한다.</p></div>
-      <div class="step qa"><b>09</b><h3>이미지 RALPH</h3><p>early-stop max 20. 같은 blocker 3회 반복 시 upstream 수정으로 에스컬레이션한다.</p></div>
+      <div class="step asset"><b>07</b><h3>Asset Lock</h3><p>cast, PPE, equipment, space/background, style reference를 먼저 고정한다. text-only 다중 컷은 draft exploration이다.</p></div>
+      <div class="step ai"><b>08</b><h3>이미지 설계</h3><p>lead-style, scene-prompt, arbiter가 asset lock 기반 imagegen/edit/compositing job spec을 만든다.</p></div>
+      <div class="step asset"><b>09</b><h3>키프레임</h3><p>Codex imagegen 또는 reference/edit chain 결과를 collect/record하여 <code>images/draft</code>에 저장하고 승인본은 <code>images/approved</code>로 이동한다.</p></div>
+      <div class="step qa"><b>10</b><h3>이미지 RALPH</h3><p>44/55, 수동/휴리스틱 시각 QA, identity/equipment/background/hazard-zone blocker를 검사한다. 실패 원인은 RALPH critique block으로 다음 프롬프트에 주입하고, 같은 blocker 3회 반복 시 upstream 수정으로 에스컬레이션한다.</p></div>
       <div class="step gate"><b>G2</b><h3>비용 승인</h3><p>Seedance live는 비용 고지, upload 허용, Gate 2 승인 뒤에만 가능하다.</p></div>
-      <div class="step qa"><b>10</b><h3>영상 QA/조립</h3><p>sampled frames, story-video alignment, subtitles, final assembly plan으로 최종 산출물을 검토한다.</p></div>
+      <div class="step qa"><b>11</b><h3>영상 QA/조립</h3><p>start/end keyframes와 reference media pack 기반 Seedance 결과를 sampled frames, story-video alignment, subtitles, final assembly plan으로 검토한다.</p></div>
     </div>
     <div class="retry">
       실패 루프: 스토리보드 QA 실패는 storyboard 수정, 이미지 QA 실패는 RALPH 재생성 또는 upstream escalation,
@@ -689,6 +690,8 @@
     <p class="note">
       이 작업 흐름도는 운영 순서를 기준으로 한다. 스토리보드는 Gate 1에서 사용자가 직접 확인하고,
       이미지는 RALPH 루프를 돌 수 있지만 영상은 비용 때문에 자동 루프를 돌지 않는다.
+      production 키프레임은 asset lock, reference/edit chain, deterministic compositing 중 하나를 통과해야 하며
+      Seedance는 prompt-only가 아니라 start/end keyframes와 reference media pack을 lock layer로 사용한다.
     </p>
   </section>
 
@@ -983,7 +986,7 @@
           <li><b>역할:</b> 이미지가 스토리, 인물/PPE, 장비, 배경, 스타일, 안전 정확성과 맞는지 점수화한다.</li>
           <li><b>구성:</b> <code>skills/image-consistency-check/SKILL.md</code> + <code>safety_video_harness/image_qa.py</code></li>
           <li><b>사용 예:</b> <code>uv run python scripts/validate_images.py --project projects/&lt;slug&gt;</code></li>
-          <li><b>산출물:</b> <code>qa/image_reviews.json</code>, RALPH blocker, regeneration delta, 승인 판단</li>
+          <li><b>산출물:</b> <code>qa/image_reviews.json</code>, <code>qa/visual_review/image_contact_sheet.png</code>, RALPH critique, regeneration delta, 승인 판단</li>
         </ul>
       </div>
       <div class="card skill">
@@ -1079,16 +1082,16 @@
       <div class="card tool">
         <h3>Codex imagegen</h3>
         <ul>
-          <li><b>역할:</b> 스토리보드와 image prompt contract를 바탕으로 실제 키프레임 이미지를 만든다.</li>
+          <li><b>역할:</b> 스토리보드와 asset lock contract를 바탕으로 draft 키프레임 이미지를 만든다.</li>
           <li><b>구성:</b> built-in imagegen skill/tool + <code>prompts/image_prompts.json</code></li>
-          <li><b>사용 예:</b> Gate 1 승인 후 “sc01부터 imagegen으로 생성해줘.”</li>
-          <li><b>기준:</b> 이미지는 project <code>images/draft</code> 또는 <code>images/approved</code>에 보존.</li>
+          <li><b>사용 예:</b> Gate 1 승인 후 asset lock 상태를 확인하고 “sc01부터 draft keyframe을 생성해줘.”</li>
+          <li><b>기준:</b> text-only 독립 다중 컷은 production 불가. 이미지는 project <code>images/draft</code> 또는 <code>images/approved</code>에 보존.</li>
         </ul>
       </div>
       <div class="card tool">
         <h3>Higgsfield CLI / Seedance</h3>
         <ul>
-          <li><b>역할:</b> 승인된 start/end keyframes를 영상 clip으로 변환한다.</li>
+          <li><b>역할:</b> 승인된 start/end keyframes와 reference media pack/Soul ID를 영상 clip으로 변환한다.</li>
           <li><b>구성:</b> Higgsfield CLI + <code>seedance_live.py</code> + <code>prompts/video_prompts.json</code></li>
           <li><b>사용 예:</b> Gate 2 승인 후 5-10초 validation-run을 먼저 실행.</li>
           <li><b>기준:</b> 비용 고지, upload 허용, <code>--execute-paid</code> 없으면 live 실행 금지.</li>
@@ -1147,9 +1150,9 @@
         <tr><td>5</td><td><code>plan_storyboard.py</code>, <code>build_storyboard_dashboard.py</code></td><td>story-writer + storyteller</td><td><code>storyboard/scenes.json</code>, Gate 1 review HTML</td></tr>
         <tr><td>6</td><td><code>evaluate_storyboard.py</code></td><td>QA contract + Arbiter</td><td><code>qa/storyboard_quality_reviews.json</code>, Gate 1 후보</td></tr>
         <tr><td>7</td><td><code>approve_gate.py --gate storyboard</code></td><td>Gate 1</td><td>이미지 프롬프트와 imagegen dry-run 허용</td></tr>
-        <tr><td>8</td><td><code>plan_image_prompt_team.py</code>, <code>generate_images.py --dry-run</code></td><td>lead-style + scene-prompt + visual arbiter</td><td>imagegen job spec, 상세 image prompts</td></tr>
-        <tr><td>9</td><td>Codex imagegen + <code>collect_image_outputs.py</code></td><td>imagegen + image QA</td><td><code>images/draft</code>, <code>images/approved</code>, RALPH decision</td></tr>
-        <tr><td>10</td><td><code>generate_seedance.py --dry-run</code>, 비용 산정</td><td>seedance-prompting</td><td>영상 prompt plan, 비용/clip 계획</td></tr>
+        <tr><td>8</td><td><code>plan_image_prompt_team.py</code>, <code>generate_images.py --dry-run</code></td><td>asset lock + lead-style + scene-prompt + visual arbiter</td><td><code>asset_lock_manifest.json</code>, imagegen/edit/compositing job spec, 상세 image prompts</td></tr>
+        <tr><td>9</td><td>Codex imagegen/reference edit + <code>collect_image_outputs.py</code></td><td>imagegen + image QA</td><td><code>images/draft</code>, <code>images/approved</code>, RALPH decision</td></tr>
+        <tr><td>10</td><td><code>generate_seedance.py --dry-run</code>, 비용 산정</td><td>seedance-prompting + reference media pack</td><td>영상 prompt plan, start/end image, 비용/clip 계획</td></tr>
         <tr><td>11</td><td>사용자 Gate 2 승인</td><td>live veto + cost guard</td><td>짧은 validation-run 또는 전체 생성 실행 가능</td></tr>
         <tr><td>12</td><td><code>inspect_video.py</code>, <code>validate_video.py</code>, <code>assemble_video.py</code></td><td>video-inspect + video-qa + assembly</td><td>sampled frame evidence, triad alignment, subtitles/final assembly plan</td></tr>
       </tbody>

@@ -51,22 +51,34 @@ Critical blockers:
 
 ## Image QA
 
-Minimum pass: total `24/30` or higher and no critical blocker.
+Minimum pass: total `44/55` or higher, every axis `4` or higher, required manual/isolated visual QA present, and no critical blocker.
 
 Axes:
 
 - Story match: the image shows the intended scene role and safety behavior.
 - Identity continuity: recurring workers, PPE, BCT, dump truck, and plant space remain stable.
 - PPE/equipment accuracy: helmet, vest, work clothes, truck type, lane, pedestrian route, and hazard zone are plausible.
-- Gaze and pose motivation: every visible person looks or gestures toward a visible safety cue.
-- Style match: line quality, palette, camera grammar, and rendering style match the selected style guide.
-- Video readiness: the image can serve as a start/end keyframe in the sliding-chain plan.
+- Equipment continuity: BCT, dump truck, mirrors, wheels, scale, and relative positions remain stable.
+- Story flow: the still frame connects causally to the previous and next scene.
+- Technical readiness: readable 16:9 draft image suitable for video keyframe use.
+- Floor/lane consistency: concrete floor, lane colors, walk path, cones, and bollards match the locked site layout.
+- Background consistency: plant structures, gates, mirrors, signage, and camera-side geometry remain stable.
+- Character identity lock: recurring workers keep the same body type, helmet, vest, role, and visual identity cues.
+- Vehicle geometry lock: BCT mixer, dump truck, mirrors, wheels, scale, and relative positions remain stable.
+- Hazard-zone consistency: the red danger zone, pedestrian route, stop line, and control point stay consistent and visible.
+
+Until a full semantic vision evaluator is implemented, production image approval requires `qa/image_manual_reviews.json`.
+Each scene entry must score the five visual-lock axes above and list any blocking issues. `scripts/build_image_visual_review.py`
+can create a local heuristic draft and contact sheet without paid upload, but gaze, identity, and safety meaning still need
+human or model-based semantic confirmation. A generated image with no visual review is treated as draft-only and must not pass Gate 2.
 
 Critical blockers:
 
 - a worker appears, disappears, duplicates, or changes role without story reason
 - gaze points off-screen without visible target
 - BCT, dump truck, PPE, or site layout changes in a way that breaks continuity
+- floor color, lane paint, mirror/sign placement, or background plate changes without story reason
+- hazard zone location or pedestrian route changes between adjacent keyframes
 - image relies on AI-rendered Korean/English text
 - collision impact, injury, gore, or unsupported accident spectacle appears
 - generated frame looks like generic factory footage rather than the selected SOP topic
@@ -113,4 +125,3 @@ Escalation targets:
 - Prompt issue: revise scene prompt contract.
 - Image artifact: regenerate the affected scene.
 - Video issue: propose prompt/keyframe/storyboard fixes; do not auto-regenerate paid video.
-

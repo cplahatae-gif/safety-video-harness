@@ -201,6 +201,8 @@ def test_image_prompt_includes_previous_qa_blockers_from_llm_wiki(tmp_path: Path
 
     assert result.returncode == 0
     prompt = load_json(project / "prompts" / "image_prompts.json")["plans"][0]["prompt"]
+    assert "RALPH previous-round critique:" in prompt
     assert "Previous QA blockers for this scene:" in prompt
     assert "gaze target is unclear" in prompt
-    assert "Do not repeat:" in prompt
+    assert "Quality pressure" in prompt
+    assert "Do not repeat these failures:" in prompt

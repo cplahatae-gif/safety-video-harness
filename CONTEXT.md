@@ -12,6 +12,8 @@ This harness creates safety-training video projects from source training materia
 - `scene`: One storyboard beat. In the sliding-chain video model, scene `scNN` becomes one clip from keyframe `scNN` to keyframe `scNN+1`.
 - `keyframe`: A still image used as a Seedance start or end frame.
 - `final keyframe`: The extra `scNN+1` image required to close the last clip.
+- `asset lock`: The approved reference layer that fixes cast identity, PPE, equipment, space/background, style, and work-situation geometry before production keyframes.
+- `reference media pack`: The image references passed to Higgsfield/Seedance alongside start/end keyframes, such as cast sheets, equipment refs, space plates, and style refs.
 - `Gate 1`: Storyboard approval. Required before live imagegen job preparation.
 - `Gate 2`: Image-to-video approval. Required before live Seedance planning or execution.
 - `round`: One recorded evaluator decision in `qa/evaluation_rounds.jsonl`.
@@ -30,6 +32,8 @@ This harness creates safety-training video projects from source training materia
 - Do not overwrite approved assets; preserve older approved versions.
 - Do not approve image or video quality from metadata alone.
 - Use isolated QA evidence bundles so the generator does not approve its own output.
+- Do not treat independent text-only multi-frame generation as production quality; use asset lock, reference/edit chaining, or deterministic compositing before final keyframes.
+- Do not generate production Seedance clips from prompt text alone; use approved start/end keyframes and available reference media.
 
 ## Architecture Orientation
 

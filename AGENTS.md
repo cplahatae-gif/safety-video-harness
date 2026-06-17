@@ -18,8 +18,15 @@
 - Deliver required Korean text through subtitle/overlay/title-card artifacts, not generated text inside image keyframes.
 - Build keyframes as one causal story flow, not disconnected checklist panels.
 - Each image prompt must state previous-scene continuity, current story beat, and next-scene setup.
+- Do not treat independent text-only multi-frame image generation as production quality; it is draft exploration only.
+- Before final keyframes, create or approve an asset lock layer: cast, PPE, equipment, space/background, style, and work-situation references.
+- Prefer reference/edit chaining or deterministic compositing for production keyframes when character, vehicle, or background consistency matters.
 - Validate sliding-chain continuity before video work: scNN must end at scNN+1 so adjacent clips share a keyframe.
-- Use score-based QA before regeneration or video: story match, identity, PPE, equipment, story flow, and technical readiness.
+- Seedance/Higgsfield clips must use approved start/end keyframes and available reference media; do not generate production video from prompt text alone.
+- Use Higgsfield Soul ID or equivalent character reference when recurring human identity must be preserved and external upload is approved.
+- Use score-based QA before regeneration or video: story match, identity, PPE, equipment, story flow, technical readiness, floor/lane consistency, background consistency, character identity lock, vehicle geometry lock, and hazard-zone consistency.
+- Do not approve production images without `qa/image_manual_reviews.json` or an equivalent isolated visual QA artifact covering floor/lane, background, identity, vehicle geometry, and hazard-zone consistency.
+- Use `scripts/build_image_visual_review.py` to create local contact-sheet evidence before Gate 2; treat it as heuristic support, not a full semantic replacement for human/model visual review.
 - Treat RALPH as an early-stopping loop: stop immediately when thresholds pass, and never exceed 20 image QA iterations per scene.
 - Evaluate generated assets from an isolated QA context using an evidence bundle; do not let the generator approve its own output.
 - Append every storyboard, image, and video QA round to project evidence and `llm-wiki/evaluation-rounds.md`.
