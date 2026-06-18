@@ -59,6 +59,7 @@ The source URL ledger is `docs/reference-sources.md`; role-specific operational 
 2. Scene prompt agents write scene-specific prompt briefs against that bible.
 3. Visual director arbiter checks the whole prompt set before `imagegen` runs.
 4. Generated images are evaluated by existing QA roles and RALPH loop logic.
+5. OpenCV MCP is used as the no-cost local first-pass visual inspection layer for measurable drift before any paid or external semantic vision review.
 5. Video work remains downstream and paid/live generation stays gate-protected.
 
 ## Role-to-Reference Map

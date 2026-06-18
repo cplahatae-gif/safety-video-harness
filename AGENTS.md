@@ -27,6 +27,7 @@
 - Use score-based QA before regeneration or video: story match, identity, PPE, equipment, story flow, technical readiness, floor/lane consistency, background consistency, character identity lock, vehicle geometry lock, and hazard-zone consistency.
 - Do not approve production images without `qa/image_manual_reviews.json` or an equivalent isolated visual QA artifact covering floor/lane, background, identity, vehicle geometry, and hazard-zone consistency.
 - Use `scripts/build_image_visual_review.py` to create local contact-sheet evidence before Gate 2; treat it as heuristic support, not a full semantic replacement for human/model visual review.
+- Use OpenCV MCP as the preferred no-cost first-pass visual inspection layer for floor/lane, hazard-zone, background, and layout drift; do not treat OpenCV metadata as a full semantic identity/gaze review.
 - Treat RALPH as an early-stopping loop: stop immediately when thresholds pass, and never exceed 20 image QA iterations per scene.
 - Evaluate generated assets from an isolated QA context using an evidence bundle; do not let the generator approve its own output.
 - Append every storyboard, image, and video QA round to project evidence and `llm-wiki/evaluation-rounds.md`.

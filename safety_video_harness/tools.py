@@ -10,8 +10,8 @@ def check_tools(skills_root: Path | None = None) -> str:
     root = skills_root or Path.home() / ".codex" / "skills"
     required = ["python3", "ffmpeg", "ffprobe", "node", "npm", "tesseract"]
     statuses = [f"{tool}: {'found' if shutil.which(tool) else 'missing'}" for tool in required]
-    optional = "higgsfield: found" if shutil.which("higgsfield") else "higgsfield: missing"
-    statuses.append(optional)
+    statuses.append("higgsfield: found" if shutil.which("higgsfield") else "higgsfield: missing")
+    statuses.append("opencv-mcp-server: configured-via-uvx" if shutil.which("uvx") else "opencv-mcp-server: missing-uvx")
     statuses.append(_ocr_language_status("kor"))
     statuses.append(_ocr_language_status("eng"))
     for skill in ["scenelens", "video-frame-analysis", "understand-video", "seedance-expert"]:

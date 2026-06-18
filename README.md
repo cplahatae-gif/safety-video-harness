@@ -670,6 +670,10 @@ production 통과가 되지 않는다. 이 경우 RALPH 상태는 `needs_regener
 않고 contact sheet와 점수 초안을 만든다. `--write-review`를 붙이면 `qa/image_manual_reviews.json`까지
 작성하지만, 의미론적 인물/시선 판단은 사람 또는 별도 비전 평가자가 최종 확인해야 한다.
 
+OpenCV MCP는 이 단계의 우선 로컬 비전 도구다. 외부 업로드 없이 바닥/차선 색상 drift,
+위험구역 위치, 배경/레이아웃 변화, contact-sheet preprocessing 같은 1차 검사를 맡는다.
+사람 동일성, 시선 의미, 교육성 판단은 OpenCV만으로 승인하지 않고 human/model semantic review로 넘긴다.
+
 ```bash
 uv run python scripts/build_image_visual_review.py --project projects/fall-prevention --only sc01
 uv run python scripts/build_image_visual_review.py --project projects/fall-prevention --only sc01 --write-review
@@ -680,6 +684,16 @@ uv run python scripts/build_image_visual_review.py --project projects/fall-preve
 - `qa/visual_review/image_contact_sheet.png`
 - `qa/image_visual_review_draft.json`
 - 선택 시 `qa/image_manual_reviews.json`
+
+OpenCV MCP 설치/연결:
+
+```toml
+[mcp_servers.opencv]
+command = "uvx"
+args = ["opencv-mcp-server"]
+```
+
+설정 후 Codex를 재시작하면 OpenCV MCP 도구를 사용할 수 있다.
 
 RALPH loop는 무조건 20회 실행하는 루프가 아니다. 장면별 최대 20회까지 허용하는
 early-stopping loop이며, 기준을 통과하면 즉시 종료한다. 20회에 도달해도 blocker가

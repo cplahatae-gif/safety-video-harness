@@ -12,3 +12,4 @@ def test_video_skill_missing_status_is_reported(tmp_path: Path) -> None:
     assert "video-frame-analysis: missing" in output
     assert "understand-video: missing" in output
     assert "seedance-expert: missing" in output
+    assert "opencv-mcp-server:" in output

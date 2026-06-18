@@ -523,7 +523,7 @@
       <div class="step asset"><b>07</b><h3>Asset Lock</h3><p>cast, PPE, equipment, space/background, style reference를 먼저 고정한다. text-only 다중 컷은 draft exploration이다.</p></div>
       <div class="step ai"><b>08</b><h3>이미지 설계</h3><p>lead-style, scene-prompt, arbiter가 asset lock 기반 imagegen/edit/compositing job spec을 만든다.</p></div>
       <div class="step asset"><b>09</b><h3>키프레임</h3><p>Codex imagegen 또는 reference/edit chain 결과를 collect/record하여 <code>images/draft</code>에 저장하고 승인본은 <code>images/approved</code>로 이동한다.</p></div>
-      <div class="step qa"><b>10</b><h3>이미지 RALPH</h3><p>44/55, 수동/휴리스틱 시각 QA, identity/equipment/background/hazard-zone blocker를 검사한다. 실패 원인은 RALPH critique block으로 다음 프롬프트에 주입하고, 같은 blocker 3회 반복 시 upstream 수정으로 에스컬레이션한다.</p></div>
+      <div class="step qa"><b>10</b><h3>이미지 RALPH</h3><p>44/55, OpenCV MCP/휴리스틱/수동 시각 QA, identity/equipment/background/hazard-zone blocker를 검사한다. 실패 원인은 RALPH critique block으로 다음 프롬프트에 주입하고, 같은 blocker 3회 반복 시 upstream 수정으로 에스컬레이션한다.</p></div>
       <div class="step gate"><b>G2</b><h3>비용 승인</h3><p>Seedance live는 비용 고지, upload 허용, Gate 2 승인 뒤에만 가능하다.</p></div>
       <div class="step qa"><b>11</b><h3>영상 QA/조립</h3><p>start/end keyframes와 reference media pack 기반 Seedance 결과를 sampled frames, story-video alignment, subtitles, final assembly plan으로 검토한다.</p></div>
     </div>
@@ -986,7 +986,7 @@
           <li><b>역할:</b> 이미지가 스토리, 인물/PPE, 장비, 배경, 스타일, 안전 정확성과 맞는지 점수화한다.</li>
           <li><b>구성:</b> <code>skills/image-consistency-check/SKILL.md</code> + <code>safety_video_harness/image_qa.py</code></li>
           <li><b>사용 예:</b> <code>uv run python scripts/validate_images.py --project projects/&lt;slug&gt;</code></li>
-          <li><b>산출물:</b> <code>qa/image_reviews.json</code>, <code>qa/visual_review/image_contact_sheet.png</code>, RALPH critique, regeneration delta, 승인 판단</li>
+          <li><b>산출물:</b> <code>qa/image_reviews.json</code>, <code>qa/visual_review/image_contact_sheet.png</code>, OpenCV MCP drift findings, RALPH critique, regeneration delta, 승인 판단</li>
         </ul>
       </div>
       <div class="card skill">
