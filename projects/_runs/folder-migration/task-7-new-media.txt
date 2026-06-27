@@ -1,0 +1,49 @@
+created project /tmp/folder-migration-task7-parent.7hCV5l/new-media-project
+registered src-001
+dry-run rendered 1 source(s)
+extracted 2 topic(s)
+selected topic topic-001
+extracted style DNA
+planned 6 story beat(s)
+approved gate storyboard
+imagegen job(s) prepared 1; expected imagegen call(s): 1
+dry-run subtitle plan written: /tmp/folder-migration-task7-parent.7hCV5l/new-media-project/media/subtitles/subtitles.srt
+dry-run assembly plan written: /tmp/folder-migration-task7-parent.7hCV5l/new-media-project/media/output/assembly_plan.json
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/AGENTS.md
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/HANDOFF.md
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/input/extracted_topics.json
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/input/source_facts.json
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/input/sources.json
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/input/sources/rendered/src-001_slide_01.png
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/input/sources/rendered/src-001_slide_02.png
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/input/sources/rendered/src-001_slide_03.png
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/input/sources/rendered/src-001_slide_04.png
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/input/sources/rendered/src-001_slide_05.png
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/input/sources/rendered/src-001_slide_06.png
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/input/sources/rendered/src-001_slide_07.png
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/input/sources/rendered/src-001_slide_08.png
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/input/sources/rendered/src-001_slide_09.png
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/input/sources/rendered/src-001_slide_10.png
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/input/sources/rendered/src-001_slide_11.png
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/input/sources/rendered/src-001_slide_12.png
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/llm-wiki/evaluation-rounds.md
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/media/output/assembly_plan.json
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/media/output/concat.txt
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/media/subtitles/subtitles.srt
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/media/video/clips/sc01_sc02.mp4
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/media/video/clips/sc02_sc03.mp4
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/PLAN.md
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/project_config.json
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/qa/approvals.json
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/qa/evaluation_rounds.jsonl
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/qa/state/errors.jsonl
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/qa/state/self_score.json
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/qa/state/turn_count
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/qa/storyboard_quality_reviews.json
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/refs/approved/style/style_dna.json
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/refs/asset-lock/asset_lock_manifest.json
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/story/image_prompt_team_plan.json
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/story/image_prompts.json
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/story/imagegen_jobs.json
+/tmp/folder-migration-task7-parent.7hCV5l/new-media-project/story/scenes.json
+cleanup removed /tmp/folder-migration-task7-parent.7hCV5l

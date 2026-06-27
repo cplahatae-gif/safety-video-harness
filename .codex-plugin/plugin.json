@@ -1,15 +1,14 @@
 {
   "name": "safety-video-harness",
   "version": "0.1.0",
-  "description": "Codex harness for storyboard-first safety training video production.",
-  "author": {
-    "name": "cplahatae-gif"
-  },
-  "skills": "./skills/",
+  "description": "Compatibility shim for the moved Safety Video Harness plugin assets.",
+  "compatibilityShim": true,
+  "skills": "./app/plugin/skills/",
+  "hooks": "./app/plugin/hooks/hooks.json",
   "interface": {
     "displayName": "Safety Video Harness",
     "shortDescription": "Storyboard-first safety video harness for Codex.",
-    "longDescription": "Plans safety training videos from source materials, controls storyboard and image approval gates, records QA evidence, and prepares Codex imagegen and Higgsfield Seedance workflows.",
+    "longDescription": "Compatibility manifest that points Codex at app/plugin assets during the folder migration window.",
     "developerName": "cplahatae-gif",
     "category": "Productivity",
     "capabilities": [

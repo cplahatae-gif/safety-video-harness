@@ -1,0 +1,32 @@
+AGENTS.md:37:- After asking whether references exist, ask which reusable style guide to use and show 5 choices from `references/style/catalog.json`.
+AGENTS.md:38:- Store reusable styles under `references/style/<style-id>/STYLE_GUIDE.md` with reference images in `references/style/<style-id>/references/`.
+README.md:280:루트 [references/style](./references/style)에 보관한다. 현재 기본값은
+README.md:281:`korean-industrial-webtoon`이며, 좋은 결과물이 나오면 `references/style/<style-id>/STYLE_GUIDE.md`
+README.md:282:와 `references/style/<style-id>/references/`에 추가한다.
+README.md:292:그림체는 루트 `references/style/`에 둔다.
+README.md:295:references/style/
+docs/generative-media-reference-index.md:49:- Style guide catalog: `references/style/README.md`
+docs/generative-media-reference-index.md:51:- Current webtoon style: `references/style/korean-industrial-webtoon/STYLE_GUIDE.md`
+app/plugin/skills/video-inspect/references/video-inspect-reference.md:22:- Save inspection outputs under the project evidence/QA structure so paid generation results remain auditable.
+app/plugin/skills/style-ref-search/SKILL.md:17:- Local style guide catalog: `style-guides/README.md`
+app/plugin/skills/style-ref-search/SKILL.md:20:- Local skill reference: `references/style-ref-search-reference.md`
+app/plugin/skills/image-consistency-check/SKILL.md:37:- Local style guide catalog: `style-guides/README.md`
+app/plugin/skills/image-consistency-check/SKILL.md:38:- Current industrial webtoon style: `style-guides/korean-industrial-webtoon/STYLE_GUIDE.md`
+docs/repository-folder-structure-onepager.html:429:          <text x="48" y="313" class="svg-small">style-guides, model, ref</text>
+docs/repository-folder-structure-onepager.html:520:              <li><code>style-guides/</code></li>
+docs/repository-folder-structure-onepager.html:569:            <h3>style-guides + 공통 cast/ppe/equipment -> references/</h3>
+docs/repository-folder-structure-onepager.html:573:            <h3>evidence/audio/clips/output/storyboard/scenes.json -> projects/_runs/</h3>
+docs/repository-folder-structure-onepager.html:601:│   ├── style-guides/
+docs/repository-folder-structure-onepager.html:627:├── evidence/
+docs/evaluation-rubrics.md:16:If the work uses a style guide, also read `references/style/<style-id>/STYLE_GUIDE.md`.
+app/plugin/hooks/session-start-anchor.py:17:        "- Reference question comes first; style choice comes next with 5 choices from style-guides/catalog.json.",
+app/plugin/hooks/session-start-anchor.py:22:        "- Preserve evidence under qa/, evidence/, and llm-wiki/.",
+tests/test_plugin_structure.py:47:        "references/style/catalog.json",
+tests/test_plugin_structure.py:48:        "references/style/korean-industrial-webtoon/STYLE_GUIDE.md",
+tests/test_plugin_structure.py:89:        "app/plugin/skills/style-ref-search/references/style-ref-search-reference.md",
+app/plugin/hooks/protected_paths.json:11:    "style-guides",
+docs/reference-sources.md:30:- Style guide catalog: `references/style/README.md`
+docs/reference-sources.md:31:- Current webtoon style: `references/style/korean-industrial-webtoon/STYLE_GUIDE.md`
+app/harness/package/safety_video_harness/style_guides.py:103:        "note_ko": "레퍼런스가 있으면 먼저 refs 역할별 폴더에 배치하고, 없으면 references/style 카탈로그에서 스타일을 선택한다.",
+app/plugin/agents/lead-style-agent/AGENT.md:15:- `style-guides/<style-id>/STYLE_GUIDE.md`
+app/plugin/agents/lead-style-agent/AGENT.md:41:- Local style guide catalog: `style-guides/README.md`

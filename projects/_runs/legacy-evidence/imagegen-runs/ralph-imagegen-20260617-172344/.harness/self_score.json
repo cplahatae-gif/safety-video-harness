@@ -1,0 +1,11 @@
+{
+  "turn": 0,
+  "scores": {
+    "functional": 0,
+    "technical": 0,
+    "completeness": 0,
+    "harness": 0
+  },
+  "p0_issues": [],
+  "p1_issues": []
+}

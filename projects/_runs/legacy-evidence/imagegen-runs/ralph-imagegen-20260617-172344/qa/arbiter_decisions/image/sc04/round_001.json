@@ -1,0 +1,134 @@
+{
+  "stage": "image",
+  "item_id": "sc04",
+  "round": 1,
+  "iteration": 1,
+  "decision": "regenerate",
+  "role_reviews": [
+    {
+      "role": "technical",
+      "scores": {
+        "technical": 5
+      },
+      "blocking_issues": [
+        "floor_lane_consistency_score below minimum 4: 3",
+        "background_consistency_score below minimum 4: 3",
+        "hazard_zone_consistency_score below minimum 4: 3",
+        "adjacent scene color/layout drift too high: 159.00",
+        "floor_lane_consistency_score below minimum 4: 3",
+        "background_consistency_score below minimum 4: 3",
+        "hazard_zone_consistency_score below minimum 4: 3"
+      ],
+      "execution_mode": "parallel_role_evaluator"
+    },
+    {
+      "role": "visual_continuity",
+      "scores": {
+        "identity_consistency": 5,
+        "ppe": 5,
+        "equipment": 5
+      },
+      "blocking_issues": [
+        "floor_lane_consistency_score below minimum 4: 3",
+        "background_consistency_score below minimum 4: 3",
+        "hazard_zone_consistency_score below minimum 4: 3",
+        "adjacent scene color/layout drift too high: 159.00",
+        "floor_lane_consistency_score below minimum 4: 3",
+        "background_consistency_score below minimum 4: 3",
+        "hazard_zone_consistency_score below minimum 4: 3"
+      ],
+      "execution_mode": "parallel_role_evaluator"
+    },
+    {
+      "role": "story_match",
+      "scores": {
+        "story_match": 5,
+        "story_flow": 5
+      },
+      "blocking_issues": [
+        "floor_lane_consistency_score below minimum 4: 3",
+        "background_consistency_score below minimum 4: 3",
+        "hazard_zone_consistency_score below minimum 4: 3",
+        "adjacent scene color/layout drift too high: 159.00",
+        "floor_lane_consistency_score below minimum 4: 3",
+        "background_consistency_score below minimum 4: 3",
+        "hazard_zone_consistency_score below minimum 4: 3"
+      ],
+      "execution_mode": "parallel_role_evaluator"
+    },
+    {
+      "role": "safety_education",
+      "scores": {
+        "safety": 5
+      },
+      "blocking_issues": [
+        "floor_lane_consistency_score below minimum 4: 3",
+        "background_consistency_score below minimum 4: 3",
+        "hazard_zone_consistency_score below minimum 4: 3",
+        "adjacent scene color/layout drift too high: 159.00",
+        "floor_lane_consistency_score below minimum 4: 3",
+        "background_consistency_score below minimum 4: 3",
+        "hazard_zone_consistency_score below minimum 4: 3"
+      ],
+      "critical_blockers": [],
+      "execution_mode": "parallel_role_evaluator"
+    },
+    {
+      "role": "devils_advocate",
+      "scores": {
+        "risk": 2
+      },
+      "blocking_issues": [
+        "floor_lane_consistency_score below minimum 4: 3",
+        "background_consistency_score below minimum 4: 3",
+        "hazard_zone_consistency_score below minimum 4: 3",
+        "adjacent scene color/layout drift too high: 159.00",
+        "floor_lane_consistency_score below minimum 4: 3",
+        "background_consistency_score below minimum 4: 3",
+        "hazard_zone_consistency_score below minimum 4: 3"
+      ],
+      "critical_blockers": [],
+      "vote": "reject",
+      "execution_mode": "parallel_role_evaluator"
+    }
+  ],
+  "scores": {
+    "technical": 5,
+    "identity_consistency": 5,
+    "ppe": 5,
+    "equipment": 5,
+    "story_match": 5,
+    "story_flow": 5,
+    "safety": 5,
+    "risk": 2
+  },
+  "blocking_issues": [
+    "floor_lane_consistency_score below minimum 4: 3",
+    "background_consistency_score below minimum 4: 3",
+    "hazard_zone_consistency_score below minimum 4: 3",
+    "adjacent scene color/layout drift too high: 159.00"
+  ],
+  "blocker_signatures": [
+    "image:sc04:general:floor_lane_consistency_score_below_minimum_4_3",
+    "image:sc04:general:background_consistency_score_below_minimum_4_3",
+    "image:sc04:general:hazard_zone_consistency_score_below_minimum_4_3",
+    "image:sc04:general:adjacent_scene_color_layout_drift_too_high_159_00"
+  ],
+  "repeated_blockers": [],
+  "critical_vetoes": [],
+  "consensus": {
+    "rule": "5/5 approve or 4/5 approve plus conditional; critical veto overrides majority",
+    "total_roles": 5,
+    "approve_count": 0,
+    "conditional_count": 0,
+    "reject_count": 5,
+    "critical_vetoes": [],
+    "rule_result": "rejected"
+  },
+  "debate_required": false,
+  "debate_triggers": [],
+  "repeated_blocker_threshold": 3,
+  "next_action": "regenerate_blocked_scenes",
+  "regeneration_delta": "Regenerate only after directly addressing these visible deficiencies: floor_lane_consistency_score below minimum 4: 3; background_consistency_score below minimum 4: 3; hazard_zone_consistency_score below minimum 4: 3; adjacent scene color/layout drift too high: 159.00. Preserve approved continuity locks.",
+  "evidence_bundle": "qa/evaluation_bundles/image/sc04/round_001.json"
+}

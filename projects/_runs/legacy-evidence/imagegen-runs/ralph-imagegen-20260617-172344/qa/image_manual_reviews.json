@@ -1,0 +1,148 @@
+{
+  "reviewer": "local_heuristic_visual_qa",
+  "status": "heuristic_requires_human_confirmation_for_semantic_identity",
+  "contact_sheet": "qa/visual_review/image_contact_sheet.png",
+  "asset_lock_status": "production_locked",
+  "reviews": [
+    {
+      "scene_id": "sc01",
+      "floor_lane_consistency_score": 4,
+      "background_consistency_score": 4,
+      "character_identity_lock_score": 4,
+      "vehicle_geometry_lock_score": 4,
+      "hazard_zone_consistency_score": 4,
+      "blocking_issues": [],
+      "reviewer": "local_heuristic_visual_qa",
+      "notes": "Local heuristic checks image readability, contact-sheet evidence, asset-lock coverage, and coarse adjacent-frame color/layout drift. It does not replace human or model-based semantic review for gaze, exact identity, or safety meaning.",
+      "reviewed_asset": "evidence/imagegen-runs/ralph-imagegen-20260617-172344/images/draft/sc01_v001.png",
+      "visual_lock_fields": [
+        "floor_lane_consistency_score",
+        "background_consistency_score",
+        "character_identity_lock_score",
+        "vehicle_geometry_lock_score",
+        "hazard_zone_consistency_score"
+      ],
+      "adjacent_color_delta": 0
+    },
+    {
+      "scene_id": "sc02",
+      "floor_lane_consistency_score": 4,
+      "background_consistency_score": 4,
+      "character_identity_lock_score": 4,
+      "vehicle_geometry_lock_score": 4,
+      "hazard_zone_consistency_score": 4,
+      "blocking_issues": [],
+      "reviewer": "local_heuristic_visual_qa",
+      "notes": "Local heuristic checks image readability, contact-sheet evidence, asset-lock coverage, and coarse adjacent-frame color/layout drift. It does not replace human or model-based semantic review for gaze, exact identity, or safety meaning.",
+      "reviewed_asset": "evidence/imagegen-runs/ralph-imagegen-20260617-172344/images/draft/sc02_v001.png",
+      "visual_lock_fields": [
+        "floor_lane_consistency_score",
+        "background_consistency_score",
+        "character_identity_lock_score",
+        "vehicle_geometry_lock_score",
+        "hazard_zone_consistency_score"
+      ],
+      "adjacent_color_delta": 2.0
+    },
+    {
+      "scene_id": "sc03",
+      "floor_lane_consistency_score": 4,
+      "background_consistency_score": 4,
+      "character_identity_lock_score": 4,
+      "vehicle_geometry_lock_score": 4,
+      "hazard_zone_consistency_score": 4,
+      "blocking_issues": [],
+      "reviewer": "local_heuristic_visual_qa",
+      "notes": "Local heuristic checks image readability, contact-sheet evidence, asset-lock coverage, and coarse adjacent-frame color/layout drift. It does not replace human or model-based semantic review for gaze, exact identity, or safety meaning.",
+      "reviewed_asset": "evidence/imagegen-runs/ralph-imagegen-20260617-172344/images/draft/sc03_v001.png",
+      "visual_lock_fields": [
+        "floor_lane_consistency_score",
+        "background_consistency_score",
+        "character_identity_lock_score",
+        "vehicle_geometry_lock_score",
+        "hazard_zone_consistency_score"
+      ],
+      "adjacent_color_delta": 1.0
+    },
+    {
+      "scene_id": "sc04",
+      "floor_lane_consistency_score": 4,
+      "background_consistency_score": 4,
+      "character_identity_lock_score": 4,
+      "vehicle_geometry_lock_score": 4,
+      "hazard_zone_consistency_score": 4,
+      "blocking_issues": [],
+      "reviewer": "local_heuristic_visual_qa",
+      "notes": "Local heuristic checks image readability, contact-sheet evidence, asset-lock coverage, and coarse adjacent-frame color/layout drift. It does not replace human or model-based semantic review for gaze, exact identity, or safety meaning.",
+      "reviewed_asset": "evidence/imagegen-runs/ralph-imagegen-20260617-172344/images/draft/sc04_v002.png",
+      "visual_lock_fields": [
+        "floor_lane_consistency_score",
+        "background_consistency_score",
+        "character_identity_lock_score",
+        "vehicle_geometry_lock_score",
+        "hazard_zone_consistency_score"
+      ],
+      "adjacent_color_delta": 6.0
+    },
+    {
+      "scene_id": "sc05",
+      "floor_lane_consistency_score": 4,
+      "background_consistency_score": 4,
+      "character_identity_lock_score": 4,
+      "vehicle_geometry_lock_score": 4,
+      "hazard_zone_consistency_score": 4,
+      "blocking_issues": [],
+      "reviewer": "local_heuristic_visual_qa",
+      "notes": "Local heuristic checks image readability, contact-sheet evidence, asset-lock coverage, and coarse adjacent-frame color/layout drift. It does not replace human or model-based semantic review for gaze, exact identity, or safety meaning.",
+      "reviewed_asset": "evidence/imagegen-runs/ralph-imagegen-20260617-172344/images/draft/sc05_v001.png",
+      "visual_lock_fields": [
+        "floor_lane_consistency_score",
+        "background_consistency_score",
+        "character_identity_lock_score",
+        "vehicle_geometry_lock_score",
+        "hazard_zone_consistency_score"
+      ],
+      "adjacent_color_delta": 4.0
+    },
+    {
+      "scene_id": "sc06",
+      "floor_lane_consistency_score": 4,
+      "background_consistency_score": 4,
+      "character_identity_lock_score": 4,
+      "vehicle_geometry_lock_score": 4,
+      "hazard_zone_consistency_score": 4,
+      "blocking_issues": [],
+      "reviewer": "local_heuristic_visual_qa",
+      "notes": "Local heuristic checks image readability, contact-sheet evidence, asset-lock coverage, and coarse adjacent-frame color/layout drift. It does not replace human or model-based semantic review for gaze, exact identity, or safety meaning.",
+      "reviewed_asset": "evidence/imagegen-runs/ralph-imagegen-20260617-172344/images/draft/sc06_v001.png",
+      "visual_lock_fields": [
+        "floor_lane_consistency_score",
+        "background_consistency_score",
+        "character_identity_lock_score",
+        "vehicle_geometry_lock_score",
+        "hazard_zone_consistency_score"
+      ],
+      "adjacent_color_delta": 0.0
+    },
+    {
+      "scene_id": "sc07",
+      "floor_lane_consistency_score": 4,
+      "background_consistency_score": 4,
+      "character_identity_lock_score": 4,
+      "vehicle_geometry_lock_score": 4,
+      "hazard_zone_consistency_score": 4,
+      "blocking_issues": [],
+      "reviewer": "codex_operator_visual_qa_user_requested",
+      "notes": "Manual visual comparison against approved sc06: same plant background, floor markings, green pedestrian lane, red hazard zone, BCT truck, dump truck position, signal worker PPE, and right-side worker PPE remain consistent enough for final keyframe QA. The right-side worker changes from walking/checking to final observation posture without changing role.",
+      "reviewed_asset": "evidence/imagegen-runs/ralph-imagegen-20260617-172344/images/draft/sc07_v001.png",
+      "visual_lock_fields": [
+        "floor_lane_consistency_score",
+        "background_consistency_score",
+        "character_identity_lock_score",
+        "vehicle_geometry_lock_score",
+        "hazard_zone_consistency_score"
+      ],
+      "adjacent_color_delta": null
+    }
+  ]
+}

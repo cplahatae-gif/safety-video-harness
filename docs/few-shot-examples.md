@@ -83,19 +83,29 @@ Good:
 ```json
 {
   "scene_id": "sc03",
-  "artifact": "images/draft/sc03_v002.png",
+  "artifact_path": "images/draft/sc03_v002.png",
   "scores": {
-    "story_match": 4,
-    "identity_continuity": 3,
-    "ppe_equipment_accuracy": 4,
-    "gaze_pose_motivation": 2,
-    "style_match": 5,
-    "video_readiness": 3
+    "story_match_score": 4,
+    "identity_consistency_score": 4,
+    "ppe_score": 4,
+    "equipment_score": 4,
+    "story_flow_score": 4,
+    "technical_score": 5,
+    "floor_lane_consistency_score": 4,
+    "background_consistency_score": 4,
+    "character_identity_lock_score": 3,
+    "vehicle_geometry_lock_score": 4,
+    "hazard_zone_consistency_score": 4
+  },
+  "total_score": 44,
+  "manual_visual_review": {
+    "status": "present",
+    "source_path": "qa/image_manual_reviews.json"
   },
   "critical_blockers": [
-    "signal worker looks off-frame left, but the signal target is not visible"
+    "right-side worker face and body proportions drift from approved adjacent frames"
   ],
-  "regeneration_delta": "Keep the same worker, BCT, yellow dump truck, lane colors, and webtoon rendering. Change the signal worker gaze so it points toward the visible BCT driver or mirror. Add a visible driver-cab/mirror cue in the frame. Do not add workers or text."
+  "regeneration_delta": "Keep the same BCT, yellow dump truck, lane colors, red hazard zone, green pedestrian route, and webtoon rendering. Restore the right-side worker body type, helmet, vest, and role from the approved adjacent frame. Do not add workers, logos, accident impact, or readable generated text."
 }
 ```
 
@@ -145,4 +155,3 @@ Good:
   "proposal": "Do not regenerate yet. First revise the video prompt to keep the driver's gaze on the mirror for the first half of the clip and reduce camera motion."
 }
 ```
-

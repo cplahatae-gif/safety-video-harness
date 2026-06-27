@@ -1,0 +1,10 @@
+safety_video_harness/validation.py:26:        raise HarnessError("storyboard/scenes.json is missing")
+safety_video_harness/seedance_live.py:34:        raise HarnessError("live Seedance requires prompts/video_prompts.json")
+safety_video_harness/layout.py:110:    LayoutKey.STORY_SCENES: ("storyboard/scenes.json",),
+safety_video_harness/layout.py:112:    LayoutKey.STORY_IMAGE_PROMPTS: ("prompts/image_prompts.json",),
+safety_video_harness/layout.py:113:    LayoutKey.STORY_VIDEO_PROMPTS: ("prompts/video_prompts.json",),
+safety_video_harness/layout.py:114:    LayoutKey.STORY_IMAGE_PROMPT_TEAM: ("prompts/image_prompt_team_plan.json",),
+safety_video_harness/layout.py:115:    LayoutKey.STORY_IMAGEGEN_JOBS: ("prompts/imagegen_jobs.json",),
+safety_video_harness/gate_validation.py:29:        raise HarnessError("image_to_video approval requires storyboard/scenes.json")
+safety_video_harness/costs.py:16:        raise HarnessError("video cost estimate requires storyboard/scenes.json")
+safety_video_harness/gates.py:84:        return ["storyboard/scenes.json"]

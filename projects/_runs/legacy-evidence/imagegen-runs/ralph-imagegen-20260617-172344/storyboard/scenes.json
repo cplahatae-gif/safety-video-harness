@@ -1,0 +1,231 @@
+{
+  "schema_version": "2.1",
+  "target_seconds": 30,
+  "target_duration_sec": 30,
+  "seconds_per_clip": 5,
+  "image_density": "normal",
+  "density_factor": 1,
+  "chain_policy": "hybrid",
+  "clip_count": 6,
+  "story_beats": 6,
+  "keyframe_count": 7,
+  "planned_anchor_interval_sec": 5.0,
+  "scenes": [
+    {
+      "id": "sc01",
+      "duration_sec": 5,
+      "educational_goal_ko": "대형차량 진입·하역 작업의 충돌 위험을 인지한다.",
+      "source_citations": [
+        {
+          "source_id": "src-001",
+          "page_or_slide": 1,
+          "claim": "레미콘 사업장 충돌·접촉 안전작업 가이드는 대형차량 진입 및 하역 작업 시 필수 안전 수칙을 다룬다."
+        }
+      ],
+      "visual_action_ko": "레미콘 사업장 입구에서 BCT와 덤프트럭 동선이 분리되어 표시된다.",
+      "caption_ko": "대형차량 동선 확인",
+      "subtitle_ko": "차량 동선을 먼저 확인하세요.",
+      "overlay_text_ko": "대형차량 동선 확인",
+      "image_prompt_en": "Korean industrial safety training animation style, ready-mix concrete plant, BCT bulk cement trailer and dump truck, signal person with orange vest, hard hat, scene action: separated traffic lanes for a BCT bulk cement trailer and a dump truck at a ready-mix concrete plant entrance, clear blind spot zone, safe pedestrian route, no text, no injury, no impact frame.",
+      "motion_prompt_en": "Use start and end keyframes as a continuous safety training shot, slow camera movement, show this action: separated traffic lanes for a BCT bulk cement trailer and a dump truck at a ready-mix concrete plant entrance, keep BCT, dump truck, PPE, signal person, and plant layout consistent, avoid collision or injury depiction.",
+      "start_keyframe": "images/approved/sc01.png",
+      "end_keyframe": "images/approved/sc02.png",
+      "clip_path": "video/clips/sc01_sc02.mp4",
+      "continuity_constraints": {
+        "character_ids": [
+          "worker-001"
+        ],
+        "equipment_ids": [
+          "equipment-001"
+        ],
+        "ppe_requirements": [
+          "hard hat",
+          "safety vest"
+        ],
+        "background_id": "site-001"
+      },
+      "approval_state": "draft",
+      "asset_version": 1
+    },
+    {
+      "id": "sc02",
+      "duration_sec": 5,
+      "educational_goal_ko": "사각지대 보행자 충돌 위험을 확인한다.",
+      "source_citations": [
+        {
+          "source_id": "src-001",
+          "page_or_slide": 4,
+          "claim": "사각지대 내 보행자 미인지 상태에서 대형차량 후진 및 회전 시 보행자 충돌 위험이 크다."
+        }
+      ],
+      "visual_action_ko": "덤프트럭 후진 경로 옆 사각지대에 보행자 접근 금지 표시가 보인다.",
+      "caption_ko": "사각지대 접근 금지",
+      "subtitle_ko": "사각지대 접근을 금지하세요.",
+      "overlay_text_ko": "사각지대 접근 금지",
+      "image_prompt_en": "Korean industrial safety training animation style, ready-mix concrete plant, BCT bulk cement trailer and dump truck, signal person with orange vest, hard hat, scene action: a marked blind spot beside a reversing dump truck route with pedestrians kept outside the hazard zone, clear blind spot zone, safe pedestrian route, no text, no injury, no impact frame.",
+      "motion_prompt_en": "Use start and end keyframes as a continuous safety training shot, slow camera movement, show this action: a marked blind spot beside a reversing dump truck route with pedestrians kept outside the hazard zone, keep BCT, dump truck, PPE, signal person, and plant layout consistent, avoid collision or injury depiction.",
+      "start_keyframe": "images/approved/sc02.png",
+      "end_keyframe": "images/approved/sc03.png",
+      "clip_path": "video/clips/sc02_sc03.mp4",
+      "continuity_constraints": {
+        "character_ids": [
+          "worker-001"
+        ],
+        "equipment_ids": [
+          "equipment-001"
+        ],
+        "ppe_requirements": [
+          "hard hat",
+          "safety vest"
+        ],
+        "background_id": "site-001"
+      },
+      "approval_state": "draft",
+      "asset_version": 1
+    },
+    {
+      "id": "sc03",
+      "duration_sec": 5,
+      "educational_goal_ko": "신호수 배치와 운전원 소통의 필요성을 이해한다.",
+      "source_citations": [
+        {
+          "source_id": "src-001",
+          "page_or_slide": 3,
+          "claim": "감시인 또는 신호수는 차량 유도 시 보행자 접근을 상시 감시하고 무전기와 신호봉으로 운전원과 소통해야 한다."
+        }
+      ],
+      "visual_action_ko": "신호수가 신호봉과 무전기로 BCT 운전원에게 정지 신호를 보낸다.",
+      "caption_ko": "신호수 배치",
+      "subtitle_ko": "신호수와 계속 소통하세요.",
+      "overlay_text_ko": "신호수 배치",
+      "image_prompt_en": "Korean industrial safety training animation style, ready-mix concrete plant, BCT bulk cement trailer and dump truck, signal person with orange vest, hard hat, scene action: a signal person using a baton and radio to communicate a stop signal to the BCT driver, clear blind spot zone, safe pedestrian route, no text, no injury, no impact frame.",
+      "motion_prompt_en": "Use start and end keyframes as a continuous safety training shot, slow camera movement, show this action: a signal person using a baton and radio to communicate a stop signal to the BCT driver, keep BCT, dump truck, PPE, signal person, and plant layout consistent, avoid collision or injury depiction.",
+      "start_keyframe": "images/approved/sc03.png",
+      "end_keyframe": "images/approved/sc04.png",
+      "clip_path": "video/clips/sc03_sc04.mp4",
+      "continuity_constraints": {
+        "character_ids": [
+          "worker-001"
+        ],
+        "equipment_ids": [
+          "equipment-001"
+        ],
+        "ppe_requirements": [
+          "hard hat",
+          "safety vest"
+        ],
+        "background_id": "site-001"
+      },
+      "approval_state": "draft",
+      "asset_version": 1
+    },
+    {
+      "id": "sc04",
+      "duration_sec": 5,
+      "educational_goal_ko": "후방카메라와 후방 확인의 중요성을 이해한다.",
+      "source_citations": [
+        {
+          "source_id": "src-001",
+          "page_or_slide": 4,
+          "claim": "사각지대 내 보행자 미인지 상태에서 대형차량 후진 및 회전 시 보행자 충돌 위험이 크다."
+        }
+      ],
+      "visual_action_ko": "운전원이 후방카메라와 거울을 확인한 뒤 천천히 후진을 준비한다.",
+      "caption_ko": "후방 확인",
+      "subtitle_ko": "후방을 확인한 뒤 후진하세요.",
+      "overlay_text_ko": "후방 확인",
+      "image_prompt_en": "Korean industrial safety training animation style, ready-mix concrete plant, BCT bulk cement trailer and dump truck, signal person with orange vest, hard hat, scene action: a driver checking the rear camera and mirrors before slowly reversing the heavy vehicle, clear blind spot zone, safe pedestrian route, no text, no injury, no impact frame.",
+      "motion_prompt_en": "Use start and end keyframes as a continuous safety training shot, slow camera movement, show this action: a driver checking the rear camera and mirrors before slowly reversing the heavy vehicle, keep BCT, dump truck, PPE, signal person, and plant layout consistent, avoid collision or injury depiction.",
+      "start_keyframe": "images/approved/sc04.png",
+      "end_keyframe": "images/approved/sc05.png",
+      "clip_path": "video/clips/sc04_sc05.mp4",
+      "continuity_constraints": {
+        "character_ids": [
+          "worker-001"
+        ],
+        "equipment_ids": [
+          "equipment-001"
+        ],
+        "ppe_requirements": [
+          "hard hat",
+          "safety vest"
+        ],
+        "background_id": "site-001"
+      },
+      "approval_state": "draft",
+      "asset_version": 1
+    },
+    {
+      "id": "sc05",
+      "duration_sec": 5,
+      "educational_goal_ko": "지정 구역 외 임의 작업과 통로 침범을 금지한다.",
+      "source_citations": [
+        {
+          "source_id": "src-001",
+          "page_or_slide": 4,
+          "claim": "지정 구역 외 임의 작업과 통로 침범은 차량 밀림 및 끼임 위험을 높인다."
+        }
+      ],
+      "visual_action_ko": "작업자가 지정 구역 밖 차량 통로로 들어가려다 관리감독자의 안내로 멈춘다.",
+      "caption_ko": "지정구역 준수",
+      "subtitle_ko": "지정구역 밖 작업은 금지입니다.",
+      "overlay_text_ko": "지정구역 준수",
+      "image_prompt_en": "Korean industrial safety training animation style, ready-mix concrete plant, BCT bulk cement trailer and dump truck, signal person with orange vest, hard hat, scene action: a worker stopping before entering a vehicle passage outside the designated work zone while a supervisor redirects them, clear blind spot zone, safe pedestrian route, no text, no injury, no impact frame.",
+      "motion_prompt_en": "Use start and end keyframes as a continuous safety training shot, slow camera movement, show this action: a worker stopping before entering a vehicle passage outside the designated work zone while a supervisor redirects them, keep BCT, dump truck, PPE, signal person, and plant layout consistent, avoid collision or injury depiction.",
+      "start_keyframe": "images/approved/sc05.png",
+      "end_keyframe": "images/approved/sc06.png",
+      "clip_path": "video/clips/sc05_sc06.mp4",
+      "continuity_constraints": {
+        "character_ids": [
+          "worker-001"
+        ],
+        "equipment_ids": [
+          "equipment-001"
+        ],
+        "ppe_requirements": [
+          "hard hat",
+          "safety vest"
+        ],
+        "background_id": "site-001"
+      },
+      "approval_state": "draft",
+      "asset_version": 1
+    },
+    {
+      "id": "sc06",
+      "duration_sec": 5,
+      "educational_goal_ko": "속도 제한과 보행 중 스마트폰 금지를 준수한다.",
+      "source_citations": [
+        {
+          "source_id": "src-001",
+          "page_or_slide": 3,
+          "claim": "근로자는 사업장 내 제한속도 10~20km 이하를 준수하고 보행 중 스마트폰 사용을 금지해야 한다."
+        }
+      ],
+      "visual_action_ko": "현장 표지판에 제한속도 10~20km와 스마트폰 사용 금지가 표시된다.",
+      "caption_ko": "속도와 보행 수칙",
+      "subtitle_ko": "속도와 보행 수칙을 지키세요.",
+      "overlay_text_ko": "속도와 보행 수칙",
+      "image_prompt_en": "Korean industrial safety training animation style, ready-mix concrete plant, BCT bulk cement trailer and dump truck, signal person with orange vest, hard hat, scene action: site safety signs showing a 10 to 20 km speed limit and no smartphone use while walking, clear blind spot zone, safe pedestrian route, no text, no injury, no impact frame.",
+      "motion_prompt_en": "Use start and end keyframes as a continuous safety training shot, slow camera movement, show this action: site safety signs showing a 10 to 20 km speed limit and no smartphone use while walking, keep BCT, dump truck, PPE, signal person, and plant layout consistent, avoid collision or injury depiction.",
+      "start_keyframe": "images/approved/sc06.png",
+      "end_keyframe": "images/approved/sc07.png",
+      "clip_path": "video/clips/sc06_sc07.mp4",
+      "continuity_constraints": {
+        "character_ids": [
+          "worker-001"
+        ],
+        "equipment_ids": [
+          "equipment-001"
+        ],
+        "ppe_requirements": [
+          "hard hat",
+          "safety vest"
+        ],
+        "background_id": "site-001"
+      },
+      "approval_state": "draft",
+      "asset_version": 1
+    }
+  ]
+}

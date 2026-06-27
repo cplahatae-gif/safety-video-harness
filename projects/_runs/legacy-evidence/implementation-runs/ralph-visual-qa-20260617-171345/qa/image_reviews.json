@@ -1,0 +1,58 @@
+{
+  "dry_run": false,
+  "reviews": [
+    {
+      "scene_id": "sc01",
+      "rubric_source": "docs/evaluation-rubrics.md",
+      "few_shot_source": "docs/few-shot-examples.md",
+      "artifact_path": "images/draft/sc01_v001.png",
+      "story_match_score": 5,
+      "identity_consistency_score": 5,
+      "ppe_score": 5,
+      "equipment_score": 5,
+      "story_flow_score": 5,
+      "technical_score": 5,
+      "floor_lane_consistency_score": 4,
+      "background_consistency_score": 4,
+      "character_identity_lock_score": 4,
+      "vehicle_geometry_lock_score": 4,
+      "hazard_zone_consistency_score": 4,
+      "total_score": 50,
+      "score_source": "harness_file_story_flow_and_manual_visual_consistency_review",
+      "manual_visual_review": {
+        "status": "present",
+        "source_path": "qa/image_manual_reviews.json",
+        "reviewer": "local_heuristic_visual_qa",
+        "notes": "Local heuristic checks image readability, contact-sheet evidence, asset-lock coverage, and coarse adjacent-frame color/layout drift. It does not replace human or model-based semantic review for gaze, exact identity, or safety meaning.",
+        "scores": {
+          "floor_lane_consistency_score": 4,
+          "background_consistency_score": 4,
+          "character_identity_lock_score": 4,
+          "vehicle_geometry_lock_score": 4,
+          "hazard_zone_consistency_score": 4
+        },
+        "blocking_issues": []
+      },
+      "blocking_issues": [],
+      "blocker_categories": [],
+      "critical_blockers": [],
+      "regeneration_delta": "",
+      "previous_blockers_applied": false,
+      "decision": "approve_for_video",
+      "reviewed_asset": "images/draft/sc01_v001.png",
+      "scoring_rubric": {
+        "story_match_score": "Matches the cited storyboard action and education objective.",
+        "identity_consistency_score": "Preserves recurring worker, signal person, and supervisor identity cues.",
+        "ppe_score": "Shows required hard hat, vest, workwear, boots, and safe posture.",
+        "equipment_score": "Preserves BCT, dump truck, lanes, cones, and plant layout.",
+        "story_flow_score": "Connects causally to adjacent scenes instead of acting as an isolated checklist panel.",
+        "technical_score": "Readable 16:9 image file suitable for video keyframe use.",
+        "floor_lane_consistency_score": "Concrete floor, lane colors, walk path, cones, and bollards match the locked site layout.",
+        "background_consistency_score": "Plant structures, gates, mirrors, signage, and camera-side geometry remain stable.",
+        "character_identity_lock_score": "Recurring workers keep the same body type, helmet, vest, role, and visual identity cues.",
+        "vehicle_geometry_lock_score": "BCT mixer, dump truck, mirrors, wheels, scale, and relative positions remain stable.",
+        "hazard_zone_consistency_score": "The red danger zone, pedestrian route, stop line, and control point stay consistent and visible."
+      }
+    }
+  ]
+}

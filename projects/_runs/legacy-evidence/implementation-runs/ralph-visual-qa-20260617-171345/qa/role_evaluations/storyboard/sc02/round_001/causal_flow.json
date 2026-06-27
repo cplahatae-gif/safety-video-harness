@@ -1,0 +1,8 @@
+{
+  "role": "causal_flow",
+  "scores": {
+    "causal_flow": 5
+  },
+  "blocking_issues": [],
+  "execution_mode": "parallel_role_evaluator"
+}

@@ -1,0 +1,116 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.4, pytest-9.0.3, pluggy-1.6.0
+rootdir: /Volumes/Ha tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스
+configfile: pyproject.toml
+collected 15 items
+
+tests/test_harness_move.py FFF                                           [ 20%]
+tests/test_plugin_structure.py F...........                              [100%]
+
+=================================== FAILURES ===================================
+________________ test_package_imports_from_app_harness_package _________________
+
+    def test_package_imports_from_app_harness_package() -> None:
+        package_path = Path(safety_video_harness.__file__).resolve()
+    
+>       assert "app/harness/package/safety_video_harness" in package_path.as_posix()
+E       AssertionError: assert 'app/harness/package/safety_video_harness' in '/Volumes/Ha tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스/safety_video_harness/__init__.py'
+E        +  where '/Volumes/Ha tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스/safety_video_harness/__init__.py' = as_posix()
+E        +    where as_posix = PosixPath('/Volumes/Ha tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스/safety_video_harness/__init__.py').as_posix
+
+tests/test_harness_move.py:25: AssertionError
+__________ test_root_script_wrapper_and_canonical_cli_create_projects __________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-97/test_root_script_wrapper_and_c0')
+
+    def test_root_script_wrapper_and_canonical_cli_create_projects(tmp_path: Path) -> None:
+        wrapper_project = tmp_path / "wrapper-project"
+        canonical_project = tmp_path / "canonical-project"
+    
+        wrapper = run_cli("scripts/init_project.py", "--name", "wrapper", "--slug", str(wrapper_project))
+        canonical = run_cli(
+            "app/harness/cli/init_project.py",
+            "--name",
+            "canonical",
+            "--slug",
+            str(canonical_project),
+        )
+    
+        assert wrapper.returncode == 0
+>       assert canonical.returncode == 0
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['python3', 'app/harness/cli/init_project.py', '--name', 'canonical', '--slug', '/private/var/fo...es/Ha tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스/app/harness/cli/init_project.py': [Errno 2] No such file or directory\n").returncode
+
+tests/test_harness_move.py:42: AssertionError
+______________ test_harness_templates_and_schemas_live_under_app _______________
+
+    def test_harness_templates_and_schemas_live_under_app() -> None:
+>       assert (ROOT / "app" / "harness" / "templates" / "project" / "HANDOFF.md").exists()
+E       AssertionError: assert False
+E        +  where False = exists()
+E        +    where exists = (((((PosixPath('/Volumes/Ha tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스') / 'app') / 'harness') / 'templates') / 'project') / 'HANDOFF.md').exists
+
+tests/test_harness_move.py:48: AssertionError
+________________ test_plugin_manifest_and_harness_assets_exist _________________
+
+    def test_plugin_manifest_and_harness_assets_exist() -> None:
+        manifest = json.loads((PLUGIN / ".codex-plugin" / "plugin.json").read_text(encoding="utf-8"))
+        root_manifest = json.loads((ROOT / ".codex-plugin" / "plugin.json").read_text(encoding="utf-8"))
+    
+        assert manifest["name"] == "safety-video-harness"
+        assert manifest["hooks"] == "./hooks/hooks.json"
+        assert root_manifest["compatibilityShim"] is True
+        assert root_manifest["hooks"] == "./app/plugin/hooks/hooks.json"
+        assert (ROOT / "AGENTS.md").exists()
+        for path in [
+            "app/plugin/skills/topic-extractor/SKILL.md",
+            "app/plugin/skills/story-writer/SKILL.md",
+            "app/plugin/skills/seedance-prompting/SKILL.md",
+            "app/plugin/skills/image-consistency-check/SKILL.md",
+            "app/plugin/skills/video-inspect/SKILL.md",
+            "app/plugin/skills/style-ref-search/SKILL.md",
+            "app/plugin/agents/storyteller/AGENT.md",
+            "app/plugin/agents/storyteller/references/storyteller-reference.md",
+            "app/plugin/agents/lead-style-agent/AGENT.md",
+            "app/plugin/agents/lead-style-agent/references/lead-style-reference.md",
+            "app/plugin/agents/scene-prompt-agent/AGENT.md",
+            "app/plugin/agents/scene-prompt-agent/references/scene-prompt-reference.md",
+            "app/plugin/agents/visual-director-arbiter/AGENT.md",
+            "app/plugin/agents/visual-director-arbiter/references/visual-director-arbiter-reference.md",
+            "app/plugin/agents/continuity-qa/AGENT.md",
+            "app/plugin/agents/continuity-qa/references/continuity-qa-reference.md",
+            "app/plugin/agents/video-qa/AGENT.md",
+            "app/plugin/agents/video-qa/references/video-qa-reference.md",
+            "app/plugin/agents/visual-continuity-director/AGENT.md",
+            "app/plugin/agents/visual-continuity-director/references/visual-continuity-reference.md",
+            "app/plugin/hooks/hooks.json",
+            "app/plugin/hooks/pretooluse-live-veto.py",
+            "app/plugin/hooks/protected_paths.json",
+            "app/harness/schemas/project_config.schema.json",
+            "app/harness/schemas/scenes.schema.json",
+            "style-guides/catalog.json",
+            "style-guides/korean-industrial-webtoon/STYLE_GUIDE.md",
+            "app/harness/templates/project/PLAN.md",
+            "app/harness/templates/project/AGENTS.safety.md",
+            "app/harness/templates/project/HANDOFF.md",
+            "docs/generative-media-reference-index.md",
+            "docs/reference-sources.md",
+            "docs/evaluation-rubrics.md",
+            "docs/few-shot-examples.md",
+            "docs/higgsfield-seedance-local-reference.md",
+            "docs/agent-skill-reference-onepager.html",
+            "scripts/plan_image_prompt_team.py",
+        ]:
+>           assert (ROOT / path).exists(), path
+E           AssertionError: app/harness/schemas/project_config.schema.json
+E           assert False
+E            +  where False = exists()
+E            +    where exists = (PosixPath('/Volumes/Ha tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스') / 'app/harness/schemas/project_config.schema.json').exists
+
+tests/test_plugin_structure.py:60: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_harness_move.py::test_package_imports_from_app_harness_package
+FAILED tests/test_harness_move.py::test_root_script_wrapper_and_canonical_cli_create_projects
+FAILED tests/test_harness_move.py::test_harness_templates_and_schemas_live_under_app
+FAILED tests/test_plugin_structure.py::test_plugin_manifest_and_harness_assets_exist
+========================= 4 failed, 11 passed in 0.15s =========================

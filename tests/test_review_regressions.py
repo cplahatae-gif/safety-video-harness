@@ -61,7 +61,7 @@ def test_write_json_rejects_existing_lock_marker(tmp_path: Path) -> None:
 def test_record_image_output_rejects_paths_outside_project(tmp_path: Path) -> None:
     # Given: a tampered imagegen job whose output escapes the project directory.
     project = tmp_path / "project"
-    jobs_path = project / "prompts" / "imagegen_jobs.json"
+    jobs_path = project / "story" / "imagegen_jobs.json"
     jobs_path.parent.mkdir(parents=True)
     write_json(
         jobs_path,
@@ -85,7 +85,7 @@ def test_record_image_output_rejects_paths_outside_project(tmp_path: Path) -> No
 def test_next_draft_path_skips_version_gaps(tmp_path: Path) -> None:
     # Given: existing drafts with a missing v001.
     project = tmp_path / "project"
-    draft_dir = project / "images" / "draft"
+    draft_dir = project / "media" / "images" / "draft"
     draft_dir.mkdir(parents=True)
     (draft_dir / "sc01_v002.png").write_bytes(b"v2")
     (draft_dir / "sc01_v003.png").write_bytes(b"v3")
@@ -99,14 +99,14 @@ def test_next_draft_path_skips_version_gaps(tmp_path: Path) -> None:
     )
 
     # Then: the next path is max-version + 1, not len(existing) + 1.
-    assert jobs["jobs"][0]["output"] == "images/draft/sc01_v004.png"
+    assert jobs["jobs"][0]["output"] == "media/images/draft/sc01_v004.png"
 
 
 def test_protected_path_veto_uses_config_and_is_case_insensitive() -> None:
     # Given / When: a protected path listed only in protected_paths.json is edited.
     result = subprocess.run(
         ["python3", "hooks/pretooluse-protected-path-veto.py", "write", "APPROVALS.JSON"],
-        cwd=ROOT,
+        cwd=ROOT / "app" / "plugin",
         check=False,
         text=True,
         capture_output=True,
@@ -117,11 +117,44 @@ def test_protected_path_veto_uses_config_and_is_case_insensitive() -> None:
     assert "deny" in result.stdout
 
 
+def test_protected_path_veto_blocks_project_config_changes() -> None:
+    result = subprocess.run(
+        ["python3", "hooks/pretooluse-protected-path-veto.py", "write", "project_config.json"],
+        cwd=ROOT / "app" / "plugin",
+        check=False,
+        text=True,
+        capture_output=True,
+    )
+
+    assert result.returncode == 2
+    assert "deny" in result.stdout
+
+
+def test_secret_veto_reads_codex_stdin_payload() -> None:
+    payload = {
+        "hook_event_name": "PreToolUse",
+        "tool_name": "Write",
+        "tool_input": {"file_path": ".env", "content": "OPENAI_API_KEY=sk-test"},
+    }
+
+    result = subprocess.run(
+        ["python3", "hooks/pretooluse-secret-veto.py"],
+        cwd=ROOT / "app" / "plugin",
+        check=False,
+        text=True,
+        input=json.dumps(payload),
+        capture_output=True,
+    )
+
+    assert result.returncode == 2
+    assert "deny" in result.stdout
+
+
 def test_secret_veto_is_case_insensitive_for_common_secret_shapes() -> None:
     # Given / When: lower-case secret-like content is passed to the hook.
     result = subprocess.run(
         ["python3", "hooks/pretooluse-secret-veto.py", "write", "api_key=sk-test"],
-        cwd=ROOT,
+        cwd=ROOT / "app" / "plugin",
         check=False,
         text=True,
         capture_output=True,
@@ -140,7 +173,7 @@ def test_stop_sentinel_uses_repository_root_not_cwd(tmp_path: Path) -> None:
     try:
         # When: the hook is executed from a different CWD.
         result = subprocess.run(
-            ["python3", str(ROOT / "hooks" / "stop-sentinel-guard.py")],
+            ["python3", str(ROOT / "app" / "plugin" / "hooks" / "stop-sentinel-guard.py")],
             cwd=tmp_path,
             check=False,
             text=True,
@@ -160,20 +193,20 @@ def test_schema_validation_hook_runs_project_validation(tmp_path: Path) -> None:
 
     result = subprocess.run(
         ["python3", "hooks/posttooluse-schema-validation.py", "--project", str(project)],
-        cwd=ROOT,
+        cwd=ROOT / "app" / "plugin",
         check=False,
         text=True,
         capture_output=True,
     )
 
     assert result.returncode == 2
-    assert "storyboard/scenes.json is missing" in result.stdout
+    assert "story/scenes.json is missing" in result.stdout
 
 
 def test_evidence_feedback_blocks_completion_without_evidence() -> None:
     result = subprocess.run(
         ["python3", "hooks/posttooluse-evidence-feedback.py", "complete", "all done"],
-        cwd=ROOT,
+        cwd=ROOT / "app" / "plugin",
         check=False,
         text=True,
         capture_output=True,
@@ -218,7 +251,7 @@ def test_seedance_cli_timeout_raises_harness_error(monkeypatch: pytest.MonkeyPat
 def test_scene_link_validation_rejects_empty_storyboard(tmp_path: Path) -> None:
     # Given: a storyboard with no scenes.
     project = tmp_path / "project"
-    storyboard = project / "storyboard" / "scenes.json"
+    storyboard = project / "story" / "scenes.json"
     storyboard.parent.mkdir(parents=True)
     write_json(storyboard, {"scenes": []})
 
@@ -230,7 +263,7 @@ def test_scene_link_validation_rejects_empty_storyboard(tmp_path: Path) -> None:
 def test_scene_link_validation_checks_scene_id_order(tmp_path: Path) -> None:
     # Given: a scene whose id does not match its sliding-chain position.
     project = tmp_path / "project"
-    storyboard = project / "storyboard" / "scenes.json"
+    storyboard = project / "story" / "scenes.json"
     storyboard.parent.mkdir(parents=True)
     write_json(
         storyboard,
@@ -238,8 +271,8 @@ def test_scene_link_validation_checks_scene_id_order(tmp_path: Path) -> None:
             "scenes": [
                 {
                     "id": "sc02",
-                    "start_keyframe": "images/approved/sc01.png",
-                    "end_keyframe": "images/approved/sc02.png",
+                    "start_keyframe": "media/images/approved/sc01.png",
+                    "end_keyframe": "media/images/approved/sc02.png",
                 }
             ]
         },

@@ -41,7 +41,7 @@ def approve_video_gate_for_plan(project: Path) -> None:
     config = load_json(config_path)
     config["external_upload_allowed"] = True
     config_path.write_text(json.dumps(config, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    approvals_path = project / "approvals.json"
+    approvals_path = project / "qa" / "approvals.json"
     approvals = load_json(approvals_path)
     approvals["gates"]["image_to_video"]["approved"] = True
     approvals["gates"]["image_to_video"]["approved_at"] = "test"
@@ -51,9 +51,9 @@ def approve_video_gate_for_plan(project: Path) -> None:
 
 def add_seedance_reference_pack(project: Path) -> None:
     assets = {
-        "model/cast/signal-worker.png": b"fake cast image",
-        "product/equipment/bct-truck.png": b"fake equipment image",
-        "ref/approved/space/plant-entry.png": b"fake space image",
+        "refs/people/signal-worker.png": b"fake cast image",
+        "refs/equipment/bct-truck.png": b"fake equipment image",
+        "refs/approved/spaces/plant-entry.png": b"fake space image",
     }
     for relative_path, content in assets.items():
         path = project / relative_path
@@ -119,7 +119,7 @@ def test_seedance_plan_only_requires_gate(tmp_path: Path) -> None:
 
     assert result.returncode != 0
     assert "Gate image_to_video is not approved" in result.stderr
-    assert not (project / "video" / "seedance_live_plan.json").exists()
+    assert not (project / "media" / "video" / "seedance_live_plan.json").exists()
 
 
 def test_seedance_live_plan_uses_two_five_second_clips_for_10s(tmp_path: Path) -> None:
@@ -139,13 +139,13 @@ def test_seedance_live_plan_uses_two_five_second_clips_for_10s(tmp_path: Path) -
     )
 
     assert result.returncode == 0
-    plan = load_json(project / "video" / "seedance_live_plan.json")
+    plan = load_json(project / "media" / "video" / "seedance_live_plan.json")
     assert plan["test_seconds"] == 10
     assert plan["max_attempts"] == 3
     assert len(plan["jobs"]) == 2
     assert plan["jobs"][0]["duration"] == 5
-    assert plan["jobs"][0]["start_image"].endswith("images/approved/sc01.png")
-    assert plan["jobs"][1]["end_image"].endswith("images/approved/sc03.png")
+    assert plan["jobs"][0]["start_image"].endswith("media/images/approved/sc01.png")
+    assert plan["jobs"][1]["end_image"].endswith("media/images/approved/sc03.png")
 
 
 def test_seedance_plan_includes_reference_media_pack_when_available(tmp_path: Path) -> None:
@@ -167,12 +167,12 @@ def test_seedance_plan_includes_reference_media_pack_when_available(tmp_path: Pa
     )
 
     assert result.returncode == 0
-    plan = load_json(project / "video" / "seedance_live_plan.json")
+    plan = load_json(project / "media" / "video" / "seedance_live_plan.json")
     job = plan["jobs"][0]
     assert len(job["reference_media_pack"]) == 3
     assert job["media_lock_policy"]["text_only_seedance_allowed"] is False
     assert "--image" in job["create_command"]
-    assert any(item.endswith("model/cast/signal-worker.png") for item in job["reference_images"])
+    assert any(item.endswith("refs/people/signal-worker.png") for item in job["reference_images"])
 
 
 def test_validation_run_requires_one_attempt(tmp_path: Path) -> None:
@@ -217,7 +217,7 @@ def test_validation_run_prompt_matches_10_second_duration(tmp_path: Path) -> Non
     )
 
     assert result.returncode == 0
-    plan = load_json(project / "video" / "seedance_live_plan.json")
+    plan = load_json(project / "media" / "video" / "seedance_live_plan.json")
     assert plan["jobs"][0]["duration"] == 10
     command = plan["jobs"][0]["create_command"]
     prompt = command[command.index("--prompt") + 1]
@@ -239,7 +239,7 @@ def test_seedance_live_run_log_redacts_public_output_url(tmp_path: Path, monkeyp
         "10",
         "--plan-only",
     ).returncode == 0
-    plan = load_json(project / "video" / "seedance_live_plan.json")
+    plan = load_json(project / "media" / "video" / "seedance_live_plan.json")
 
     def fake_run_cli(command: list[str]) -> subprocess.CompletedProcess[str]:
         if "cost" in command:
@@ -256,6 +256,6 @@ def test_seedance_live_run_log_redacts_public_output_url(tmp_path: Path, monkeyp
     result = seedance_live.run_seedance_live_plan(project, {"jobs": plan["jobs"][:1]})
 
     assert result == "created 1 Seedance live job(s)"
-    log = (project / "video" / "seedance_live_runs.jsonl").read_text(encoding="utf-8")
+    log = (project / "media" / "video" / "seedance_live_runs.jsonl").read_text(encoding="utf-8")
     assert "cloudfront.net" not in log
     assert "[redacted-url]" in log

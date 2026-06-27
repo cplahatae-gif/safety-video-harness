@@ -1,0 +1,29 @@
+created project /tmp/folder-migration-task13-flow.vCP50C/new-write-audit
+registered src-001
+dry-run rendered 1 source(s)
+extracted 2 topic(s)
+selected topic topic-001
+extracted style DNA
+planned 6 story beat(s)
+approved gate storyboard
+image dry-run prepared 1 prompt(s)
+validated 6 scene link(s)
+/tmp/folder-migration-task13-flow.vCP50C/new-write-audit/AGENTS.md
+/tmp/folder-migration-task13-flow.vCP50C/new-write-audit/HANDOFF.md
+/tmp/folder-migration-task13-flow.vCP50C/new-write-audit/input/extracted_topics.json
+/tmp/folder-migration-task13-flow.vCP50C/new-write-audit/input/source_facts.json
+/tmp/folder-migration-task13-flow.vCP50C/new-write-audit/input/sources.json
+/tmp/folder-migration-task13-flow.vCP50C/new-write-audit/llm-wiki/evaluation-rounds.md
+/tmp/folder-migration-task13-flow.vCP50C/new-write-audit/PLAN.md
+/tmp/folder-migration-task13-flow.vCP50C/new-write-audit/project_config.json
+/tmp/folder-migration-task13-flow.vCP50C/new-write-audit/qa/approvals.json
+/tmp/folder-migration-task13-flow.vCP50C/new-write-audit/qa/evaluation_rounds.jsonl
+/tmp/folder-migration-task13-flow.vCP50C/new-write-audit/qa/scene_link_reviews.json
+/tmp/folder-migration-task13-flow.vCP50C/new-write-audit/qa/state/errors.jsonl
+/tmp/folder-migration-task13-flow.vCP50C/new-write-audit/qa/state/self_score.json
+/tmp/folder-migration-task13-flow.vCP50C/new-write-audit/qa/state/turn_count
+/tmp/folder-migration-task13-flow.vCP50C/new-write-audit/qa/storyboard_quality_reviews.json
+/tmp/folder-migration-task13-flow.vCP50C/new-write-audit/story/image_prompt_team_plan.json
+/tmp/folder-migration-task13-flow.vCP50C/new-write-audit/story/image_prompts.json
+/tmp/folder-migration-task13-flow.vCP50C/new-write-audit/story/scenes.json
+cleanup removed /tmp/folder-migration-task13-flow.vCP50C

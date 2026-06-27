@@ -1,0 +1,10 @@
+root evidence exists: no
+root style-guides exists: no
+legacy evidence files: 498
+
+style reference files: 7
+
+app/plugin/skills/video-inspect/references/video-inspect-reference.md:22:- Save inspection outputs under the project evidence/QA structure so paid generation results remain auditable.
+docs/repository-folder-structure-onepager.html:569:            <h3>style-guides + 공통 cast/ppe/equipment -> references/</h3>
+docs/repository-folder-structure-onepager.html:573:            <h3>evidence/audio/clips/output/storyboard/scenes.json -> projects/_runs/</h3>
+app/plugin/hooks/session-start-anchor.py:22:        "- Preserve evidence under qa/, qa/evidence/, projects/_runs/, and llm-wiki/.",

@@ -54,7 +54,7 @@ def test_rendering_mode_is_recorded_for_media_extract_fallback(tmp_path: Path) -
     project = tmp_path / "render-mode"
     prepare_project(project)
 
-    sources = load_json(project / "sources" / "sources.json")["sources"]
+    sources = load_json(project / "input" / "sources.json")["sources"]
     assert sources[0]["rendering_mode"] == "media_extract"
     assert sources[0]["render_warning"] == ""
     assert len(sources[0]["rendered_assets"]) == 12
@@ -78,7 +78,7 @@ def test_pptx_slide_text_assets_are_extracted(tmp_path: Path) -> None:
     assert run_cli("scripts/register_sources.py", "--project", str(project), "--source", str(source)).returncode == 0
     assert run_cli("scripts/render_pptx_sources.py", "--project", str(project), "--dry-run", "--mode", "media_extract").returncode == 0
 
-    sources = load_json(project / "sources" / "sources.json")["sources"]
+    sources = load_json(project / "input" / "sources.json")["sources"]
     text_assets = sources[0]["extracted_text_assets"]
     assert len(text_assets) == 1
     assert "중장비 추락 예방" in Path(text_assets[0]).read_text(encoding="utf-8")
@@ -88,8 +88,8 @@ def test_reference_profile_manifest_and_approval_workflow(tmp_path: Path) -> Non
     project = tmp_path / "reference-profile"
     prepare_project(project)
 
-    cast_dir = project / "model" / "cast"
-    candidate_dir = project / "ref" / "candidates"
+    cast_dir = project / "refs" / "people"
+    candidate_dir = project / "refs" / "candidates"
     (cast_dir / "worker-001-front.png").write_bytes(b"fake image")
     (cast_dir / "worker-001.profile.md").write_text("manual worker profile wins", encoding="utf-8")
     (candidate_dir / "style-candidate.png").write_bytes(b"fake image")
@@ -98,7 +98,7 @@ def test_reference_profile_manifest_and_approval_workflow(tmp_path: Path) -> Non
     analyzed = run_cli("scripts/analyze_reference_assets.py", "--project", str(project), "--dry-run")
     assert analyzed.returncode == 0
 
-    manifest = load_json(project / "ref" / "approved" / "reference_assets.json")
+    manifest = load_json(project / "refs" / "approved" / "reference_assets.json")
     asset_blob = json.dumps(manifest, ensure_ascii=False)
     assert "worker-001-front.png" in asset_blob
     assert "manual worker profile wins" in asset_blob
@@ -112,17 +112,17 @@ def test_reference_profile_manifest_and_approval_workflow(tmp_path: Path) -> Non
         "style-candidate.png",
     )
     assert approved.returncode == 0
-    assert (project / "ref" / "approved" / "style-candidate.png").exists()
-    provenance = load_json(project / "ref" / "approved" / "reference_approvals.json")
-    assert provenance["approvals"][0]["source"] == "ref/candidates/style-candidate.png"
+    assert (project / "refs" / "approved" / "style-candidate.png").exists()
+    provenance = load_json(project / "refs" / "approved" / "reference_approvals.json")
+    assert provenance["approvals"][0]["source"] == "refs/candidates/style-candidate.png"
 
 
 def test_reference_profile_manifest_includes_categorized_approved_references(tmp_path: Path) -> None:
     project = tmp_path / "reference-profile-categories"
     prepare_project(project)
 
-    work_dir = project / "ref" / "approved" / "work"
-    space_dir = project / "ref" / "approved" / "space"
+    work_dir = project / "refs" / "approved" / "work"
+    space_dir = project / "refs" / "approved" / "spaces"
     work_dir.mkdir(parents=True, exist_ok=True)
     space_dir.mkdir(parents=True, exist_ok=True)
     (work_dir / "loading-zone-control.png").write_bytes(b"fake image")
@@ -143,7 +143,7 @@ def test_reference_profile_manifest_includes_categorized_approved_references(tmp
     analyzed = run_cli("scripts/analyze_reference_assets.py", "--project", str(project), "--dry-run")
     assert analyzed.returncode == 0
 
-    manifest = load_json(project / "ref" / "approved" / "reference_assets.json")
+    manifest = load_json(project / "refs" / "approved" / "reference_assets.json")
     asset_blob = json.dumps(manifest, ensure_ascii=False)
     assert "work_situation_reference" in asset_blob
     assert "controlled loading zone" in asset_blob
@@ -156,7 +156,7 @@ def test_reference_profile_sidecar_matches_exact_cast_identity(tmp_path: Path) -
     project = tmp_path / "reference-profile-exact-sidecar"
     prepare_project(project)
 
-    cast_dir = project / "model" / "cast"
+    cast_dir = project / "refs" / "people"
     (cast_dir / "worker-001-front.png").write_bytes(b"fake image")
     (cast_dir / "worker-0010.profile.md").write_text("wrong worker profile", encoding="utf-8")
     (cast_dir / "worker-001.profile.md").write_text("correct worker profile", encoding="utf-8")
@@ -164,7 +164,7 @@ def test_reference_profile_sidecar_matches_exact_cast_identity(tmp_path: Path) -
     analyzed = run_cli("scripts/analyze_reference_assets.py", "--project", str(project), "--dry-run")
 
     assert analyzed.returncode == 0
-    manifest = load_json(project / "ref" / "approved" / "reference_assets.json")
+    manifest = load_json(project / "refs" / "approved" / "reference_assets.json")
     asset_blob = json.dumps(manifest, ensure_ascii=False)
     assert "correct worker profile" in asset_blob
     assert "wrong worker profile" not in asset_blob
@@ -174,7 +174,7 @@ def test_approve_reference_can_target_categorized_reference_folder(tmp_path: Pat
     project = tmp_path / "reference-approval-role"
     prepare_project(project)
 
-    candidate_dir = project / "ref" / "candidates"
+    candidate_dir = project / "refs" / "candidates"
     (candidate_dir / "work-scene.png").write_bytes(b"fake image")
     (candidate_dir / "work-scene.md").write_text("work scene reference", encoding="utf-8")
 
@@ -189,10 +189,10 @@ def test_approve_reference_can_target_categorized_reference_folder(tmp_path: Pat
     )
 
     assert approved.returncode == 0
-    assert (project / "ref" / "approved" / "work" / "work-scene.png").exists()
-    assert (project / "ref" / "approved" / "work" / "work-scene.md").exists()
-    provenance = load_json(project / "ref" / "approved" / "reference_approvals.json")
-    assert provenance["approvals"][0]["target"] == "ref/approved/work/work-scene.png"
+    assert (project / "refs" / "approved" / "work" / "work-scene.png").exists()
+    assert (project / "refs" / "approved" / "work" / "work-scene.md").exists()
+    provenance = load_json(project / "refs" / "approved" / "reference_approvals.json")
+    assert provenance["approvals"][0]["target"] == "refs/approved/work/work-scene.png"
 
 
 def test_gate2_requires_cost_images_video_plan_upload_and_qa(tmp_path: Path) -> None:
@@ -219,7 +219,7 @@ def test_gate2_requires_cost_images_video_plan_upload_and_qa(tmp_path: Path) -> 
     assert "approved image" in blocked.stderr
 
     for index in range(1, 8):
-        (project / "images" / "approved" / f"sc{index:02d}.png").write_bytes(b"fake image")
+        (project / "media" / "images" / "approved" / f"sc{index:02d}.png").write_bytes(b"fake image")
 
     blocked = run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "image_to_video", "--estimated-credits", "12")
     assert blocked.returncode != 0
@@ -231,6 +231,29 @@ def test_gate2_requires_cost_images_video_plan_upload_and_qa(tmp_path: Path) -> 
     estimate = load_json(project / "qa" / "video_cost_estimate.json")
     assert estimate["estimated_credits"] == 12
     assert estimate["clip_count"] == 6
+
+    blocked = run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "image_to_video", "--estimated-credits", "12")
+    assert blocked.returncode != 0
+    assert "not dry-run image QA" in blocked.stderr
+
+    reviews = []
+    for index in range(1, 8):
+        reviews.append(
+            {
+                "scene_id": f"sc{index:02d}",
+                "blocking_issues": [],
+                "total_score": 55,
+                "manual_visual_review": {"status": "present"},
+            }
+        )
+    (project / "qa" / "image_reviews.json").write_text(
+        json.dumps({"dry_run": False, "reviews": reviews}, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    (project / "qa" / "image_qa_loop.json").write_text(
+        json.dumps({"passed": True}, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
 
     approved = run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "image_to_video", "--estimated-credits", "12")
     assert approved.returncode == 0
@@ -251,7 +274,7 @@ def test_gate2_rejects_partial_image_qa_coverage(tmp_path: Path) -> None:
     config["external_upload_allowed"] = True
     config_path.write_text(json.dumps(config, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     for index in range(1, 8):
-        (project / "images" / "approved" / f"sc{index:02d}.png").write_bytes(b"fake image")
+        (project / "media" / "images" / "approved" / f"sc{index:02d}.png").write_bytes(b"fake image")
     (project / "qa" / "image_reviews.json").write_text(
         json.dumps(
             {
@@ -273,7 +296,7 @@ def test_gate2_rejects_partial_image_qa_coverage(tmp_path: Path) -> None:
 def test_approval_write_respects_single_writer_lock(tmp_path: Path) -> None:
     project = tmp_path / "locked"
     assert run_cli("scripts/init_project.py", "--name", "locked", "--slug", str(project)).returncode == 0
-    (project / "approvals.json.lock").write_text("held by test\n", encoding="utf-8")
+    (project / "qa" / "approvals.json.lock").write_text("held by test\n", encoding="utf-8")
 
     result = run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard")
 

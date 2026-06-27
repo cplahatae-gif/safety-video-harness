@@ -1,0 +1,664 @@
+CONTEXT.md:19:- `round`: One recorded evaluator decision in `qa/evaluation_rounds.jsonl`.
+README.md:26:- 각 역할별 운영 레퍼런스: `agents/<agent-id>/references/*.md`
+README.md:27:- 각 스킬별 운영 레퍼런스: `skills/<skill-id>/references/*.md`
+README.md:94:├── agents/                            # 역할별 평가자/기획자 지침
+README.md:96:│   ├── continuity-qa/AGENT.md         # 장면 연결/일관성 검토
+README.md:98:│   └── video-qa/AGENT.md              # 영상 품질 평가
+README.md:99:├── hooks/
+README.md:110:├── scripts/                           # 사용자가 실행하는 CLI 엔트리포인트
+README.md:111:├── skills/                            # 플러그인 내부 skill 설명
+README.md:112:├── schemas/                           # JSON contract/schema
+README.md:113:├── templates/project/                 # 새 프로젝트 기본 파일
+README.md:128:├── sources/                           # PPTX/SOP 등록 정보, 렌더링 이미지, 주제 후보
+README.md:129:├── storyboard/scenes.json             # 영상의 기준 계약. 항상 이미지/영상보다 먼저 생성
+README.md:130:├── prompts/
+README.md:133:├── images/
+README.md:136:├── video/
+README.md:139:├── qa/                                # 모든 평가 결과와 Arbiter 결정
+README.md:141:├── model/                             # 고정 등장인물/PPE 기준
+README.md:142:├── product/                           # 장비/제품 기준
+README.md:246:python3 scripts/init_project.py --name "추락 예방" --slug projects/fall-prevention
+README.md:247:python3 scripts/register_sources.py --project projects/fall-prevention --source /path/to/source.pptx
+README.md:248:python3 scripts/render_pptx_sources.py --project projects/fall-prevention --dry-run --mode media_extract
+README.md:249:python3 scripts/extract_topics.py --project projects/fall-prevention
+README.md:250:python3 scripts/intake_project.py --project projects/fall-prevention --target-seconds 30 --image-density normal --text-delivery subtitles_overlay
+README.md:251:python3 scripts/select_topic.py --project projects/fall-prevention --topic-id topic-001
+README.md:252:python3 scripts/search_references.py --project projects/fall-prevention --dry-run
+README.md:253:python3 scripts/analyze_reference_assets.py --project projects/fall-prevention --dry-run
+README.md:254:python3 scripts/extract_style_dna.py --project projects/fall-prevention
+README.md:255:python3 scripts/plan_storyboard.py --project projects/fall-prevention --duration 30 --image-density normal
+README.md:256:python3 scripts/build_storyboard_dashboard.py --project projects/fall-prevention
+README.md:257:python3 scripts/plan_image_prompt_team.py --project projects/fall-prevention
+README.md:258:python3 scripts/validate_project.py projects/fall-prevention
+README.md:259:python3 scripts/approve_gate.py --project projects/fall-prevention --gate storyboard
+README.md:260:python3 scripts/generate_images.py --project projects/fall-prevention --dry-run
+README.md:261:python3 scripts/validate_images.py --project projects/fall-prevention --dry-run
+README.md:262:python3 scripts/validate_scene_links.py --project projects/fall-prevention
+README.md:263:python3 scripts/generate_seedance.py --project projects/fall-prevention --dry-run
+README.md:264:python3 scripts/estimate_video_cost.py --project projects/fall-prevention --estimated-credits 0
+README.md:265:python3 scripts/plan_subtitles.py --project projects/fall-prevention --dry-run
+README.md:266:python3 scripts/check_story_video_alignment.py --project projects/fall-prevention
+README.md:267:python3 scripts/assemble_video.py --project projects/fall-prevention --dry-run
+README.md:281:루트 [style-guides](./style-guides)에 보관한다. 현재 기본값은
+README.md:282:`korean-industrial-webtoon`이며, 좋은 결과물이 나오면 `style-guides/<style-id>/STYLE_GUIDE.md`
+README.md:283:와 `style-guides/<style-id>/references/`에 추가한다.
+README.md:292:프로젝트별 레퍼런스는 `projects/<slug>/ref/approved/`에 두고, 여러 프로젝트에서 재사용할
+README.md:293:그림체는 루트 `style-guides/`에 둔다.
+README.md:296:style-guides/
+README.md:331:- `agents/lead-style-agent/AGENT.md`
+README.md:332:- `agents/scene-prompt-agent/AGENT.md`
+README.md:333:- `agents/visual-director-arbiter/AGENT.md`
+README.md:334:- `scripts/plan_image_prompt_team.py`
+README.md:335:- `prompts/image_prompt_team_plan.json`
+README.md:337:`generate_images.py`는 `prompts/image_prompt_team_plan.json`이 없으면 자동으로 생성한다.
+README.md:349:├── model/cast/                         # 고정 등장인물, 작업자, 신호수
+README.md:352:├── model/ppe/                          # 안전모, 조끼, 안전화, 장갑 등 PPE
+README.md:353:├── product/equipment/                  # BCT, 덤프트럭, 지게차, 설비, 제품
+README.md:357:└── ref/approved/                       # 프롬프트에 실제 반영할 승인 레퍼런스
+README.md:375:- `model/cast`: 고정 인물 identity lock
+README.md:376:- `model/ppe`: 복장/PPE lock
+README.md:377:- `product/equipment`: 장비/차량/제품 lock
+README.md:378:- `ref/approved`: 일반 승인 레퍼런스
+README.md:379:- `ref/approved/person`: 사람 포즈, 시선, 역할 행동
+README.md:380:- `ref/approved/work`: 작업상황, 위험상황, 예방행동
+README.md:381:- `ref/approved/space`: 현장 배치, 동선, 통로, 사각지대
+README.md:382:- `ref/approved/style`: 그림체, 질감, 색감
+README.md:383:- `ref/approved/camera`: 구도, 앵글, 거리감
+README.md:384:- `ref/approved/lighting`: 조명, 날씨, 노출
+README.md:401:`ref/candidates`는 검색 후보 보관용이다. 실제 프롬프트에는 자동 반영하지 않으므로, 사용할 이미지는 `approve_reference.py`로 승인하거나 `ref/approved`로 옮긴 뒤 실행한다.
+README.md:404:python3 scripts/approve_reference.py --project projects/fall-prevention --candidate animation-style.png --role style
+README.md:405:python3 scripts/approve_reference.py --project projects/fall-prevention --candidate work-scene.png --role work
+README.md:406:python3 scripts/analyze_reference_assets.py --project projects/fall-prevention --dry-run
+README.md:409:`analyze_reference_assets.py --dry-run`은 유료 비전 호출을 하지 않는다. 현재는 이미지 옆 `.md` 설명을 우선 사용하고, 설명이 없으면 파일명 기반 placeholder를 `ref/approved/reference_assets.json`에 기록한다.
+README.md:416:fixtures/sources/remicon-collision-guide.pptx
+README.md:435:python3 scripts/generate_images.py --project projects/fall-prevention --live
+README.md:436:python3 scripts/generate_seedance.py --project projects/fall-prevention --live
+README.md:449:3. 생성 결과는 `$CODEX_HOME/generated_images/...`에만 두지 않고 `projects/<slug>/images/draft/scNN_vNNN.png`로 이동 또는 복사한다.
+README.md:450:4. 승인된 이미지는 `projects/<slug>/images/approved/`로 이동하고, 기존 승인 이미지는 덮어쓰지 않는다.
+README.md:475:`generate_images.py --live`는 `prompts/imagegen_jobs.json`에 `asset_lock`,
+README.md:484:- `sc02` 이후는 직전 `images/approved/scNN.png`가 있어야 준비된다.
+README.md:492:python3 scripts/generate_images.py --project projects/fall-prevention --live --only sc01
+README.md:495:이 명령은 실제 API를 호출하지 않고 `prompts/imagegen_jobs.json`을 만든다. Codex는 이 job spec을 보고 `imagegen` skill/tool로 이미지를 만든 뒤, 결과 파일을 다음 명령으로 프로젝트에 수거한다.
+README.md:498:python3 scripts/record_image_output.py \
+README.md:503:python3 scripts/collect_image_outputs.py \
+README.md:505:  --source-dir "$CODEX_HOME/generated_images/latest"
+README.md:507:python3 scripts/validate_images.py --project projects/fall-prevention --only sc01
+README.md:508:python3 scripts/approve_image.py --project projects/fall-prevention --scene-id sc01
+README.md:514:python3 scripts/generate_images.py --project projects/fall-prevention --live --only sc01 --regenerate
+README.md:529:python3 scripts/generate_seedance.py --project projects/fall-prevention --dry-run
+README.md:530:python3 scripts/validate_scene_links.py --project projects/fall-prevention
+README.md:531:python3 scripts/check_story_video_alignment.py --project projects/fall-prevention
+README.md:532:python3 scripts/plan_subtitles.py --project projects/fall-prevention --dry-run
+README.md:533:python3 scripts/approve_gate.py --project projects/fall-prevention --gate image_to_video --estimated-credits 35
+README.md:535:python3 scripts/generate_seedance.py \
+README.md:548:python3 scripts/generate_seedance.py \
+README.md:560:python3 scripts/inspect_video.py \
+README.md:562:  --clip projects/fall-prevention/video/clips/<clip>.mp4 \
+README.md:566:python3 scripts/validate_video.py --project projects/fall-prevention --expected-clips 1
+README.md:567:python3 scripts/assemble_video.py --project projects/fall-prevention --dry-run
+README.md:572:`qa/video_manual_review.json`에 다음 항목을 기록해야 한다.
+README.md:590:- 기계용 원장: `qa/evaluation_rounds.jsonl`
+README.md:591:- 라운드별 evidence bundle: `qa/evaluation_bundles/<stage>/<item>/round_NNN.json`
+README.md:592:- 역할별 독립 평가 산출물: `qa/role_evaluations/<stage>/<item>/round_NNN.json`
+README.md:593:- 역할별 개별 발언/판정: `qa/role_evaluations/<stage>/<item>/round_NNN/<role>.json|md`
+README.md:594:- Arbiter 최종 판단: `qa/arbiter_decisions/<stage>/<item>/round_NNN.json`
+README.md:595:- 조건부 토론 기록: `qa/debates/<stage>/<item>/round_NNN.json`
+README.md:596:- 조건부 토론 md 라운드: `qa/debates/<stage>/<item>/round_NNN/*.md`
+README.md:599:`hooks/hooks.json`은 세션 시작, 도구 실행 전, 도구 실행 후, 종료 시점의 lifecycle hook을 등록한다.
+README.md:600:새 세션이나 재개 시에는 `hooks/session-start-anchor.py`가 짧은 mission anchor를 출력한다.
+README.md:633:python3 scripts/evaluate_storyboard.py --project projects/fall-prevention
+README.md:644:Gate 1은 `approve_gate.py --gate storyboard` 실행 시 스토리보드 QA를 다시 실행한다. `qa/storyboard_quality_reviews.json` 기준이 실패하면 스토리보드 승인은 기록되지 않는다.
+README.md:649:uv run python scripts/validate_images.py --project projects/fall-prevention --only sc01
+README.md:652:`qa/image_qa_loop.json`에 `ralph_loop`가 기록된다. 이미지가 기준 미달이면
+README.md:676:`qa/image_manual_reviews.json`에 기록되는 수동/격리 시각 QA 기준이다.
+README.md:684:자동 비전 평가자가 붙기 전까지는 `qa/image_manual_reviews.json`이 없으면 draft 이미지가 존재해도
+README.md:689:않고 contact sheet와 점수 초안을 만든다. `--write-review`를 붙이면 `qa/image_manual_reviews.json`까지
+README.md:697:uv run python scripts/build_image_visual_review.py --project projects/fall-prevention --only sc01
+README.md:698:uv run python scripts/build_image_visual_review.py --project projects/fall-prevention --only sc01 --write-review
+README.md:703:- `qa/visual_review/image_contact_sheet.png`
+README.md:704:- `qa/image_visual_review_draft.json`
+README.md:705:- 선택 시 `qa/image_manual_reviews.json`
+README.md:728:이미지 평가는 생성자가 직접 승인하지 않는다. `qa/evaluation_bundles/image/scNN/round_NNN.json`
+README.md:735:manual visual image QA, `qa/image_qa_loop.json`의 `passed=true`를 요구한다. dry-run QA나 일부 장면만 리뷰된 상태에서는
+README.md:740:`qa/image_qa_loop.json`과 `qa/arbiter_decisions/...`를 읽고 다음 실행 명령을 고른다.
+README.md:744:uv run python scripts/plan_omo_image_ralph.py --project projects/fall-prevention --only sc01
+README.md:747:생성물은 `qa/omo_image_ralph_plan.json`이다. 이 파일의 `omo_prompt`는 `$omo:ulw-loop`에서
+README.md:753:python3 scripts/inspect_video.py --project projects/fall-prevention --clip <clip.mp4> --tool scenelens --no-transcript
+README.md:754:python3 scripts/validate_video.py --project projects/fall-prevention --expected-clips 1 --clip <clip-name>.mp4
+README.md:758:`qa/video_regeneration_proposals.json`에 `propose_only` 모드로 부족한 지점과 다음
+AGENTS.md:10:- Each new safety-video project must include a generated project-level `HANDOFF.md` from `templates/project/HANDOFF.md`.
+AGENTS.md:28:- Do not approve production images without `qa/image_manual_reviews.json` or an equivalent isolated visual QA artifact covering floor/lane, background, identity, vehicle geometry, and hazard-zone consistency.
+AGENTS.md:29:- Use `scripts/build_image_visual_review.py` to create local contact-sheet evidence before Gate 2; treat it as heuristic support, not a full semantic replacement for human/model visual review.
+AGENTS.md:36:- Ask where each reference belongs: `model/cast`, `model/ppe`, `product/equipment`, `ref/approved/person`, `ref/approved/work`, `ref/approved/space`, `ref/approved/style`, `ref/approved/camera`, or `ref/approved/lighting`.
+AGENTS.md:37:- After asking whether references exist, ask which reusable style guide to use and show 5 choices from `style-guides/catalog.json`.
+AGENTS.md:38:- Store reusable styles under `style-guides/<style-id>/STYLE_GUIDE.md` with reference images in `style-guides/<style-id>/references/`.
+docs/generative-media-reference-index.md:5:`agents/<agent-id>/references/` and `skills/<skill-id>/references/`.
+docs/generative-media-reference-index.md:27:  - Use when turning repeatable workflows into parameterized prompt templates.
+docs/generative-media-reference-index.md:45:- Codex imagegen skill: `$CODEX_HOME/skills/.system/imagegen/SKILL.md`
+docs/generative-media-reference-index.md:47:- Seedance expert skill: `$CODEX_HOME/skills/seedance-expert/SKILL.md`
+docs/generative-media-reference-index.md:49:- Style guide catalog: `style-guides/README.md`
+docs/generative-media-reference-index.md:51:- Current webtoon style: `style-guides/korean-industrial-webtoon/STYLE_GUIDE.md`
+safety_video_harness/validation.py:25:        raise HarnessError("storyboard/scenes.json is missing")
+hooks/session-start-anchor.py:17:        "- Reference question comes first; style choice comes next with 5 choices from style-guides/catalog.json.",
+hooks/session-start-anchor.py:22:        "- Preserve evidence under qa/, evidence/, and llm-wiki/.",
+.codex-plugin/plugin.json:8:  "skills": "./skills/",
+.codex-plugin/plugin.json:9:  "hooks": "./hooks/hooks.json",
+.codex-plugin/plugin.json:22:    "defaultPrompt": "Use the safety-video-harness workflow. Start with an intake interview, keep live image/video/TTS calls blocked until approval, then build storyboard, image prompts, QA evidence, and dry-run video plans."
+tests/test_seedance_live_guardrails.py:29:    assert run_cli("scripts/init_project.py", "--name", "레미콘 충돌 예방", "--slug", str(project)).returncode == 0
+tests/test_seedance_live_guardrails.py:30:    assert run_cli("scripts/register_sources.py", "--project", str(project), "--source", str(FIXTURE)).returncode == 0
+tests/test_seedance_live_guardrails.py:31:    assert run_cli("scripts/render_pptx_sources.py", "--project", str(project), "--dry-run", "--mode", "media_extract").returncode == 0
+tests/test_seedance_live_guardrails.py:32:    assert run_cli("scripts/extract_topics.py", "--project", str(project)).returncode == 0
+tests/test_seedance_live_guardrails.py:33:    assert run_cli("scripts/select_topic.py", "--project", str(project), "--topic-id", "topic-001").returncode == 0
+tests/test_seedance_live_guardrails.py:34:    assert run_cli("scripts/extract_style_dna.py", "--project", str(project)).returncode == 0
+tests/test_seedance_live_guardrails.py:35:    assert run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30").returncode == 0
+tests/test_seedance_live_guardrails.py:36:    assert run_cli("scripts/generate_seedance.py", "--project", str(project), "--dry-run").returncode == 0
+tests/test_seedance_live_guardrails.py:54:        "model/cast/signal-worker.png": b"fake cast image",
+tests/test_seedance_live_guardrails.py:55:        "product/equipment/bct-truck.png": b"fake equipment image",
+tests/test_seedance_live_guardrails.py:56:        "ref/approved/space/plant-entry.png": b"fake space image",
+tests/test_seedance_live_guardrails.py:69:    result = run_cli("scripts/generate_seedance.py", "--project", str(project), "--live", "--test-seconds", "10")
+tests/test_seedance_live_guardrails.py:80:        "scripts/generate_seedance.py",
+tests/test_seedance_live_guardrails.py:89:        "scripts/generate_seedance.py",
+tests/test_seedance_live_guardrails.py:110:        "scripts/generate_seedance.py",
+tests/test_seedance_live_guardrails.py:131:        "scripts/generate_seedance.py",
+tests/test_seedance_live_guardrails.py:147:    assert plan["jobs"][0]["start_image"].endswith("images/approved/sc01.png")
+tests/test_seedance_live_guardrails.py:148:    assert plan["jobs"][1]["end_image"].endswith("images/approved/sc03.png")
+tests/test_seedance_live_guardrails.py:155:    assert run_cli("scripts/generate_seedance.py", "--project", str(project), "--dry-run").returncode == 0
+tests/test_seedance_live_guardrails.py:159:        "scripts/generate_seedance.py",
+tests/test_seedance_live_guardrails.py:175:    assert any(item.endswith("model/cast/signal-worker.png") for item in job["reference_images"])
+tests/test_seedance_live_guardrails.py:183:        "scripts/generate_seedance.py",
+tests/test_seedance_live_guardrails.py:206:        "scripts/generate_seedance.py",
+tests/test_seedance_live_guardrails.py:233:        "scripts/generate_seedance.py",
+tests/test_video_qa.py:29:    result = run_cli("scripts/validate_video.py", "--project", str(project), "--expected-clips", "2")
+tests/test_video_qa.py:49:    result = run_cli("scripts/validate_video.py", "--project", str(project), "--expected-clips", "1")
+tests/test_video_qa.py:84:    result = run_cli("scripts/validate_video.py", "--project", str(project), "--expected-clips", "1")
+tests/test_video_qa.py:92:    assert review["artifact_path"].endswith("video/clips/sc01_sc02_seedance.mp4")
+tests/test_video_qa.py:114:                "clip": "video/clips/sc01_sc02_seedance.mp4",
+tests/test_video_qa.py:144:                        "inspection_manifest": "video/inspection/sc01_sc02_seedance/manifest.json",
+tests/test_video_qa.py:154:    result = run_cli("scripts/validate_video.py", "--project", str(project), "--expected-clips", "1")
+tests/test_video_qa.py:209:    result = run_cli("scripts/validate_video.py", "--project", str(project), "--expected-clips", "1")
+tests/test_video_qa.py:231:                "clip": "video/clips/accepted.mp4",
+tests/test_video_qa.py:252:                        "inspection_manifest": "video/inspection/accepted/manifest.json",
+tests/test_video_qa.py:275:        "scripts/validate_video.py",
+tests/test_video_qa.py:309:                "clip": f"video/clips/{source.name}",
+tests/test_video_qa.py:330:                        "inspection_manifest": f"video/inspection/{source.stem}/manifest.json",
+tests/test_video_qa.py:345:        "scripts/validate_video.py",
+tests/test_video_regeneration_proposals.py:32:    result = run_cli("scripts/assemble_video.py", "--project", str(project), "--dry-run")
+tests/test_video_regeneration_proposals.py:37:    assert plan["clips"] == ["video/clips/sc01_sc02.mp4", "video/clips/sc02_sc03.mp4"]
+tests/test_video_regeneration_proposals.py:38:    assert plan["output"] == "video/final/final.mp4"
+tests/test_video_regeneration_proposals.py:51:                        "start_keyframe": "images/approved/sc01.png",
+tests/test_video_regeneration_proposals.py:52:                        "end_keyframe": "images/approved/sc02.png",
+tests/test_video_regeneration_proposals.py:62:    result = run_cli("scripts/check_story_video_alignment.py", "--project", str(project))
+tests/test_video_regeneration_proposals.py:85:                "clip": f"video/clips/{source.name}",
+tests/test_video_regeneration_proposals.py:106:                        "inspection_manifest": f"video/inspection/{source.stem}/manifest.json",
+tests/test_video_regeneration_proposals.py:120:    result = run_cli("scripts/validate_video.py", "--project", str(project), "--expected-clips", "1")
+docs/imagegen-prompting-references.md:8:- `/Users/hatae/.codex/skills/.system/imagegen/SKILL.md`
+docs/imagegen-prompting-references.md:11:  - Copy project-bound outputs from `$CODEX_HOME/generated_images/...` into the project.
+docs/evaluation-rubrics.md:12:2. the selected `agents/<agent-id>/AGENT.md` or `skills/<skill-id>/SKILL.md`
+docs/evaluation-rubrics.md:16:If the work uses a style guide, also read `style-guides/<style-id>/STYLE_GUIDE.md`.
+docs/evaluation-rubrics.md:70:Until a full semantic vision evaluator is implemented, production image approval requires `qa/image_manual_reviews.json`.
+docs/evaluation-rubrics.md:71:Each scene entry must score the five visual-lock axes above and list any blocking issues. `scripts/build_image_visual_review.py`
+tests/test_evaluation_round_wiki_memory.py:21:                "start_keyframe": "images/approved/sc01.png",
+tests/test_evaluation_round_wiki_memory.py:22:                "end_keyframe": "images/approved/sc02.png",
+tests/test_evaluation_round_wiki_memory.py:23:                "clip_path": "video/clips/sc01_sc02.mp4",
+tests/test_evaluation_round_wiki_memory.py:26:                "reviewed_asset": "images/draft/sc01_v001.png",
+tests/test_evaluation_round_wiki_memory.py:36:        "reviewed_asset": "images/draft/sc01_v001.png",
+tests/test_evaluation_round_wiki_memory.py:53:    assert "- reviewed_asset: `images/draft/sc01_v001.png`" in wiki
+tests/test_evaluation_round_wiki_memory.py:54:    assert "- start_keyframe: `images/approved/sc01.png`" in wiki
+tests/test_evaluation_round_wiki_memory.py:55:    assert "- end_keyframe: `images/approved/sc02.png`" in wiki
+tests/test_evaluation_round_wiki_memory.py:65:    assert "images/draft/sc01_v001.png" in record["artifact_paths"]
+tests/test_no_narration_contract.py:23:    assert run_cli("scripts/init_project.py", "--name", "레미콘 충돌 예방", "--slug", str(project)).returncode == 0
+tests/test_no_narration_contract.py:24:    assert run_cli("scripts/register_sources.py", "--project", str(project), "--source", str(FIXTURE)).returncode == 0
+tests/test_no_narration_contract.py:25:    assert run_cli("scripts/render_pptx_sources.py", "--project", str(project), "--dry-run", "--mode", "media_extract").returncode == 0
+tests/test_no_narration_contract.py:26:    assert run_cli("scripts/extract_topics.py", "--project", str(project)).returncode == 0
+tests/test_no_narration_contract.py:27:    assert run_cli("scripts/select_topic.py", "--project", str(project), "--topic-id", "topic-001").returncode == 0
+tests/test_no_narration_contract.py:34:    result = run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30")
+tests/test_no_narration_contract.py:46:    assert run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30").returncode == 0
+tests/test_no_narration_contract.py:52:    result = run_cli("scripts/validate_project.py", str(project))
+hooks/protected_paths.json:5:    "schemas",
+hooks/protected_paths.json:6:    "templates",
+hooks/protected_paths.json:9:    "images/approved",
+hooks/protected_paths.json:10:    "ref/approved",
+hooks/protected_paths.json:11:    "style-guides",
+hooks/protected_paths.json:12:    "qa/image_manual_reviews.json",
+hooks/protected_paths.json:13:    "qa/video_manual_review.json"
+tests/test_video_inspection.py:43:        "scripts/inspect_video.py",
+tests/test_evaluation_arbiter.py:32:    assert run_cli("scripts/init_project.py", "--name", "레미콘 충돌 예방", "--slug", str(project)).returncode == 0
+tests/test_evaluation_arbiter.py:33:    assert run_cli("scripts/register_sources.py", "--project", str(project), "--source", str(FIXTURE)).returncode == 0
+tests/test_evaluation_arbiter.py:34:    assert run_cli("scripts/render_pptx_sources.py", "--project", str(project), "--dry-run", "--mode", "media_extract").returncode == 0
+tests/test_evaluation_arbiter.py:35:    assert run_cli("scripts/extract_topics.py", "--project", str(project)).returncode == 0
+tests/test_evaluation_arbiter.py:36:    assert run_cli("scripts/select_topic.py", "--project", str(project), "--topic-id", "topic-001").returncode == 0
+tests/test_evaluation_arbiter.py:37:    assert run_cli("scripts/extract_style_dna.py", "--project", str(project)).returncode == 0
+tests/test_evaluation_arbiter.py:38:    assert run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30").returncode == 0
+tests/test_evaluation_arbiter.py:160:    result = run_cli("scripts/validate_images.py", "--project", str(project), "--only", "sc01")
+tests/test_evaluation_arbiter.py:200:    result = run_cli("scripts/generate_images.py", "--project", str(project), "--dry-run", "--only", "sc01")
+docs/opencv-mcp-local-reference.md:29:1. Generate scene keyframes into `images/draft/scNN_vNNN.png`.
+docs/opencv-mcp-local-reference.md:30:2. Build `qa/visual_review/image_contact_sheet.png`.
+docs/opencv-mcp-local-reference.md:37:4. Write findings into `qa/image_visual_review_draft.json`.
+docs/opencv-mcp-local-reference.md:38:5. Promote or merge findings into `qa/image_manual_reviews.json`.
+docs/opencv-mcp-local-reference.md:39:6. Run `scripts/validate_images.py`.
+docs/opencv-mcp-local-reference.md:63:- Do not replace `qa/image_manual_reviews.json` with OpenCV metadata alone.
+tests/test_plugin_structure.py:15:    assert manifest["hooks"] == "./hooks/hooks.json"
+tests/test_plugin_structure.py:18:        "skills/topic-extractor/SKILL.md",
+tests/test_plugin_structure.py:19:        "skills/story-writer/SKILL.md",
+tests/test_plugin_structure.py:20:        "skills/seedance-prompting/SKILL.md",
+tests/test_plugin_structure.py:21:        "skills/image-consistency-check/SKILL.md",
+tests/test_plugin_structure.py:22:        "skills/video-inspect/SKILL.md",
+tests/test_plugin_structure.py:23:        "skills/style-ref-search/SKILL.md",
+tests/test_plugin_structure.py:24:        "agents/storyteller/AGENT.md",
+tests/test_plugin_structure.py:25:        "agents/storyteller/references/storyteller-reference.md",
+tests/test_plugin_structure.py:26:        "agents/lead-style-agent/AGENT.md",
+tests/test_plugin_structure.py:27:        "agents/lead-style-agent/references/lead-style-reference.md",
+tests/test_plugin_structure.py:28:        "agents/scene-prompt-agent/AGENT.md",
+tests/test_plugin_structure.py:29:        "agents/scene-prompt-agent/references/scene-prompt-reference.md",
+tests/test_plugin_structure.py:30:        "agents/visual-director-arbiter/AGENT.md",
+tests/test_plugin_structure.py:31:        "agents/visual-director-arbiter/references/visual-director-arbiter-reference.md",
+tests/test_plugin_structure.py:32:        "agents/continuity-qa/AGENT.md",
+tests/test_plugin_structure.py:33:        "agents/continuity-qa/references/continuity-qa-reference.md",
+tests/test_plugin_structure.py:34:        "agents/video-qa/AGENT.md",
+tests/test_plugin_structure.py:35:        "agents/video-qa/references/video-qa-reference.md",
+tests/test_plugin_structure.py:36:        "agents/visual-continuity-director/AGENT.md",
+tests/test_plugin_structure.py:37:        "agents/visual-continuity-director/references/visual-continuity-reference.md",
+tests/test_plugin_structure.py:38:        "hooks/hooks.json",
+tests/test_plugin_structure.py:39:        "hooks/pretooluse-live-veto.py",
+tests/test_plugin_structure.py:40:        "hooks/protected_paths.json",
+tests/test_plugin_structure.py:41:        "schemas/project_config.schema.json",
+tests/test_plugin_structure.py:42:        "schemas/scenes.schema.json",
+tests/test_plugin_structure.py:43:        "style-guides/catalog.json",
+tests/test_plugin_structure.py:44:        "style-guides/korean-industrial-webtoon/STYLE_GUIDE.md",
+tests/test_plugin_structure.py:45:        "templates/project/PLAN.md",
+tests/test_plugin_structure.py:46:        "templates/project/AGENTS.safety.md",
+tests/test_plugin_structure.py:47:        "templates/project/HANDOFF.md",
+tests/test_plugin_structure.py:54:        "scripts/plan_image_prompt_team.py",
+tests/test_plugin_structure.py:64:        "hooks/session-start-anchor.py",
+tests/test_plugin_structure.py:65:        "hooks/pretooluse-live-veto.py",
+tests/test_plugin_structure.py:66:        "hooks/pretooluse-secret-veto.py",
+tests/test_plugin_structure.py:67:        "hooks/pretooluse-protected-path-veto.py",
+tests/test_plugin_structure.py:68:        "hooks/posttooluse-schema-validation.py",
+tests/test_plugin_structure.py:69:        "hooks/posttooluse-scene-link-validation.py",
+tests/test_plugin_structure.py:70:        "hooks/posttooluse-evidence-feedback.py",
+tests/test_plugin_structure.py:71:        "hooks/stop-sentinel-guard.py",
+tests/test_plugin_structure.py:83:        "skills/topic-extractor/references/topic-extractor-reference.md",
+tests/test_plugin_structure.py:84:        "skills/story-writer/references/story-writer-reference.md",
+tests/test_plugin_structure.py:85:        "skills/style-ref-search/references/style-ref-search-reference.md",
+tests/test_plugin_structure.py:86:        "skills/seedance-prompting/references/seedance-prompting-reference.md",
+tests/test_plugin_structure.py:87:        "skills/image-consistency-check/references/image-consistency-reference.md",
+tests/test_plugin_structure.py:88:        "skills/video-inspect/references/video-inspect-reference.md",
+tests/test_plugin_structure.py:150:    for path in (ROOT / "schemas").glob("*.json"):
+tests/test_plugin_structure.py:157:        ["python3", "hooks/session-start-anchor.py"],
+tests/test_plugin_structure.py:196:            "hooks/pretooluse-live-veto.py",
+tests/test_plugin_structure.py:200:            "scripts/generate_images.py",
+tests/test_plugin_structure.py:227:            "command": f"uv run python scripts/generate_images.py --project {project} --live --only sc01"
+tests/test_plugin_structure.py:232:        ["python3", "hooks/pretooluse-live-veto.py"],
+tests/test_plugin_structure.py:256:            "command": f"uv run python scripts/generate_seedance.py --project {project} --live --execute-paid"
+tests/test_plugin_structure.py:261:        ["python3", "hooks/pretooluse-live-veto.py"],
+safety_video_harness/project.py:14:    "sources/raw",
+safety_video_harness/project.py:15:    "sources/rendered",
+safety_video_harness/project.py:16:    "model/cast",
+safety_video_harness/project.py:17:    "model/ppe",
+safety_video_harness/project.py:18:    "product/equipment",
+safety_video_harness/project.py:20:    "ref/approved",
+safety_video_harness/project.py:21:    "ref/approved/person",
+safety_video_harness/project.py:22:    "ref/approved/work",
+safety_video_harness/project.py:23:    "ref/approved/space",
+safety_video_harness/project.py:24:    "ref/approved/style",
+safety_video_harness/project.py:25:    "ref/approved/camera",
+safety_video_harness/project.py:26:    "ref/approved/lighting",
+safety_video_harness/project.py:31:    "images/draft",
+safety_video_harness/project.py:32:    "images/approved",
+safety_video_harness/project.py:33:    "images/rejected",
+safety_video_harness/project.py:34:    "video/clips",
+safety_video_harness/project.py:35:    "video/sampled_frames",
+safety_video_harness/project.py:36:    "video/inspection",
+tests/test_storyboard_quality.py:23:    assert run_cli("scripts/init_project.py", "--name", "레미콘 충돌 예방", "--slug", str(project)).returncode == 0
+tests/test_storyboard_quality.py:24:    assert run_cli("scripts/register_sources.py", "--project", str(project), "--source", str(FIXTURE)).returncode == 0
+tests/test_storyboard_quality.py:25:    assert run_cli("scripts/render_pptx_sources.py", "--project", str(project), "--dry-run", "--mode", "media_extract").returncode == 0
+tests/test_storyboard_quality.py:26:    assert run_cli("scripts/extract_topics.py", "--project", str(project)).returncode == 0
+tests/test_storyboard_quality.py:27:    assert run_cli("scripts/select_topic.py", "--project", str(project), "--topic-id", "topic-001").returncode == 0
+tests/test_storyboard_quality.py:28:    assert run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30").returncode == 0
+tests/test_storyboard_quality.py:35:    result = run_cli("scripts/evaluate_storyboard.py", "--project", str(project))
+tests/test_storyboard_quality.py:45:    assert report["reviews"][0]["artifact_path"] == "storyboard/scenes.json#sc01"
+tests/test_storyboard_quality.py:67:    result = run_cli("scripts/evaluate_storyboard.py", "--project", str(project))
+tests/test_storyboard_quality.py:85:    qa = run_cli("scripts/evaluate_storyboard.py", "--project", str(project))
+tests/test_storyboard_quality.py:86:    approved = run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard")
+docs/higgsfield-seedance-local-reference.md:71:  "start_keyframe": "images/approved/sc03.png",
+docs/higgsfield-seedance-local-reference.md:72:  "end_keyframe": "images/approved/sc04.png",
+docs/higgsfield-seedance-local-reference.md:73:  "prompt_path": "video_prompts/sc03_to_sc04.md",
+docs/higgsfield-seedance-local-reference.md:75:    "model/cast/signal-worker.png",
+docs/higgsfield-seedance-local-reference.md:76:    "product/equipment/bct-truck.png",
+docs/higgsfield-seedance-local-reference.md:77:    "ref/approved/space/plant-entry.png",
+docs/higgsfield-seedance-local-reference.md:78:    "ref/approved/style/webtoon-style.png"
+docs/higgsfield-seedance-local-reference.md:108:2. Run `scripts/inspect_video.py` or equivalent local inspection.
+tests/test_review_regressions.py:102:    assert jobs["jobs"][0]["output"] == "images/draft/sc01_v004.png"
+tests/test_review_regressions.py:108:        ["python3", "hooks/pretooluse-protected-path-veto.py", "write", "APPROVALS.JSON"],
+tests/test_review_regressions.py:122:        ["python3", "hooks/pretooluse-protected-path-veto.py", "write", "project_config.json"],
+tests/test_review_regressions.py:141:        ["python3", "hooks/pretooluse-secret-veto.py"],
+tests/test_review_regressions.py:156:        ["python3", "hooks/pretooluse-secret-veto.py", "write", "api_key=sk-test"],
+tests/test_review_regressions.py:195:        ["python3", "hooks/posttooluse-schema-validation.py", "--project", str(project)],
+tests/test_review_regressions.py:203:    assert "storyboard/scenes.json is missing" in result.stdout
+tests/test_review_regressions.py:208:        ["python3", "hooks/posttooluse-evidence-feedback.py", "complete", "all done"],
+tests/test_review_regressions.py:274:                    "start_keyframe": "images/approved/sc01.png",
+tests/test_review_regressions.py:275:                    "end_keyframe": "images/approved/sc02.png",
+tests/test_omo_ralph_orchestrator.py:52:    result = run_cli("scripts/plan_omo_image_ralph.py", "--project", str(project), "--only", "sc01")
+tests/test_omo_ralph_orchestrator.py:59:    assert "uv run python scripts/validate_images.py" in plan["omo_prompt"]
+tests/test_omo_ralph_orchestrator.py:87:    result = run_cli("scripts/plan_omo_image_ralph.py", "--project", str(project))
+tests/test_hook_guardrails.py:13:        ["python3", "hooks/pretooluse-live-veto.py", *args],
+tests/test_hook_guardrails.py:100:        ["python3", "hooks/pretooluse-protected-path-veto.py"],
+tests/test_hook_guardrails.py:121:    result = run_live_veto(None, "uv", "run", "python", "scripts/tts.py", "--project", str(project))
+tests/test_hook_guardrails.py:147:    result = run_live_veto(None, "uv", "run", "python", "scripts/generate_images.py", "--project", str(project), "--live")
+tests/test_hook_guardrails.py:162:        ["python3", "hooks/pretooluse-secret-veto.py"],
+docs/reference-sources.md:26:- Codex imagegen skill: `$CODEX_HOME/skills/.system/imagegen/SKILL.md`
+docs/reference-sources.md:27:- Seedance expert skill: `$CODEX_HOME/skills/seedance-expert/SKILL.md`
+docs/reference-sources.md:28:- Video frame analysis skill: `$CODEX_HOME/skills/video-frame-analysis/SKILL.md`
+docs/reference-sources.md:29:- Understand video skill: `$CODEX_HOME/skills/understand-video/SKILL.md`
+docs/reference-sources.md:30:- Style guide catalog: `style-guides/README.md`
+docs/reference-sources.md:31:- Current webtoon style: `style-guides/korean-industrial-webtoon/STYLE_GUIDE.md`
+docs/reference-sources.md:36:- Agent operating references: `agents/<agent-id>/references/*.md`
+docs/reference-sources.md:37:- Skill operating references: `skills/<skill-id>/references/*.md`
+docs/few-shot-examples.md:86:  "artifact_path": "images/draft/sc03_v002.png",
+docs/few-shot-examples.md:103:    "source_path": "qa/image_manual_reviews.json"
+docs/few-shot-examples.md:140:  "inspection_manifest": "qa/video_inspection/sc03_to_sc04_manifest.json",
+docs/few-shot-examples.md:142:    "qa/video_inspection/sc03_to_sc04_0000.jpg",
+docs/few-shot-examples.md:143:    "qa/video_inspection/sc03_to_sc04_0005.jpg",
+docs/few-shot-examples.md:144:    "qa/video_inspection/sc03_to_sc04_0010.jpg"
+tests/test_style_guides.py:27:    assert run_cli("scripts/init_project.py", "--name", "레미콘 웹툰 스타일", "--slug", str(project)).returncode == 0
+tests/test_style_guides.py:28:    assert run_cli("scripts/register_sources.py", "--project", str(project), "--source", str(FIXTURE)).returncode == 0
+tests/test_style_guides.py:29:    assert run_cli("scripts/render_pptx_sources.py", "--project", str(project), "--dry-run").returncode == 0
+tests/test_style_guides.py:30:    assert run_cli("scripts/extract_topics.py", "--project", str(project)).returncode == 0
+tests/test_style_guides.py:31:    assert run_cli("scripts/intake_project.py", "--project", str(project), "--defaults").returncode == 0
+tests/test_style_guides.py:32:    assert run_cli("scripts/extract_style_dna.py", "--project", str(project)).returncode == 0
+tests/test_style_guides.py:33:    assert run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30").returncode == 0
+tests/test_style_guides.py:37:    catalog = load_json(ROOT / "style-guides" / "catalog.json")
+tests/test_style_guides.py:41:    assert (ROOT / "style-guides" / "README.md").exists()
+tests/test_style_guides.py:42:    assert (ROOT / "style-guides" / "korean-industrial-webtoon" / "STYLE_GUIDE.md").exists()
+tests/test_style_guides.py:43:    assert (ROOT / "style-guides" / "korean-industrial-webtoon" / "references" / "reference-001.png").exists()
+tests/test_style_guides.py:44:    assert (ROOT / "style-guides" / "korean-industrial-webtoon" / "references" / "reference-001.md").exists()
+tests/test_style_guides.py:50:    assert run_cli("scripts/init_project.py", "--name", "스타일 인터뷰", "--slug", str(project)).returncode == 0
+tests/test_style_guides.py:66:    result = run_cli("scripts/generate_images.py", "--project", str(project), "--dry-run", "--only", "sc01")
+tests/test_style_guides.py:80:    result = run_cli("scripts/plan_image_prompt_team.py", "--project", str(project))
+tests/test_style_guides.py:84:    assert team_plan["agent_team"]["lead_style_agent"]["agent_file"] == "agents/lead-style-agent/AGENT.md"
+tests/test_style_guides.py:85:    assert team_plan["agent_team"]["visual_director_arbiter"]["agent_file"] == "agents/visual-director-arbiter/AGENT.md"
+tests/test_style_guides.py:89:    image_result = run_cli("scripts/generate_images.py", "--project", str(project), "--dry-run", "--only", "sc02")
+tests/test_mvp_flow.py:30:    assert run_cli("scripts/init_project.py", "--name", "추락 예방", "--slug", str(project)).returncode == 0
+tests/test_mvp_flow.py:37:    assert run_cli("scripts/validate_plan.py", str(project / "PLAN.md")).returncode == 0
+tests/test_mvp_flow.py:38:    assert run_cli("scripts/register_sources.py", "--project", str(project), "--source", str(source)).returncode == 0
+tests/test_mvp_flow.py:39:    assert run_cli("scripts/render_pptx_sources.py", "--project", str(project), "--dry-run").returncode == 0
+tests/test_mvp_flow.py:40:    assert run_cli("scripts/extract_topics.py", "--project", str(project)).returncode == 0
+tests/test_mvp_flow.py:41:    assert run_cli("scripts/intake_project.py", "--project", str(project), "--defaults").returncode == 0
+tests/test_mvp_flow.py:42:    assert run_cli("scripts/search_references.py", "--project", str(project), "--dry-run").returncode == 0
+tests/test_mvp_flow.py:43:    assert run_cli("scripts/extract_style_dna.py", "--project", str(project)).returncode == 0
+tests/test_mvp_flow.py:44:    assert run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30").returncode == 0
+tests/test_mvp_flow.py:45:    assert run_cli("scripts/validate_project.py", str(project)).returncode == 0
+tests/test_mvp_flow.py:46:    assert run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard").returncode == 0
+tests/test_mvp_flow.py:47:    assert run_cli("scripts/generate_images.py", "--project", str(project), "--dry-run").returncode == 0
+tests/test_mvp_flow.py:48:    assert run_cli("scripts/validate_images.py", "--project", str(project), "--dry-run").returncode == 0
+tests/test_mvp_flow.py:57:    assert run_cli("scripts/init_project.py", "--name", "invalid", "--slug", str(project)).returncode == 0
+tests/test_mvp_flow.py:58:    assert run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30").returncode == 0
+tests/test_mvp_flow.py:65:    result = run_cli("scripts/validate_project.py", str(project))
+tests/test_mvp_flow.py:72:    assert run_cli("scripts/init_project.py", "--name", "invalid", "--slug", str(project)).returncode == 0
+tests/test_mvp_flow.py:73:    assert run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30").returncode == 0
+tests/test_mvp_flow.py:80:    result = run_cli("scripts/validate_project.py", str(project))
+tests/test_mvp_flow.py:87:    assert run_cli("scripts/init_project.py", "--name", "blocked", "--slug", str(project)).returncode == 0
+tests/test_mvp_flow.py:88:    assert run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30").returncode == 0
+tests/test_mvp_flow.py:90:    image_result = run_cli("scripts/generate_images.py", "--project", str(project), "--live")
+tests/test_mvp_flow.py:91:    video_result = run_cli("scripts/generate_seedance.py", "--project", str(project), "--live")
+tests/test_mvp_flow.py:101:    assert run_cli("scripts/init_project.py", "--name", "gate", "--slug", str(project)).returncode == 0
+tests/test_mvp_flow.py:103:    result = run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "image_to_video")
+tests/test_mvp_flow.py:111:    assert run_cli("scripts/init_project.py", "--name", "upload", "--slug", str(project)).returncode == 0
+tests/test_mvp_flow.py:112:    assert run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30").returncode == 0
+tests/test_mvp_flow.py:113:    assert run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard").returncode == 0
+tests/test_mvp_flow.py:115:    result = run_cli("scripts/generate_images.py", "--project", str(project), "--live")
+hooks/posttooluse-scene-link-validation.py:29:        print("scene-link-validation: run scripts/validate_scene_links.py --project <project>")
+tests/test_image_ralph_loop.py:25:    assert run_cli("scripts/init_project.py", "--name", "레미콘 충돌 예방", "--slug", str(project)).returncode == 0
+tests/test_image_ralph_loop.py:26:    assert run_cli("scripts/register_sources.py", "--project", str(project), "--source", str(FIXTURE)).returncode == 0
+tests/test_image_ralph_loop.py:27:    assert run_cli("scripts/render_pptx_sources.py", "--project", str(project), "--dry-run", "--mode", "media_extract").returncode == 0
+tests/test_image_ralph_loop.py:28:    assert run_cli("scripts/extract_topics.py", "--project", str(project)).returncode == 0
+tests/test_image_ralph_loop.py:29:    assert run_cli("scripts/select_topic.py", "--project", str(project), "--topic-id", "topic-001").returncode == 0
+tests/test_image_ralph_loop.py:30:    assert run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30").returncode == 0
+tests/test_image_ralph_loop.py:56:        "model/cast/signal-worker.png": b"fake cast image",
+tests/test_image_ralph_loop.py:57:        "product/equipment/bct-truck.png": b"fake equipment image",
+tests/test_image_ralph_loop.py:58:        "ref/approved/space/plant-entry.png": b"fake space image",
+tests/test_image_ralph_loop.py:71:    result = run_cli("scripts/validate_images.py", "--project", str(project), "--only", "sc01")
+tests/test_image_ralph_loop.py:86:    assert review["artifact_path"] == "images/draft/sc01_v*.png"
+tests/test_image_ralph_loop.py:97:    result = run_cli("scripts/validate_images.py", "--project", str(project), "--only", "sc01")
+tests/test_image_ralph_loop.py:134:    result = run_cli("scripts/validate_images.py", "--project", str(project), "--only", "sc01")
+tests/test_image_ralph_loop.py:152:    first = run_cli("scripts/validate_images.py", "--project", str(project), "--only", "sc01")
+tests/test_image_ralph_loop.py:153:    second = run_cli("scripts/validate_images.py", "--project", str(project), "--only", "sc01")
+tests/test_image_ralph_loop.py:171:    result = run_cli("scripts/validate_images.py", "--project", str(project), "--only", "sc01")
+tests/test_image_ralph_loop.py:191:    result = run_cli("scripts/validate_images.py", "--project", str(project), "--only", "sc01")
+tests/test_image_ralph_loop.py:209:        "scripts/build_image_visual_review.py",
+tests/test_image_ralph_loop.py:225:    validated = run_cli("scripts/validate_images.py", "--project", str(project), "--only", "sc01")
+tests/test_roadmap_bundle2.py:27:    assert run_cli("scripts/init_project.py", "--name", "레미콘 충돌 예방", "--slug", str(project)).returncode == 0
+tests/test_roadmap_bundle2.py:28:    assert run_cli("scripts/register_sources.py", "--project", str(project), "--source", str(FIXTURE)).returncode == 0
+tests/test_roadmap_bundle2.py:29:    assert run_cli("scripts/render_pptx_sources.py", "--project", str(project), "--dry-run", "--mode", "media_extract").returncode == 0
+tests/test_roadmap_bundle2.py:30:    assert run_cli("scripts/extract_topics.py", "--project", str(project)).returncode == 0
+tests/test_roadmap_bundle2.py:31:    assert run_cli("scripts/select_topic.py", "--project", str(project), "--topic-id", "topic-001").returncode == 0
+tests/test_roadmap_bundle2.py:32:    assert run_cli("scripts/extract_style_dna.py", "--project", str(project)).returncode == 0
+tests/test_roadmap_bundle2.py:33:    assert run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30").returncode == 0
+tests/test_roadmap_bundle2.py:45:        "model/cast/signal-worker.png": b"fake cast image",
+tests/test_roadmap_bundle2.py:46:        "product/equipment/bct-truck.png": b"fake equipment image",
+tests/test_roadmap_bundle2.py:47:        "ref/approved/space/plant-entry.png": b"fake space image",
+tests/test_roadmap_bundle2.py:86:    missing_gate = run_cli("scripts/generate_images.py", "--project", str(project), "--live")
+tests/test_roadmap_bundle2.py:90:    assert run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard").returncode == 0
+tests/test_roadmap_bundle2.py:91:    result = run_cli("scripts/generate_images.py", "--project", str(project), "--live", "--only", "sc01")
+tests/test_roadmap_bundle2.py:99:    assert run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard").returncode == 0
+tests/test_roadmap_bundle2.py:102:    result = run_cli("scripts/generate_images.py", "--project", str(project), "--live", "--only", "sc03")
+tests/test_roadmap_bundle2.py:111:    assert job["output"] == "images/draft/sc03_v001.png"
+tests/test_roadmap_bundle2.py:114:    assert job["generation_chain"]["anchor_image"] == "images/approved/sc01.png"
+tests/test_roadmap_bundle2.py:115:    assert job["generation_chain"]["previous_approved_image"] == "images/approved/sc02.png"
+tests/test_roadmap_bundle2.py:116:    assert "images/approved/sc01.png" in job["reference_images"]
+tests/test_roadmap_bundle2.py:117:    assert "images/approved/sc02.png" in job["reference_images"]
+tests/test_roadmap_bundle2.py:124:    assert run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard").returncode == 0
+tests/test_roadmap_bundle2.py:127:    result = run_cli("scripts/generate_images.py", "--project", str(project), "--live", "--only", "sc03")
+tests/test_roadmap_bundle2.py:136:    assert run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard").returncode == 0
+tests/test_roadmap_bundle2.py:139:    result = run_cli("scripts/generate_images.py", "--project", str(project), "--live", "--only", "sc03")
+tests/test_roadmap_bundle2.py:149:    assert run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard").returncode == 0
+tests/test_roadmap_bundle2.py:152:    result = run_cli("scripts/generate_images.py", "--project", str(project), "--live", "--only", "sc01")
+tests/test_roadmap_bundle2.py:167:    assert run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard").returncode == 0
+tests/test_roadmap_bundle2.py:169:    result = run_cli("scripts/generate_images.py", "--project", str(project), "--live")
+tests/test_roadmap_bundle2.py:181:    assert run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard").returncode == 0
+tests/test_roadmap_bundle2.py:184:    result = run_cli("scripts/generate_images.py", "--project", str(project), "--live")
+tests/test_roadmap_bundle2.py:191:    assert job["output"] == "images/draft/sc07_v001.png"
+tests/test_roadmap_bundle2.py:192:    assert job["generation_chain"]["previous_approved_image"] == "images/approved/sc06.png"
+tests/test_roadmap_bundle2.py:200:    result = run_cli("scripts/build_storyboard_dashboard.py", "--project", str(project))
+tests/test_roadmap_bundle2.py:214:    assert run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard").returncode == 0
+tests/test_roadmap_bundle2.py:216:    assert run_cli("scripts/generate_images.py", "--project", str(project), "--live", "--only", "sc01").returncode == 0
+tests/test_roadmap_bundle2.py:222:        "scripts/collect_image_outputs.py",
+tests/test_roadmap_bundle2.py:236:    assert run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard").returncode == 0
+tests/test_roadmap_bundle2.py:238:    assert run_cli("scripts/generate_images.py", "--project", str(project), "--live", "--only", "sc01").returncode == 0
+tests/test_roadmap_bundle2.py:242:    recorded = run_cli("scripts/record_image_output.py", "--project", str(project), "--scene-id", "sc01", "--generated-file", str(fake))
+tests/test_roadmap_bundle2.py:246:    assert run_cli("scripts/generate_images.py", "--project", str(project), "--live", "--only", "sc01", "--regenerate").returncode == 0
+tests/test_roadmap_bundle2.py:248:    assert jobs["jobs"][0]["output"] == "images/draft/sc01_v002.png"
+tests/test_roadmap_bundle2.py:255:    assert run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard").returncode == 0
+tests/test_roadmap_bundle2.py:257:    assert run_cli("scripts/generate_images.py", "--project", str(project), "--live", "--only", "sc01").returncode == 0
+tests/test_roadmap_bundle2.py:259:    blocked = run_cli("scripts/validate_images.py", "--project", str(project), "--only", "sc01")
+tests/test_roadmap_bundle2.py:267:    assert run_cli("scripts/record_image_output.py", "--project", str(project), "--scene-id", "sc01", "--generated-file", str(fake)).returncode == 0
+tests/test_roadmap_bundle2.py:268:    blocked_approval = run_cli("scripts/approve_image.py", "--project", str(project), "--scene-id", "sc01")
+tests/test_roadmap_bundle2.py:272:    approved = run_cli("scripts/approve_image.py", "--project", str(project), "--scene-id", "sc01")
+tests/test_roadmap_bundle2.py:278:    assert run_cli("scripts/generate_images.py", "--project", str(project), "--live", "--only", "sc01", "--regenerate").returncode == 0
+tests/test_roadmap_bundle2.py:279:    assert run_cli("scripts/record_image_output.py", "--project", str(project), "--scene-id", "sc01", "--generated-file", str(fake2)).returncode == 0
+tests/test_roadmap_bundle2.py:281:    assert run_cli("scripts/approve_image.py", "--project", str(project), "--scene-id", "sc01").returncode == 0
+tests/test_subtitle_contract.py:22:    assert run_cli("scripts/init_project.py", "--name", "레미콘 충돌 예방", "--slug", str(project)).returncode == 0
+tests/test_subtitle_contract.py:23:    assert run_cli("scripts/register_sources.py", "--project", str(project), "--source", str(FIXTURE)).returncode == 0
+tests/test_subtitle_contract.py:24:    assert run_cli("scripts/render_pptx_sources.py", "--project", str(project), "--dry-run", "--mode", "media_extract").returncode == 0
+tests/test_subtitle_contract.py:25:    assert run_cli("scripts/extract_topics.py", "--project", str(project)).returncode == 0
+tests/test_subtitle_contract.py:26:    assert run_cli("scripts/select_topic.py", "--project", str(project), "--topic-id", "topic-001").returncode == 0
+tests/test_subtitle_contract.py:27:    assert run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30").returncode == 0
+tests/test_subtitle_contract.py:34:    result = run_cli("scripts/plan_subtitles.py", "--project", str(project), "--dry-run")
+hooks/pretooluse-live-veto.py:100:    for jobs_path in root.rglob("prompts/imagegen_jobs.json"):
+hooks/hooks.json:9:            "command": "python3 \"${CODEX_PLUGIN_ROOT:-${PLUGIN_ROOT}}/hooks/session-start-anchor.py\"",
+hooks/hooks.json:22:            "command": "python3 \"${CODEX_PLUGIN_ROOT:-${PLUGIN_ROOT}}/hooks/pretooluse-live-veto.py\"",
+hooks/hooks.json:28:            "command": "python3 \"${CODEX_PLUGIN_ROOT:-${PLUGIN_ROOT}}/hooks/pretooluse-secret-veto.py\"",
+hooks/hooks.json:34:            "command": "python3 \"${CODEX_PLUGIN_ROOT:-${PLUGIN_ROOT}}/hooks/pretooluse-protected-path-veto.py\"",
+hooks/hooks.json:47:            "command": "python3 \"${CODEX_PLUGIN_ROOT:-${PLUGIN_ROOT}}/hooks/posttooluse-schema-validation.py\"",
+hooks/hooks.json:53:            "command": "python3 \"${CODEX_PLUGIN_ROOT:-${PLUGIN_ROOT}}/hooks/posttooluse-scene-link-validation.py\"",
+hooks/hooks.json:59:            "command": "python3 \"${CODEX_PLUGIN_ROOT:-${PLUGIN_ROOT}}/hooks/posttooluse-evidence-feedback.py\"",
+hooks/hooks.json:71:            "command": "python3 \"${CODEX_PLUGIN_ROOT:-${PLUGIN_ROOT}}/hooks/stop-sentinel-guard.py\"",
+tests/test_storyboard_density.py:23:    assert run_cli("scripts/init_project.py", "--name", "레미콘 충돌 예방", "--slug", str(project)).returncode == 0
+tests/test_storyboard_density.py:24:    assert run_cli("scripts/register_sources.py", "--project", str(project), "--source", str(FIXTURE)).returncode == 0
+tests/test_storyboard_density.py:25:    assert run_cli("scripts/render_pptx_sources.py", "--project", str(project), "--dry-run", "--mode", "media_extract").returncode == 0
+tests/test_storyboard_density.py:26:    assert run_cli("scripts/extract_topics.py", "--project", str(project)).returncode == 0
+tests/test_storyboard_density.py:27:    assert run_cli("scripts/select_topic.py", "--project", str(project), "--topic-id", "topic-001").returncode == 0
+tests/test_storyboard_density.py:32:        "scripts/plan_storyboard.py",
+tests/test_storyboard_density.py:59:        "scripts/plan_storyboard.py",
+tests/test_roadmap_bundle1.py:28:    assert run_cli("scripts/init_project.py", "--name", "레미콘 충돌 예방", "--slug", str(project)).returncode == 0
+tests/test_roadmap_bundle1.py:29:    assert run_cli("scripts/register_sources.py", "--project", str(project), "--source", str(FIXTURE)).returncode == 0
+tests/test_roadmap_bundle1.py:30:    assert run_cli("scripts/render_pptx_sources.py", "--project", str(project), "--dry-run", "--mode", "media_extract").returncode == 0
+tests/test_roadmap_bundle1.py:31:    assert run_cli("scripts/extract_topics.py", "--project", str(project)).returncode == 0
+tests/test_roadmap_bundle1.py:38:    missing = run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30")
+tests/test_roadmap_bundle1.py:42:    selected = run_cli("scripts/select_topic.py", "--project", str(project), "--topic-id", "topic-002")
+tests/test_roadmap_bundle1.py:49:    planned = run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30")
+tests/test_roadmap_bundle1.py:71:            '<p:sld xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" '
+tests/test_roadmap_bundle1.py:72:            'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">'
+tests/test_roadmap_bundle1.py:77:    assert run_cli("scripts/init_project.py", "--name", "텍스트 추출", "--slug", str(project)).returncode == 0
+tests/test_roadmap_bundle1.py:78:    assert run_cli("scripts/register_sources.py", "--project", str(project), "--source", str(source)).returncode == 0
+tests/test_roadmap_bundle1.py:79:    assert run_cli("scripts/render_pptx_sources.py", "--project", str(project), "--dry-run", "--mode", "media_extract").returncode == 0
+tests/test_roadmap_bundle1.py:98:    analyzed = run_cli("scripts/analyze_reference_assets.py", "--project", str(project), "--dry-run")
+tests/test_roadmap_bundle1.py:108:        "scripts/approve_reference.py",
+tests/test_roadmap_bundle1.py:143:    analyzed = run_cli("scripts/analyze_reference_assets.py", "--project", str(project), "--dry-run")
+tests/test_roadmap_bundle1.py:164:    analyzed = run_cli("scripts/analyze_reference_assets.py", "--project", str(project), "--dry-run")
+tests/test_roadmap_bundle1.py:182:        "scripts/approve_reference.py",
+tests/test_roadmap_bundle1.py:195:    assert provenance["approvals"][0]["target"] == "ref/approved/work/work-scene.png"
+tests/test_roadmap_bundle1.py:201:    assert run_cli("scripts/select_topic.py", "--project", str(project), "--topic-id", "topic-001").returncode == 0
+tests/test_roadmap_bundle1.py:202:    assert run_cli("scripts/extract_style_dna.py", "--project", str(project)).returncode == 0
+tests/test_roadmap_bundle1.py:203:    assert run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30").returncode == 0
+tests/test_roadmap_bundle1.py:204:    assert run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard").returncode == 0
+tests/test_roadmap_bundle1.py:205:    assert run_cli("scripts/generate_images.py", "--project", str(project), "--dry-run").returncode == 0
+tests/test_roadmap_bundle1.py:206:    assert run_cli("scripts/generate_seedance.py", "--project", str(project), "--dry-run").returncode == 0
+tests/test_roadmap_bundle1.py:208:    blocked = run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "image_to_video", "--estimated-credits", "12")
+tests/test_roadmap_bundle1.py:217:    blocked = run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "image_to_video", "--estimated-credits", "12")
+tests/test_roadmap_bundle1.py:224:    blocked = run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "image_to_video", "--estimated-credits", "12")
+tests/test_roadmap_bundle1.py:228:    assert run_cli("scripts/validate_images.py", "--project", str(project), "--dry-run").returncode == 0
+tests/test_roadmap_bundle1.py:229:    estimated = run_cli("scripts/estimate_video_cost.py", "--project", str(project), "--estimated-credits", "12")
+tests/test_roadmap_bundle1.py:235:    blocked = run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "image_to_video", "--estimated-credits", "12")
+tests/test_roadmap_bundle1.py:258:    approved = run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "image_to_video", "--estimated-credits", "12")
+tests/test_roadmap_bundle1.py:265:    assert run_cli("scripts/select_topic.py", "--project", str(project), "--topic-id", "topic-001").returncode == 0
+tests/test_roadmap_bundle1.py:266:    assert run_cli("scripts/extract_style_dna.py", "--project", str(project)).returncode == 0
+tests/test_roadmap_bundle1.py:267:    assert run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30").returncode == 0
+tests/test_roadmap_bundle1.py:268:    assert run_cli("scripts/evaluate_storyboard.py", "--project", str(project)).returncode == 0
+tests/test_roadmap_bundle1.py:269:    assert run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard").returncode == 0
+tests/test_roadmap_bundle1.py:270:    assert run_cli("scripts/generate_seedance.py", "--project", str(project), "--dry-run").returncode == 0
+tests/test_roadmap_bundle1.py:290:    result = run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "image_to_video", "--estimated-credits", "12")
+tests/test_roadmap_bundle1.py:298:    assert run_cli("scripts/init_project.py", "--name", "locked", "--slug", str(project)).returncode == 0
+tests/test_roadmap_bundle1.py:301:    result = run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard")
+tests/test_story_flow_quality.py:55:    assert run_cli("scripts/init_project.py", "--name", "레미콘 충돌 예방", "--slug", str(project)).returncode == 0
+tests/test_story_flow_quality.py:56:    assert run_cli("scripts/register_sources.py", "--project", str(project), "--source", str(FIXTURE)).returncode == 0
+tests/test_story_flow_quality.py:57:    assert run_cli("scripts/render_pptx_sources.py", "--project", str(project), "--dry-run", "--mode", "media_extract").returncode == 0
+tests/test_story_flow_quality.py:58:    assert run_cli("scripts/extract_topics.py", "--project", str(project)).returncode == 0
+tests/test_story_flow_quality.py:59:    assert run_cli("scripts/select_topic.py", "--project", str(project), "--topic-id", "topic-001").returncode == 0
+tests/test_story_flow_quality.py:60:    assert run_cli("scripts/extract_style_dna.py", "--project", str(project)).returncode == 0
+tests/test_story_flow_quality.py:61:    assert run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30").returncode == 0
+tests/test_story_flow_quality.py:68:    result = run_cli("scripts/generate_images.py", "--project", str(project), "--dry-run")
+tests/test_story_flow_quality.py:84:    assert run_cli("scripts/generate_images.py", "--project", str(project), "--dry-run").returncode == 0
+tests/test_story_flow_quality.py:91:    result = run_cli("scripts/validate_images.py", "--project", str(project))
+tests/test_story_flow_quality.py:110:    scenes["scenes"][1]["start_keyframe"] = "images/approved/not-sc02.png"
+tests/test_story_flow_quality.py:113:    result = run_cli("scripts/validate_scene_links.py", "--project", str(project))
+tests/test_seedance_prompt_contract.py:23:    assert run_cli("scripts/init_project.py", "--name", "레미콘 충돌 예방", "--slug", str(project)).returncode == 0
+tests/test_seedance_prompt_contract.py:24:    assert run_cli("scripts/register_sources.py", "--project", str(project), "--source", str(FIXTURE)).returncode == 0
+tests/test_seedance_prompt_contract.py:25:    assert run_cli("scripts/render_pptx_sources.py", "--project", str(project), "--dry-run", "--mode", "media_extract").returncode == 0
+tests/test_seedance_prompt_contract.py:26:    assert run_cli("scripts/extract_topics.py", "--project", str(project)).returncode == 0
+tests/test_seedance_prompt_contract.py:27:    assert run_cli("scripts/select_topic.py", "--project", str(project), "--topic-id", "topic-001").returncode == 0
+tests/test_seedance_prompt_contract.py:28:    assert run_cli("scripts/extract_style_dna.py", "--project", str(project)).returncode == 0
+tests/test_seedance_prompt_contract.py:29:    assert run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30").returncode == 0
+tests/test_seedance_prompt_contract.py:36:    result = run_cli("scripts/generate_seedance.py", "--project", str(project), "--dry-run")
+safety_video_harness/seedance_live.py:33:        raise HarnessError("live Seedance requires prompts/video_prompts.json")
+tests/test_remicon_fixture_flow.py:30:    assert run_cli("scripts/init_project.py", "--name", "레미콘 충돌 예방", "--slug", str(project)).returncode == 0
+tests/test_remicon_fixture_flow.py:31:    assert run_cli("scripts/register_sources.py", "--project", str(project), "--source", str(FIXTURE)).returncode == 0
+tests/test_remicon_fixture_flow.py:32:    assert run_cli("scripts/render_pptx_sources.py", "--project", str(project), "--dry-run").returncode == 0
+tests/test_remicon_fixture_flow.py:35:    assert run_cli("scripts/extract_topics.py", "--project", str(project)).returncode == 0
+tests/test_remicon_fixture_flow.py:44:    assert run_cli("scripts/intake_project.py", "--project", str(project), "--defaults").returncode == 0
+tests/test_remicon_fixture_flow.py:45:    assert run_cli("scripts/extract_style_dna.py", "--project", str(project)).returncode == 0
+tests/test_remicon_fixture_flow.py:46:    assert run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30").returncode == 0
+tests/test_remicon_fixture_flow.py:47:    assert run_cli("scripts/validate_project.py", str(project)).returncode == 0
+tests/test_remicon_fixture_flow.py:61:    assert run_cli("scripts/init_project.py", "--name", "레미콘 충돌 예방", "--slug", str(project)).returncode == 0
+tests/test_remicon_fixture_flow.py:62:    assert run_cli("scripts/register_sources.py", "--project", str(project), "--source", str(FIXTURE)).returncode == 0
+tests/test_remicon_fixture_flow.py:63:    assert run_cli("scripts/render_pptx_sources.py", "--project", str(project), "--dry-run").returncode == 0
+tests/test_remicon_fixture_flow.py:64:    assert run_cli("scripts/extract_topics.py", "--project", str(project)).returncode == 0
+tests/test_remicon_fixture_flow.py:65:    assert run_cli("scripts/intake_project.py", "--project", str(project), "--defaults").returncode == 0
+tests/test_remicon_fixture_flow.py:66:    assert run_cli("scripts/extract_style_dna.py", "--project", str(project)).returncode == 0
+tests/test_remicon_fixture_flow.py:67:    assert run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30").returncode == 0
+tests/test_remicon_fixture_flow.py:68:    assert run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard").returncode == 0
+tests/test_remicon_fixture_flow.py:70:    assert run_cli("scripts/generate_images.py", "--project", str(project), "--dry-run").returncode == 0
+tests/test_remicon_fixture_flow.py:71:    assert run_cli("scripts/validate_images.py", "--project", str(project), "--dry-run").returncode == 0
+tests/test_remicon_fixture_flow.py:72:    assert run_cli("scripts/generate_seedance.py", "--project", str(project), "--dry-run").returncode == 0
+tests/test_remicon_fixture_flow.py:97:    assert run_cli("scripts/init_project.py", "--name", "레미콘 충돌 예방", "--slug", str(project)).returncode == 0
+tests/test_remicon_fixture_flow.py:98:    assert run_cli("scripts/register_sources.py", "--project", str(project), "--source", str(FIXTURE)).returncode == 0
+tests/test_remicon_fixture_flow.py:99:    assert run_cli("scripts/render_pptx_sources.py", "--project", str(project), "--dry-run").returncode == 0
+tests/test_remicon_fixture_flow.py:100:    assert run_cli("scripts/extract_topics.py", "--project", str(project)).returncode == 0
+tests/test_remicon_fixture_flow.py:101:    assert run_cli("scripts/intake_project.py", "--project", str(project), "--defaults").returncode == 0
+tests/test_remicon_fixture_flow.py:102:    assert run_cli("scripts/extract_style_dna.py", "--project", str(project)).returncode == 0
+tests/test_remicon_fixture_flow.py:103:    assert run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30").returncode == 0
+tests/test_remicon_fixture_flow.py:104:    assert run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard").returncode == 0
+tests/test_remicon_fixture_flow.py:125:    assert run_cli("scripts/generate_images.py", "--project", str(project), "--dry-run").returncode == 0
+tests/test_remicon_fixture_flow.py:126:    assert run_cli("scripts/generate_seedance.py", "--project", str(project), "--dry-run").returncode == 0
+tests/test_remicon_fixture_flow.py:144:    assert run_cli("scripts/init_project.py", "--name", "레미콘 충돌 예방", "--slug", str(project)).returncode == 0
+tests/test_remicon_fixture_flow.py:145:    assert run_cli("scripts/register_sources.py", "--project", str(project), "--source", str(FIXTURE)).returncode == 0
+tests/test_remicon_fixture_flow.py:146:    assert run_cli("scripts/render_pptx_sources.py", "--project", str(project), "--dry-run").returncode == 0
+tests/test_remicon_fixture_flow.py:147:    assert run_cli("scripts/extract_topics.py", "--project", str(project)).returncode == 0
+tests/test_remicon_fixture_flow.py:148:    assert run_cli("scripts/intake_project.py", "--project", str(project), "--defaults").returncode == 0
+tests/test_remicon_fixture_flow.py:149:    assert run_cli("scripts/extract_style_dna.py", "--project", str(project)).returncode == 0
+tests/test_remicon_fixture_flow.py:150:    assert run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30").returncode == 0
+tests/test_remicon_fixture_flow.py:151:    assert run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard").returncode == 0
+tests/test_remicon_fixture_flow.py:175:    assert run_cli("scripts/generate_images.py", "--project", str(project), "--dry-run").returncode == 0
+tests/test_remicon_fixture_flow.py:176:    assert run_cli("scripts/generate_seedance.py", "--project", str(project), "--dry-run").returncode == 0
+safety_video_harness/scene_links.py:38:    expected_start = f"images/approved/sc{index:02d}.png"
+safety_video_harness/scene_links.py:39:    expected_end = f"images/approved/sc{index + 1:02d}.png"
+safety_video_harness/prompt_contract.py:82:        "output": f"images/draft/{scene_id}.png",
+safety_video_harness/prompt_contract.py:134:        "output": f"images/draft/{scene_id}.png",
+safety_video_harness/gate_validation.py:27:        raise HarnessError("image_to_video approval requires storyboard/scenes.json")
+safety_video_harness/gate_validation.py:33:        f"images/approved/sc{index:02d}.png"
+safety_video_harness/gates.py:82:        return ["storyboard/scenes.json"]
+safety_video_harness/storyboard_qa.py:68:        "artifact_path": f"storyboard/scenes.json#{scene_id}",
+safety_video_harness/project_handoff.py:5:TEMPLATE_PATH = Path(__file__).resolve().parents[1] / "templates" / "project" / "HANDOFF.md"
+safety_video_harness/omo_ralph.py:25:            "loop_summary": "qa/image_qa_loop.json",
+safety_video_harness/omo_ralph.py:26:            "arbiter_decisions": "qa/arbiter_decisions/image/<scene>/round_NNN.json",
+safety_video_harness/omo_ralph.py:27:            "round_ledger": "qa/evaluation_rounds.jsonl",
+safety_video_harness/omo_ralph.py:60:    actions = [f"uv run python scripts/validate_images.py --project {project_arg}"]
+safety_video_harness/omo_ralph.py:63:            f"uv run python scripts/generate_images.py --project {project_arg} --live --only {scene_id} --regenerate"
+safety_video_harness/omo_ralph.py:66:            f"uv run python scripts/record_image_output.py --project {project_arg} --scene-id {scene_id} --generated-file <generated_png>"
+safety_video_harness/omo_ralph.py:69:            f"uv run python scripts/build_image_visual_review.py --project {project_arg} --only {scene_id}"
+safety_video_harness/omo_ralph.py:71:        actions.append(f"uv run python scripts/validate_images.py --project {project_arg} --only {scene_id}")
+safety_video_harness/omo_ralph.py:91:        "qa/image_qa_loop.json passed=true",
+safety_video_harness/omo_ralph.py:114:            f"Start each round with: uv run python scripts/validate_images.py --project {project}",
+safety_video_harness/omo_ralph.py:115:            "Read qa/image_qa_loop.json and qa/arbiter_decisions before choosing the next command.",
+safety_video_harness/omo_ralph.py:133:            "Read qa/image_qa_loop.json and qa/arbiter_decisions, then propose upstream storyboard, reference, or prompt-contract fixes.",
+safety_video_harness/image_qa.py:35:            "artifact_path": "images/draft/" + scene_id + "_v*.png",
+safety_video_harness/image_qa.py:75:        "artifact_path": artifact_path(project, draft, f"images/draft/{scene_id}_v*.png"),
+safety_video_harness/costs.py:15:        raise HarnessError("video cost estimate requires storyboard/scenes.json")
+safety_video_harness/storyboard.py:93:        "start_keyframe": f"images/approved/{scene_id}.png",
+safety_video_harness/storyboard.py:94:        "end_keyframe": f"images/approved/{next_id}.png",
+safety_video_harness/storyboard.py:95:        "clip_path": f"video/clips/{scene_id}_{next_id}.mp4",
+safety_video_harness/generation.py:222:        "start_keyframe": previous.get("end_keyframe", f"images/approved/{scene_id}.png"),
+safety_video_harness/generation.py:223:        "end_keyframe": f"images/approved/{scene_id}.png",
+safety_video_harness/style_guides.py:17:STYLE_GUIDE_ROOT: Final = ROOT / "style-guides"
+safety_video_harness/style_guides.py:89:            "model/cast",
+safety_video_harness/style_guides.py:90:            "model/ppe",
+safety_video_harness/style_guides.py:91:            "product/equipment",
+safety_video_harness/style_guides.py:92:            "ref/approved/person",
+safety_video_harness/style_guides.py:93:            "ref/approved/work",
+safety_video_harness/style_guides.py:94:            "ref/approved/space",
+safety_video_harness/style_guides.py:95:            "ref/approved/style",
+safety_video_harness/style_guides.py:96:            "ref/approved/camera",
+safety_video_harness/style_guides.py:97:            "ref/approved/lighting",
+safety_video_harness/style_guides.py:99:        "note_ko": "레퍼런스가 있으면 먼저 역할별 폴더에 배치하고, 없으면 style-guides 카탈로그에서 스타일을 선택한다.",
+safety_video_harness/reference_catalog.py:9:    "cast": "model/cast",
+safety_video_harness/reference_catalog.py:10:    "ppe": "model/ppe",
+safety_video_harness/reference_catalog.py:11:    "equipment": "product/equipment",
+safety_video_harness/reference_catalog.py:12:    "approved_reference": "ref/approved",
+safety_video_harness/reference_catalog.py:13:    "person_reference": "ref/approved/person",
+safety_video_harness/reference_catalog.py:14:    "work_situation_reference": "ref/approved/work",
+safety_video_harness/reference_catalog.py:15:    "space_reference": "ref/approved/space",
+safety_video_harness/reference_catalog.py:16:    "style_reference": "ref/approved/style",
+safety_video_harness/reference_catalog.py:17:    "camera_reference": "ref/approved/camera",
+safety_video_harness/reference_catalog.py:18:    "lighting_reference": "ref/approved/lighting",
+safety_video_harness/reference_catalog.py:21:    "root": "ref/approved",
+safety_video_harness/reference_catalog.py:22:    "person": "ref/approved/person",
+safety_video_harness/reference_catalog.py:23:    "work": "ref/approved/work",
+safety_video_harness/reference_catalog.py:24:    "space": "ref/approved/space",
+safety_video_harness/reference_catalog.py:25:    "style": "ref/approved/style",
+safety_video_harness/reference_catalog.py:26:    "camera": "ref/approved/camera",
+safety_video_harness/reference_catalog.py:27:    "lighting": "ref/approved/lighting",
+safety_video_harness/prompt_team.py:27:        "url": "$CODEX_HOME/skills/.system/imagegen/SKILL.md",
+safety_video_harness/prompt_team.py:88:        "agent_file": "agents/lead-style-agent/AGENT.md",
+safety_video_harness/prompt_team.py:117:                "agent_file": "agents/scene-prompt-agent/AGENT.md",
+safety_video_harness/prompt_team.py:132:        "agent_file": "agents/scene-prompt-agent/AGENT.md",
+safety_video_harness/prompt_team.py:146:        "agent_file": "agents/visual-director-arbiter/AGENT.md",

@@ -1,0 +1,34 @@
+{
+  "execution_model": "omo_ulw_loop_as_orchestrator",
+  "decision_source": "harness_internal_qa_only",
+  "target_scenes": [],
+  "next_omo_action": "stop_passed",
+  "allowed_actions": [
+    "uv run python scripts/validate_images.py --project evidence/implementation-runs/ralph-visual-qa-20260617-171345"
+  ],
+  "forbidden_actions": [
+    "live imagegen",
+    "live Seedance",
+    "live TTS",
+    "paid video generation",
+    "Do not score images yourself; use validate_images.py and Arbiter outputs only.",
+    "Do not run live imagegen unless the user explicitly approves that paid or external step.",
+    "Do not run live Seedance inside image RALPH.",
+    "Do not run live TTS or narration tools.",
+    "Do not change Gate 1, Gate 2, critical veto, repeated blocker, or max-20 rules."
+  ],
+  "stop_conditions": [
+    "qa/image_qa_loop.json passed=true",
+    "next_action=stop_and_escalate",
+    "ralph_loop.status=max_iterations_reached",
+    "ralph_loop.status=repeated_blocker_escalation",
+    "target_scenes is empty"
+  ],
+  "source_files": {
+    "loop_summary": "qa/image_qa_loop.json",
+    "arbiter_decisions": "qa/arbiter_decisions/image/<scene>/round_NNN.json",
+    "round_ledger": "qa/evaluation_rounds.jsonl",
+    "wiki_memory": "llm-wiki/evaluation-rounds.md"
+  },
+  "omo_prompt": "$omo:ulw-loop\nProject: evidence/implementation-runs/ralph-visual-qa-20260617-171345\nTarget image scenes: none\nUse OMO only as the repeated execution manager.\nDo not score images yourself; the harness is the only judge.\nStart each round with: uv run python scripts/validate_images.py --project evidence/implementation-runs/ralph-visual-qa-20260617-171345\nRead qa/image_qa_loop.json and qa/arbiter_decisions before choosing the next command.\nFor each blocked scene, prepare Codex imagegen job specs with generate_images.py --live --regenerate.\nAfter the user or Codex imagegen provides a PNG, record it with record_image_output.py --generated-file.\nRun build_image_visual_review.py to create contact-sheet evidence and visual-lock review guidance.\nRe-run validate_images.py and stop when the harness says passed or stop_and_escalate.\nNever call live Seedance, live TTS, or any paid video command inside this image loop."
+}

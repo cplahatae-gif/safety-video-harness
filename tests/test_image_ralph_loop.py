@@ -53,9 +53,9 @@ def write_manual_review(project: Path, scene_id: str, score: int = 5) -> None:
 
 def add_asset_lock_references(project: Path) -> None:
     assets = {
-        "model/cast/signal-worker.png": b"fake cast image",
-        "product/equipment/bct-truck.png": b"fake equipment image",
-        "ref/approved/space/plant-entry.png": b"fake space image",
+        "refs/people/signal-worker.png": b"fake cast image",
+        "refs/equipment/bct-truck.png": b"fake equipment image",
+        "refs/approved/spaces/plant-entry.png": b"fake space image",
     }
     for relative_path, content in assets.items():
         path = project / relative_path
@@ -83,7 +83,7 @@ def test_image_qa_writes_ralph_loop_regeneration_prompts(tmp_path: Path) -> None
     review = loop["reviews"][0]
     assert review["rubric_source"] == "docs/evaluation-rubrics.md"
     assert review["few_shot_source"] == "docs/few-shot-examples.md"
-    assert review["artifact_path"] == "images/draft/sc01_v*.png"
+    assert review["artifact_path"] == "media/images/draft/sc01_v*.png"
     assert review["critical_blockers"] == ["missing draft image"]
     assert review["blocker_categories"][0]["category"] == "missing_artifact"
     assert "RALPH critique for sc01" in review["regeneration_delta"]
@@ -144,7 +144,7 @@ def test_image_qa_stops_ralph_after_max_iterations(tmp_path: Path) -> None:
 def test_validate_images_does_not_increment_iterations_for_passing_scenes(tmp_path: Path) -> None:
     project = tmp_path / "image-ralph-passing"
     prepare_project(project)
-    draft = project / "images" / "draft" / "sc01_v001.png"
+    draft = project / "media" / "images" / "draft" / "sc01_v001.png"
     draft.parent.mkdir(parents=True, exist_ok=True)
     Image.new("RGB", (1600, 900), color=(120, 140, 160)).save(draft)
     write_manual_review(project, "sc01")
@@ -164,7 +164,7 @@ def test_validate_images_does_not_increment_iterations_for_passing_scenes(tmp_pa
 def test_validate_images_blocks_without_manual_visual_consistency_review(tmp_path: Path) -> None:
     project = tmp_path / "image-ralph-manual-required"
     prepare_project(project)
-    draft = project / "images" / "draft" / "sc01_v001.png"
+    draft = project / "media" / "images" / "draft" / "sc01_v001.png"
     draft.parent.mkdir(parents=True, exist_ok=True)
     Image.new("RGB", (1600, 900), color=(120, 140, 160)).save(draft)
 
@@ -183,7 +183,7 @@ def test_validate_images_blocks_without_manual_visual_consistency_review(tmp_pat
 def test_validate_images_blocks_low_visual_lock_score(tmp_path: Path) -> None:
     project = tmp_path / "image-ralph-low-visual-score"
     prepare_project(project)
-    draft = project / "images" / "draft" / "sc01_v001.png"
+    draft = project / "media" / "images" / "draft" / "sc01_v001.png"
     draft.parent.mkdir(parents=True, exist_ok=True)
     Image.new("RGB", (1600, 900), color=(120, 140, 160)).save(draft)
     write_manual_review(project, "sc01", score=3)
@@ -201,7 +201,7 @@ def test_build_image_visual_review_writes_contact_sheet_and_review_contract(tmp_
     project = tmp_path / "image-visual-review"
     prepare_project(project)
     add_asset_lock_references(project)
-    draft = project / "images" / "draft" / "sc01_v001.png"
+    draft = project / "media" / "images" / "draft" / "sc01_v001.png"
     draft.parent.mkdir(parents=True, exist_ok=True)
     Image.new("RGB", (1600, 900), color=(120, 140, 160)).save(draft)
 

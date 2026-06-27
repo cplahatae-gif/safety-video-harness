@@ -1,9 +1,0 @@
-{
-  "protected_after_bootstrap": [
-    "AGENTS.md",
-    "hooks",
-    "schemas",
-    "templates",
-    "approvals.json"
-  ]
-}

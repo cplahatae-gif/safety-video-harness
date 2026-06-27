@@ -1,0 +1,22 @@
+26:- 각 역할별 운영 레퍼런스: `app/plugin/agents/<agent-id>/references/*.md`
+39:실제 플러그인 자산은 `app/plugin/.codex-plugin/plugin.json`, `app/plugin/agents/`,
+140:Canonical project roots are `projects/<slug>/input/`, `projects/<slug>/refs/`,
+141:`projects/<slug>/story/`, `projects/<slug>/media/`, and `projects/<slug>/qa/`.
+142:The harness package lives at `app/harness/package/safety_video_harness/`; canonical CLI files live at
+291:프로젝트별 레퍼런스는 `projects/<slug>/refs/approved/`에 두고, 여러 프로젝트에서 재사용할
+448:3. 생성 결과는 `$CODEX_HOME/generated_images/...`에만 두지 않고 `projects/<slug>/media/images/draft/scNN_vNNN.png`로 이동 또는 복사한다.
+449:4. 승인된 이미지는 `projects/<slug>/media/images/approved/`로 이동하고, 기존 승인 이미지는 덮어쓰지 않는다.
+10:- Each new safety-video project must include a generated project-level `HANDOFF.md` from `app/harness/templates/project/HANDOFF.md`.
+36:- Ask where each reference belongs: `refs/people`, `refs/ppe`, `refs/equipment`, `refs/approved/people`, `refs/approved/work`, `refs/approved/spaces`, `refs/approved/style`, `refs/approved/camera`, or `refs/approved/lighting`. Old `model/`, `product/`, and `ref/` paths are migration read fallbacks only.
+441:          <text x="391" y="88" class="svg-title">app/plugin/</text>
+445:          <text x="556" y="88" class="svg-title">app/harness/</text>
+486:        <span><i class="dot" style="background:var(--green)"></i>app/plugin/tooling</span>
+500:            <h3><span class="badge b-green">P</span>app/plugin/</h3>
+509:            <h3><span class="badge b-blue">H</span>app/harness/</h3>
+536:            <h3><span class="badge b-red">L</span>projects/_runs/</h3>
+561:            <h3>agents/hooks/skills/.codex-plugin -> app/plugin/</h3>
+565:            <h3>safety_video_harness/scripts/schemas/templates -> app/harness/</h3>
+573:            <h3>evidence/audio/clips/output/storyboard/scenes.json -> projects/_runs/</h3>
+590:├── app/plugin/
+595:├── app/harness/
+608:├── projects/_runs/

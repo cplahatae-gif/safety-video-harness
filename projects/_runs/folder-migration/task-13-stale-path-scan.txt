@@ -1,0 +1,322 @@
+# Stale Path Scan
+
+Active old path literals are expected only in layout fallback maps, migration command maps, compatibility tests, archived plans/docs, historical one-pagers, or explicit fallback documentation.
+
+README.md:26:- 각 역할별 운영 레퍼런스: `app/plugin/agents/<agent-id>/references/*.md`
+README.md:27:- 각 스킬별 운영 레퍼런스: `app/plugin/skills/<skill-id>/references/*.md`
+README.md:39:실제 플러그인 자산은 `app/plugin/.codex-plugin/plugin.json`, `app/plugin/agents/`,
+README.md:40:`app/plugin/skills/`, `app/plugin/hooks/`에 있다. root `.codex-plugin/plugin.json`은
+README.md:101:│   │   ├── agents/                    # 역할별 평가자/기획자 지침
+README.md:102:│   │   ├── hooks/                     # Codex lifecycle hooks
+README.md:103:│   │   └── skills/                    # 플러그인 내부 skill 설명
+README.md:127:│   ├── images/draft/                  # 생성 직후 이미지와 버전 파일
+README.md:128:│   ├── images/approved/               # 영상 생성에 사용할 승인 이미지
+README.md:136:구 프로젝트의 `sources/`, `storyboard/`, `prompts/`, `images/`, `video/`,
+README.md:330:- `app/plugin/agents/lead-style-agent/AGENT.md`
+README.md:331:- `app/plugin/agents/scene-prompt-agent/AGENT.md`
+README.md:332:- `app/plugin/agents/visual-director-arbiter/AGENT.md`
+README.md:415:fixtures/sources/remicon-collision-guide.pptx
+README.md:448:3. 생성 결과는 `$CODEX_HOME/generated_images/...`에만 두지 않고 `projects/<slug>/media/images/draft/scNN_vNNN.png`로 이동 또는 복사한다.
+README.md:449:4. 승인된 이미지는 `projects/<slug>/media/images/approved/`로 이동하고, 기존 승인 이미지는 덮어쓰지 않는다.
+README.md:483:- `sc02` 이후는 직전 `media/images/approved/scNN.png`가 있어야 준비된다.
+README.md:598:`app/plugin/hooks/hooks.json`은 세션 시작, 도구 실행 전, 도구 실행 후, 종료 시점의 lifecycle hook을 등록한다.
+README.md:599:새 세션이나 재개 시에는 `app/plugin/hooks/session-start-anchor.py`가 짧은 mission anchor를 출력한다.
+tests/test_seedance_live_guardrails.py:147:    assert plan["jobs"][0]["start_image"].endswith("media/images/approved/sc01.png")
+tests/test_seedance_live_guardrails.py:148:    assert plan["jobs"][1]["end_image"].endswith("media/images/approved/sc03.png")
+tests/test_style_guides.py:84:    assert team_plan["agent_team"]["lead_style_agent"]["agent_file"] == "app/plugin/agents/lead-style-agent/AGENT.md"
+tests/test_style_guides.py:87:        == "app/plugin/agents/visual-director-arbiter/AGENT.md"
+docs/generative-media-reference-index.md:5:`app/plugin/agents/<agent-id>/references/` and `app/plugin/skills/<skill-id>/references/`.
+docs/generative-media-reference-index.md:45:- Codex imagegen skill: `$CODEX_HOME/skills/.system/imagegen/SKILL.md`
+docs/generative-media-reference-index.md:47:- Seedance expert skill: `$CODEX_HOME/skills/seedance-expert/SKILL.md`
+app/plugin/skills/seedance-prompting/SKILL.md:17:`media/images/draft/` or `media/images/approved/` tree, not left only under `$CODEX_HOME`.
+app/plugin/skills/seedance-prompting/SKILL.md:25:- Local Seedance expert skill: `$CODEX_HOME/skills/seedance-expert/SKILL.md`
+tests/test_image_ralph_loop.py:86:    assert review["artifact_path"] == "media/images/draft/sc01_v*.png"
+tests/test_evaluation_round_wiki_memory.py:21:                "start_keyframe": "media/images/approved/sc01.png",
+tests/test_evaluation_round_wiki_memory.py:22:                "end_keyframe": "media/images/approved/sc02.png",
+tests/test_evaluation_round_wiki_memory.py:26:                "reviewed_asset": "media/images/draft/sc01_v001.png",
+tests/test_evaluation_round_wiki_memory.py:36:        "reviewed_asset": "media/images/draft/sc01_v001.png",
+tests/test_evaluation_round_wiki_memory.py:53:    assert "- reviewed_asset: `media/images/draft/sc01_v001.png`" in wiki
+tests/test_evaluation_round_wiki_memory.py:54:    assert "- start_keyframe: `media/images/approved/sc01.png`" in wiki
+tests/test_evaluation_round_wiki_memory.py:55:    assert "- end_keyframe: `media/images/approved/sc02.png`" in wiki
+tests/test_evaluation_round_wiki_memory.py:65:    assert "media/images/draft/sc01_v001.png" in record["artifact_paths"]
+docs/agent-skill-reference-onepager.html:313:          <tr><th>에이전트 패키지</th><td><code>app/plugin/agents/&lt;agent-id&gt;/AGENT.md</code>와 <code>app/plugin/agents/&lt;agent-id&gt;/references/*.md</code></td></tr>
+docs/agent-skill-reference-onepager.html:314:          <tr><th>스킬 패키지</th><td><code>app/plugin/skills/&lt;skill-id&gt;/SKILL.md</code>와 <code>app/plugin/skills/&lt;skill-id&gt;/references/*.md</code></td></tr>
+tests/test_docs_folder_structure.py:16:        "app/plugin/agents/",
+tests/test_docs_folder_structure.py:27:    assert "app/plugin/agents/<agent-id>/references/*.md" in readme
+tests/test_docs_folder_structure.py:28:    assert "app/plugin/skills/<skill-id>/references/*.md" in readme
+tests/test_layout.py:29:    assert "input/sources/raw" in CANONICAL_PROJECT_DIRS
+tests/test_layout.py:30:    assert "media/images/approved" in CANONICAL_PROJECT_DIRS
+tests/test_layout.py:59:        "sources/raw",
+tests/test_layout.py:60:        "sources/rendered",
+tests/test_layout.py:61:        "model/cast",
+tests/test_layout.py:63:        "product/equipment",
+tests/test_layout.py:65:        "ref/approved",
+tests/test_layout.py:66:        "ref/approved/person",
+tests/test_layout.py:67:        "ref/approved/work",
+tests/test_layout.py:68:        "ref/approved/space",
+tests/test_layout.py:69:        "ref/approved/style",
+tests/test_layout.py:70:        "ref/approved/camera",
+tests/test_layout.py:71:        "ref/approved/lighting",
+tests/test_layout.py:74:        "storyboard/versions",
+tests/test_layout.py:76:        "images/draft",
+tests/test_layout.py:77:        "images/approved",
+docs/imagegen-prompting-references.md:8:- `/Users/hatae/.codex/skills/.system/imagegen/SKILL.md`
+app/plugin/skills/video-inspect/SKILL.md:29:- Local video-frame-analysis skill: `$CODEX_HOME/skills/video-frame-analysis/SKILL.md`
+app/plugin/skills/video-inspect/SKILL.md:30:- Local understand-video skill: `$CODEX_HOME/skills/understand-video/SKILL.md`
+tests/test_folder_migration_characterization.py:47:        "input/sources/raw",
+tests/test_folder_migration_characterization.py:48:        "input/sources/rendered",
+tests/test_folder_migration_characterization.py:56:        "media/images/draft",
+tests/test_folder_migration_characterization.py:57:        "media/images/approved",
+tests/test_folder_migration_characterization.py:76:    assert manifest["skills"] == "./app/plugin/skills/"
+tests/test_folder_migration_characterization.py:77:    assert manifest["hooks"] == "./app/plugin/hooks/hooks.json"
+tests/test_folder_migration_characterization.py:78:    assert plugin_manifest["skills"] == "./skills/"
+tests/test_folder_migration_characterization.py:79:    assert plugin_manifest["hooks"] == "./hooks/hooks.json"
+tests/test_folder_migration_characterization.py:80:    assert "hooks/session-start-anchor.py" in registered_hooks
+tests/test_folder_migration_characterization.py:81:    assert "hooks/pretooluse-live-veto.py" in registered_hooks
+tests/test_folder_migration_characterization.py:84:        ["python3", "hooks/session-start-anchor.py"],
+tests/test_folder_migration_characterization.py:97:        "model/cast/signal-worker.png": b"cast",
+tests/test_folder_migration_characterization.py:99:        "product/equipment/bct-truck.png": b"equipment",
+tests/test_folder_migration_characterization.py:100:        "ref/approved/space/plant-entry.png": b"space",
+tests/test_folder_migration_characterization.py:171:                        "start_keyframe": "images/approved/sc01.png",
+tests/test_folder_migration_characterization.py:172:                        "end_keyframe": "images/approved/sc02.png",
+tests/test_folder_migration_characterization.py:198:    assert job["output"] == "media/images/draft/sc03_v001.png"
+tests/test_folder_migration_characterization.py:199:    assert job["generation_chain"]["anchor_image"] == "media/images/approved/sc01.png"
+tests/test_folder_migration_characterization.py:200:    assert job["generation_chain"]["previous_approved_image"] == "media/images/approved/sc02.png"
+tests/test_video_regeneration_proposals.py:51:                        "start_keyframe": "media/images/approved/sc01.png",
+tests/test_video_regeneration_proposals.py:52:                        "end_keyframe": "media/images/approved/sc02.png",
+docs/opencv-mcp-local-reference.md:29:1. Generate scene keyframes into `images/draft/scNN_vNNN.png`.
+tests/test_project_migration.py:27:        "sources/sources.json": {"sources": []},
+tests/test_project_migration.py:28:        "sources/extracted_topics.json": {"topics": []},
+tests/test_project_migration.py:29:        "storyboard/scenes.json": {"scenes": []},
+tests/test_project_migration.py:30:        "prompts/imagegen_jobs.json": {"jobs": []},
+tests/test_project_migration.py:31:        "images/approved/sc01.png": b"approved image",
+tests/test_project_migration.py:32:        "images/draft/sc01_v001.png": b"draft image",
+tests/test_project_migration.py:70:    assert any(item["destination"] == "media/images/approved/sc01.png" for item in report["planned_changes"])
+tests/test_plugin_structure.py:17:    assert manifest["hooks"] == "./hooks/hooks.json"
+tests/test_plugin_structure.py:19:    assert root_manifest["hooks"] == "./app/plugin/hooks/hooks.json"
+tests/test_plugin_structure.py:22:        "app/plugin/skills/topic-extractor/SKILL.md",
+tests/test_plugin_structure.py:23:        "app/plugin/skills/story-writer/SKILL.md",
+tests/test_plugin_structure.py:24:        "app/plugin/skills/seedance-prompting/SKILL.md",
+tests/test_plugin_structure.py:25:        "app/plugin/skills/image-consistency-check/SKILL.md",
+tests/test_plugin_structure.py:26:        "app/plugin/skills/video-inspect/SKILL.md",
+tests/test_plugin_structure.py:27:        "app/plugin/skills/style-ref-search/SKILL.md",
+tests/test_plugin_structure.py:28:        "app/plugin/agents/storyteller/AGENT.md",
+tests/test_plugin_structure.py:29:        "app/plugin/agents/storyteller/references/storyteller-reference.md",
+tests/test_plugin_structure.py:30:        "app/plugin/agents/lead-style-agent/AGENT.md",
+tests/test_plugin_structure.py:31:        "app/plugin/agents/lead-style-agent/references/lead-style-reference.md",
+tests/test_plugin_structure.py:32:        "app/plugin/agents/scene-prompt-agent/AGENT.md",
+tests/test_plugin_structure.py:33:        "app/plugin/agents/scene-prompt-agent/references/scene-prompt-reference.md",
+tests/test_plugin_structure.py:34:        "app/plugin/agents/visual-director-arbiter/AGENT.md",
+tests/test_plugin_structure.py:35:        "app/plugin/agents/visual-director-arbiter/references/visual-director-arbiter-reference.md",
+tests/test_plugin_structure.py:36:        "app/plugin/agents/continuity-qa/AGENT.md",
+tests/test_plugin_structure.py:37:        "app/plugin/agents/continuity-qa/references/continuity-qa-reference.md",
+tests/test_plugin_structure.py:38:        "app/plugin/agents/video-qa/AGENT.md",
+tests/test_plugin_structure.py:39:        "app/plugin/agents/video-qa/references/video-qa-reference.md",
+tests/test_plugin_structure.py:40:        "app/plugin/agents/visual-continuity-director/AGENT.md",
+tests/test_plugin_structure.py:41:        "app/plugin/agents/visual-continuity-director/references/visual-continuity-reference.md",
+tests/test_plugin_structure.py:42:        "app/plugin/hooks/hooks.json",
+tests/test_plugin_structure.py:43:        "app/plugin/hooks/pretooluse-live-veto.py",
+tests/test_plugin_structure.py:44:        "app/plugin/hooks/protected_paths.json",
+tests/test_plugin_structure.py:68:        "hooks/session-start-anchor.py",
+tests/test_plugin_structure.py:69:        "hooks/pretooluse-live-veto.py",
+tests/test_plugin_structure.py:70:        "hooks/pretooluse-secret-veto.py",
+tests/test_plugin_structure.py:71:        "hooks/pretooluse-protected-path-veto.py",
+tests/test_plugin_structure.py:72:        "hooks/posttooluse-schema-validation.py",
+tests/test_plugin_structure.py:73:        "hooks/posttooluse-scene-link-validation.py",
+tests/test_plugin_structure.py:74:        "hooks/posttooluse-evidence-feedback.py",
+tests/test_plugin_structure.py:75:        "hooks/stop-sentinel-guard.py",
+tests/test_plugin_structure.py:87:        "app/plugin/skills/topic-extractor/references/topic-extractor-reference.md",
+tests/test_plugin_structure.py:88:        "app/plugin/skills/story-writer/references/story-writer-reference.md",
+tests/test_plugin_structure.py:89:        "app/plugin/skills/style-ref-search/references/style-ref-search-reference.md",
+tests/test_plugin_structure.py:90:        "app/plugin/skills/seedance-prompting/references/seedance-prompting-reference.md",
+tests/test_plugin_structure.py:91:        "app/plugin/skills/image-consistency-check/references/image-consistency-reference.md",
+tests/test_plugin_structure.py:92:        "app/plugin/skills/video-inspect/references/video-inspect-reference.md",
+tests/test_plugin_structure.py:161:        ["python3", "hooks/session-start-anchor.py"],
+tests/test_plugin_structure.py:201:            "app/plugin/hooks/pretooluse-live-veto.py",
+tests/test_plugin_structure.py:238:        ["python3", "app/plugin/hooks/pretooluse-live-veto.py"],
+tests/test_plugin_structure.py:268:        ["python3", "app/plugin/hooks/pretooluse-live-veto.py"],
+docs/few-shot-examples.md:86:  "artifact_path": "images/draft/sc03_v002.png",
+app/plugin/skills/topic-extractor/SKILL.md:10:Output `sources/extracted_topics.json` with source citations, risk type, target worker,
+tests/test_hook_guardrails.py:14:        ["python3", "hooks/pretooluse-live-veto.py", *args],
+tests/test_hook_guardrails.py:102:        ["python3", "hooks/pretooluse-protected-path-veto.py"],
+tests/test_hook_guardrails.py:167:        ["python3", "hooks/pretooluse-secret-veto.py"],
+app/plugin/skills/topic-extractor/references/topic-extractor-reference.md:33:- Keep output schema-compatible with `sources/extracted_topics.json`.
+app/harness/package/safety_video_harness/project_migration.py:20:    PathMapping("sources/raw", "input/sources/raw"),
+app/harness/package/safety_video_harness/project_migration.py:21:    PathMapping("sources/rendered", "input/sources/rendered"),
+app/harness/package/safety_video_harness/project_migration.py:22:    PathMapping("sources/sources.json", "input/sources.json", recursive=False),
+app/harness/package/safety_video_harness/project_migration.py:23:    PathMapping("sources/extracted_topics.json", "input/extracted_topics.json", recursive=False),
+app/harness/package/safety_video_harness/project_migration.py:24:    PathMapping("sources/source_facts.json", "input/source_facts.json", recursive=False),
+app/harness/package/safety_video_harness/project_migration.py:25:    PathMapping("model/cast", "refs/people"),
+app/harness/package/safety_video_harness/project_migration.py:27:    PathMapping("product/equipment", "refs/equipment"),
+app/harness/package/safety_video_harness/project_migration.py:29:    PathMapping("ref/approved", "refs/approved", recursive=False),
+app/harness/package/safety_video_harness/project_migration.py:30:    PathMapping("ref/approved/person", "refs/approved/people"),
+app/harness/package/safety_video_harness/project_migration.py:31:    PathMapping("ref/approved/work", "refs/approved/work"),
+app/harness/package/safety_video_harness/project_migration.py:32:    PathMapping("ref/approved/space", "refs/approved/spaces"),
+app/harness/package/safety_video_harness/project_migration.py:33:    PathMapping("ref/approved/style", "refs/approved/style"),
+app/harness/package/safety_video_harness/project_migration.py:34:    PathMapping("ref/approved/camera", "refs/approved/camera"),
+app/harness/package/safety_video_harness/project_migration.py:35:    PathMapping("ref/approved/lighting", "refs/approved/lighting"),
+app/harness/package/safety_video_harness/project_migration.py:38:    PathMapping("storyboard/versions", "story/versions"),
+app/harness/package/safety_video_harness/project_migration.py:39:    PathMapping("storyboard/scenes.json", "story/scenes.json", recursive=False),
+app/harness/package/safety_video_harness/project_migration.py:40:    PathMapping("prompts/image_prompts.json", "story/image_prompts.json", recursive=False),
+app/harness/package/safety_video_harness/project_migration.py:41:    PathMapping("prompts/video_prompts.json", "story/video_prompts.json", recursive=False),
+app/harness/package/safety_video_harness/project_migration.py:42:    PathMapping("prompts/image_prompt_team_plan.json", "story/image_prompt_team_plan.json", recursive=False),
+app/harness/package/safety_video_harness/project_migration.py:43:    PathMapping("prompts/imagegen_jobs.json", "story/imagegen_jobs.json", recursive=False),
+app/harness/package/safety_video_harness/project_migration.py:44:    PathMapping("images/draft", "media/images/draft"),
+app/harness/package/safety_video_harness/project_migration.py:45:    PathMapping("images/approved", "media/images/approved"),
+app/harness/package/safety_video_harness/project_migration.py:135:    return relative_path.startswith("media/images/approved/") or relative_path.startswith("media/video/clips/")
+docs/repository-folder-structure-onepager.html:477:          <text x="833" y="224" class="svg-small">model/cast / model/ppe</text>
+docs/repository-folder-structure-onepager.html:478:          <text x="833" y="252" class="svg-small">product/equipment</text>
+docs/repository-folder-structure-onepager.html:479:          <text x="833" y="280" class="svg-small">ref/approved/person|work|space</text>
+docs/repository-folder-structure-onepager.html:503:              <li><code>agents/</code></li>
+docs/repository-folder-structure-onepager.html:504:              <li><code>hooks/</code></li>
+docs/repository-folder-structure-onepager.html:505:              <li><code>skills/</code></li>
+docs/repository-folder-structure-onepager.html:561:            <h3>agents/hooks/skills/.codex-plugin -> app/plugin/</h3>
+docs/repository-folder-structure-onepager.html:569:            <h3>style-guides + 공통 cast/ppe/equipment -> references/</h3>
+docs/repository-folder-structure-onepager.html:573:            <h3>evidence/audio/clips/output/storyboard/scenes.json -> projects/_runs/</h3>
+docs/repository-folder-structure-onepager.html:592:│   ├── agents/
+docs/repository-folder-structure-onepager.html:593:│   ├── hooks/
+docs/repository-folder-structure-onepager.html:594:│   └── skills/
+docs/repository-folder-structure-onepager.html:617:├── sources/
+docs/repository-folder-structure-onepager.html:618:├── storyboard/
+docs/repository-folder-structure-onepager.html:619:├── prompts/
+tests/test_roadmap_bundle2.py:111:    assert job["output"] == "media/images/draft/sc03_v001.png"
+tests/test_roadmap_bundle2.py:114:    assert job["generation_chain"]["anchor_image"] == "media/images/approved/sc01.png"
+tests/test_roadmap_bundle2.py:115:    assert job["generation_chain"]["previous_approved_image"] == "media/images/approved/sc02.png"
+tests/test_roadmap_bundle2.py:116:    assert "media/images/approved/sc01.png" in job["reference_images"]
+tests/test_roadmap_bundle2.py:117:    assert "media/images/approved/sc02.png" in job["reference_images"]
+tests/test_roadmap_bundle2.py:191:    assert job["output"] == "media/images/draft/sc07_v001.png"
+tests/test_roadmap_bundle2.py:192:    assert job["generation_chain"]["previous_approved_image"] == "media/images/approved/sc06.png"
+tests/test_roadmap_bundle2.py:248:    assert jobs["jobs"][0]["output"] == "media/images/draft/sc01_v002.png"
+tests/test_review_regressions.py:102:    assert jobs["jobs"][0]["output"] == "media/images/draft/sc01_v004.png"
+tests/test_review_regressions.py:108:        ["python3", "hooks/pretooluse-protected-path-veto.py", "write", "APPROVALS.JSON"],
+tests/test_review_regressions.py:122:        ["python3", "hooks/pretooluse-protected-path-veto.py", "write", "project_config.json"],
+tests/test_review_regressions.py:141:        ["python3", "hooks/pretooluse-secret-veto.py"],
+tests/test_review_regressions.py:156:        ["python3", "hooks/pretooluse-secret-veto.py", "write", "api_key=sk-test"],
+tests/test_review_regressions.py:195:        ["python3", "hooks/posttooluse-schema-validation.py", "--project", str(project)],
+tests/test_review_regressions.py:208:        ["python3", "hooks/posttooluse-evidence-feedback.py", "complete", "all done"],
+tests/test_review_regressions.py:274:                    "start_keyframe": "media/images/approved/sc01.png",
+tests/test_review_regressions.py:275:                    "end_keyframe": "media/images/approved/sc02.png",
+app/plugin/skills/style-ref-search/SKILL.md:19:- Approved reference folders: `model/`, `product/`, `ref/approved/`
+docs/evaluation-rubrics.md:12:2. the selected `app/plugin/agents/<agent-id>/AGENT.md` or `app/plugin/skills/<skill-id>/SKILL.md`
+app/plugin/skills/image-consistency-check/SKILL.md:40:- Local visual continuity agent: `agents/visual-continuity-director/AGENT.md`
+docs/higgsfield-seedance-local-reference.md:71:  "start_keyframe": "media/images/approved/sc03.png",
+docs/higgsfield-seedance-local-reference.md:72:  "end_keyframe": "media/images/approved/sc04.png",
+docs/safety-video-harness-algorithm-onepager.html:712:            <code>model/cast</code>
+docs/safety-video-harness-algorithm-onepager.html:722:            <code>product/equipment</code>
+docs/safety-video-harness-algorithm-onepager.html:727:            <code>ref/approved/person</code>
+docs/safety-video-harness-algorithm-onepager.html:732:            <code>ref/approved/work</code>
+docs/safety-video-harness-algorithm-onepager.html:737:            <code>ref/approved/space</code>
+docs/safety-video-harness-algorithm-onepager.html:742:            <code>ref/approved/style</code>
+docs/safety-video-harness-algorithm-onepager.html:747:            <code>ref/approved/camera</code>
+docs/safety-video-harness-algorithm-onepager.html:752:            <code>ref/approved/lighting</code>
+docs/safety-video-harness-algorithm-onepager.html:763:            <code>storyboard/scenes.json</code>
+docs/safety-video-harness-algorithm-onepager.html:768:            <code>prompts/image_prompts.json</code>
+app/harness/package/safety_video_harness/scene_links.py:39:    expected_start = f"media/images/approved/sc{index:02d}.png"
+app/harness/package/safety_video_harness/scene_links.py:40:    expected_end = f"media/images/approved/sc{index + 1:02d}.png"
+app/harness/package/safety_video_harness/scene_links.py:41:    old_start = f"images/approved/sc{index:02d}.png"
+app/harness/package/safety_video_harness/scene_links.py:42:    old_end = f"images/approved/sc{index + 1:02d}.png"
+docs/reference-sources.md:26:- Codex imagegen skill: `$CODEX_HOME/skills/.system/imagegen/SKILL.md`
+docs/reference-sources.md:27:- Seedance expert skill: `$CODEX_HOME/skills/seedance-expert/SKILL.md`
+docs/reference-sources.md:28:- Video frame analysis skill: `$CODEX_HOME/skills/video-frame-analysis/SKILL.md`
+docs/reference-sources.md:29:- Understand video skill: `$CODEX_HOME/skills/understand-video/SKILL.md`
+docs/reference-sources.md:36:- Agent operating references: `app/plugin/agents/<agent-id>/references/*.md`
+docs/reference-sources.md:37:- Skill operating references: `app/plugin/skills/<skill-id>/references/*.md`
+app/plugin/hooks/protected_paths.json:9:    "images/approved",
+app/plugin/hooks/protected_paths.json:10:    "ref/approved",
+docs/precision-industrial-webtoon-onepager.html:290:        <figure><img src="../projects/remicon-collision-guide/images/draft/sc01_v002.png" alt="sc01"><figcaption><b>sc01</b>첫 장 기준 이미지. 정밀 산업 웹툰 스타일의 기준 컷.</figcaption></figure>
+docs/precision-industrial-webtoon-onepager.html:291:        <figure><img src="../projects/remicon-collision-guide/images/draft/sc02_v002.png" alt="sc02"><figcaption><b>sc02</b>후진 경로와 사각지대. 보행자는 위험구역 밖에 유지.</figcaption></figure>
+docs/precision-industrial-webtoon-onepager.html:292:        <figure><img src="../projects/remicon-collision-guide/images/draft/sc03_v002.png" alt="sc03"><figcaption><b>sc03</b>신호수의 정지 신호와 운전자 시선 연결.</figcaption></figure>
+docs/precision-industrial-webtoon-onepager.html:293:        <figure><img src="../projects/remicon-collision-guide/images/draft/sc04_v002.png" alt="sc04"><figcaption><b>sc04</b>운전석 내부에서 카메라와 거울을 확인하는 컷.</figcaption></figure>
+docs/precision-industrial-webtoon-onepager.html:294:        <figure><img src="../projects/remicon-collision-guide/images/draft/sc05_v002.png" alt="sc05"><figcaption><b>sc05</b>차량 통로 진입 직전, 감독자가 안전 동선으로 유도.</figcaption></figure>
+docs/precision-industrial-webtoon-onepager.html:295:        <figure><img src="../projects/remicon-collision-guide/images/draft/sc06_v002.png" alt="sc06"><figcaption><b>sc06</b>텍스트 없는 아이콘 표지판과 안전 보행 장면.</figcaption></figure>
+docs/precision-industrial-webtoon-onepager.html:296:        <figure><img src="../projects/remicon-collision-guide/images/draft/sc07_v002.png" alt="sc07"><figcaption><b>sc07</b>위험구역이 비고 전체 현장이 통제된 종료 프레임.</figcaption></figure>
+docs/precision-industrial-webtoon-onepager.html:312:        <div class="rule style"><h3>Lead Style Agent</h3><p><code>agents/lead-style-agent/AGENT.md</code>가 첫 키프레임을 기준으로 style, character, vehicle, space, camera, rendering bible을 만든다.</p></div>
+docs/precision-industrial-webtoon-onepager.html:313:        <div class="rule ok"><h3>Scene Prompt Agents</h3><p><code>agents/scene-prompt-agent/AGENT.md</code>가 장면별 프롬프트 초안을 병렬 작성하되, 직접 이미지를 생성하지 않는다.</p></div>
+docs/precision-industrial-webtoon-onepager.html:314:        <div class="rule hold"><h3>Visual Director Arbiter</h3><p><code>agents/visual-director-arbiter/AGENT.md</code>가 전체 프롬프트 세트를 통합 검토하고 중앙 imagegen 실행 가능 여부를 결정한다.</p></div>
+docs/precision-industrial-webtoon-onepager.html:321:        <div class="status-card ok"><h3>완료</h3><p>로컬 최신 이미지: <code>projects/remicon-collision-guide/images/draft/sc01_v002.png</code> ~ <code>sc07_v002.png</code></p></div>
+docs/precision-industrial-webtoon-onepager.html:322:        <div class="status-card ok"><h3>검토용 시트</h3><p>전체 확인용 contact sheet: <code>projects/remicon-collision-guide/images/draft/contact_sheet_v002.png</code></p></div>
+tests/test_story_flow_quality.py:110:    scenes["scenes"][1]["start_keyframe"] = "media/images/approved/not-sc02.png"
+app/harness/package/safety_video_harness/video_qa.py:87:        + ". First tighten storyboard/keyframes, then ask the user before any Seedance call."
+app/plugin/hooks/hooks.json:9:            "command": "python3 \"${CODEX_PLUGIN_ROOT:-${PLUGIN_ROOT}}/hooks/session-start-anchor.py\"",
+app/plugin/hooks/hooks.json:22:            "command": "python3 \"${CODEX_PLUGIN_ROOT:-${PLUGIN_ROOT}}/hooks/pretooluse-live-veto.py\"",
+app/plugin/hooks/hooks.json:28:            "command": "python3 \"${CODEX_PLUGIN_ROOT:-${PLUGIN_ROOT}}/hooks/pretooluse-secret-veto.py\"",
+app/plugin/hooks/hooks.json:34:            "command": "python3 \"${CODEX_PLUGIN_ROOT:-${PLUGIN_ROOT}}/hooks/pretooluse-protected-path-veto.py\"",
+app/plugin/hooks/hooks.json:47:            "command": "python3 \"${CODEX_PLUGIN_ROOT:-${PLUGIN_ROOT}}/hooks/posttooluse-schema-validation.py\"",
+app/plugin/hooks/hooks.json:53:            "command": "python3 \"${CODEX_PLUGIN_ROOT:-${PLUGIN_ROOT}}/hooks/posttooluse-scene-link-validation.py\"",
+app/plugin/hooks/hooks.json:59:            "command": "python3 \"${CODEX_PLUGIN_ROOT:-${PLUGIN_ROOT}}/hooks/posttooluse-evidence-feedback.py\"",
+app/plugin/hooks/hooks.json:71:            "command": "python3 \"${CODEX_PLUGIN_ROOT:-${PLUGIN_ROOT}}/hooks/stop-sentinel-guard.py\"",
+app/plugin/hooks/pretooluse-live-veto.py:102:    for pattern in ("story/imagegen_jobs.json", "prompts/imagegen_jobs.json"):
+app/harness/package/safety_video_harness/prompt_team.py:28:        "url": "$CODEX_HOME/skills/.system/imagegen/SKILL.md",
+app/harness/package/safety_video_harness/prompt_team.py:89:        "agent_file": "app/plugin/agents/lead-style-agent/AGENT.md",
+app/harness/package/safety_video_harness/prompt_team.py:118:                "agent_file": "app/plugin/agents/scene-prompt-agent/AGENT.md",
+app/harness/package/safety_video_harness/prompt_team.py:133:        "agent_file": "app/plugin/agents/scene-prompt-agent/AGENT.md",
+app/harness/package/safety_video_harness/prompt_team.py:147:        "agent_file": "app/plugin/agents/visual-director-arbiter/AGENT.md",
+app/harness/package/safety_video_harness/reference_catalog.py:53:    "root": "ref/approved",
+app/harness/package/safety_video_harness/reference_catalog.py:54:    "person": "ref/approved/person",
+app/harness/package/safety_video_harness/reference_catalog.py:55:    "work": "ref/approved/work",
+app/harness/package/safety_video_harness/reference_catalog.py:56:    "space": "ref/approved/space",
+app/harness/package/safety_video_harness/reference_catalog.py:57:    "style": "ref/approved/style",
+app/harness/package/safety_video_harness/reference_catalog.py:58:    "camera": "ref/approved/camera",
+app/harness/package/safety_video_harness/reference_catalog.py:59:    "lighting": "ref/approved/lighting",
+app/harness/package/safety_video_harness/generation.py:225:        "start_keyframe": previous.get("end_keyframe", f"media/images/approved/{scene_id}.png"),
+app/harness/package/safety_video_harness/generation.py:226:        "end_keyframe": f"media/images/approved/{scene_id}.png",
+app/harness/package/safety_video_harness/gate_validation.py:36:        f"media/images/approved/sc{index:02d}.png"
+app/harness/package/safety_video_harness/layout.py:54:    LayoutKey.SOURCE_RAW: "input/sources/raw",
+app/harness/package/safety_video_harness/layout.py:55:    LayoutKey.SOURCE_RENDERED: "input/sources/rendered",
+app/harness/package/safety_video_harness/layout.py:77:    LayoutKey.MEDIA_IMAGE_DRAFT: "media/images/draft",
+app/harness/package/safety_video_harness/layout.py:78:    LayoutKey.MEDIA_IMAGE_APPROVED: "media/images/approved",
+app/harness/package/safety_video_harness/layout.py:93:    LayoutKey.SOURCE_RAW: ("sources/raw",),
+app/harness/package/safety_video_harness/layout.py:94:    LayoutKey.SOURCE_RENDERED: ("sources/rendered",),
+app/harness/package/safety_video_harness/layout.py:95:    LayoutKey.SOURCE_REGISTRY: ("sources/sources.json",),
+app/harness/package/safety_video_harness/layout.py:96:    LayoutKey.SOURCE_TOPICS: ("sources/extracted_topics.json",),
+app/harness/package/safety_video_harness/layout.py:97:    LayoutKey.SOURCE_FACTS: ("sources/source_facts.json",),
+app/harness/package/safety_video_harness/layout.py:98:    LayoutKey.REFS_CAST: ("model/cast",),
+app/harness/package/safety_video_harness/layout.py:100:    LayoutKey.REFS_EQUIPMENT: ("product/equipment",),
+app/harness/package/safety_video_harness/layout.py:102:    LayoutKey.REFS_APPROVED: ("ref/approved",),
+app/harness/package/safety_video_harness/layout.py:103:    LayoutKey.REFS_PERSON: ("ref/approved/person",),
+app/harness/package/safety_video_harness/layout.py:104:    LayoutKey.REFS_WORK: ("ref/approved/work",),
+app/harness/package/safety_video_harness/layout.py:105:    LayoutKey.REFS_SPACE: ("ref/approved/space",),
+app/harness/package/safety_video_harness/layout.py:106:    LayoutKey.REFS_STYLE: ("ref/approved/style", "style"),
+app/harness/package/safety_video_harness/layout.py:107:    LayoutKey.REFS_CAMERA: ("ref/approved/camera",),
+app/harness/package/safety_video_harness/layout.py:108:    LayoutKey.REFS_LIGHTING: ("ref/approved/lighting",),
+app/harness/package/safety_video_harness/layout.py:110:    LayoutKey.STORY_SCENES: ("storyboard/scenes.json",),
+app/harness/package/safety_video_harness/layout.py:111:    LayoutKey.STORY_VERSIONS: ("storyboard/versions",),
+app/harness/package/safety_video_harness/layout.py:112:    LayoutKey.STORY_IMAGE_PROMPTS: ("prompts/image_prompts.json",),
+app/harness/package/safety_video_harness/layout.py:113:    LayoutKey.STORY_VIDEO_PROMPTS: ("prompts/video_prompts.json",),
+app/harness/package/safety_video_harness/layout.py:114:    LayoutKey.STORY_IMAGE_PROMPT_TEAM: ("prompts/image_prompt_team_plan.json",),
+app/harness/package/safety_video_harness/layout.py:115:    LayoutKey.STORY_IMAGEGEN_JOBS: ("prompts/imagegen_jobs.json",),
+app/harness/package/safety_video_harness/layout.py:116:    LayoutKey.MEDIA_IMAGE_DRAFT: ("images/draft",),
+app/harness/package/safety_video_harness/layout.py:117:    LayoutKey.MEDIA_IMAGE_APPROVED: ("images/approved",),
+app/harness/package/safety_video_harness/layout.py:132:    "sources/raw",
+app/harness/package/safety_video_harness/layout.py:133:    "sources/rendered",
+app/harness/package/safety_video_harness/layout.py:134:    "model/cast",
+app/harness/package/safety_video_harness/layout.py:136:    "product/equipment",
+app/harness/package/safety_video_harness/layout.py:138:    "ref/approved",
+app/harness/package/safety_video_harness/layout.py:139:    "ref/approved/person",
+app/harness/package/safety_video_harness/layout.py:140:    "ref/approved/work",
+app/harness/package/safety_video_harness/layout.py:141:    "ref/approved/space",
+app/harness/package/safety_video_harness/layout.py:142:    "ref/approved/style",
+app/harness/package/safety_video_harness/layout.py:143:    "ref/approved/camera",
+app/harness/package/safety_video_harness/layout.py:144:    "ref/approved/lighting",
+app/harness/package/safety_video_harness/layout.py:147:    "storyboard/versions",
+app/harness/package/safety_video_harness/layout.py:149:    "images/draft",
+app/harness/package/safety_video_harness/layout.py:150:    "images/approved",
+app/harness/package/safety_video_harness/layout.py:164:    "input/sources/raw",
+app/harness/package/safety_video_harness/layout.py:165:    "input/sources/rendered",
+app/harness/package/safety_video_harness/layout.py:179:    "media/images/draft",
+app/harness/package/safety_video_harness/layout.py:180:    "media/images/approved",
+app/harness/package/safety_video_harness/storyboard.py:95:        "start_keyframe": f"media/images/approved/{scene_id}.png",
+app/harness/package/safety_video_harness/storyboard.py:96:        "end_keyframe": f"media/images/approved/{next_id}.png",
+app/plugin/agents/continuity-qa/AGENT.md:15:- Sliding chain: `scNN` clip starts at `images/approved/scNN.png` and ends at `images/approved/scNN+1.png`.
+app/harness/package/safety_video_harness/prompt_contract.py:88:        "output": f"media/images/draft/{scene_id}.png",
+app/harness/package/safety_video_harness/prompt_contract.py:140:        "output": f"media/images/draft/{scene_id}.png",
+app/harness/package/safety_video_harness/image_qa.py:31:            "artifact_path": "media/images/draft/" + scene_id + "_v*.png",
+app/harness/package/safety_video_harness/image_qa.py:71:        "artifact_path": artifact_path(project, draft, f"media/images/draft/{scene_id}_v*.png"),
+app/plugin/agents/lead-style-agent/references/lead-style-reference.md:6:- Local Codex imagegen skill: `$CODEX_HOME/skills/.system/imagegen/SKILL.md`
+app/plugin/agents/visual-director-arbiter/AGENT.md:63:- Local visual continuity agent: `agents/visual-continuity-director/AGENT.md`
+app/plugin/agents/lead-style-agent/AGENT.md:12:- `storyboard/scenes.json`
+app/plugin/agents/lead-style-agent/AGENT.md:16:- approved references under `model/`, `product/`, and `ref/approved/`
+app/plugin/agents/lead-style-agent/AGENT.md:17:- first generated keyframe, usually `images/draft/sc01_vNNN.png`
+app/plugin/agents/lead-style-agent/AGENT.md:45:- Local Codex imagegen skill: `$CODEX_HOME/skills/.system/imagegen/SKILL.md`
+app/plugin/agents/scene-prompt-agent/AGENT.md:12:- the selected scene from `storyboard/scenes.json`
+app/plugin/agents/scene-prompt-agent/AGENT.md:14:- lead style bible from `prompts/image_prompt_team_plan.json`

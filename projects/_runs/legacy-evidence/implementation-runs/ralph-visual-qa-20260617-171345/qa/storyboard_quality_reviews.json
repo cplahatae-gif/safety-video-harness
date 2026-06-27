@@ -1,0 +1,595 @@
+{
+  "rubric_source": "docs/evaluation-rubrics.md",
+  "few_shot_source": "docs/few-shot-examples.md",
+  "passed": true,
+  "thresholds": {
+    "minimum_field_score": 4,
+    "minimum_total_score": 20
+  },
+  "reviews": [
+    {
+      "scene_id": "sc01",
+      "rubric_source": "docs/evaluation-rubrics.md",
+      "few_shot_source": "docs/few-shot-examples.md",
+      "artifact_path": "storyboard/scenes.json#sc01",
+      "criteria": {
+        "source_grounding_score": 5,
+        "causal_flow_score": 5,
+        "granularity_score": 5,
+        "text_delivery_score": 5,
+        "continuity_score": 5
+      },
+      "total_score": 25,
+      "blocking_issues": [],
+      "blocker_categories": [],
+      "critical_blockers": [],
+      "decision": "approve_storyboard",
+      "revision_prompt": "",
+      "arbiter_decision": {
+        "stage": "storyboard",
+        "item_id": "sc01",
+        "round": 1,
+        "iteration": 1,
+        "decision": "approve_for_image",
+        "role_reviews": [
+          {
+            "role": "source_grounding",
+            "scores": {
+              "source_grounding": 5
+            },
+            "blocking_issues": [],
+            "execution_mode": "parallel_role_evaluator"
+          },
+          {
+            "role": "causal_flow",
+            "scores": {
+              "causal_flow": 5
+            },
+            "blocking_issues": [],
+            "execution_mode": "parallel_role_evaluator"
+          },
+          {
+            "role": "granularity",
+            "scores": {
+              "granularity": 5
+            },
+            "blocking_issues": [],
+            "execution_mode": "parallel_role_evaluator"
+          },
+          {
+            "role": "text_delivery",
+            "scores": {
+              "text_delivery": 5
+            },
+            "blocking_issues": [],
+            "execution_mode": "parallel_role_evaluator"
+          },
+          {
+            "role": "devils_advocate",
+            "scores": {
+              "risk": 5
+            },
+            "blocking_issues": [],
+            "critical_blockers": [],
+            "vote": "approve",
+            "execution_mode": "parallel_role_evaluator"
+          }
+        ],
+        "scores": {
+          "source_grounding": 5,
+          "causal_flow": 5,
+          "granularity": 5,
+          "text_delivery": 5,
+          "risk": 5
+        },
+        "blocking_issues": [],
+        "blocker_signatures": [],
+        "repeated_blockers": [],
+        "critical_vetoes": [],
+        "consensus": {
+          "rule": "5/5 approve or 4/5 approve plus conditional; critical veto overrides majority",
+          "total_roles": 5,
+          "approve_count": 5,
+          "conditional_count": 0,
+          "reject_count": 0,
+          "critical_vetoes": [],
+          "rule_result": "approved"
+        },
+        "debate_required": false,
+        "debate_triggers": [],
+        "repeated_blocker_threshold": 3,
+        "next_action": "continue",
+        "regeneration_delta": "",
+        "evidence_bundle": "qa/evaluation_bundles/storyboard/sc01/round_001.json"
+      }
+    },
+    {
+      "scene_id": "sc02",
+      "rubric_source": "docs/evaluation-rubrics.md",
+      "few_shot_source": "docs/few-shot-examples.md",
+      "artifact_path": "storyboard/scenes.json#sc02",
+      "criteria": {
+        "source_grounding_score": 5,
+        "causal_flow_score": 5,
+        "granularity_score": 5,
+        "text_delivery_score": 5,
+        "continuity_score": 5
+      },
+      "total_score": 25,
+      "blocking_issues": [],
+      "blocker_categories": [],
+      "critical_blockers": [],
+      "decision": "approve_storyboard",
+      "revision_prompt": "",
+      "arbiter_decision": {
+        "stage": "storyboard",
+        "item_id": "sc02",
+        "round": 1,
+        "iteration": 1,
+        "decision": "approve_for_image",
+        "role_reviews": [
+          {
+            "role": "source_grounding",
+            "scores": {
+              "source_grounding": 5
+            },
+            "blocking_issues": [],
+            "execution_mode": "parallel_role_evaluator"
+          },
+          {
+            "role": "causal_flow",
+            "scores": {
+              "causal_flow": 5
+            },
+            "blocking_issues": [],
+            "execution_mode": "parallel_role_evaluator"
+          },
+          {
+            "role": "granularity",
+            "scores": {
+              "granularity": 5
+            },
+            "blocking_issues": [],
+            "execution_mode": "parallel_role_evaluator"
+          },
+          {
+            "role": "text_delivery",
+            "scores": {
+              "text_delivery": 5
+            },
+            "blocking_issues": [],
+            "execution_mode": "parallel_role_evaluator"
+          },
+          {
+            "role": "devils_advocate",
+            "scores": {
+              "risk": 5
+            },
+            "blocking_issues": [],
+            "critical_blockers": [],
+            "vote": "approve",
+            "execution_mode": "parallel_role_evaluator"
+          }
+        ],
+        "scores": {
+          "source_grounding": 5,
+          "causal_flow": 5,
+          "granularity": 5,
+          "text_delivery": 5,
+          "risk": 5
+        },
+        "blocking_issues": [],
+        "blocker_signatures": [],
+        "repeated_blockers": [],
+        "critical_vetoes": [],
+        "consensus": {
+          "rule": "5/5 approve or 4/5 approve plus conditional; critical veto overrides majority",
+          "total_roles": 5,
+          "approve_count": 5,
+          "conditional_count": 0,
+          "reject_count": 0,
+          "critical_vetoes": [],
+          "rule_result": "approved"
+        },
+        "debate_required": false,
+        "debate_triggers": [],
+        "repeated_blocker_threshold": 3,
+        "next_action": "continue",
+        "regeneration_delta": "",
+        "evidence_bundle": "qa/evaluation_bundles/storyboard/sc02/round_001.json"
+      }
+    },
+    {
+      "scene_id": "sc03",
+      "rubric_source": "docs/evaluation-rubrics.md",
+      "few_shot_source": "docs/few-shot-examples.md",
+      "artifact_path": "storyboard/scenes.json#sc03",
+      "criteria": {
+        "source_grounding_score": 5,
+        "causal_flow_score": 5,
+        "granularity_score": 5,
+        "text_delivery_score": 5,
+        "continuity_score": 5
+      },
+      "total_score": 25,
+      "blocking_issues": [],
+      "blocker_categories": [],
+      "critical_blockers": [],
+      "decision": "approve_storyboard",
+      "revision_prompt": "",
+      "arbiter_decision": {
+        "stage": "storyboard",
+        "item_id": "sc03",
+        "round": 1,
+        "iteration": 1,
+        "decision": "approve_for_image",
+        "role_reviews": [
+          {
+            "role": "source_grounding",
+            "scores": {
+              "source_grounding": 5
+            },
+            "blocking_issues": [],
+            "execution_mode": "parallel_role_evaluator"
+          },
+          {
+            "role": "causal_flow",
+            "scores": {
+              "causal_flow": 5
+            },
+            "blocking_issues": [],
+            "execution_mode": "parallel_role_evaluator"
+          },
+          {
+            "role": "granularity",
+            "scores": {
+              "granularity": 5
+            },
+            "blocking_issues": [],
+            "execution_mode": "parallel_role_evaluator"
+          },
+          {
+            "role": "text_delivery",
+            "scores": {
+              "text_delivery": 5
+            },
+            "blocking_issues": [],
+            "execution_mode": "parallel_role_evaluator"
+          },
+          {
+            "role": "devils_advocate",
+            "scores": {
+              "risk": 5
+            },
+            "blocking_issues": [],
+            "critical_blockers": [],
+            "vote": "approve",
+            "execution_mode": "parallel_role_evaluator"
+          }
+        ],
+        "scores": {
+          "source_grounding": 5,
+          "causal_flow": 5,
+          "granularity": 5,
+          "text_delivery": 5,
+          "risk": 5
+        },
+        "blocking_issues": [],
+        "blocker_signatures": [],
+        "repeated_blockers": [],
+        "critical_vetoes": [],
+        "consensus": {
+          "rule": "5/5 approve or 4/5 approve plus conditional; critical veto overrides majority",
+          "total_roles": 5,
+          "approve_count": 5,
+          "conditional_count": 0,
+          "reject_count": 0,
+          "critical_vetoes": [],
+          "rule_result": "approved"
+        },
+        "debate_required": false,
+        "debate_triggers": [],
+        "repeated_blocker_threshold": 3,
+        "next_action": "continue",
+        "regeneration_delta": "",
+        "evidence_bundle": "qa/evaluation_bundles/storyboard/sc03/round_001.json"
+      }
+    },
+    {
+      "scene_id": "sc04",
+      "rubric_source": "docs/evaluation-rubrics.md",
+      "few_shot_source": "docs/few-shot-examples.md",
+      "artifact_path": "storyboard/scenes.json#sc04",
+      "criteria": {
+        "source_grounding_score": 5,
+        "causal_flow_score": 5,
+        "granularity_score": 5,
+        "text_delivery_score": 5,
+        "continuity_score": 5
+      },
+      "total_score": 25,
+      "blocking_issues": [],
+      "blocker_categories": [],
+      "critical_blockers": [],
+      "decision": "approve_storyboard",
+      "revision_prompt": "",
+      "arbiter_decision": {
+        "stage": "storyboard",
+        "item_id": "sc04",
+        "round": 1,
+        "iteration": 1,
+        "decision": "approve_for_image",
+        "role_reviews": [
+          {
+            "role": "source_grounding",
+            "scores": {
+              "source_grounding": 5
+            },
+            "blocking_issues": [],
+            "execution_mode": "parallel_role_evaluator"
+          },
+          {
+            "role": "causal_flow",
+            "scores": {
+              "causal_flow": 5
+            },
+            "blocking_issues": [],
+            "execution_mode": "parallel_role_evaluator"
+          },
+          {
+            "role": "granularity",
+            "scores": {
+              "granularity": 5
+            },
+            "blocking_issues": [],
+            "execution_mode": "parallel_role_evaluator"
+          },
+          {
+            "role": "text_delivery",
+            "scores": {
+              "text_delivery": 5
+            },
+            "blocking_issues": [],
+            "execution_mode": "parallel_role_evaluator"
+          },
+          {
+            "role": "devils_advocate",
+            "scores": {
+              "risk": 5
+            },
+            "blocking_issues": [],
+            "critical_blockers": [],
+            "vote": "approve",
+            "execution_mode": "parallel_role_evaluator"
+          }
+        ],
+        "scores": {
+          "source_grounding": 5,
+          "causal_flow": 5,
+          "granularity": 5,
+          "text_delivery": 5,
+          "risk": 5
+        },
+        "blocking_issues": [],
+        "blocker_signatures": [],
+        "repeated_blockers": [],
+        "critical_vetoes": [],
+        "consensus": {
+          "rule": "5/5 approve or 4/5 approve plus conditional; critical veto overrides majority",
+          "total_roles": 5,
+          "approve_count": 5,
+          "conditional_count": 0,
+          "reject_count": 0,
+          "critical_vetoes": [],
+          "rule_result": "approved"
+        },
+        "debate_required": false,
+        "debate_triggers": [],
+        "repeated_blocker_threshold": 3,
+        "next_action": "continue",
+        "regeneration_delta": "",
+        "evidence_bundle": "qa/evaluation_bundles/storyboard/sc04/round_001.json"
+      }
+    },
+    {
+      "scene_id": "sc05",
+      "rubric_source": "docs/evaluation-rubrics.md",
+      "few_shot_source": "docs/few-shot-examples.md",
+      "artifact_path": "storyboard/scenes.json#sc05",
+      "criteria": {
+        "source_grounding_score": 5,
+        "causal_flow_score": 5,
+        "granularity_score": 5,
+        "text_delivery_score": 5,
+        "continuity_score": 5
+      },
+      "total_score": 25,
+      "blocking_issues": [],
+      "blocker_categories": [],
+      "critical_blockers": [],
+      "decision": "approve_storyboard",
+      "revision_prompt": "",
+      "arbiter_decision": {
+        "stage": "storyboard",
+        "item_id": "sc05",
+        "round": 1,
+        "iteration": 1,
+        "decision": "approve_for_image",
+        "role_reviews": [
+          {
+            "role": "source_grounding",
+            "scores": {
+              "source_grounding": 5
+            },
+            "blocking_issues": [],
+            "execution_mode": "parallel_role_evaluator"
+          },
+          {
+            "role": "causal_flow",
+            "scores": {
+              "causal_flow": 5
+            },
+            "blocking_issues": [],
+            "execution_mode": "parallel_role_evaluator"
+          },
+          {
+            "role": "granularity",
+            "scores": {
+              "granularity": 5
+            },
+            "blocking_issues": [],
+            "execution_mode": "parallel_role_evaluator"
+          },
+          {
+            "role": "text_delivery",
+            "scores": {
+              "text_delivery": 5
+            },
+            "blocking_issues": [],
+            "execution_mode": "parallel_role_evaluator"
+          },
+          {
+            "role": "devils_advocate",
+            "scores": {
+              "risk": 5
+            },
+            "blocking_issues": [],
+            "critical_blockers": [],
+            "vote": "approve",
+            "execution_mode": "parallel_role_evaluator"
+          }
+        ],
+        "scores": {
+          "source_grounding": 5,
+          "causal_flow": 5,
+          "granularity": 5,
+          "text_delivery": 5,
+          "risk": 5
+        },
+        "blocking_issues": [],
+        "blocker_signatures": [],
+        "repeated_blockers": [],
+        "critical_vetoes": [],
+        "consensus": {
+          "rule": "5/5 approve or 4/5 approve plus conditional; critical veto overrides majority",
+          "total_roles": 5,
+          "approve_count": 5,
+          "conditional_count": 0,
+          "reject_count": 0,
+          "critical_vetoes": [],
+          "rule_result": "approved"
+        },
+        "debate_required": false,
+        "debate_triggers": [],
+        "repeated_blocker_threshold": 3,
+        "next_action": "continue",
+        "regeneration_delta": "",
+        "evidence_bundle": "qa/evaluation_bundles/storyboard/sc05/round_001.json"
+      }
+    },
+    {
+      "scene_id": "sc06",
+      "rubric_source": "docs/evaluation-rubrics.md",
+      "few_shot_source": "docs/few-shot-examples.md",
+      "artifact_path": "storyboard/scenes.json#sc06",
+      "criteria": {
+        "source_grounding_score": 5,
+        "causal_flow_score": 5,
+        "granularity_score": 5,
+        "text_delivery_score": 5,
+        "continuity_score": 5
+      },
+      "total_score": 25,
+      "blocking_issues": [],
+      "blocker_categories": [],
+      "critical_blockers": [],
+      "decision": "approve_storyboard",
+      "revision_prompt": "",
+      "arbiter_decision": {
+        "stage": "storyboard",
+        "item_id": "sc06",
+        "round": 1,
+        "iteration": 1,
+        "decision": "approve_for_image",
+        "role_reviews": [
+          {
+            "role": "source_grounding",
+            "scores": {
+              "source_grounding": 5
+            },
+            "blocking_issues": [],
+            "execution_mode": "parallel_role_evaluator"
+          },
+          {
+            "role": "causal_flow",
+            "scores": {
+              "causal_flow": 5
+            },
+            "blocking_issues": [],
+            "execution_mode": "parallel_role_evaluator"
+          },
+          {
+            "role": "granularity",
+            "scores": {
+              "granularity": 5
+            },
+            "blocking_issues": [],
+            "execution_mode": "parallel_role_evaluator"
+          },
+          {
+            "role": "text_delivery",
+            "scores": {
+              "text_delivery": 5
+            },
+            "blocking_issues": [],
+            "execution_mode": "parallel_role_evaluator"
+          },
+          {
+            "role": "devils_advocate",
+            "scores": {
+              "risk": 5
+            },
+            "blocking_issues": [],
+            "critical_blockers": [],
+            "vote": "approve",
+            "execution_mode": "parallel_role_evaluator"
+          }
+        ],
+        "scores": {
+          "source_grounding": 5,
+          "causal_flow": 5,
+          "granularity": 5,
+          "text_delivery": 5,
+          "risk": 5
+        },
+        "blocking_issues": [],
+        "blocker_signatures": [],
+        "repeated_blockers": [],
+        "critical_vetoes": [],
+        "consensus": {
+          "rule": "5/5 approve or 4/5 approve plus conditional; critical veto overrides majority",
+          "total_roles": 5,
+          "approve_count": 5,
+          "conditional_count": 0,
+          "reject_count": 0,
+          "critical_vetoes": [],
+          "rule_result": "approved"
+        },
+        "debate_required": false,
+        "debate_triggers": [],
+        "repeated_blocker_threshold": 3,
+        "next_action": "continue",
+        "regeneration_delta": "",
+        "evidence_bundle": "qa/evaluation_bundles/storyboard/sc06/round_001.json"
+      }
+    }
+  ],
+  "blockers": [],
+  "algorithm": {
+    "source_grounding": "Every scene must cite source facts.",
+    "causal_flow": "Every scene must show a prevention cause/effect beat.",
+    "granularity": "Scene duration must be short enough for controllable keyframes.",
+    "text_delivery": "Teaching point must be expressed as subtitle/overlay, not narration.",
+    "continuity": "Start/end keyframes and continuity constraints must be present."
+  }
+}

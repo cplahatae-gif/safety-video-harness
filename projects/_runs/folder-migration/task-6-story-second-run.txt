@@ -1,0 +1,131 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.4, pytest-9.0.3, pluggy-1.6.0
+rootdir: /Volumes/Ha tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스
+configfile: pyproject.toml
+collected 24 items
+
+tests/test_mvp_flow.py ......                                            [ 25%]
+tests/test_style_guides.py ....                                          [ 41%]
+tests/test_remicon_fixture_flow.py F.FF                                  [ 58%]
+tests/test_storyboard_density.py ..                                      [ 66%]
+tests/test_no_narration_contract.py ..                                   [ 75%]
+tests/test_seedance_prompt_contract.py .                                 [ 79%]
+tests/test_story_flow_quality.py ...                                     [ 91%]
+tests/test_roadmap_bundle2.py ..                                         [100%]
+
+=================================== FAILURES ===================================
+_____ test_remicon_fixture_generates_source_specific_topics_and_storyboard _____
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-74/test_remicon_fixture_generates0')
+
+    def test_remicon_fixture_generates_source_specific_topics_and_storyboard(tmp_path: Path) -> None:
+        project = tmp_path / "remicon"
+    
+        assert FIXTURE.exists()
+        assert run_cli("scripts/init_project.py", "--name", "레미콘 충돌 예방", "--slug", str(project)).returncode == 0
+        assert run_cli("scripts/register_sources.py", "--project", str(project), "--source", str(FIXTURE)).returncode == 0
+        assert run_cli("scripts/render_pptx_sources.py", "--project", str(project), "--dry-run").returncode == 0
+        rendered_assets = sorted((project / "sources" / "rendered").glob("*.png"))
+>       assert len(rendered_assets) == 12
+E       assert 0 == 12
+E        +  where 0 = len([])
+
+tests/test_remicon_fixture_flow.py:34: AssertionError
+____________ test_reference_assets_are_loaded_into_prompt_contracts ____________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-74/test_reference_assets_are_load0')
+
+    def test_reference_assets_are_loaded_into_prompt_contracts(tmp_path: Path) -> None:
+        project = tmp_path / "remicon-reference-assets"
+    
+        assert run_cli("scripts/init_project.py", "--name", "레미콘 충돌 예방", "--slug", str(project)).returncode == 0
+        assert run_cli("scripts/register_sources.py", "--project", str(project), "--source", str(FIXTURE)).returncode == 0
+        assert run_cli("scripts/render_pptx_sources.py", "--project", str(project), "--dry-run").returncode == 0
+        assert run_cli("scripts/extract_topics.py", "--project", str(project)).returncode == 0
+        assert run_cli("scripts/intake_project.py", "--project", str(project), "--defaults").returncode == 0
+        assert run_cli("scripts/extract_style_dna.py", "--project", str(project)).returncode == 0
+        assert run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30").returncode == 0
+        assert run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard").returncode == 0
+    
+        cast_dir = project / "model" / "cast"
+        equipment_dir = project / "product" / "equipment"
+        approved_ref_dir = project / "ref" / "approved"
+>       (cast_dir / "worker-001-front.png").write_bytes(b"fake image")
+
+tests/test_remicon_fixture_flow.py:109: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:796: in write_bytes
+    with self.open(mode='wb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-74/test_reference_assets_are_load0/remicon-reference-assets/model/cast/worker-001-front.png')
+mode = 'wb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-74/test_reference_assets_are_load0/remicon-reference-assets/model/cast/worker-001-front.png'
+
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:771: FileNotFoundError
+____ test_categorized_approved_references_are_loaded_into_prompt_contracts _____
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-74/test_categorized_approved_refe0')
+
+    def test_categorized_approved_references_are_loaded_into_prompt_contracts(tmp_path: Path) -> None:
+        project = tmp_path / "remicon-categorized-references"
+    
+        assert run_cli("scripts/init_project.py", "--name", "레미콘 충돌 예방", "--slug", str(project)).returncode == 0
+        assert run_cli("scripts/register_sources.py", "--project", str(project), "--source", str(FIXTURE)).returncode == 0
+        assert run_cli("scripts/render_pptx_sources.py", "--project", str(project), "--dry-run").returncode == 0
+        assert run_cli("scripts/extract_topics.py", "--project", str(project)).returncode == 0
+        assert run_cli("scripts/intake_project.py", "--project", str(project), "--defaults").returncode == 0
+        assert run_cli("scripts/extract_style_dna.py", "--project", str(project)).returncode == 0
+        assert run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30").returncode == 0
+        assert run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard").returncode == 0
+    
+        person_dir = project / "ref" / "approved" / "person"
+        work_dir = project / "ref" / "approved" / "work"
+        space_dir = project / "ref" / "approved" / "space"
+        person_dir.mkdir(parents=True, exist_ok=True)
+        work_dir.mkdir(parents=True, exist_ok=True)
+        space_dir.mkdir(parents=True, exist_ok=True)
+        (person_dir / "signal-person-reference.png").write_bytes(b"fake image")
+        (person_dir / "signal-person-reference.md").write_text(
+            "person reference: signal person stance, baton hand, radio hand, calm gaze toward truck route",
+            encoding="utf-8",
+        )
+        (work_dir / "blind-spot-workflow.png").write_bytes(b"fake image")
+        (work_dir / "blind-spot-workflow.md").write_text(
+            "work situation reference: pedestrian remains outside the red blind-spot zone while truck waits",
+            encoding="utf-8",
+        )
+        (space_dir / "plant-entry-layout.png").write_bytes(b"fake image")
+        (space_dir / "plant-entry-layout.md").write_text(
+            "space reference: ready-mix plant entry lanes, green pedestrian path, red exclusion zone",
+            encoding="utf-8",
+        )
+    
+        assert run_cli("scripts/generate_images.py", "--project", str(project), "--dry-run").returncode == 0
+        assert run_cli("scripts/generate_seedance.py", "--project", str(project), "--dry-run").returncode == 0
+    
+        image_blob = json.dumps(load_json(project / "story" / "image_prompts.json"), ensure_ascii=False)
+        video_blob = json.dumps(load_json(project / "story" / "video_prompts.json"), ensure_ascii=False)
+    
+        assert "person_reference" in image_blob
+>       assert "signal person stance" in image_blob
+E       assert 'signal person stance' in '{"dry_run": true, "plans": [{"scene_id": "sc01", "output": "images/draft/sc01.png", "prompt": "Create one keyframe fo...ent scene keyframes without asset lock", "Seedance clip generation from prompt only"]}, "reference_media_pack": []}}]}'
+
+tests/test_remicon_fixture_flow.py:182: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_remicon_fixture_flow.py::test_remicon_fixture_generates_source_specific_topics_and_storyboard
+FAILED tests/test_remicon_fixture_flow.py::test_reference_assets_are_loaded_into_prompt_contracts
+FAILED tests/test_remicon_fixture_flow.py::test_categorized_approved_references_are_loaded_into_prompt_contracts
+========================= 3 failed, 21 passed in 6.13s =========================

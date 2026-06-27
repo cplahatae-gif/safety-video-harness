@@ -34,14 +34,14 @@ def prepare_storyboard_project(project: Path) -> None:
 
 
 def test_reusable_style_guide_catalog_and_reference_assets_exist() -> None:
-    catalog = load_json(ROOT / "style-guides" / "catalog.json")
+    catalog = load_json(ROOT / "references" / "style" / "catalog.json")
 
     assert catalog["default_style_guide_id"] == "korean-industrial-webtoon"
     assert len(catalog["options"]) == 5
-    assert (ROOT / "style-guides" / "README.md").exists()
-    assert (ROOT / "style-guides" / "korean-industrial-webtoon" / "STYLE_GUIDE.md").exists()
-    assert (ROOT / "style-guides" / "korean-industrial-webtoon" / "references" / "reference-001.png").exists()
-    assert (ROOT / "style-guides" / "korean-industrial-webtoon" / "references" / "reference-001.md").exists()
+    assert (ROOT / "references" / "style" / "README.md").exists()
+    assert (ROOT / "references" / "style" / "korean-industrial-webtoon" / "STYLE_GUIDE.md").exists()
+    assert (ROOT / "references" / "style" / "korean-industrial-webtoon" / "references" / "reference-001.png").exists()
+    assert (ROOT / "references" / "style" / "korean-industrial-webtoon" / "references" / "reference-001.md").exists()
 
 
 def test_project_config_records_reference_and_style_interview_defaults(tmp_path: Path) -> None:
@@ -55,8 +55,8 @@ def test_project_config_records_reference_and_style_interview_defaults(tmp_path:
     assert config["style_interview"]["question_ko"] == "어떤 스타일을 원하십니까?"
     assert config["style_interview"]["selected_style_guide_id"] == "korean-industrial-webtoon"
     assert len(config["style_interview"]["options"]) == 5
-    assert (project / "ref" / "approved" / "person").exists()
-    assert (project / "ref" / "approved" / "style").exists()
+    assert (project / "refs" / "approved" / "people").exists()
+    assert (project / "refs" / "approved" / "style").exists()
 
 
 def test_selected_style_guide_is_injected_into_image_prompts(tmp_path: Path) -> None:
@@ -66,7 +66,7 @@ def test_selected_style_guide_is_injected_into_image_prompts(tmp_path: Path) -> 
     result = run_cli("scripts/generate_images.py", "--project", str(project), "--dry-run", "--only", "sc01")
 
     assert result.returncode == 0
-    prompt = load_json(project / "prompts" / "image_prompts.json")["plans"][0]["prompt"]
+    prompt = load_json(project / "story" / "image_prompts.json")["plans"][0]["prompt"]
     assert "Selected style guide: korean-industrial-webtoon" in prompt
     assert "modern Korean webtoon safety-training style" in prompt
     assert "crisp clean line art" in prompt
@@ -80,16 +80,19 @@ def test_image_prompt_team_plan_is_created_and_injected(tmp_path: Path) -> None:
     result = run_cli("scripts/plan_image_prompt_team.py", "--project", str(project))
 
     assert result.returncode == 0
-    team_plan = load_json(project / "prompts" / "image_prompt_team_plan.json")
-    assert team_plan["agent_team"]["lead_style_agent"]["agent_file"] == "agents/lead-style-agent/AGENT.md"
-    assert team_plan["agent_team"]["visual_director_arbiter"]["agent_file"] == "agents/visual-director-arbiter/AGENT.md"
+    team_plan = load_json(project / "story" / "image_prompt_team_plan.json")
+    assert team_plan["agent_team"]["lead_style_agent"]["agent_file"] == "app/plugin/agents/lead-style-agent/AGENT.md"
+    assert (
+        team_plan["agent_team"]["visual_director_arbiter"]["agent_file"]
+        == "app/plugin/agents/visual-director-arbiter/AGENT.md"
+    )
     assert len(team_plan["agent_team"]["scene_prompt_agents"]) == 7
     assert "OpenAI Image generation guide" in json.dumps(team_plan["references"], ensure_ascii=False)
 
     image_result = run_cli("scripts/generate_images.py", "--project", str(project), "--dry-run", "--only", "sc02")
 
     assert image_result.returncode == 0
-    prompt = load_json(project / "prompts" / "image_prompts.json")["plans"][0]["prompt"]
+    prompt = load_json(project / "story" / "image_prompts.json")["plans"][0]["prompt"]
     assert "Image prompt production team preflight:" in prompt
     assert "Scene prompt agents draft scene-specific briefs" in prompt
     assert "use one imagegen coordinator" in prompt

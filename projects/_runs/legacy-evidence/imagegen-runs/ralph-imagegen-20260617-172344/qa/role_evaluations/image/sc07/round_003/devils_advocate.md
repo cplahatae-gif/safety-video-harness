@@ -1,0 +1,7 @@
+# devils_advocate
+
+- vote: `reject`
+- execution_mode: `parallel_role_evaluator`
+- scores: `{'risk': 2}`
+- blocking_issues: manual visual consistency review is required before image approval: score floor/lane, background, character identity, vehicle geometry, and hazard-zone consistency; floor_lane_consistency_score below minimum 4: 0; background_consistency_score below minimum 4: 0; character_identity_lock_score below minimum 4: 0; vehicle_geometry_lock_score below minimum 4: 0; hazard_zone_consistency_score below minimum 4: 0; total score below minimum 44: 30
+- critical_blockers: none

@@ -1,0 +1,16 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.4, pytest-9.0.3, pluggy-1.6.0
+rootdir: /Volumes/Ha tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스
+configfile: pyproject.toml
+collected 24 items
+
+tests/test_mvp_flow.py ......                                            [ 25%]
+tests/test_style_guides.py ....                                          [ 41%]
+tests/test_remicon_fixture_flow.py ....                                  [ 58%]
+tests/test_storyboard_density.py ..                                      [ 66%]
+tests/test_no_narration_contract.py ..                                   [ 75%]
+tests/test_seedance_prompt_contract.py .                                 [ 79%]
+tests/test_story_flow_quality.py ...                                     [ 91%]
+tests/test_roadmap_bundle2.py ..                                         [100%]
+
+============================== 24 passed in 6.06s ==============================

@@ -1,0 +1,103 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.4, pytest-9.0.3, pluggy-1.6.0
+rootdir: /Volumes/Ha tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스
+configfile: pyproject.toml
+collected 16 items
+
+tests/test_style_guides.py F...                                          [ 25%]
+tests/test_plugin_structure.py F...........                              [100%]
+
+=================================== FAILURES ===================================
+_________ test_reusable_style_guide_catalog_and_reference_assets_exist _________
+
+    def test_reusable_style_guide_catalog_and_reference_assets_exist() -> None:
+>       catalog = load_json(ROOT / "references" / "style" / "catalog.json")
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_style_guides.py:37: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_style_guides.py:23: in load_json
+    return json.loads(path.read_text(encoding="utf-8"))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:787: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/Volumes/Ha tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스/references/style/catalog.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/Volumes/Ha tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스/references/style/catalog.json'
+
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:771: FileNotFoundError
+________________ test_plugin_manifest_and_harness_assets_exist _________________
+
+    def test_plugin_manifest_and_harness_assets_exist() -> None:
+        manifest = json.loads((PLUGIN / ".codex-plugin" / "plugin.json").read_text(encoding="utf-8"))
+        root_manifest = json.loads((ROOT / ".codex-plugin" / "plugin.json").read_text(encoding="utf-8"))
+    
+        assert manifest["name"] == "safety-video-harness"
+        assert manifest["hooks"] == "./hooks/hooks.json"
+        assert root_manifest["compatibilityShim"] is True
+        assert root_manifest["hooks"] == "./app/plugin/hooks/hooks.json"
+        assert (ROOT / "AGENTS.md").exists()
+        for path in [
+            "app/plugin/skills/topic-extractor/SKILL.md",
+            "app/plugin/skills/story-writer/SKILL.md",
+            "app/plugin/skills/seedance-prompting/SKILL.md",
+            "app/plugin/skills/image-consistency-check/SKILL.md",
+            "app/plugin/skills/video-inspect/SKILL.md",
+            "app/plugin/skills/style-ref-search/SKILL.md",
+            "app/plugin/agents/storyteller/AGENT.md",
+            "app/plugin/agents/storyteller/references/storyteller-reference.md",
+            "app/plugin/agents/lead-style-agent/AGENT.md",
+            "app/plugin/agents/lead-style-agent/references/lead-style-reference.md",
+            "app/plugin/agents/scene-prompt-agent/AGENT.md",
+            "app/plugin/agents/scene-prompt-agent/references/scene-prompt-reference.md",
+            "app/plugin/agents/visual-director-arbiter/AGENT.md",
+            "app/plugin/agents/visual-director-arbiter/references/visual-director-arbiter-reference.md",
+            "app/plugin/agents/continuity-qa/AGENT.md",
+            "app/plugin/agents/continuity-qa/references/continuity-qa-reference.md",
+            "app/plugin/agents/video-qa/AGENT.md",
+            "app/plugin/agents/video-qa/references/video-qa-reference.md",
+            "app/plugin/agents/visual-continuity-director/AGENT.md",
+            "app/plugin/agents/visual-continuity-director/references/visual-continuity-reference.md",
+            "app/plugin/hooks/hooks.json",
+            "app/plugin/hooks/pretooluse-live-veto.py",
+            "app/plugin/hooks/protected_paths.json",
+            "app/harness/schemas/project_config.schema.json",
+            "app/harness/schemas/scenes.schema.json",
+            "references/style/catalog.json",
+            "references/style/korean-industrial-webtoon/STYLE_GUIDE.md",
+            "app/harness/templates/project/PLAN.md",
+            "app/harness/templates/project/AGENTS.safety.md",
+            "app/harness/templates/project/HANDOFF.md",
+            "docs/generative-media-reference-index.md",
+            "docs/reference-sources.md",
+            "docs/evaluation-rubrics.md",
+            "docs/few-shot-examples.md",
+            "docs/higgsfield-seedance-local-reference.md",
+            "docs/agent-skill-reference-onepager.html",
+            "scripts/plan_image_prompt_team.py",
+        ]:
+>           assert (ROOT / path).exists(), path
+E           AssertionError: references/style/catalog.json
+E           assert False
+E            +  where False = exists()
+E            +    where exists = (PosixPath('/Volumes/Ha tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스') / 'references/style/catalog.json').exists
+
+tests/test_plugin_structure.py:60: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_style_guides.py::test_reusable_style_guide_catalog_and_reference_assets_exist
+FAILED tests/test_plugin_structure.py::test_plugin_manifest_and_harness_assets_exist
+========================= 2 failed, 14 passed in 0.77s =========================

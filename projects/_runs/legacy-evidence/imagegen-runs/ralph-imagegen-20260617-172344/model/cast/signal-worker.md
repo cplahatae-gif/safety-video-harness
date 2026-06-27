@@ -1,0 +1,1 @@
+cast lock: same Korean signal worker, white helmet, orange vest, navy pants, red baton, radio, focused gaze toward visible truck route

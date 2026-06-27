@@ -1,0 +1,16 @@
+{"event": "recorded", "scene_id": "sc01", "output": "images/draft/sc01_v001.png"}
+{"event": "approved", "scene_id": "sc01", "source": "images/draft/sc01_v001.png", "output": "images/approved/sc01.png"}
+{"event": "recorded", "scene_id": "sc02", "output": "images/draft/sc02_v001.png"}
+{"event": "recorded", "scene_id": "sc03", "output": "images/draft/sc03_v001.png"}
+{"event": "recorded", "scene_id": "sc04", "output": "images/draft/sc04_v001.png"}
+{"event": "recorded", "scene_id": "sc05", "output": "images/draft/sc05_v001.png"}
+{"event": "recorded", "scene_id": "sc06", "output": "images/draft/sc06_v001.png"}
+{"event": "recorded", "scene_id": "sc04", "output": "images/draft/sc04_v002.png"}
+{"event": "approved", "scene_id": "sc01", "source": "images/draft/sc01_v001.png", "output": "images/approved/sc01.png"}
+{"event": "approved", "scene_id": "sc02", "source": "images/draft/sc02_v001.png", "output": "images/approved/sc02.png"}
+{"event": "approved", "scene_id": "sc03", "source": "images/draft/sc03_v001.png", "output": "images/approved/sc03.png"}
+{"event": "approved", "scene_id": "sc04", "source": "images/draft/sc04_v002.png", "output": "images/approved/sc04.png"}
+{"event": "approved", "scene_id": "sc05", "source": "images/draft/sc05_v001.png", "output": "images/approved/sc05.png"}
+{"event": "approved", "scene_id": "sc06", "source": "images/draft/sc06_v001.png", "output": "images/approved/sc06.png"}
+{"event": "recorded", "scene_id": "sc07", "output": "images/draft/sc07_v001.png"}
+{"event": "approved", "scene_id": "sc07", "source": "images/draft/sc07_v001.png", "output": "images/approved/sc07.png"}

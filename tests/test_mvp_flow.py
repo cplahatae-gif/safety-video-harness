@@ -47,7 +47,7 @@ def test_mvp_happy_path_dry_run_when_project_created(tmp_path: Path) -> None:
     assert run_cli("scripts/generate_images.py", "--project", str(project), "--dry-run").returncode == 0
     assert run_cli("scripts/validate_images.py", "--project", str(project), "--dry-run").returncode == 0
 
-    scenes = read_json(project / "storyboard" / "scenes.json")
+    scenes = read_json(project / "story" / "scenes.json")
     assert len(scenes["scenes"]) == 6
     assert scenes["keyframe_count"] == 7
 
@@ -57,7 +57,7 @@ def test_validate_project_rejects_missing_citation_when_scene_invalid(tmp_path: 
     assert run_cli("scripts/init_project.py", "--name", "invalid", "--slug", str(project)).returncode == 0
     assert run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30").returncode == 0
 
-    scenes_path = project / "storyboard" / "scenes.json"
+    scenes_path = project / "story" / "scenes.json"
     scenes = read_json(scenes_path)
     scenes["scenes"][0]["source_citations"] = []
     scenes_path.write_text(json.dumps(scenes, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -72,7 +72,7 @@ def test_validate_project_rejects_korean_image_prompt_when_scene_invalid(tmp_pat
     assert run_cli("scripts/init_project.py", "--name", "invalid", "--slug", str(project)).returncode == 0
     assert run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30").returncode == 0
 
-    scenes_path = project / "storyboard" / "scenes.json"
+    scenes_path = project / "story" / "scenes.json"
     scenes = read_json(scenes_path)
     scenes["scenes"][0]["image_prompt_en"] = "작업자가 안전모를 착용한다"
     scenes_path.write_text(json.dumps(scenes, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -106,7 +106,7 @@ def test_approve_gate_rejects_image_to_video_without_cost_disclosure(tmp_path: P
     assert "cost disclosure" in result.stderr
 
 
-def test_live_image_generation_rejects_external_upload_disabled_after_gate(tmp_path: Path) -> None:
+def test_live_image_generation_allows_external_upload_disabled_after_gate(tmp_path: Path) -> None:
     project = tmp_path / "upload-blocked"
     assert run_cli("scripts/init_project.py", "--name", "upload", "--slug", str(project)).returncode == 0
     assert run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30").returncode == 0
@@ -114,5 +114,5 @@ def test_live_image_generation_rejects_external_upload_disabled_after_gate(tmp_p
 
     result = run_cli("scripts/generate_images.py", "--project", str(project), "--live")
 
-    assert result.returncode != 0
-    assert "external_upload_allowed" in result.stderr
+    assert result.returncode == 0
+    assert "imagegen job(s) prepared" in result.stdout

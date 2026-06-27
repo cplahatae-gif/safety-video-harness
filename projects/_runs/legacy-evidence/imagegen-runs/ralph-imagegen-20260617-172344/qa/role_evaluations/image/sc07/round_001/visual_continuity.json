@@ -1,0 +1,12 @@
+{
+  "role": "visual_continuity",
+  "scores": {
+    "identity_consistency": 0,
+    "ppe": 0,
+    "equipment": 0
+  },
+  "blocking_issues": [
+    "missing draft image"
+  ],
+  "execution_mode": "parallel_role_evaluator"
+}

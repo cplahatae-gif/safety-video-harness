@@ -18,12 +18,12 @@ def test_llm_wiki_records_round_outputs_scores_and_next_prompt_memory(tmp_path: 
             "iteration": 1,
             "scene": {
                 "id": "sc01",
-                "start_keyframe": "images/approved/sc01.png",
-                "end_keyframe": "images/approved/sc02.png",
-                "clip_path": "video/clips/sc01_sc02.mp4",
+                "start_keyframe": "media/images/approved/sc01.png",
+                "end_keyframe": "media/images/approved/sc02.png",
+                "clip_path": "media/video/clips/sc01_sc02.mp4",
             },
             "review": {
-                "reviewed_asset": "images/draft/sc01_v001.png",
+                "reviewed_asset": "media/images/draft/sc01_v001.png",
             },
         },
     )
@@ -33,7 +33,7 @@ def test_llm_wiki_records_round_outputs_scores_and_next_prompt_memory(tmp_path: 
         "identity_consistency_score": 5,
         "technical_score": 5,
         "total_score": 18,
-        "reviewed_asset": "images/draft/sc01_v001.png",
+        "reviewed_asset": "media/images/draft/sc01_v001.png",
         "blocking_issues": ["worker gaze is not motivated"],
         "regeneration_delta": ["make every worker look toward the visible truck route"],
         "arbiter_decision": {
@@ -50,9 +50,9 @@ def test_llm_wiki_records_round_outputs_scores_and_next_prompt_memory(tmp_path: 
     assert "- story_match_score: `3`" in wiki
     assert "- identity_consistency_score: `5`" in wiki
     assert "### Round Outputs" in wiki
-    assert "- reviewed_asset: `images/draft/sc01_v001.png`" in wiki
-    assert "- start_keyframe: `images/approved/sc01.png`" in wiki
-    assert "- end_keyframe: `images/approved/sc02.png`" in wiki
+    assert "- reviewed_asset: `media/images/draft/sc01_v001.png`" in wiki
+    assert "- start_keyframe: `media/images/approved/sc01.png`" in wiki
+    assert "- end_keyframe: `media/images/approved/sc02.png`" in wiki
     assert "### Improvement Notes" in wiki
     assert "make every worker look toward the visible truck route" in wiki
     assert "tighten storyboard gaze cue before another image run" in wiki
@@ -62,7 +62,7 @@ def test_llm_wiki_records_round_outputs_scores_and_next_prompt_memory(tmp_path: 
     ledger = (project / "qa" / "evaluation_rounds.jsonl").read_text(encoding="utf-8")
     record = json.loads(ledger.splitlines()[0])
     assert record["score_breakdown"]["story_match_score"] == 3
-    assert "images/draft/sc01_v001.png" in record["artifact_paths"]
+    assert "media/images/draft/sc01_v001.png" in record["artifact_paths"]
     assert "Do not repeat: worker gaze is not motivated" in record["next_prompt_memory"]
 
 

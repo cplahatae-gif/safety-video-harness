@@ -38,7 +38,7 @@ def planned_counts(project: Path, density: str) -> tuple[int, int, int]:
         density,
     )
     assert result.returncode == 0, result.stderr
-    scenes = json.loads((project / "storyboard" / "scenes.json").read_text(encoding="utf-8"))
+    scenes = json.loads((project / "story" / "scenes.json").read_text(encoding="utf-8"))
     return int(scenes["clip_count"]), int(scenes["story_beats"]), int(scenes["keyframe_count"])
 
 

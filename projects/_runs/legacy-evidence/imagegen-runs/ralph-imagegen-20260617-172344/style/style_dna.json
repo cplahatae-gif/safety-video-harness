@@ -1,0 +1,15 @@
+{
+  "selected_style_guide_id": "korean-industrial-webtoon",
+  "style": {
+    "palette": "clear industrial safety colors",
+    "camera": "wide educational framing",
+    "texture": "clean instructional animation",
+    "guide": "korean-industrial-webtoon"
+  },
+  "negative_constraints": [
+    "no gore",
+    "no impact frame",
+    "no text in generated images",
+    "no unsafe behavior shown as successful"
+  ]
+}

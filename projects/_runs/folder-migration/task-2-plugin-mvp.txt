@@ -1,0 +1,10 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.4, pytest-9.0.3, pluggy-1.6.0
+rootdir: /Volumes/Ha tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스
+configfile: pyproject.toml
+collected 18 items
+
+tests/test_plugin_structure.py ............                              [ 66%]
+tests/test_mvp_flow.py ......                                            [100%]
+
+============================== 18 passed in 1.17s ==============================

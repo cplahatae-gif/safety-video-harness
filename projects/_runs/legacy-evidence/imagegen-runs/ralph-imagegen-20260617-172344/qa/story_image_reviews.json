@@ -1,0 +1,61 @@
+{
+  "dry_run": false,
+  "reviews": [
+    {
+      "scene_id": "sc01",
+      "story_match_score": 5,
+      "story_flow_score": 5,
+      "total_score": 50,
+      "decision": "approve_for_video",
+      "blocking_issues": []
+    },
+    {
+      "scene_id": "sc02",
+      "story_match_score": 5,
+      "story_flow_score": 5,
+      "total_score": 50,
+      "decision": "approve_for_video",
+      "blocking_issues": []
+    },
+    {
+      "scene_id": "sc03",
+      "story_match_score": 5,
+      "story_flow_score": 5,
+      "total_score": 50,
+      "decision": "approve_for_video",
+      "blocking_issues": []
+    },
+    {
+      "scene_id": "sc04",
+      "story_match_score": 5,
+      "story_flow_score": 5,
+      "total_score": 50,
+      "decision": "approve_for_video",
+      "blocking_issues": []
+    },
+    {
+      "scene_id": "sc05",
+      "story_match_score": 5,
+      "story_flow_score": 5,
+      "total_score": 50,
+      "decision": "approve_for_video",
+      "blocking_issues": []
+    },
+    {
+      "scene_id": "sc06",
+      "story_match_score": 5,
+      "story_flow_score": 5,
+      "total_score": 50,
+      "decision": "approve_for_video",
+      "blocking_issues": []
+    },
+    {
+      "scene_id": "sc07",
+      "story_match_score": 5,
+      "story_flow_score": 5,
+      "total_score": 50,
+      "decision": "approve_for_video",
+      "blocking_issues": []
+    }
+  ]
+}

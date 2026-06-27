@@ -1,0 +1,194 @@
+{
+  "stage": "image",
+  "iteration": 1,
+  "evaluator_context_policy": "isolated_evaluator_with_evidence_bundle",
+  "evaluator_instruction": "Evaluate only the supplied evidence. Do not rely on the generator's intent. Score the produced image against storyboard, references, continuity, and QA rubric.",
+  "scene": {
+    "id": "sc07",
+    "duration_sec": 1,
+    "educational_goal_ko": "마지막 장면을 안전하게 종료한다.",
+    "source_citations": [
+      {
+        "source_id": "src-001",
+        "page_or_slide": 3,
+        "claim": "근로자는 사업장 내 제한속도 10~20km 이하를 준수하고 보행 중 스마트폰 사용을 금지해야 한다."
+      }
+    ],
+    "visual_action_ko": "차량 동선과 보행자 동선이 통제된 상태로 교육 장면이 종료된다.",
+    "caption_ko": "최종 안전 상태",
+    "subtitle_ko": "통제된 상태로 작업을 마무리하세요.",
+    "start_keyframe": "images/approved/sc07.png",
+    "end_keyframe": "images/approved/sc07.png",
+    "continuity_constraints": {
+      "character_ids": [
+        "worker-001"
+      ],
+      "equipment_ids": [
+        "equipment-001"
+      ],
+      "ppe_requirements": [
+        "hard hat",
+        "safety vest"
+      ],
+      "background_id": "site-001"
+    },
+    "approval_state": "draft",
+    "asset_version": 1
+  },
+  "review": {
+    "scene_id": "sc07",
+    "rubric_source": "docs/evaluation-rubrics.md",
+    "few_shot_source": "docs/few-shot-examples.md",
+    "artifact_path": "images/draft/sc07_v*.png",
+    "story_match_score": 0,
+    "identity_consistency_score": 0,
+    "ppe_score": 0,
+    "equipment_score": 0,
+    "story_flow_score": 0,
+    "technical_score": 0,
+    "floor_lane_consistency_score": 0,
+    "background_consistency_score": 0,
+    "character_identity_lock_score": 0,
+    "vehicle_geometry_lock_score": 0,
+    "hazard_zone_consistency_score": 0,
+    "total_score": 0,
+    "score_source": "harness_file_and_story_flow_rules",
+    "blocking_issues": [
+      "missing draft image"
+    ],
+    "blocker_categories": [
+      {
+        "issue": "missing draft image",
+        "category": "missing_artifact"
+      }
+    ],
+    "critical_blockers": [
+      "missing draft image"
+    ],
+    "regeneration_delta": "RALPH critique for sc07:\nQuality pressure: This result is not acceptable for a safety training video until the listed blockers are visibly fixed. Re-check the failed frame before generating again; do not make a cosmetic variation that repeats the same issue.\nFailed criteria and required fixes:\n- missing draft image\nMust preserve:\n- approved character identity, helmet, vest, body proportion, and role\n- approved BCT/dump-truck geometry, scale, wheel count, mirrors, and relative position\n- approved site layout, concrete floor, lane colors, pedestrian route, cones, bollards, and hazard zone\n- current storyboard beat and previous/next scene continuity\nMust change this round:\n- make every listed blocker visually impossible to miss\n- remove unexplained gaze, character drift, vehicle drift, floor/lane drift, or generic factory framing\nDo not repeat:\n- missing draft image",
+    "previous_blockers_applied": false,
+    "decision": "regenerate",
+    "scoring_rubric": {
+      "story_match_score": "Matches the cited storyboard action and education objective.",
+      "identity_consistency_score": "Preserves recurring worker, signal person, and supervisor identity cues.",
+      "ppe_score": "Shows required hard hat, vest, workwear, boots, and safe posture.",
+      "equipment_score": "Preserves BCT, dump truck, lanes, cones, and plant layout.",
+      "story_flow_score": "Connects causally to adjacent scenes instead of acting as an isolated checklist panel.",
+      "technical_score": "Readable 16:9 image file suitable for video keyframe use.",
+      "floor_lane_consistency_score": "Concrete floor, lane colors, walk path, cones, and bollards match the locked site layout.",
+      "background_consistency_score": "Plant structures, gates, mirrors, signage, and camera-side geometry remain stable.",
+      "character_identity_lock_score": "Recurring workers keep the same body type, helmet, vest, role, and visual identity cues.",
+      "vehicle_geometry_lock_score": "BCT mixer, dump truck, mirrors, wheels, scale, and relative positions remain stable.",
+      "hazard_zone_consistency_score": "The red danger zone, pedestrian route, stop line, and control point stay consistent and visible."
+    },
+    "arbiter_decision": {
+      "stage": "image",
+      "item_id": "sc07",
+      "round": 1,
+      "iteration": 1,
+      "decision": "regenerate",
+      "role_reviews": [
+        {
+          "role": "technical",
+          "scores": {
+            "technical": 0
+          },
+          "blocking_issues": [
+            "missing draft image"
+          ],
+          "execution_mode": "parallel_role_evaluator"
+        },
+        {
+          "role": "visual_continuity",
+          "scores": {
+            "identity_consistency": 0,
+            "ppe": 0,
+            "equipment": 0
+          },
+          "blocking_issues": [
+            "missing draft image"
+          ],
+          "execution_mode": "parallel_role_evaluator"
+        },
+        {
+          "role": "story_match",
+          "scores": {
+            "story_match": 0,
+            "story_flow": 0
+          },
+          "blocking_issues": [
+            "missing draft image"
+          ],
+          "execution_mode": "parallel_role_evaluator"
+        },
+        {
+          "role": "safety_education",
+          "scores": {
+            "safety": 0
+          },
+          "blocking_issues": [
+            "missing draft image"
+          ],
+          "critical_blockers": [],
+          "execution_mode": "parallel_role_evaluator"
+        },
+        {
+          "role": "devils_advocate",
+          "scores": {
+            "risk": 2
+          },
+          "blocking_issues": [
+            "missing draft image"
+          ],
+          "critical_blockers": [],
+          "vote": "reject",
+          "execution_mode": "parallel_role_evaluator"
+        }
+      ],
+      "scores": {
+        "technical": 0,
+        "identity_consistency": 0,
+        "ppe": 0,
+        "equipment": 0,
+        "story_match": 0,
+        "story_flow": 0,
+        "safety": 0,
+        "risk": 2
+      },
+      "blocking_issues": [
+        "missing draft image"
+      ],
+      "blocker_signatures": [
+        "image:sc07:technical:missing_draft_image"
+      ],
+      "repeated_blockers": [],
+      "critical_vetoes": [],
+      "consensus": {
+        "rule": "5/5 approve or 4/5 approve plus conditional; critical veto overrides majority",
+        "total_roles": 5,
+        "approve_count": 0,
+        "conditional_count": 0,
+        "reject_count": 5,
+        "critical_vetoes": [],
+        "rule_result": "rejected"
+      },
+      "debate_required": false,
+      "debate_triggers": [],
+      "repeated_blocker_threshold": 3,
+      "next_action": "regenerate_blocked_scenes",
+      "regeneration_delta": "Regenerate only after directly addressing these visible deficiencies: missing draft image. Preserve approved continuity locks.",
+      "evidence_bundle": "qa/evaluation_bundles/image/sc07/round_001.json"
+    },
+    "blocker_signatures": [
+      "image:sc07:technical:missing_draft_image"
+    ]
+  },
+  "required_evidence": [
+    "selected education topic",
+    "current scene",
+    "previous and next scene continuity",
+    "approved reference assets and character profiles",
+    "draft image path or missing-image blocker",
+    "scoring rubric"
+  ]
+}

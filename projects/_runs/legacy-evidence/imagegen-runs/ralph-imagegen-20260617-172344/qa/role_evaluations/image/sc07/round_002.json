@@ -1,0 +1,65 @@
+{
+  "stage": "image",
+  "item_id": "sc07",
+  "round": 2,
+  "output_contract": "role_evaluator_reviews_v1",
+  "execution_mode": "parallel_role_evaluators",
+  "role_reviews": [
+    {
+      "role": "technical",
+      "scores": {
+        "technical": 0
+      },
+      "blocking_issues": [
+        "missing draft image"
+      ],
+      "execution_mode": "parallel_role_evaluator"
+    },
+    {
+      "role": "visual_continuity",
+      "scores": {
+        "identity_consistency": 0,
+        "ppe": 0,
+        "equipment": 0
+      },
+      "blocking_issues": [
+        "missing draft image"
+      ],
+      "execution_mode": "parallel_role_evaluator"
+    },
+    {
+      "role": "story_match",
+      "scores": {
+        "story_match": 0,
+        "story_flow": 0
+      },
+      "blocking_issues": [
+        "missing draft image"
+      ],
+      "execution_mode": "parallel_role_evaluator"
+    },
+    {
+      "role": "safety_education",
+      "scores": {
+        "safety": 0
+      },
+      "blocking_issues": [
+        "missing draft image"
+      ],
+      "critical_blockers": [],
+      "execution_mode": "parallel_role_evaluator"
+    },
+    {
+      "role": "devils_advocate",
+      "scores": {
+        "risk": 2
+      },
+      "blocking_issues": [
+        "missing draft image"
+      ],
+      "critical_blockers": [],
+      "vote": "reject",
+      "execution_mode": "parallel_role_evaluator"
+    }
+  ]
+}

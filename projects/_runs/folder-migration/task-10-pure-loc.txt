@@ -1,0 +1,5 @@
+   7 app/harness/package/safety_video_harness/project_handoff.py
+ 120 app/harness/package/safety_video_harness/style_guides.py
+  18 app/harness/cli/init_project.py
+   9 scripts/init_project.py
+  34 tests/test_harness_move.py

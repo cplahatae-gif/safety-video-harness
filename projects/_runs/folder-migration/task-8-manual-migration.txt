@@ -1,0 +1,66 @@
+migration dry-run complete: 0 copied
+migration write complete: 5 copied
+migration write complete: 0 copied
+{
+  "dry_run": false,
+  "write": true,
+  "project": "/tmp/folder-migration-task8.wBwAwu/old-project",
+  "planned_changes": [
+    {
+      "source": "sources/sources.json",
+      "destination": "input/sources.json",
+      "action": "unchanged"
+    },
+    {
+      "source": "storyboard/scenes.json",
+      "destination": "story/scenes.json",
+      "action": "unchanged"
+    },
+    {
+      "source": "images/approved/sc01.png",
+      "destination": "media/images/approved/sc01.png",
+      "action": "unchanged"
+    },
+    {
+      "source": "video/clips/sc01_sc02.mp4",
+      "destination": "media/video/clips/sc01_sc02.mp4",
+      "action": "unchanged"
+    },
+    {
+      "source": ".harness/state.json",
+      "destination": "qa/state/state.json",
+      "action": "unchanged"
+    }
+  ],
+  "conflicts": [],
+  "copied_count": 0,
+  "canonical_dirs": [
+    "input/sources/raw",
+    "input/sources/rendered",
+    "refs/people",
+    "refs/ppe",
+    "refs/equipment",
+    "refs/candidates",
+    "refs/approved",
+    "refs/approved/people",
+    "refs/approved/work",
+    "refs/approved/spaces",
+    "refs/approved/style",
+    "refs/approved/camera",
+    "refs/approved/lighting",
+    "refs/asset-lock",
+    "story/versions",
+    "media/images/draft",
+    "media/images/approved",
+    "media/images/rejected",
+    "media/video/clips",
+    "media/video/sampled_frames",
+    "media/video/inspection",
+    "media/audio",
+    "media/subtitles",
+    "media/output",
+    "qa/state",
+    "qa/evidence"
+  ]
+}
+cleanup removed /tmp/folder-migration-task8.wBwAwu

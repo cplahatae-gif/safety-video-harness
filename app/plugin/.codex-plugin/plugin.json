@@ -1,0 +1,24 @@
+{
+  "name": "safety-video-harness",
+  "version": "0.1.0",
+  "description": "Codex harness for storyboard-first safety training video production.",
+  "author": {
+    "name": "cplahatae-gif"
+  },
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json",
+  "interface": {
+    "displayName": "Safety Video Harness",
+    "shortDescription": "Storyboard-first safety video harness for Codex.",
+    "longDescription": "Plans safety training videos from source materials, controls storyboard and image approval gates, records QA evidence, and prepares Codex imagegen and Higgsfield Seedance workflows.",
+    "developerName": "cplahatae-gif",
+    "category": "Productivity",
+    "capabilities": [
+      "storyboard-planning",
+      "image-prompting",
+      "qa-evidence",
+      "video-dry-run"
+    ],
+    "defaultPrompt": "Use the safety-video-harness workflow. Start with an intake interview, keep live image/video/TTS calls blocked until approval, then build storyboard, image prompts, QA evidence, and dry-run video plans."
+  }
+}

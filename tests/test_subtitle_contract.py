@@ -34,6 +34,6 @@ def test_subtitle_plan_generates_srt_from_storyboard(tmp_path: Path) -> None:
     result = run_cli("scripts/plan_subtitles.py", "--project", str(project), "--dry-run")
 
     assert result.returncode == 0
-    srt = (project / "subtitles" / "subtitles.srt").read_text(encoding="utf-8")
+    srt = (project / "media" / "subtitles" / "subtitles.srt").read_text(encoding="utf-8")
     assert "차량 동선을 먼저 확인하세요." in srt
     assert "-->" in srt

@@ -1,0 +1,133 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.4, pytest-9.0.3, pluggy-1.6.0
+rootdir: /Volumes/Ha tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스
+configfile: pyproject.toml
+collected 1 item
+
+tests/test_folder_migration_characterization.py F                        [100%]
+
+=================================== FAILURES ===================================
+_____________ test_old_project_scene_link_paths_are_still_accepted _____________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-82/test_old_project_scene_link_pa0')
+
+    def test_old_project_scene_link_paths_are_still_accepted(tmp_path: Path) -> None:
+        project = tmp_path / "old-scene-links"
+        scenes_path = project / "storyboard" / "scenes.json"
+        scenes_path.parent.mkdir(parents=True)
+        scenes_path.write_text(
+            json.dumps(
+                {
+                    "scenes": [
+                        {
+                            "id": "sc01",
+                            "start_keyframe": "images/approved/sc01.png",
+                            "end_keyframe": "images/approved/sc02.png",
+                        }
+                    ]
+                },
+                ensure_ascii=False,
+            ),
+            encoding="utf-8",
+        )
+    
+>       assert validate_scene_links(project) == "validated 1 scene link(s)"
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_folder_migration_characterization.py:177: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+project = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-82/test_old_project_scene_link_pa0/old-scene-links')
+
+    def validate_scene_links(project: Path) -> str:
+        scenes_payload = read_json(layout_for_project(project).read_path(LayoutKey.STORY_SCENES))
+        scenes = list(scenes_payload.get("scenes", []))
+        if not scenes:
+            report = {
+                "passed": False,
+                "reviews": [],
+                "rule": "Each clip must use scNN as start and scNN+1 as end so adjacent clips share keyframes.",
+                "blockers": ["no storyboard scenes"],
+            }
+            write_json(project / "qa" / "scene_link_reviews.json", report)
+            raise HarnessError("no storyboard scenes for sliding chain validation")
+        reviews = [_review_scene_link(index, scene) for index, scene in enumerate(scenes, start=1)]
+        blockers = [review for review in reviews if review["blocking_issues"]]
+        report = {
+            "passed": not blockers,
+            "reviews": reviews,
+            "rule": "Each clip must use scNN as start and scNN+1 as end so adjacent clips share keyframes.",
+        }
+        write_json(project / "qa" / "scene_link_reviews.json", report)
+        if blockers:
+            first = blockers[0]
+>           raise HarnessError(f"sliding chain mismatch: {first['scene_id']}")
+E           safety_video_harness.errors.HarnessError: sliding chain mismatch: sc01
+
+safety_video_harness/scene_links.py:32: HarnessError
+
+During handling of the above exception, another exception occurred:
+
+self = <contextlib._GeneratorContextManager object at 0x108f2a8b0>
+typ = <class 'safety_video_harness.errors.HarnessError'>
+value = HarnessError(message='sliding chain mismatch: sc01')
+traceback = <traceback object at 0x1090d1c00>
+
+    def __exit__(self, typ, value, traceback):
+        if typ is None:
+            try:
+                next(self.gen)
+            except StopIteration:
+                return False
+            else:
+                try:
+                    raise RuntimeError("generator didn't stop")
+                finally:
+                    self.gen.close()
+        else:
+            if value is None:
+                # Need to force instantiation so we can reliably
+                # tell if we get the same exception back
+                value = typ()
+            try:
+                self.gen.throw(value)
+            except StopIteration as exc:
+                # Suppress StopIteration *unless* it's the same exception that
+                # was passed to throw().  This prevents a StopIteration
+                # raised inside the "with" statement from being suppressed.
+                return exc is not value
+            except RuntimeError as exc:
+                # Don't re-raise the passed in exception. (issue27122)
+                if exc is value:
+                    exc.__traceback__ = traceback
+                    return False
+                # Avoid suppressing if a StopIteration exception
+                # was passed to throw() and later wrapped into a RuntimeError
+                # (see PEP 479 for sync generators; async generators also
+                # have this behavior). But do this only if the exception wrapped
+                # by the RuntimeError is actually Stop(Async)Iteration (see
+                # issue29692).
+                if (
+                    isinstance(value, StopIteration)
+                    and exc.__cause__ is value
+                ):
+                    value.__traceback__ = traceback
+                    return False
+                raise
+            except BaseException as exc:
+                # only re-raise if it's *not* the exception that was
+                # passed to throw(), because __exit__() must not raise
+                # an exception unless __exit__() itself failed.  But throw()
+                # has to raise the exception to signal propagation, so this
+                # fixes the impedance mismatch between the throw() protocol
+                # and the __exit__() protocol.
+                if exc is not value:
+                    raise
+>               exc.__traceback__ = traceback
+                ^^^^^^^^^^^^^^^^^
+E               TypeError: super(type, obj): obj (instance of HarnessError) is not an instance or subtype of type (HarnessError).
+
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/contextlib.py:195: TypeError
+=========================== short test summary info ============================
+FAILED tests/test_folder_migration_characterization.py::test_old_project_scene_link_paths_are_still_accepted
+============================== 1 failed in 0.03s ===============================

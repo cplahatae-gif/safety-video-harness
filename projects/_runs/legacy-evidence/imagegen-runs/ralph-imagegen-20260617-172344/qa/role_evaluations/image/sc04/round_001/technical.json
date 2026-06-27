@@ -1,0 +1,16 @@
+{
+  "role": "technical",
+  "scores": {
+    "technical": 5
+  },
+  "blocking_issues": [
+    "floor_lane_consistency_score below minimum 4: 3",
+    "background_consistency_score below minimum 4: 3",
+    "hazard_zone_consistency_score below minimum 4: 3",
+    "adjacent scene color/layout drift too high: 159.00",
+    "floor_lane_consistency_score below minimum 4: 3",
+    "background_consistency_score below minimum 4: 3",
+    "hazard_zone_consistency_score below minimum 4: 3"
+  ],
+  "execution_mode": "parallel_role_evaluator"
+}

@@ -42,7 +42,7 @@ def test_storyboard_quality_passes_complete_fixture(tmp_path: Path) -> None:
     assert report["thresholds"]["minimum_total_score"] == 20
     assert report["reviews"][0]["criteria"]["source_grounding_score"] >= 4
     assert report["reviews"][0]["rubric_source"] == "docs/evaluation-rubrics.md"
-    assert report["reviews"][0]["artifact_path"] == "storyboard/scenes.json#sc01"
+    assert report["reviews"][0]["artifact_path"] == "story/scenes.json#sc01"
     assert report["reviews"][0]["blocker_categories"] == []
     assert report["reviews"][0]["critical_blockers"] == []
     rounds = (project / "qa" / "evaluation_rounds.jsonl").read_text(encoding="utf-8")
@@ -59,7 +59,7 @@ def test_storyboard_quality_passes_complete_fixture(tmp_path: Path) -> None:
 def test_storyboard_quality_blocks_missing_citations(tmp_path: Path) -> None:
     project = tmp_path / "storyboard-quality-block"
     prepare_project(project)
-    path = project / "storyboard" / "scenes.json"
+    path = project / "story" / "scenes.json"
     payload = json.loads(path.read_text(encoding="utf-8"))
     payload["scenes"][0]["source_citations"] = []
     path.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
@@ -77,7 +77,7 @@ def test_storyboard_quality_blocks_missing_citations(tmp_path: Path) -> None:
 def test_storyboard_gate_requires_passing_storyboard_qa(tmp_path: Path) -> None:
     project = tmp_path / "storyboard-gate-qa"
     prepare_project(project)
-    path = project / "storyboard" / "scenes.json"
+    path = project / "story" / "scenes.json"
     scenes = json.loads(path.read_text(encoding="utf-8"))
     scenes["scenes"][0]["visual_action_ko"] = ""
     path.write_text(json.dumps(scenes, ensure_ascii=False, indent=2), encoding="utf-8")

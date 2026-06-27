@@ -1,0 +1,120 @@
+{
+  "dry_run": false,
+  "plans": [
+    {
+      "scene_id": "sc07",
+      "output": "images/draft/sc07.png",
+      "prompt": "Create the final end keyframe for a Korean industrial safety training animation.\nScene ID: sc07.\nStory flow role: final end keyframe 7 of 7; this is the last frame of the sliding chain.\nPrevious scene continuity: 현장 표지판에 제한속도 10~20km와 스마트폰 사용 금지가 표시된다.\nCurrent story beat: leave the same ready-mix concrete plant visibly controlled, with vehicles stopped or moving safely, workers outside hazard zones, and the signal workflow complete.\nNext scene setup: closing frame; no new incident, no new character, no new vehicle, and no visual jump.\nNarrative requirement: this final end keyframe must resolve the prevention story and serve as the exact end frame for the last Seedance clip.\nRALPH previous-round critique:\nQuality pressure: This result is not acceptable for a safety training video until the listed blockers are visibly fixed. Re-check the failed frame before generating again; do not make a cosmetic variation that repeats the same issue.\nPrevious QA blockers for this scene:\n- missing draft image\nDo not repeat these failures:\n- missing draft image\nRequired correction this round: fix the blockers in the visible image content, not only in wording. Preserve the locked cast, PPE, equipment, floor/lane layout, hazard zone, camera angle, and adjacent-scene continuity.\nPrimary action: use the selected reusable style guide for the same ready-mix concrete plant, same BCT bulk cement trailer, same yellow dump truck, same signal person and worker, separated traffic lanes, visible safe pedestrian route, controlled blind spot zone, no text, no injury, no impact frame.\nFixed character lock: same worker-001 across every keyframe: Korean adult industrial worker, average build, white hard hat, orange reflective safety vest, navy work pants, black safety boots, neutral focused expression\nFixed equipment lock: same BCT bulk cement trailer and same yellow dump truck across every keyframe; keep vehicle scale, wheel count, cab color, and trailer silhouette consistent\nFixed site lock: same ready-mix concrete plant entrance, concrete yard, marked pedestrian route, vehicle lane markings, blind spot hazard zone, daylight overcast sky\nCamera and composition: 35mm documentary training frame, eye-level wide shot, clear foreground worker, visible vehicle path, no extreme close-up, no Dutch angle\nLighting and color: neutral daylight, clean industrial palette, safety orange and yellow accents, moderate contrast, no dramatic shadows\nVisual style contract: obey the selected reusable style guide while preserving storyboard continuity.\nProduction warning: this final keyframe must be derived from approved locked assets or reference/edit conditioning; pure text-to-image generation is draft exploration only.\nApproved style guide and reference assets to preserve:\nSelected reusable style guide:\n\nSelected style guide: korean-industrial-webtoon\nStyle guide source: style-guides/korean-industrial-webtoon/STYLE_GUIDE.md\n# Korean Industrial Webtoon Safety\n\n## 용도\n\n산업안전 교육 영상을 현대 한국 웹툰풍으로 만들 때 사용한다. 현장 장비와 동선은\n교육자료처럼 명확하게 보이되, 인물 표정과 장면 흐름은 웹툰 컷처럼 읽히게 한다.\n\n## Visual DNA\n\n- 현대 한국 웹툰풍, 네이버 웹툰에서 볼 법한 깔끔한 교육 만화 톤\n- 얇고 선명한 외곽선, 과하지 않은 캐릭터화, 실제 작업자에 가까운 신체 비율\n- 밝은 셀 셰이딩, 부드러운 하이라이트, 과도한 3D 플라스틱 질감 금지\n- 안전모, 형광 조끼, 위험구역, 보행자 동선은 높은 가독성의 색상으로 강조\n- 산업 현장은 단순화하되 BCT, 덤프트럭, 레미콘 플랜트, 보행로 같은 핵심 구조는 유지\n- 인물 시선은 항상 보이는 위험, 신호수, 운전자, 거울, 모니터, 보행 동선 중 하나를 향해야 함\n- 장면은 단독 포스터가 아니라 이전 컷과 다음 컷을 잇는 웹툰식 연속 컷처럼 구성\n\n## Prompt Block\n\nUse a modern Korean webtoon safety-training style: crisp clean line art, realistic adult worker proportions,\ncontrolled cel shading, bright industrial safety colors, readable site geometry, and expressive but restrained\nfaces. Keep the scene educational and causal, like a sequence from a serious workplace safety webtoon.\nPreserve PPE colors, vehicle shapes, road markings, hazard zones, and gaze motivation across every keyframe.\n\n## Negative Constraints\n\n- no chibi, no gag manga, no fantasy action, no superhero pose\n- no photorealistic CCTV look, no dark gritty drama, no horror lighting\n- no random bystanders, no unexplained person disappearance, no duplicate worker\n- no visible company logo, no generated Korean or English text inside the image\n- no collision impact, no injury, no gore, no unsafe behavior shown as successful\n\n## QA Checklist\n\n- 인물 비율이 성인 작업자처럼 보이는가\n- 안전모/조끼/작업복 색상이 모든 컷에서 유지되는가\n- 시선이 왜 그 방향을 보는지 화면 안에서 설명되는가\n- 위험구역과 안전 동선이 웹툰풍 안에서도 명확히 읽히는가\n- 이전/다음 컷과 이어지는 원인-행동-결과 흐름이 보이는가\n\n## References\n\n- `references/reference-001.png`: Codex imagegen으로 만든 레미콘 충돌 예방 웹툰풍 기준 이미지\n\n\nAsset lock and production consistency policy:\n\nProduction consistency policy:\n- Text-only multi-frame production is not allowed for final keyframes.\n- Independent scene keyframe generation is draft exploration only.\n- Production keyframes require asset lock or reference/edit-based derivation.\n- Current asset lock status: production_locked.\n- Higgsfield/Seedance reference media pack:\n  - cast: model/cast/signal-worker.png (character_identity_or_soul_id_source)\n  - equipment: product/equipment/bct-truck.png (vehicle_and_equipment_shape_lock)\n  - space_reference: ref/approved/space/plant-entry.png (background_plate_and_lane_geometry_lock)\n  - style_reference: ref/approved/style/korean-industrial-webtoon.png (rendering_style_lock)\n\nImage prompt production team:\n\nImage prompt production team preflight:\n- Lead style agent: turn sc01 into style, character, vehicle, space, camera, rendering, and negative bibles\n- Style guide id: korean-industrial-webtoon\n- Scene prompt agents draft scene-specific briefs; they do not directly generate images.\n- Visual director decision gate: ready_for_generation | revise_scene_prompt | revise_style_bible | revise_storyboard\n- Global rule: first keyframe anchors all later scene identity, PPE, vehicle, site, camera, and rendering locks.\n- Generation policy: use one imagegen coordinator after prompt integration; do not let parallel agents generate independent final images.\n\nProject-approved visual reference assets:\n\ncast:\n- model/cast/signal-worker.png: cast lock: same Korean signal worker, white helmet, orange vest, navy pants, red baton, radio, focused gaze toward visible truck route\nequipment:\n- product/equipment/bct-truck.png: equipment lock: white BCT bulk cement trailer, yellow dump truck, stable wheel count and mirror geometry\nspace_reference:\n- ref/approved/space/plant-entry.png: space lock: ready-mix plant entry, concrete floor, blue vehicle lane, green pedestrian lane, red blind spot zone, cones and bollards\nstyle_reference:\n- ref/approved/style/korean-industrial-webtoon.png: style lock: precision Korean industrial webtoon safety illustration, clean line art, restrained cel shading, stable educational composition\nSafety framing: show a completed near-miss prevention moment, not an accident impact.\nOutput must be clean, readable, realistic enough for worker education, and free of generated text.",
+      "negative_prompt": "No Korean text, no English text, no logos, no brand marks, no gore, no injury, no collision impact, no crushed body, no distorted hands, no extra limbs, no duplicate workers, no inconsistent helmet color, no different vehicle model, no fantasy style, no dark horror lighting, no blurry low-resolution frame.",
+      "reference_assets": {
+        "cast": [
+          {
+            "role": "cast",
+            "path": "model/cast/signal-worker.png",
+            "description": "cast lock: same Korean signal worker, white helmet, orange vest, navy pants, red baton, radio, focused gaze toward visible truck route"
+          }
+        ],
+        "ppe": [],
+        "equipment": [
+          {
+            "role": "equipment",
+            "path": "product/equipment/bct-truck.png",
+            "description": "equipment lock: white BCT bulk cement trailer, yellow dump truck, stable wheel count and mirror geometry"
+          }
+        ],
+        "approved_reference": [],
+        "person_reference": [],
+        "work_situation_reference": [],
+        "space_reference": [
+          {
+            "role": "space_reference",
+            "path": "ref/approved/space/plant-entry.png",
+            "description": "space lock: ready-mix plant entry, concrete floor, blue vehicle lane, green pedestrian lane, red blind spot zone, cones and bollards"
+          }
+        ],
+        "style_reference": [
+          {
+            "role": "style_reference",
+            "path": "ref/approved/style/korean-industrial-webtoon.png",
+            "description": "style lock: precision Korean industrial webtoon safety illustration, clean line art, restrained cel shading, stable educational composition"
+          }
+        ],
+        "camera_reference": [],
+        "lighting_reference": []
+      },
+      "continuity_bible": {
+        "fixed_character_lock": "same worker-001 across every keyframe: Korean adult industrial worker, average build, white hard hat, orange reflective safety vest, navy work pants, black safety boots, neutral focused expression",
+        "fixed_signal_person_lock": "same signal person across every keyframe: orange vest, white hard hat, red signal baton in right hand, handheld radio in left hand",
+        "fixed_equipment_lock": "same BCT bulk cement trailer and same yellow dump truck across every keyframe; keep vehicle scale, wheel count, cab color, and trailer silhouette consistent",
+        "fixed_site_lock": "same ready-mix concrete plant entrance, concrete yard, marked pedestrian route, vehicle lane markings, blind spot hazard zone, daylight overcast sky",
+        "camera_lock": "35mm documentary training frame, eye-level wide shot, clear foreground worker, visible vehicle path, no extreme close-up, no Dutch angle",
+        "lighting_color_lock": "neutral daylight, clean industrial palette, safety orange and yellow accents, moderate contrast, no dramatic shadows"
+      },
+      "quality_checklist": [
+        "worker-001 PPE matches the continuity bible",
+        "BCT and dump truck match previous keyframes",
+        "hazard zone and safe pedestrian route are visible",
+        "scene action matches the storyboard citation",
+        "frame contains no generated text or logo"
+      ],
+      "asset_lock": {
+        "version": "1.0",
+        "status": "production_locked",
+        "missing_roles": [],
+        "text_only_multi_frame_production_allowed": false,
+        "independent_text_to_image_generation_allowed": "draft_exploration_only",
+        "production_frame_strategy": [
+          "create fixed background/space plate before scene keyframes",
+          "create fixed cast character sheets or Higgsfield Soul ID references before scene keyframes",
+          "create fixed equipment references for BCT, dump truck, PPE, and hazard-zone markings",
+          "derive later keyframes from approved prior frames by edit/reference conditioning or deterministic compositing",
+          "use approved start/end keyframes plus reference media pack for Seedance clips"
+        ],
+        "higgsfield_seedance_strategy": {
+          "mode": "image_to_video",
+          "required_inputs": [
+            "start_image",
+            "end_image"
+          ],
+          "recommended_reference_inputs": [
+            "cast/Soul ID or character sheet",
+            "equipment reference",
+            "space/background plate",
+            "style reference"
+          ],
+          "forbidden": [
+            "text-only multi-shot production",
+            "independent scene keyframes without asset lock",
+            "Seedance clip generation from prompt only"
+          ]
+        },
+        "reference_media_pack": [
+          {
+            "role": "cast",
+            "path": "model/cast/signal-worker.png",
+            "usage": "character_identity_or_soul_id_source",
+            "description": "cast lock: same Korean signal worker, white helmet, orange vest, navy pants, red baton, radio, focused gaze toward visible truck route"
+          },
+          {
+            "role": "equipment",
+            "path": "product/equipment/bct-truck.png",
+            "usage": "vehicle_and_equipment_shape_lock",
+            "description": "equipment lock: white BCT bulk cement trailer, yellow dump truck, stable wheel count and mirror geometry"
+          },
+          {
+            "role": "space_reference",
+            "path": "ref/approved/space/plant-entry.png",
+            "usage": "background_plate_and_lane_geometry_lock",
+            "description": "space lock: ready-mix plant entry, concrete floor, blue vehicle lane, green pedestrian lane, red blind spot zone, cones and bollards"
+          },
+          {
+            "role": "style_reference",
+            "path": "ref/approved/style/korean-industrial-webtoon.png",
+            "usage": "rendering_style_lock",
+            "description": "style lock: precision Korean industrial webtoon safety illustration, clean line art, restrained cel shading, stable educational composition"
+          }
+        ]
+      }
+    }
+  ]
+}

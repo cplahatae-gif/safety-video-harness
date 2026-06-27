@@ -173,7 +173,7 @@ def test_validate_images_escalates_after_three_repeated_blockers(tmp_path: Path)
 def test_image_prompt_includes_previous_qa_blockers_from_llm_wiki(tmp_path: Path) -> None:
     project = tmp_path / "wiki-prompt-memory"
     prepare_project(project)
-    write_test_png(project / "images" / "draft" / "sc01_v001.png")
+    write_test_png(project / "media" / "images" / "draft" / "sc01_v001.png")
     qa_dir = project / "qa"
     qa_dir.mkdir(parents=True, exist_ok=True)
     (qa_dir / "evaluation_rounds.jsonl").write_text(
@@ -200,7 +200,7 @@ def test_image_prompt_includes_previous_qa_blockers_from_llm_wiki(tmp_path: Path
     result = run_cli("scripts/generate_images.py", "--project", str(project), "--dry-run", "--only", "sc01")
 
     assert result.returncode == 0
-    prompt = load_json(project / "prompts" / "image_prompts.json")["plans"][0]["prompt"]
+    prompt = load_json(project / "story" / "image_prompts.json")["plans"][0]["prompt"]
     assert "RALPH previous-round critique:" in prompt
     assert "Previous QA blockers for this scene:" in prompt
     assert "gaze target is unclear" in prompt

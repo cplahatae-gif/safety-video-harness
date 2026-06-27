@@ -1,0 +1,8 @@
+{
+  "role": "text_delivery",
+  "scores": {
+    "text_delivery": 5
+  },
+  "blocking_issues": [],
+  "execution_mode": "parallel_role_evaluator"
+}

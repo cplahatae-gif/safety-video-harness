@@ -1,0 +1,1 @@
+equipment lock: white BCT bulk cement trailer, yellow dump truck, stable wheel count and mirror geometry

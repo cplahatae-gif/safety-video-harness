@@ -1,0 +1,100 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.4, pytest-9.0.3, pluggy-1.6.0
+rootdir: /Volumes/Ha tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스
+configfile: pyproject.toml
+collected 4 items
+
+tests/test_project_migration.py FFFF                                     [100%]
+
+=================================== FAILURES ===================================
+_____ test_migrate_project_dry_run_writes_report_without_mutating_project ______
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-90/test_migrate_project_dry_run_w0')
+
+    def test_migrate_project_dry_run_writes_report_without_mutating_project(tmp_path: Path) -> None:
+        project = tmp_path / "old-project"
+        evidence = tmp_path / "evidence"
+        write_old_project(project)
+        before = project_files(project)
+    
+        result = run_cli(
+            "scripts/migrate_project_structure.py",
+            "--project",
+            str(project),
+            "--dry-run",
+            "--evidence-dir",
+            str(evidence),
+        )
+    
+>       assert result.returncode == 0
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['python3', 'scripts/migrate_project_structure.py', '--project', '/private/var/folders/kt/z98_h_... tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스/scripts/migrate_project_structure.py': [Errno 2] No such file or directory\n").returncode
+
+tests/test_project_migration.py:65: AssertionError
+___________________ test_migrate_project_write_is_idempotent ___________________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-90/test_migrate_project_write_is_0')
+
+    def test_migrate_project_write_is_idempotent(tmp_path: Path) -> None:
+        project = tmp_path / "old-project"
+        evidence = tmp_path / "evidence"
+        write_old_project(project)
+    
+        first = run_cli("scripts/migrate_project_structure.py", "--project", str(project), "--write", "--evidence-dir", str(evidence))
+        second = run_cli("scripts/migrate_project_structure.py", "--project", str(project), "--write", "--evidence-dir", str(evidence))
+    
+>       assert first.returncode == 0
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['python3', 'scripts/migrate_project_structure.py', '--project', '/private/var/folders/kt/z98_h_... tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스/scripts/migrate_project_structure.py': [Errno 2] No such file or directory\n").returncode
+
+tests/test_project_migration.py:81: AssertionError
+______________ test_migrate_project_refuses_destination_conflict _______________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-90/test_migrate_project_refuses_d0')
+
+    def test_migrate_project_refuses_destination_conflict(tmp_path: Path) -> None:
+        project = tmp_path / "old-project"
+        write_old_project(project)
+        destination = project / "input" / "sources.json"
+        destination.parent.mkdir(parents=True)
+        destination.write_text('{"different": true}\n', encoding="utf-8")
+    
+        result = run_cli("scripts/migrate_project_structure.py", "--project", str(project), "--write")
+    
+        assert result.returncode != 0
+>       assert "destination already exists" in result.stderr
+E       assert 'destination already exists' in "python3: can't open file '/Volumes/Ha tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스/scripts/migrate_project_structure.py': [Errno 2] No such file or directory\n"
+E        +  where "python3: can't open file '/Volumes/Ha tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스/scripts/migrate_project_structure.py': [Errno 2] No such file or directory\n" = CompletedProcess(args=['python3', 'scripts/migrate_project_structure.py', '--project', '/private/var/folders/kt/z98_h_... tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스/scripts/migrate_project_structure.py': [Errno 2] No such file or directory\n").stderr
+
+tests/test_project_migration.py:104: AssertionError
+_____________ test_migrate_project_never_overwrites_approved_media _____________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-90/test_migrate_project_never_ove0')
+
+    def test_migrate_project_never_overwrites_approved_media(tmp_path: Path) -> None:
+        project = tmp_path / "old-project"
+        write_old_project(project)
+        destination = project / "media" / "images" / "approved" / "sc01.png"
+        destination.parent.mkdir(parents=True)
+        destination.write_bytes(b"different approved image")
+    
+        result = run_cli(
+            "scripts/migrate_project_structure.py",
+            "--project",
+            str(project),
+            "--write",
+            "--allow-overwrite-unapproved",
+        )
+    
+        assert result.returncode != 0
+>       assert "refusing to overwrite approved asset" in result.stderr
+E       assert 'refusing to overwrite approved asset' in "python3: can't open file '/Volumes/Ha tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스/scripts/migrate_project_structure.py': [Errno 2] No such file or directory\n"
+E        +  where "python3: can't open file '/Volumes/Ha tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스/scripts/migrate_project_structure.py': [Errno 2] No such file or directory\n" = CompletedProcess(args=['python3', 'scripts/migrate_project_structure.py', '--project', '/private/var/folders/kt/z98_h_... tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스/scripts/migrate_project_structure.py': [Errno 2] No such file or directory\n").stderr
+
+tests/test_project_migration.py:123: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_project_migration.py::test_migrate_project_dry_run_writes_report_without_mutating_project
+FAILED tests/test_project_migration.py::test_migrate_project_write_is_idempotent
+FAILED tests/test_project_migration.py::test_migrate_project_refuses_destination_conflict
+FAILED tests/test_project_migration.py::test_migrate_project_never_overwrites_approved_media
+============================== 4 failed in 0.08s ===============================

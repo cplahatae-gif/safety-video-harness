@@ -36,7 +36,7 @@ def test_seedance_prompt_includes_continuity_gaze_and_subtitle_contract(tmp_path
     result = run_cli("scripts/generate_seedance.py", "--project", str(project), "--dry-run")
 
     assert result.returncode == 0
-    prompts = json.loads((project / "prompts" / "video_prompts.json").read_text(encoding="utf-8"))
+    prompts = json.loads((project / "story" / "video_prompts.json").read_text(encoding="utf-8"))
     first = prompts["plans"][0]
     prompt = first["prompt"].lower()
     assert first["subtitle_plan_ko"]

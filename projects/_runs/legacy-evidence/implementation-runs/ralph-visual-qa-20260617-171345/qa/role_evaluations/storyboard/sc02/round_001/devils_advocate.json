@@ -1,0 +1,10 @@
+{
+  "role": "devils_advocate",
+  "scores": {
+    "risk": 5
+  },
+  "blocking_issues": [],
+  "critical_blockers": [],
+  "vote": "approve",
+  "execution_mode": "parallel_role_evaluator"
+}

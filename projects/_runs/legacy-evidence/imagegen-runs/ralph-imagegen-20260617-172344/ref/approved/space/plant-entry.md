@@ -1,0 +1,1 @@
+space lock: ready-mix plant entry, concrete floor, blue vehicle lane, green pedestrian lane, red blind spot zone, cones and bollards

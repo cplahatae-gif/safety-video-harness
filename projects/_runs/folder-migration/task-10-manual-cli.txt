@@ -1,0 +1,4 @@
+/Volumes/Ha tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스/app/harness/package/safety_video_harness/__init__.py
+created project /tmp/folder-migration-task10.VqZiKx/root-wrapper
+created project /tmp/folder-migration-task10.VqZiKx/canonical-cli
+cleanup removed /tmp/folder-migration-task10.VqZiKx

@@ -1,0 +1,40 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.4, pytest-9.0.3, pluggy-1.6.0
+rootdir: /Volumes/Ha tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스
+configfile: pyproject.toml
+collected 1 item
+
+tests/test_docs_folder_structure.py F                                    [100%]
+
+=================================== FAILURES ===================================
+_______________ test_docs_describe_moved_root_and_project_layout _______________
+
+    def test_docs_describe_moved_root_and_project_layout() -> None:
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
+        onepager = (ROOT / "docs" / "repository-folder-structure-onepager.html").read_text(encoding="utf-8")
+    
+        for required in [
+            "app/plugin/.codex-plugin/plugin.json",
+            "app/plugin/agents/",
+            "app/harness/package/safety_video_harness/",
+            "app/harness/cli/",
+            "projects/<slug>/input/",
+            "projects/<slug>/refs/",
+            "projects/<slug>/story/",
+            "projects/<slug>/media/",
+            "projects/<slug>/qa/",
+        ]:
+            assert required in readme
+    
+        assert "app/plugin/agents/<agent-id>/references/*.md" in readme
+        assert "app/plugin/skills/<skill-id>/references/*.md" in readme
+        assert "refs/people" in agents
+        assert "refs/approved/spaces" in agents
+>       assert "app/plugin" in onepager
+E       assert 'app/plugin' in '<!doctype html>\n<html lang="ko">\n<head>\n  <meta charset="utf-8">\n  <meta name="viewport" content="width=device-wi... TTS, 외부 업로드, 유료 호출은 실행하지 않는다.</span>\n        </article>\n      </div>\n    </section>\n  </main>\n</body>\n</html>\n'
+
+tests/test_docs_folder_structure.py:31: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_docs_folder_structure.py::test_docs_describe_moved_root_and_project_layout
+============================== 1 failed in 0.01s ===============================

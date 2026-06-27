@@ -1,0 +1,33 @@
+manual qa temp: /var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.zWgVikSr5e
+created project /var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.zWgVikSr5e/manual-current-layout
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.zWgVikSr5e/manual-current-layout
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.zWgVikSr5e/manual-current-layout/.harness
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.zWgVikSr5e/manual-current-layout/asset-lock
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.zWgVikSr5e/manual-current-layout/audio
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.zWgVikSr5e/manual-current-layout/evidence
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.zWgVikSr5e/manual-current-layout/images
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.zWgVikSr5e/manual-current-layout/images/approved
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.zWgVikSr5e/manual-current-layout/images/draft
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.zWgVikSr5e/manual-current-layout/images/rejected
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.zWgVikSr5e/manual-current-layout/model
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.zWgVikSr5e/manual-current-layout/model/cast
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.zWgVikSr5e/manual-current-layout/model/ppe
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.zWgVikSr5e/manual-current-layout/output
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.zWgVikSr5e/manual-current-layout/product
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.zWgVikSr5e/manual-current-layout/product/equipment
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.zWgVikSr5e/manual-current-layout/prompts
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.zWgVikSr5e/manual-current-layout/qa
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.zWgVikSr5e/manual-current-layout/ref
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.zWgVikSr5e/manual-current-layout/ref/approved
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.zWgVikSr5e/manual-current-layout/ref/candidates
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.zWgVikSr5e/manual-current-layout/sources
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.zWgVikSr5e/manual-current-layout/sources/raw
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.zWgVikSr5e/manual-current-layout/sources/rendered
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.zWgVikSr5e/manual-current-layout/storyboard
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.zWgVikSr5e/manual-current-layout/storyboard/versions
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.zWgVikSr5e/manual-current-layout/style
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.zWgVikSr5e/manual-current-layout/subtitles
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.zWgVikSr5e/manual-current-layout/video
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.zWgVikSr5e/manual-current-layout/video/clips
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.zWgVikSr5e/manual-current-layout/video/inspection
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.zWgVikSr5e/manual-current-layout/video/sampled_frames

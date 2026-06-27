@@ -1,0 +1,3 @@
+created project /tmp/folder-migration-task13.sfysnj/root-smoke
+created project /tmp/folder-migration-task13.sfysnj/canonical-smoke
+cleanup removed /tmp/folder-migration-task13.sfysnj

@@ -1,0 +1,34 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.4, pytest-9.0.3, pluggy-1.6.0
+rootdir: /Volumes/Ha tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스
+configfile: pyproject.toml
+collected 1 item
+
+tests/test_docs_folder_structure.py F                                    [100%]
+
+=================================== FAILURES ===================================
+_______________ test_docs_describe_moved_root_and_project_layout _______________
+
+    def test_docs_describe_moved_root_and_project_layout() -> None:
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
+        onepager = (ROOT / "docs" / "repository-folder-structure-onepager.html").read_text(encoding="utf-8")
+    
+        for required in [
+            "app/plugin/.codex-plugin/plugin.json",
+            "app/plugin/agents/",
+            "app/harness/package/safety_video_harness/",
+            "app/harness/cli/",
+            "projects/<slug>/input/",
+            "projects/<slug>/refs/",
+            "projects/<slug>/story/",
+            "projects/<slug>/media/",
+            "projects/<slug>/qa/",
+        ]:
+>           assert required in readme
+E           AssertionError: assert 'app/plugin/.codex-plugin/plugin.json' in '# 안전교육 영상 자동제작 하네스\n\n이 폴더는 독립형 Codex 플러그인 `safety-video-harness`의 PRD와 실행 설계를 관리한다.\n\n현재 실행 기준 문서는 [plans/safety-vi... 실행하지 않는다.\n- 영상 생성은 크레딧과 재생성 비용이 있으므로 승인 게이트를 통과한 경우에만 실행한다.\n- 모든 안전 관련 문구는 교육자료, SOP, 사용자 승인 메모 중 하나로 추적 가능해야 한다.\n'
+
+tests/test_docs_folder_structure.py:25: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_docs_folder_structure.py::test_docs_describe_moved_root_and_project_layout
+============================== 1 failed in 0.01s ===============================

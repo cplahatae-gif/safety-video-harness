@@ -1,0 +1,15 @@
+{
+  "protected_after_bootstrap": [
+    "AGENTS.md",
+    "hooks",
+    "schemas",
+    "templates",
+    "approvals.json",
+    "project_config.json",
+    "images/approved",
+    "ref/approved",
+    "references/style",
+    "qa/image_manual_reviews.json",
+    "qa/video_manual_review.json"
+  ]
+}

@@ -1,0 +1,44 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.4, pytest-9.0.3, pluggy-1.6.0
+rootdir: /Volumes/Ha tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스
+configfile: pyproject.toml
+collected 1 item
+
+tests/test_folder_migration_characterization.py F                        [100%]
+
+=================================== FAILURES ===================================
+___________ test_reference_catalog_reads_new_project_reference_paths ___________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-69/test_reference_catalog_reads_n0')
+
+    def test_reference_catalog_reads_new_project_reference_paths(tmp_path: Path) -> None:
+        project = tmp_path / "new-references"
+        assert run_cli("scripts/init_project.py", "--name", "refs", "--slug", str(project)).returncode == 0
+        assets = {
+            "refs/people/signal-worker.png": b"cast",
+            "refs/ppe/safety-gloves.png": b"ppe",
+            "refs/equipment/bct-truck.png": b"equipment",
+            "refs/approved/spaces/plant-entry.png": b"space",
+        }
+        for relative_path, content in assets.items():
+            path = project / relative_path
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(content)
+            path.with_suffix(".md").write_text(f"Use {path.stem} as a locked reference.\n", encoding="utf-8")
+    
+        manifest = catalog_for_manifest(project)
+    
+>       assert {item["role"] for item in manifest} == {"cast", "ppe", "equipment", "space_reference"}
+E       AssertionError: assert set() == {'cast', 'equ...ce_reference'}
+E         
+E         Extra items in the right set:
+E         'ppe'
+E         'equipment'
+E         'cast'
+E         'space_reference'
+E         Use -v to get more diff
+
+tests/test_folder_migration_characterization.py:127: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_folder_migration_characterization.py::test_reference_catalog_reads_new_project_reference_paths
+============================== 1 failed in 0.07s ===============================

@@ -1,0 +1,18 @@
+{
+  "role": "devils_advocate",
+  "scores": {
+    "risk": 2
+  },
+  "blocking_issues": [
+    "floor_lane_consistency_score below minimum 4: 3",
+    "background_consistency_score below minimum 4: 3",
+    "hazard_zone_consistency_score below minimum 4: 3",
+    "adjacent scene color/layout drift too high: 159.00",
+    "floor_lane_consistency_score below minimum 4: 3",
+    "background_consistency_score below minimum 4: 3",
+    "hazard_zone_consistency_score below minimum 4: 3"
+  ],
+  "critical_blockers": [],
+  "vote": "reject",
+  "execution_mode": "parallel_role_evaluator"
+}

@@ -1,0 +1,560 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.4, pytest-9.0.3, pluggy-1.6.0
+rootdir: /Volumes/Ha tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스
+configfile: pyproject.toml
+testpaths: tests
+collected 130 items
+
+tests/test_evaluation_arbiter.py .....                                   [  3%]
+tests/test_evaluation_round_wiki_memory.py ..                            [  5%]
+tests/test_folder_migration_characterization.py .....                    [  9%]
+tests/test_hook_guardrails.py .........                                  [ 16%]
+tests/test_image_ralph_loop.py .......                                   [ 21%]
+tests/test_layout.py ....                                                [ 24%]
+tests/test_mvp_flow.py ......                                            [ 29%]
+tests/test_no_narration_contract.py ..                                   [ 30%]
+tests/test_omo_ralph_orchestrator.py ..                                  [ 32%]
+tests/test_plugin_structure.py ............                              [ 41%]
+tests/test_remicon_fixture_flow.py F.F.                                  [ 44%]
+tests/test_review_regressions.py ................                        [ 56%]
+tests/test_roadmap_bundle1.py FFFF.FFFFF                                 [ 64%]
+tests/test_roadmap_bundle2.py ...........                                [ 73%]
+tests/test_seedance_live_guardrails.py ...FF.FF                          [ 79%]
+tests/test_seedance_prompt_contract.py .                                 [ 80%]
+tests/test_story_flow_quality.py ...                                     [ 82%]
+tests/test_storyboard_density.py ..                                      [ 83%]
+tests/test_storyboard_quality.py ...                                     [ 86%]
+tests/test_style_guides.py .F..                                          [ 89%]
+tests/test_subtitle_contract.py F                                        [ 90%]
+tests/test_tools.py .                                                    [ 90%]
+tests/test_video_inspection.py ..                                        [ 92%]
+tests/test_video_qa.py .......                                           [ 97%]
+tests/test_video_regeneration_proposals.py ...                           [100%]
+
+=================================== FAILURES ===================================
+_____ test_remicon_fixture_generates_source_specific_topics_and_storyboard _____
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_remicon_fixture_generates0')
+
+>   ???
+E   assert 0 == 12
+E    +  where 0 = len([])
+
+/Users/hatae/임시작업/안전영상 제작/테스트_코덱스/tests/test_remicon_fixture_flow.py:34: AssertionError
+____________ test_reference_assets_are_loaded_into_prompt_contracts ____________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_reference_assets_are_load0')
+
+>   ???
+
+/Users/hatae/임시작업/안전영상 제작/테스트_코덱스/tests/test_remicon_fixture_flow.py:109: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:796: in write_bytes
+    with self.open(mode='wb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_reference_assets_are_load0/remicon-reference-assets/model/cast/worker-001-front.png')
+mode = 'wb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_reference_assets_are_load0/remicon-reference-assets/model/cast/worker-001-front.png'
+
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:771: FileNotFoundError
+____ test_operational_storyboard_requires_selected_topic_when_topics_exist _____
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_operational_storyboard_re0')
+
+    def test_operational_storyboard_requires_selected_topic_when_topics_exist(tmp_path: Path) -> None:
+        project = tmp_path / "topic-required"
+        prepare_project(project)
+    
+        missing = run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30")
+>       assert missing.returncode != 0
+E       AssertionError: assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['python3', 'scripts/plan_storyboard.py', '--project', '/private/var/folders/kt/z98_h_917fldpmxh...ional_storyboard_re0/topic-required', '--duration', '30'], returncode=0, stdout='planned 6 story beat(s)\n', stderr='').returncode
+
+tests/test_roadmap_bundle1.py:39: AssertionError
+__________ test_rendering_mode_is_recorded_for_media_extract_fallback __________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_rendering_mode_is_recorde0')
+
+    def test_rendering_mode_is_recorded_for_media_extract_fallback(tmp_path: Path) -> None:
+        project = tmp_path / "render-mode"
+        prepare_project(project)
+    
+>       sources = load_json(project / "sources" / "sources.json")["sources"]
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_roadmap_bundle1.py:57: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_roadmap_bundle1.py:24: in load_json
+    return json.loads(path.read_text(encoding="utf-8"))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:787: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_rendering_mode_is_recorde0/render-mode/sources/sources.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_rendering_mode_is_recorde0/render-mode/sources/sources.json'
+
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:771: FileNotFoundError
+__________________ test_pptx_slide_text_assets_are_extracted ___________________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_pptx_slide_text_assets_ar0')
+
+    def test_pptx_slide_text_assets_are_extracted(tmp_path: Path) -> None:
+        project = tmp_path / "render-text"
+        source = tmp_path / "source-with-text.pptx"
+        with ZipFile(source, "w") as archive:
+            archive.writestr("ppt/media/image1.png", b"fake image")
+            archive.writestr(
+                "ppt/slides/slide1.xml",
+                '<p:sld xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" '
+                'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">'
+                "<p:cSld><p:spTree><p:sp><p:txBody><a:p><a:r><a:t>중장비 추락 예방</a:t></a:r></a:p>"
+                "<a:p><a:r><a:t>작업 전 정지선을 확인한다</a:t></a:r></a:p></p:txBody></p:sp></p:spTree></p:cSld></p:sld>",
+            )
+    
+        assert run_cli("scripts/init_project.py", "--name", "텍스트 추출", "--slug", str(project)).returncode == 0
+        assert run_cli("scripts/register_sources.py", "--project", str(project), "--source", str(source)).returncode == 0
+        assert run_cli("scripts/render_pptx_sources.py", "--project", str(project), "--dry-run", "--mode", "media_extract").returncode == 0
+    
+>       sources = load_json(project / "sources" / "sources.json")["sources"]
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_roadmap_bundle1.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_roadmap_bundle1.py:24: in load_json
+    return json.loads(path.read_text(encoding="utf-8"))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:787: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_pptx_slide_text_assets_ar0/render-text/sources/sources.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_pptx_slide_text_assets_ar0/render-text/sources/sources.json'
+
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:771: FileNotFoundError
+____________ test_reference_profile_manifest_and_approval_workflow _____________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_reference_profile_manifes0')
+
+    def test_reference_profile_manifest_and_approval_workflow(tmp_path: Path) -> None:
+        project = tmp_path / "reference-profile"
+        prepare_project(project)
+    
+        cast_dir = project / "model" / "cast"
+        candidate_dir = project / "ref" / "candidates"
+>       (cast_dir / "worker-001-front.png").write_bytes(b"fake image")
+
+tests/test_roadmap_bundle1.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:796: in write_bytes
+    with self.open(mode='wb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_reference_profile_manifes0/reference-profile/model/cast/worker-001-front.png')
+mode = 'wb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_reference_profile_manifes0/reference-profile/model/cast/worker-001-front.png'
+
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:771: FileNotFoundError
+__________ test_reference_profile_sidecar_matches_exact_cast_identity __________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_reference_profile_sidecar0')
+
+    def test_reference_profile_sidecar_matches_exact_cast_identity(tmp_path: Path) -> None:
+        project = tmp_path / "reference-profile-exact-sidecar"
+        prepare_project(project)
+    
+        cast_dir = project / "model" / "cast"
+>       (cast_dir / "worker-001-front.png").write_bytes(b"fake image")
+
+tests/test_roadmap_bundle1.py:160: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:796: in write_bytes
+    with self.open(mode='wb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_reference_profile_sidecar0/reference-profile-exact-sidecar/model/cast/worker-001-front.png')
+mode = 'wb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_reference_profile_sidecar0/reference-profile-exact-sidecar/model/cast/worker-001-front.png'
+
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:771: FileNotFoundError
+________ test_approve_reference_can_target_categorized_reference_folder ________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_approve_reference_can_tar0')
+
+    def test_approve_reference_can_target_categorized_reference_folder(tmp_path: Path) -> None:
+        project = tmp_path / "reference-approval-role"
+        prepare_project(project)
+    
+        candidate_dir = project / "ref" / "candidates"
+>       (candidate_dir / "work-scene.png").write_bytes(b"fake image")
+
+tests/test_roadmap_bundle1.py:178: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:796: in write_bytes
+    with self.open(mode='wb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_approve_reference_can_tar0/reference-approval-role/ref/candidates/work-scene.png')
+mode = 'wb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_approve_reference_can_tar0/reference-approval-role/ref/candidates/work-scene.png'
+
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:771: FileNotFoundError
+___________ test_gate2_requires_cost_images_video_plan_upload_and_qa ___________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_gate2_requires_cost_image0')
+
+    def test_gate2_requires_cost_images_video_plan_upload_and_qa(tmp_path: Path) -> None:
+        project = tmp_path / "gate2"
+        prepare_project(project)
+        assert run_cli("scripts/select_topic.py", "--project", str(project), "--topic-id", "topic-001").returncode == 0
+        assert run_cli("scripts/extract_style_dna.py", "--project", str(project)).returncode == 0
+        assert run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30").returncode == 0
+        assert run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard").returncode == 0
+        assert run_cli("scripts/generate_images.py", "--project", str(project), "--dry-run").returncode == 0
+        assert run_cli("scripts/generate_seedance.py", "--project", str(project), "--dry-run").returncode == 0
+    
+        blocked = run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "image_to_video", "--estimated-credits", "12")
+        assert blocked.returncode != 0
+        assert "external_upload_allowed" in blocked.stderr
+    
+        config_path = project / "project_config.json"
+        config = load_json(config_path)
+        config["external_upload_allowed"] = True
+        config_path.write_text(json.dumps(config, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    
+        blocked = run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "image_to_video", "--estimated-credits", "12")
+        assert blocked.returncode != 0
+        assert "approved image" in blocked.stderr
+    
+        for index in range(1, 8):
+>           (project / "images" / "approved" / f"sc{index:02d}.png").write_bytes(b"fake image")
+
+tests/test_roadmap_bundle1.py:222: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:796: in write_bytes
+    with self.open(mode='wb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_gate2_requires_cost_image0/gate2/images/approved/sc01.png')
+mode = 'wb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_gate2_requires_cost_image0/gate2/images/approved/sc01.png'
+
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:771: FileNotFoundError
+_________________ test_gate2_rejects_partial_image_qa_coverage _________________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_gate2_rejects_partial_ima0')
+
+    def test_gate2_rejects_partial_image_qa_coverage(tmp_path: Path) -> None:
+        project = tmp_path / "gate2-partial-qa"
+        prepare_project(project)
+        assert run_cli("scripts/select_topic.py", "--project", str(project), "--topic-id", "topic-001").returncode == 0
+        assert run_cli("scripts/extract_style_dna.py", "--project", str(project)).returncode == 0
+        assert run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30").returncode == 0
+        assert run_cli("scripts/evaluate_storyboard.py", "--project", str(project)).returncode == 0
+        assert run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard").returncode == 0
+        assert run_cli("scripts/generate_seedance.py", "--project", str(project), "--dry-run").returncode == 0
+    
+        config_path = project / "project_config.json"
+        config = load_json(config_path)
+        config["external_upload_allowed"] = True
+        config_path.write_text(json.dumps(config, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        for index in range(1, 8):
+>           (project / "images" / "approved" / f"sc{index:02d}.png").write_bytes(b"fake image")
+
+tests/test_roadmap_bundle1.py:277: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:796: in write_bytes
+    with self.open(mode='wb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_gate2_rejects_partial_ima0/gate2-partial-qa/images/approved/sc01.png')
+mode = 'wb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_gate2_rejects_partial_ima0/gate2-partial-qa/images/approved/sc01.png'
+
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:771: FileNotFoundError
+_______________ test_approval_write_respects_single_writer_lock ________________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_approval_write_respects_s0')
+
+    def test_approval_write_respects_single_writer_lock(tmp_path: Path) -> None:
+        project = tmp_path / "locked"
+        assert run_cli("scripts/init_project.py", "--name", "locked", "--slug", str(project)).returncode == 0
+        (project / "approvals.json.lock").write_text("held by test\n", encoding="utf-8")
+    
+        result = run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard")
+    
+        assert result.returncode != 0
+>       assert "lock is held" in result.stderr
+E       AssertionError: assert 'lock is held' in 'storyboard/scenes.json is missing\n'
+E        +  where 'storyboard/scenes.json is missing\n' = CompletedProcess(args=['python3', 'scripts/approve_gate.py', '--project', '/private/var/folders/kt/z98_h_917fldpmxhd74...te_respects_s0/locked', '--gate', 'storyboard'], returncode=1, stdout='', stderr='storyboard/scenes.json is missing\n').stderr
+
+tests/test_roadmap_bundle1.py:304: AssertionError
+__________ test_seedance_live_plan_uses_two_five_second_clips_for_10s __________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_seedance_live_plan_uses_t0')
+
+>   ???
+
+/Users/hatae/임시작업/안전영상 제작/테스트_코덱스/tests/test_seedance_live_guardrails.py:128: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/hatae/임시작업/안전영상 제작/테스트_코덱스/tests/test_seedance_live_guardrails.py:45: in approve_video_gate_for_plan
+    ???
+/Users/hatae/임시작업/안전영상 제작/테스트_코덱스/tests/test_seedance_live_guardrails.py:25: in load_json
+    ???
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:787: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_seedance_live_plan_uses_t0/seedance-plan/approvals.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_seedance_live_plan_uses_t0/seedance-plan/approvals.json'
+
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:771: FileNotFoundError
+_______ test_seedance_plan_includes_reference_media_pack_when_available ________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_seedance_plan_includes_re0')
+
+>   ???
+
+/Users/hatae/임시작업/안전영상 제작/테스트_코덱스/tests/test_seedance_live_guardrails.py:156: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/hatae/임시작업/안전영상 제작/테스트_코덱스/tests/test_seedance_live_guardrails.py:45: in approve_video_gate_for_plan
+    ???
+/Users/hatae/임시작업/안전영상 제작/테스트_코덱스/tests/test_seedance_live_guardrails.py:25: in load_json
+    ???
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:787: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_seedance_plan_includes_re0/seedance-reference-pack/approvals.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_seedance_plan_includes_re0/seedance-reference-pack/approvals.json'
+
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:771: FileNotFoundError
+____________ test_validation_run_prompt_matches_10_second_duration _____________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_validation_run_prompt_mat0')
+
+>   ???
+
+/Users/hatae/임시작업/안전영상 제작/테스트_코덱스/tests/test_seedance_live_guardrails.py:203: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/hatae/임시작업/안전영상 제작/테스트_코덱스/tests/test_seedance_live_guardrails.py:45: in approve_video_gate_for_plan
+    ???
+/Users/hatae/임시작업/안전영상 제작/테스트_코덱스/tests/test_seedance_live_guardrails.py:25: in load_json
+    ???
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:787: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_validation_run_prompt_mat0/seedance-validation-duration/approvals.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_validation_run_prompt_mat0/seedance-validation-duration/approvals.json'
+
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:771: FileNotFoundError
+_____________ test_seedance_live_run_log_redacts_public_output_url _____________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_seedance_live_run_log_red0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x109703ad0>
+
+>   ???
+
+/Users/hatae/임시작업/안전영상 제작/테스트_코덱스/tests/test_seedance_live_guardrails.py:231: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/hatae/임시작업/안전영상 제작/테스트_코덱스/tests/test_seedance_live_guardrails.py:45: in approve_video_gate_for_plan
+    ???
+/Users/hatae/임시작업/안전영상 제작/테스트_코덱스/tests/test_seedance_live_guardrails.py:25: in load_json
+    ???
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:787: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_seedance_live_run_log_red0/seedance-redaction/approvals.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_seedance_live_run_log_red0/seedance-redaction/approvals.json'
+
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:771: FileNotFoundError
+______ test_project_config_records_reference_and_style_interview_defaults ______
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_project_config_records_re0')
+
+>   ???
+E   AssertionError: assert False
+E    +  where False = exists()
+E    +    where exists = (((PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_project_config_records_re0/style-interview') / 'ref') / 'approved') / 'person').exists
+
+/Users/hatae/임시작업/안전영상 제작/테스트_코덱스/tests/test_style_guides.py:58: AssertionError
+_______________ test_subtitle_plan_generates_srt_from_storyboard _______________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-68/test_subtitle_plan_generates_s0')
+
+>   ???
+E   AssertionError: assert '차량 동선을 먼저 확인하세요.' in '1\n00:00:00,000 --> 00:00:05,000\n위험구역을 먼저 확인하세요.\n\n2\n00:00:05,000 --> 00:00:10,000\n위험구역을 먼저 확인하세요.\n\n3\n00:00:10...저 확인하세요.\n\n5\n00:00:20,000 --> 00:00:25,000\n위험구역을 먼저 확인하세요.\n\n6\n00:00:25,000 --> 00:00:30,000\n위험구역을 먼저 확인하세요.\n\n'
+
+/Users/hatae/임시작업/안전영상 제작/테스트_코덱스/tests/test_subtitle_contract.py:38: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_remicon_fixture_flow.py::test_remicon_fixture_generates_source_specific_topics_and_storyboard
+FAILED tests/test_remicon_fixture_flow.py::test_reference_assets_are_loaded_into_prompt_contracts
+FAILED tests/test_roadmap_bundle1.py::test_operational_storyboard_requires_selected_topic_when_topics_exist
+FAILED tests/test_roadmap_bundle1.py::test_rendering_mode_is_recorded_for_media_extract_fallback
+FAILED tests/test_roadmap_bundle1.py::test_pptx_slide_text_assets_are_extracted
+FAILED tests/test_roadmap_bundle1.py::test_reference_profile_manifest_and_approval_workflow
+FAILED tests/test_roadmap_bundle1.py::test_reference_profile_sidecar_matches_exact_cast_identity
+FAILED tests/test_roadmap_bundle1.py::test_approve_reference_can_target_categorized_reference_folder
+FAILED tests/test_roadmap_bundle1.py::test_gate2_requires_cost_images_video_plan_upload_and_qa
+FAILED tests/test_roadmap_bundle1.py::test_gate2_rejects_partial_image_qa_coverage
+FAILED tests/test_roadmap_bundle1.py::test_approval_write_respects_single_writer_lock
+FAILED tests/test_seedance_live_guardrails.py::test_seedance_live_plan_uses_two_five_second_clips_for_10s
+FAILED tests/test_seedance_live_guardrails.py::test_seedance_plan_includes_reference_media_pack_when_available
+FAILED tests/test_seedance_live_guardrails.py::test_validation_run_prompt_matches_10_second_duration
+FAILED tests/test_seedance_live_guardrails.py::test_seedance_live_run_log_redacts_public_output_url
+FAILED tests/test_style_guides.py::test_project_config_records_reference_and_style_interview_defaults
+FAILED tests/test_subtitle_contract.py::test_subtitle_plan_generates_srt_from_storyboard
+======================= 17 failed, 113 passed in 19.78s ========================

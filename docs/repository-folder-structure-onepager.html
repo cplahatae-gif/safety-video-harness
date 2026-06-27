@@ -1,0 +1,668 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Repository Folder Structure One-Pager</title>
+  <style>
+    :root {
+      --paper: #f7f5ef;
+      --panel: #fffdf8;
+      --ink: #20272d;
+      --muted: #66727c;
+      --line: #d8d1c2;
+      --blue: #2f6078;
+      --green: #2f755b;
+      --amber: #b97922;
+      --red: #a44338;
+      --violet: #65528c;
+      --shadow: 0 14px 34px rgba(32, 39, 45, 0.10);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(90deg, rgba(47, 96, 120, 0.055) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(47, 96, 120, 0.045) 1px, transparent 1px),
+        var(--paper);
+      background-size: 28px 28px;
+      font-family: "Apple SD Gothic Neo", "Pretendard", "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    .page {
+      width: min(1440px, calc(100% - 44px));
+      margin: 0 auto;
+      padding: 30px 0 52px;
+    }
+
+    .hero,
+    .panel,
+    .metric,
+    .bucket,
+    .tree,
+    .rule,
+    .route {
+      border: 1px solid var(--line);
+      background: rgba(255, 253, 248, 0.96);
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
+      gap: 18px;
+      padding: 24px;
+      border-left: 8px solid var(--blue);
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(34px, 4.6vw, 66px);
+      line-height: 1.02;
+      letter-spacing: 0;
+      font-family: "Iowan Old Style", "Palatino", "Apple SD Gothic Neo", serif;
+    }
+
+    .subtitle {
+      margin: 15px 0 0;
+      max-width: 900px;
+      color: #39454d;
+      font-size: 16px;
+    }
+
+    .eyebrow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 2px 9px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fbf2db;
+      white-space: nowrap;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .metric {
+      box-shadow: none;
+      background: #fff;
+      padding: 13px;
+      min-height: 82px;
+    }
+
+    .metric b {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(360px, 0.9fr);
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .panel {
+      padding: 20px;
+      overflow: hidden;
+    }
+
+    h2 {
+      margin: 0 0 13px;
+      font-size: 21px;
+      line-height: 1.2;
+    }
+
+    .intro {
+      margin: -4px 0 16px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .flow-wrap {
+      width: 100%;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+
+    svg {
+      display: block;
+      min-width: 1060px;
+      width: 100%;
+      height: auto;
+      font-family: inherit;
+    }
+
+    .node {
+      fill: #fff;
+      stroke: var(--line);
+      stroke-width: 1.2;
+      filter: drop-shadow(0 8px 13px rgba(32, 39, 45, 0.10));
+    }
+
+    .node-blue { stroke: rgba(47, 96, 120, 0.75); }
+    .node-green { stroke: rgba(47, 117, 91, 0.75); }
+    .node-amber { stroke: rgba(185, 121, 34, 0.8); }
+    .node-red { stroke: rgba(164, 67, 56, 0.8); }
+    .node-violet { stroke: rgba(101, 82, 140, 0.75); }
+
+    .lane-label {
+      fill: #6a746d;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .svg-title {
+      fill: var(--ink);
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .svg-small {
+      fill: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .arrow {
+      stroke: #7b837d;
+      stroke-width: 2;
+      fill: none;
+      marker-end: url(#arrowhead);
+    }
+
+    .dash {
+      stroke: var(--red);
+      stroke-dasharray: 7 6;
+    }
+
+    .bucket-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .bucket {
+      box-shadow: none;
+      background: #fff;
+      border-radius: 7px;
+      padding: 14px;
+      min-height: 190px;
+    }
+
+    .bucket h3,
+    .tree h3,
+    .route h3 {
+      margin: 0 0 9px;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge {
+      display: inline-flex;
+      width: 25px;
+      height: 25px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 5px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .b-blue { background: var(--blue); }
+    .b-green { background: var(--green); }
+    .b-amber { background: var(--amber); }
+    .b-red { background: var(--red); }
+    .b-violet { background: var(--violet); }
+
+    ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    li {
+      margin: 4px 0;
+      color: #3d4950;
+      font-size: 13px;
+    }
+
+    code {
+      padding: 1px 4px;
+      border: 1px solid #e2dbca;
+      border-radius: 4px;
+      background: #fbf7ec;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 0.92em;
+    }
+
+    .tree-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .tree {
+      box-shadow: none;
+      background: #fff;
+      border-radius: 7px;
+      padding: 14px;
+    }
+
+    pre {
+      margin: 0;
+      white-space: pre-wrap;
+      color: #29343b;
+      font-size: 12px;
+      line-height: 1.5;
+      font-family: "SFMono-Regular", Consolas, monospace;
+    }
+
+    .routes {
+      display: grid;
+      gap: 10px;
+    }
+
+    .route {
+      box-shadow: none;
+      padding: 12px 13px;
+      border-left: 5px solid var(--blue);
+      background: #fff;
+    }
+
+    .route p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .rules {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .rule {
+      box-shadow: none;
+      padding: 13px;
+      background: #fff;
+      min-height: 124px;
+      border-radius: 7px;
+    }
+
+    .rule b {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 14px;
+    }
+
+    .rule span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin-right: 5px;
+      border-radius: 2px;
+      vertical-align: -1px;
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .grid,
+      .tree-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .bucket-grid,
+      .rules {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        width: min(100% - 24px, 1440px);
+      }
+
+      .metric-grid,
+      .bucket-grid,
+      .rules {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">
+          <span class="pill">Repository layout</span>
+          <span class="pill">migration target</span>
+          <span class="pill">no live media</span>
+        </div>
+        <h1>폴더 구조 재정리 원페이저</h1>
+        <p class="subtitle">
+          목표는 결과물, 제작 도구, 레퍼런스를 루트에서 분리하고, 프로젝트 내부 계약과 기존
+          <code>python3 scripts/*.py</code> 사용 방식은 깨지지 않게 유지하는 것이다.
+        </p>
+      </div>
+      <div class="metric-grid">
+        <div class="metric"><b>9</b><span>최종 루트 버킷</span></div>
+        <div class="metric"><b>4</b><span>마이그레이션 웨이브</span></div>
+        <div class="metric"><b>13</b><span>실행 TODO</span></div>
+        <div class="metric"><b>0</b><span>live/paid 호출 허용</span></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>전체 재분류 지도</h2>
+      <p class="intro">루트는 목적별 보관소로 나누고, 실제 영상 프로젝트는 <code>projects/&lt;slug&gt;/</code> 안에서 닫힌 작업공간으로 유지한다.</p>
+      <div class="flow-wrap">
+        <svg viewBox="0 0 1120 470" role="img" aria-label="repository folder structure migration map">
+          <defs>
+            <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+              <path d="M0,0 L10,5 L0,10 Z" fill="#7b837d"></path>
+            </marker>
+          </defs>
+
+          <text x="28" y="36" class="lane-label">현재 루트에서 섞인 것</text>
+          <text x="380" y="36" class="lane-label">새 루트 버킷</text>
+          <text x="820" y="36" class="lane-label">유지되는 프로젝트 내부 계약</text>
+
+          <rect x="28" y="58" width="245" height="76" rx="8" class="node node-red"></rect>
+          <text x="48" y="90" class="svg-title">결과물/실험 로그</text>
+          <text x="48" y="113" class="svg-small">evidence, audio, clips, output</text>
+
+          <rect x="28" y="158" width="245" height="76" rx="8" class="node node-green"></rect>
+          <text x="48" y="190" class="svg-title">제작 도구</text>
+          <text x="48" y="213" class="svg-small">agents, hooks, skills, scripts</text>
+
+          <rect x="28" y="258" width="245" height="76" rx="8" class="node node-violet"></rect>
+          <text x="48" y="290" class="svg-title">레퍼런스/스타일</text>
+          <text x="48" y="313" class="svg-small">references/style, refs</text>
+
+          <rect x="28" y="358" width="245" height="76" rx="8" class="node node-blue"></rect>
+          <text x="48" y="390" class="svg-title">문서/테스트/프로젝트</text>
+          <text x="48" y="413" class="svg-small">docs, plans, tests, projects</text>
+
+          <path d="M280 96 C320 96, 320 96, 360 96" class="arrow"></path>
+          <path d="M280 196 C320 196, 320 170, 360 170" class="arrow"></path>
+          <path d="M280 296 C320 296, 320 245, 360 245" class="arrow"></path>
+          <path d="M280 396 C320 396, 320 322, 360 322" class="arrow"></path>
+
+          <rect x="370" y="58" width="145" height="70" rx="8" class="node node-green"></rect>
+          <text x="391" y="88" class="svg-title">app/plugin/</text>
+          <text x="391" y="110" class="svg-small">Codex package</text>
+
+          <rect x="535" y="58" width="145" height="70" rx="8" class="node node-blue"></rect>
+          <text x="556" y="88" class="svg-title">app/harness/</text>
+          <text x="556" y="110" class="svg-small">runtime + CLI internals</text>
+
+          <rect x="370" y="152" width="145" height="70" rx="8" class="node node-violet"></rect>
+          <text x="391" y="182" class="svg-title">references/</text>
+          <text x="391" y="204" class="svg-small">shared reusable refs</text>
+
+          <rect x="535" y="152" width="145" height="70" rx="8" class="node node-red"></rect>
+          <text x="556" y="182" class="svg-title">runs/</text>
+          <text x="556" y="204" class="svg-small">root experiments/logs</text>
+
+          <rect x="370" y="246" width="145" height="70" rx="8" class="node node-amber"></rect>
+          <text x="391" y="276" class="svg-title">docs/ plans/</text>
+          <text x="391" y="298" class="svg-small">operator knowledge</text>
+
+          <rect x="535" y="246" width="145" height="70" rx="8" class="node node-amber"></rect>
+          <text x="556" y="276" class="svg-title">tests/ fixtures/</text>
+          <text x="556" y="298" class="svg-small">verification assets</text>
+
+          <rect x="452" y="344" width="145" height="70" rx="8" class="node node-blue"></rect>
+          <text x="473" y="374" class="svg-title">projects/</text>
+          <text x="473" y="396" class="svg-small">actual workspaces</text>
+
+          <path d="M688 379 C738 379, 752 379, 790 379" class="arrow"></path>
+          <path d="M607 128 C725 170, 740 248, 790 320" class="arrow dash"></path>
+          <text x="637" y="342" class="svg-small" fill="#a44338">compat wrappers keep CLI stable</text>
+
+          <rect x="810" y="74" width="280" height="340" rx="10" class="node node-blue"></rect>
+          <text x="833" y="110" class="svg-title">projects/&lt;slug&gt;/</text>
+          <text x="833" y="140" class="svg-small">sources / storyboard / prompts</text>
+          <text x="833" y="168" class="svg-small">images / video / subtitles / output</text>
+          <text x="833" y="196" class="svg-small">qa / evidence / llm-wiki</text>
+          <text x="833" y="224" class="svg-small">model/cast / model/ppe</text>
+          <text x="833" y="252" class="svg-small">product/equipment</text>
+          <text x="833" y="280" class="svg-small">ref/approved/person|work|space</text>
+          <text x="833" y="308" class="svg-small">style / asset-lock / approvals</text>
+          <text x="833" y="350" class="svg-title">1차 원칙</text>
+          <text x="833" y="378" class="svg-small">프로젝트 내부 경로는 유지한다</text>
+        </svg>
+      </div>
+      <div class="legend">
+        <span><i class="dot" style="background:var(--green)"></i>app/plugin/tooling</span>
+        <span><i class="dot" style="background:var(--blue)"></i>runtime/project</span>
+        <span><i class="dot" style="background:var(--violet)"></i>references</span>
+        <span><i class="dot" style="background:var(--red)"></i>outputs/risk boundary</span>
+        <span><i class="dot" style="background:var(--amber)"></i>docs/tests</span>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="panel">
+        <h2>최종 루트 폴더</h2>
+        <p class="intro">루트에서 무엇을 찾을지 바로 알 수 있게, 목적이 다른 파일을 같은 레벨에 섞지 않는다.</p>
+        <div class="bucket-grid">
+          <article class="bucket">
+            <h3><span class="badge b-green">P</span>app/plugin/</h3>
+            <ul>
+              <li><code>.codex-plugin/</code></li>
+              <li><code>agents/</code></li>
+              <li><code>hooks/</code></li>
+              <li><code>skills/</code></li>
+            </ul>
+          </article>
+          <article class="bucket">
+            <h3><span class="badge b-blue">H</span>app/harness/</h3>
+            <ul>
+              <li><code>package/safety_video_harness/</code></li>
+              <li><code>cli/</code></li>
+              <li><code>schemas/</code></li>
+              <li><code>templates/</code></li>
+            </ul>
+          </article>
+          <article class="bucket">
+            <h3><span class="badge b-violet">R</span>references/</h3>
+            <ul>
+              <li><code>style/</code></li>
+              <li><code>cast/</code>, <code>ppe/</code></li>
+              <li><code>equipment/</code>, <code>spaces/</code></li>
+              <li>공통 재사용 기준</li>
+            </ul>
+          </article>
+          <article class="bucket">
+            <h3><span class="badge b-blue">W</span>projects/</h3>
+            <ul>
+              <li>실제 영상 프로젝트</li>
+              <li>프로젝트 전용 sources</li>
+              <li>프로젝트 전용 refs</li>
+              <li>이미지/영상/QA 산출물</li>
+            </ul>
+          </article>
+          <article class="bucket">
+            <h3><span class="badge b-red">L</span>projects/_runs/</h3>
+            <ul>
+              <li><code>imagegen/</code></li>
+              <li><code>implementation/</code></li>
+              <li><code>smoke/</code></li>
+              <li>루트 실험/검증 로그</li>
+            </ul>
+          </article>
+          <article class="bucket">
+            <h3><span class="badge b-amber">D</span>docs/plans/tests</h3>
+            <ul>
+              <li><code>docs/</code> 운영 문서</li>
+              <li><code>plans/</code> 실행 계획</li>
+              <li><code>tests/</code> 회귀 검증</li>
+              <li><code>fixtures/</code> 테스트 입력</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>기존 폴더 이동 감각</h2>
+        <p class="intro">이동은 삭제가 아니라 소유권을 명확히 하는 작업이다. 프로젝트 내부는 그대로 둔다.</p>
+        <div class="routes">
+          <article class="route">
+            <h3>agents/hooks/skills/.codex-plugin -> app/plugin/</h3>
+            <p>Codex 플러그인 표면을 한 곳에 모은다.</p>
+          </article>
+          <article class="route">
+            <h3>safety_video_harness/scripts/schemas/templates -> app/harness/</h3>
+            <p>실행 엔진과 CLI 내부 구현을 한 버킷으로 묶는다.</p>
+          </article>
+          <article class="route">
+            <h3>style-guides + 공통 cast/ppe/equipment -> references/</h3>
+            <p>여러 프로젝트에서 재사용할 기준만 둔다.</p>
+          </article>
+          <article class="route">
+            <h3>evidence/audio/clips/output/storyboard/scenes.json -> projects/_runs/</h3>
+            <p>루트에 남은 실험 결과와 로그는 manifest와 함께 이동한다.</p>
+          </article>
+          <article class="route">
+            <h3>projects/&lt;slug&gt;/* -> 그대로 유지</h3>
+            <p>스토리보드, 이미지, 영상, QA, 프로젝트 전용 레퍼런스 계약은 유지한다.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>최종 트리 요약</h2>
+      <div class="tree-grid">
+        <article class="tree">
+          <h3><span class="badge b-blue">/</span>Repository root</h3>
+          <pre>/
+├── app/plugin/
+│   ├── .codex-plugin/
+│   ├── agents/
+│   ├── hooks/
+│   └── skills/
+├── app/harness/
+│   ├── package/safety_video_harness/
+│   ├── cli/
+│   ├── schemas/
+│   └── templates/
+├── references/
+│   ├── style/
+│   ├── cast/
+│   ├── ppe/
+│   ├── equipment/
+│   ├── spaces/
+│   └── examples/
+├── projects/
+├── projects/_runs/
+├── docs/
+├── plans/
+├── tests/
+└── fixtures/</pre>
+        </article>
+        <article class="tree">
+          <h3><span class="badge b-green">P</span>Project workspace</h3>
+          <pre>projects/&lt;slug&gt;/
+├── sources/
+├── storyboard/
+├── prompts/
+├── images/
+│   ├── draft/
+│   └── approved/
+├── video/
+│   ├── clips/
+│   └── inspection/
+├── qa/
+├── projects/_runs/
+├── model/
+│   ├── cast/
+│   └── ppe/
+├── product/
+│   └── equipment/
+├── ref/
+│   ├── candidates/
+│   └── approved/
+├── style/
+├── asset-lock/
+├── subtitles/
+├── output/
+└── llm-wiki/</pre>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>마이그레이션 가드레일</h2>
+      <div class="rules">
+        <article class="rule">
+          <b>CLI 호환 유지</b>
+          <span><code>python3 scripts/*.py</code>는 wrapper로 남긴다. 사용자가 호출하는 표면은 깨지지 않는다.</span>
+        </article>
+        <article class="rule">
+          <b>프로젝트 계약 유지</b>
+          <span><code>projects/&lt;slug&gt;/model</code>, <code>ref</code>, <code>qa</code>, <code>images</code>는 1차 이동 대상이 아니다.</span>
+        </article>
+        <article class="rule">
+          <b>레퍼런스 경계</b>
+          <span><code>references/</code>는 공통 라이브러리다. 프로젝트 승인 refs는 프로젝트 안에 둔다.</span>
+        </article>
+        <article class="rule">
+          <b>Live 금지 유지</b>
+          <span>구조 변경 중 live imagegen, Seedance, TTS, 외부 업로드, 유료 호출은 실행하지 않는다.</span>
+        </article>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

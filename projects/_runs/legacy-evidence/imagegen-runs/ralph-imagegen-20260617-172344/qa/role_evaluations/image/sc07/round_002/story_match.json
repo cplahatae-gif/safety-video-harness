@@ -1,0 +1,11 @@
+{
+  "role": "story_match",
+  "scores": {
+    "story_match": 0,
+    "story_flow": 0
+  },
+  "blocking_issues": [
+    "missing draft image"
+  ],
+  "execution_mode": "parallel_role_evaluator"
+}

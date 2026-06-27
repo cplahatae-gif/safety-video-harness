@@ -1,0 +1,13 @@
+   8 app/plugin/hooks/hook_paths.py
+  60 app/plugin/hooks/hook_payload.py
+  16 app/plugin/hooks/posttooluse-evidence-feedback.py
+  31 app/plugin/hooks/posttooluse-scene-link-validation.py
+  30 app/plugin/hooks/posttooluse-schema-validation.py
+ 129 app/plugin/hooks/pretooluse-live-veto.py
+  84 app/plugin/hooks/pretooluse-protected-path-veto.py
+  14 app/plugin/hooks/pretooluse-secret-veto.py
+  27 app/plugin/hooks/session-start-anchor.py
+  13 app/plugin/hooks/stop-sentinel-guard.py
+ 159 safety_video_harness/prompt_team.py
+ 236 tests/test_plugin_structure.py
+ 135 tests/test_hook_guardrails.py

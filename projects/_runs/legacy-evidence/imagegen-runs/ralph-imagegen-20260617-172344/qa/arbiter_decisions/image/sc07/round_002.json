@@ -1,0 +1,98 @@
+{
+  "stage": "image",
+  "item_id": "sc07",
+  "round": 2,
+  "iteration": 2,
+  "decision": "regenerate",
+  "role_reviews": [
+    {
+      "role": "technical",
+      "scores": {
+        "technical": 0
+      },
+      "blocking_issues": [
+        "missing draft image"
+      ],
+      "execution_mode": "parallel_role_evaluator"
+    },
+    {
+      "role": "visual_continuity",
+      "scores": {
+        "identity_consistency": 0,
+        "ppe": 0,
+        "equipment": 0
+      },
+      "blocking_issues": [
+        "missing draft image"
+      ],
+      "execution_mode": "parallel_role_evaluator"
+    },
+    {
+      "role": "story_match",
+      "scores": {
+        "story_match": 0,
+        "story_flow": 0
+      },
+      "blocking_issues": [
+        "missing draft image"
+      ],
+      "execution_mode": "parallel_role_evaluator"
+    },
+    {
+      "role": "safety_education",
+      "scores": {
+        "safety": 0
+      },
+      "blocking_issues": [
+        "missing draft image"
+      ],
+      "critical_blockers": [],
+      "execution_mode": "parallel_role_evaluator"
+    },
+    {
+      "role": "devils_advocate",
+      "scores": {
+        "risk": 2
+      },
+      "blocking_issues": [
+        "missing draft image"
+      ],
+      "critical_blockers": [],
+      "vote": "reject",
+      "execution_mode": "parallel_role_evaluator"
+    }
+  ],
+  "scores": {
+    "technical": 0,
+    "identity_consistency": 0,
+    "ppe": 0,
+    "equipment": 0,
+    "story_match": 0,
+    "story_flow": 0,
+    "safety": 0,
+    "risk": 2
+  },
+  "blocking_issues": [
+    "missing draft image"
+  ],
+  "blocker_signatures": [
+    "image:sc07:technical:missing_draft_image"
+  ],
+  "repeated_blockers": [],
+  "critical_vetoes": [],
+  "consensus": {
+    "rule": "5/5 approve or 4/5 approve plus conditional; critical veto overrides majority",
+    "total_roles": 5,
+    "approve_count": 0,
+    "conditional_count": 0,
+    "reject_count": 5,
+    "critical_vetoes": [],
+    "rule_result": "rejected"
+  },
+  "debate_required": false,
+  "debate_triggers": [],
+  "repeated_blocker_threshold": 3,
+  "next_action": "regenerate_blocked_scenes",
+  "regeneration_delta": "Regenerate only after directly addressing these visible deficiencies: missing draft image. Preserve approved continuity locks.",
+  "evidence_bundle": "qa/evaluation_bundles/image/sc07/round_002.json"
+}

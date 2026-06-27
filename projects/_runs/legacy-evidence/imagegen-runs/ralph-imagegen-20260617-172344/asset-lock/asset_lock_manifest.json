@@ -1,0 +1,58 @@
+{
+  "version": "1.0",
+  "status": "production_locked",
+  "missing_roles": [],
+  "text_only_multi_frame_production_allowed": false,
+  "independent_text_to_image_generation_allowed": "draft_exploration_only",
+  "production_frame_strategy": [
+    "create fixed background/space plate before scene keyframes",
+    "create fixed cast character sheets or Higgsfield Soul ID references before scene keyframes",
+    "create fixed equipment references for BCT, dump truck, PPE, and hazard-zone markings",
+    "derive later keyframes from approved prior frames by edit/reference conditioning or deterministic compositing",
+    "use approved start/end keyframes plus reference media pack for Seedance clips"
+  ],
+  "higgsfield_seedance_strategy": {
+    "mode": "image_to_video",
+    "required_inputs": [
+      "start_image",
+      "end_image"
+    ],
+    "recommended_reference_inputs": [
+      "cast/Soul ID or character sheet",
+      "equipment reference",
+      "space/background plate",
+      "style reference"
+    ],
+    "forbidden": [
+      "text-only multi-shot production",
+      "independent scene keyframes without asset lock",
+      "Seedance clip generation from prompt only"
+    ]
+  },
+  "reference_media_pack": [
+    {
+      "role": "cast",
+      "path": "model/cast/signal-worker.png",
+      "usage": "character_identity_or_soul_id_source",
+      "description": "cast lock: same Korean signal worker, white helmet, orange vest, navy pants, red baton, radio, focused gaze toward visible truck route"
+    },
+    {
+      "role": "equipment",
+      "path": "product/equipment/bct-truck.png",
+      "usage": "vehicle_and_equipment_shape_lock",
+      "description": "equipment lock: white BCT bulk cement trailer, yellow dump truck, stable wheel count and mirror geometry"
+    },
+    {
+      "role": "space_reference",
+      "path": "ref/approved/space/plant-entry.png",
+      "usage": "background_plate_and_lane_geometry_lock",
+      "description": "space lock: ready-mix plant entry, concrete floor, blue vehicle lane, green pedestrian lane, red blind spot zone, cones and bollards"
+    },
+    {
+      "role": "style_reference",
+      "path": "ref/approved/style/korean-industrial-webtoon.png",
+      "usage": "rendering_style_lock",
+      "description": "style lock: precision Korean industrial webtoon safety illustration, clean line art, restrained cel shading, stable educational composition"
+    }
+  ]
+}

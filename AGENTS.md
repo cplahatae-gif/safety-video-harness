@@ -7,7 +7,7 @@
 - Before writing a new storyboard, prompt, QA finding, or video prompt, check `docs/few-shot-examples.md` for the expected specificity level.
 - Before any Higgsfield/Seedance planning or dry-run, read `docs/higgsfield-seedance-local-reference.md`.
 - Start each new safety-video project with an intake interview before storyboard, image, or video generation.
-- Each new safety-video project must include a generated project-level `HANDOFF.md` from `templates/project/HANDOFF.md`.
+- Each new safety-video project must include a generated project-level `HANDOFF.md` from `app/harness/templates/project/HANDOFF.md`.
 - Intake must ask for source files, topic, target seconds, image density, reference images, selected style guide, aspect ratio, text delivery, and approval scope.
 - Use Codex built-in `imagegen` skill/tool as the default image generation path.
 - Do not implement OpenAI Image API/CLI image generation unless the user explicitly asks for that fallback.
@@ -33,9 +33,10 @@
 - Append every storyboard, image, and video QA round to project evidence and `llm-wiki/evaluation-rounds.md`.
 - Do not pass video QA from metadata alone; sampled-frame inspection evidence plus visual QA must approve character continuity, gaze motivation, education clarity, and storyboard alignment.
 - Treat unclear gaze direction, unexplained character appearance/disappearance, or generic factory footage as video blockers.
-- Ask where each reference belongs: `model/cast`, `model/ppe`, `product/equipment`, `ref/approved/person`, `ref/approved/work`, `ref/approved/space`, `ref/approved/style`, `ref/approved/camera`, or `ref/approved/lighting`.
-- After asking whether references exist, ask which reusable style guide to use and show 5 choices from `style-guides/catalog.json`.
-- Store reusable styles under `style-guides/<style-id>/STYLE_GUIDE.md` with reference images in `style-guides/<style-id>/references/`.
+- Ask where each reference belongs: `refs/people`, `refs/ppe`, `refs/equipment`, `refs/approved/people`, `refs/approved/work`, `refs/approved/spaces`, `refs/approved/style`, `refs/approved/camera`, or `refs/approved/lighting`. Old `model/`, `product/`, and `ref/` paths are migration read fallbacks only.
+- After asking whether references exist, ask which reusable style guide to use and show 5 choices from `references/style/catalog.json`.
+- Store reusable styles under `references/style/<style-id>/STYLE_GUIDE.md` with reference images in `references/style/<style-id>/references/`.
 - Use dry-run before live work.
 - Treat 30 seconds as a cost guardrail, not a technical limit.
 - Inspect video through sampled frames, not direct MP4 understanding.
+- When handing off, ending a long task, or preparing work for another session, include a ready-to-copy recommended prompt that tells the next session which files to read, which approvals are forbidden, and what the next action should be.

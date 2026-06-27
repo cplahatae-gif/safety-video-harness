@@ -68,7 +68,7 @@ def test_image_prompts_include_story_flow_context(tmp_path: Path) -> None:
     result = run_cli("scripts/generate_images.py", "--project", str(project), "--dry-run")
 
     assert result.returncode == 0
-    plans = load_json(project / "prompts" / "image_prompts.json")["plans"]
+    plans = load_json(project / "story" / "image_prompts.json")["plans"]
     first_prompt = plans[0]["prompt"]
     second_prompt = plans[1]["prompt"]
     assert "Story flow role:" in first_prompt
@@ -82,7 +82,7 @@ def test_validate_images_writes_scored_loop_summary(tmp_path: Path) -> None:
     project = tmp_path / "scored-loop"
     prepare_project(project)
     assert run_cli("scripts/generate_images.py", "--project", str(project), "--dry-run").returncode == 0
-    draft_dir = project / "images" / "draft"
+    draft_dir = project / "media" / "images" / "draft"
     draft_dir.mkdir(parents=True, exist_ok=True)
     for index in range(1, 8):
         write_test_png(draft_dir / f"sc{index:02d}_v001.png")
@@ -105,9 +105,9 @@ def test_validate_images_writes_scored_loop_summary(tmp_path: Path) -> None:
 def test_scene_link_validator_blocks_broken_sliding_chain(tmp_path: Path) -> None:
     project = tmp_path / "broken-chain"
     prepare_project(project)
-    scenes_path = project / "storyboard" / "scenes.json"
+    scenes_path = project / "story" / "scenes.json"
     scenes = load_json(scenes_path)
-    scenes["scenes"][1]["start_keyframe"] = "images/approved/not-sc02.png"
+    scenes["scenes"][1]["start_keyframe"] = "media/images/approved/not-sc02.png"
     scenes_path.write_text(json.dumps(scenes, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     result = run_cli("scripts/validate_scene_links.py", "--project", str(project))

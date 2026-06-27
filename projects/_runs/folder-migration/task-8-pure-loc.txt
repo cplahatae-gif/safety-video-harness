@@ -1,0 +1,4 @@
+ 130 safety_video_harness/project_migration.py
+  28 scripts/migrate_project_structure.py
+  28 app/harness/cli/migrate_project_structure.py
+ 111 tests/test_project_migration.py

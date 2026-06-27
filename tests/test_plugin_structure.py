@@ -6,43 +6,49 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+PLUGIN = ROOT / "app" / "plugin"
 
 
 def test_plugin_manifest_and_harness_assets_exist() -> None:
-    manifest = json.loads((ROOT / ".codex-plugin" / "plugin.json").read_text(encoding="utf-8"))
+    manifest = json.loads((PLUGIN / ".codex-plugin" / "plugin.json").read_text(encoding="utf-8"))
+    root_manifest = json.loads((ROOT / ".codex-plugin" / "plugin.json").read_text(encoding="utf-8"))
 
     assert manifest["name"] == "safety-video-harness"
+    assert manifest["hooks"] == "./hooks/hooks.json"
+    assert root_manifest["compatibilityShim"] is True
+    assert root_manifest["hooks"] == "./app/plugin/hooks/hooks.json"
     assert (ROOT / "AGENTS.md").exists()
     for path in [
-        "skills/topic-extractor/SKILL.md",
-        "skills/story-writer/SKILL.md",
-        "skills/seedance-prompting/SKILL.md",
-        "skills/image-consistency-check/SKILL.md",
-        "skills/video-inspect/SKILL.md",
-        "skills/style-ref-search/SKILL.md",
-        "agents/storyteller/AGENT.md",
-        "agents/storyteller/references/storyteller-reference.md",
-        "agents/lead-style-agent/AGENT.md",
-        "agents/lead-style-agent/references/lead-style-reference.md",
-        "agents/scene-prompt-agent/AGENT.md",
-        "agents/scene-prompt-agent/references/scene-prompt-reference.md",
-        "agents/visual-director-arbiter/AGENT.md",
-        "agents/visual-director-arbiter/references/visual-director-arbiter-reference.md",
-        "agents/continuity-qa/AGENT.md",
-        "agents/continuity-qa/references/continuity-qa-reference.md",
-        "agents/video-qa/AGENT.md",
-        "agents/video-qa/references/video-qa-reference.md",
-        "agents/visual-continuity-director/AGENT.md",
-        "agents/visual-continuity-director/references/visual-continuity-reference.md",
-        "hooks/pretooluse-live-veto.py",
-        "hooks/protected_paths.json",
-        "schemas/project_config.schema.json",
-        "schemas/scenes.schema.json",
-        "style-guides/catalog.json",
-        "style-guides/korean-industrial-webtoon/STYLE_GUIDE.md",
-        "templates/project/PLAN.md",
-        "templates/project/AGENTS.safety.md",
-        "templates/project/HANDOFF.md",
+        "app/plugin/skills/topic-extractor/SKILL.md",
+        "app/plugin/skills/story-writer/SKILL.md",
+        "app/plugin/skills/seedance-prompting/SKILL.md",
+        "app/plugin/skills/image-consistency-check/SKILL.md",
+        "app/plugin/skills/video-inspect/SKILL.md",
+        "app/plugin/skills/style-ref-search/SKILL.md",
+        "app/plugin/agents/storyteller/AGENT.md",
+        "app/plugin/agents/storyteller/references/storyteller-reference.md",
+        "app/plugin/agents/lead-style-agent/AGENT.md",
+        "app/plugin/agents/lead-style-agent/references/lead-style-reference.md",
+        "app/plugin/agents/scene-prompt-agent/AGENT.md",
+        "app/plugin/agents/scene-prompt-agent/references/scene-prompt-reference.md",
+        "app/plugin/agents/visual-director-arbiter/AGENT.md",
+        "app/plugin/agents/visual-director-arbiter/references/visual-director-arbiter-reference.md",
+        "app/plugin/agents/continuity-qa/AGENT.md",
+        "app/plugin/agents/continuity-qa/references/continuity-qa-reference.md",
+        "app/plugin/agents/video-qa/AGENT.md",
+        "app/plugin/agents/video-qa/references/video-qa-reference.md",
+        "app/plugin/agents/visual-continuity-director/AGENT.md",
+        "app/plugin/agents/visual-continuity-director/references/visual-continuity-reference.md",
+        "app/plugin/hooks/hooks.json",
+        "app/plugin/hooks/pretooluse-live-veto.py",
+        "app/plugin/hooks/protected_paths.json",
+        "app/harness/schemas/project_config.schema.json",
+        "app/harness/schemas/scenes.schema.json",
+        "references/style/catalog.json",
+        "references/style/korean-industrial-webtoon/STYLE_GUIDE.md",
+        "app/harness/templates/project/PLAN.md",
+        "app/harness/templates/project/AGENTS.safety.md",
+        "app/harness/templates/project/HANDOFF.md",
         "docs/generative-media-reference-index.md",
         "docs/reference-sources.md",
         "docs/evaluation-rubrics.md",
@@ -54,21 +60,43 @@ def test_plugin_manifest_and_harness_assets_exist() -> None:
         assert (ROOT / path).exists(), path
 
 
+def test_hooks_json_registers_all_entrypoint_hooks() -> None:
+    payload = json.loads((PLUGIN / "hooks" / "hooks.json").read_text(encoding="utf-8"))
+    registered = json.dumps(payload, ensure_ascii=False)
+
+    for path in [
+        "hooks/session-start-anchor.py",
+        "hooks/pretooluse-live-veto.py",
+        "hooks/pretooluse-secret-veto.py",
+        "hooks/pretooluse-protected-path-veto.py",
+        "hooks/posttooluse-schema-validation.py",
+        "hooks/posttooluse-scene-link-validation.py",
+        "hooks/posttooluse-evidence-feedback.py",
+        "hooks/stop-sentinel-guard.py",
+    ]:
+        assert path in registered
+
+    for hook_group in ["SessionStart", "PreToolUse", "PostToolUse", "Stop"]:
+        assert hook_group in payload["hooks"]
+    assert "functions.apply_patch" in registered
+    assert "image_gen.imagegen" in registered
+
+
 def test_skills_package_local_references_exist() -> None:
     for path in [
-        "skills/topic-extractor/references/topic-extractor-reference.md",
-        "skills/story-writer/references/story-writer-reference.md",
-        "skills/style-ref-search/references/style-ref-search-reference.md",
-        "skills/seedance-prompting/references/seedance-prompting-reference.md",
-        "skills/image-consistency-check/references/image-consistency-reference.md",
-        "skills/video-inspect/references/video-inspect-reference.md",
+        "app/plugin/skills/topic-extractor/references/topic-extractor-reference.md",
+        "app/plugin/skills/story-writer/references/story-writer-reference.md",
+        "app/plugin/skills/style-ref-search/references/style-ref-search-reference.md",
+        "app/plugin/skills/seedance-prompting/references/seedance-prompting-reference.md",
+        "app/plugin/skills/image-consistency-check/references/image-consistency-reference.md",
+        "app/plugin/skills/video-inspect/references/video-inspect-reference.md",
     ]:
         assert (ROOT / path).exists(), path
 
 
 def test_agent_and_skill_references_contain_local_operating_notes() -> None:
-    reference_paths = sorted((ROOT / "agents").glob("*/references/*.md")) + sorted(
-        (ROOT / "skills").glob("*/references/*.md")
+    reference_paths = sorted((PLUGIN / "agents").glob("*/references/*.md")) + sorted(
+        (PLUGIN / "skills").glob("*/references/*.md")
     )
 
     assert len(reference_paths) == 13
@@ -94,7 +122,7 @@ def test_project_rules_force_local_guides_before_execution() -> None:
 
 
 def test_agent_and_skill_docs_link_required_local_guides() -> None:
-    docs = sorted((ROOT / "agents").glob("*/AGENT.md")) + sorted((ROOT / "skills").glob("*/SKILL.md"))
+    docs = sorted((PLUGIN / "agents").glob("*/AGENT.md")) + sorted((PLUGIN / "skills").glob("*/SKILL.md"))
 
     assert len(docs) == 13
     for path in docs:
@@ -123,7 +151,7 @@ def test_local_guides_are_actionable_not_link_only() -> None:
 
 
 def test_schema_files_are_valid_json() -> None:
-    for path in (ROOT / "schemas").glob("*.json"):
+    for path in (ROOT / "app" / "harness" / "schemas").glob("*.json"):
         data = json.loads(path.read_text(encoding="utf-8"))
         assert data["type"] == "object"
 
@@ -131,7 +159,7 @@ def test_schema_files_are_valid_json() -> None:
 def test_session_start_anchor_reloads_nonnegotiable_mission_rules() -> None:
     result = subprocess.run(
         ["python3", "hooks/session-start-anchor.py"],
-        cwd=ROOT,
+        cwd=PLUGIN,
         check=False,
         text=True,
         capture_output=True,
@@ -153,7 +181,8 @@ def test_live_veto_hook_allows_approved_project_live_command(tmp_path: Path) -> 
     project = tmp_path / "approved-live-hook"
     project.mkdir()
     (project / "project_config.json").write_text('{"external_upload_allowed": true}', encoding="utf-8")
-    (project / "approvals.json").write_text(
+    (project / "qa").mkdir()
+    (project / "qa" / "approvals.json").write_text(
         json.dumps(
             {
                 "gates": {
@@ -169,7 +198,7 @@ def test_live_veto_hook_allows_approved_project_live_command(tmp_path: Path) -> 
     result = subprocess.run(
         [
             "python3",
-            "hooks/pretooluse-live-veto.py",
+            "app/plugin/hooks/pretooluse-live-veto.py",
             "uv",
             "run",
             "python",
@@ -186,3 +215,63 @@ def test_live_veto_hook_allows_approved_project_live_command(tmp_path: Path) -> 
 
     assert result.returncode == 0
     assert "allow" in result.stdout
+
+
+def test_live_veto_hook_reads_codex_stdin_payload_for_imagegen(tmp_path: Path) -> None:
+    project = tmp_path / "approved-imagegen-hook"
+    project.mkdir()
+    (project / "project_config.json").write_text('{"external_upload_allowed": false}', encoding="utf-8")
+    (project / "qa").mkdir()
+    (project / "qa" / "approvals.json").write_text(
+        json.dumps({"gates": {"storyboard": {"approved": True}}}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    payload = {
+        "hook_event_name": "PreToolUse",
+        "tool_name": "Bash",
+        "tool_input": {
+            "command": f"uv run python scripts/generate_images.py --project {project} --live --only sc01"
+        },
+    }
+
+    result = subprocess.run(
+        ["python3", "app/plugin/hooks/pretooluse-live-veto.py"],
+        cwd=ROOT,
+        check=False,
+        text=True,
+        input=json.dumps(payload),
+        capture_output=True,
+    )
+
+    assert result.returncode == 0
+    assert "allow" in result.stdout
+
+
+def test_live_veto_hook_requires_upload_for_seedance_stdin_payload(tmp_path: Path) -> None:
+    project = tmp_path / "approved-seedance-hook"
+    project.mkdir()
+    (project / "project_config.json").write_text('{"external_upload_allowed": false}', encoding="utf-8")
+    (project / "qa").mkdir()
+    (project / "qa" / "approvals.json").write_text(
+        json.dumps({"gates": {"image_to_video": {"approved": True}}}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    payload = {
+        "hook_event_name": "PreToolUse",
+        "tool_name": "Bash",
+        "tool_input": {
+            "command": f"uv run python scripts/generate_seedance.py --project {project} --live --execute-paid"
+        },
+    }
+
+    result = subprocess.run(
+        ["python3", "app/plugin/hooks/pretooluse-live-veto.py"],
+        cwd=ROOT,
+        check=False,
+        text=True,
+        input=json.dumps(payload),
+        capture_output=True,
+    )
+
+    assert result.returncode == 2
+    assert "external_upload_allowed" in result.stdout

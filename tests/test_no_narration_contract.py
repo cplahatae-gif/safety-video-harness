@@ -34,7 +34,7 @@ def test_new_storyboard_contains_no_narration_fields(tmp_path: Path) -> None:
     result = run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30")
 
     assert result.returncode == 0
-    scenes = json.loads((project / "storyboard" / "scenes.json").read_text(encoding="utf-8"))
+    scenes = json.loads((project / "story" / "scenes.json").read_text(encoding="utf-8"))
     assert all("narration_ko" not in scene for scene in scenes["scenes"])
     assert all("narration_char_limit" not in scene for scene in scenes["scenes"])
     assert all(str(scene.get("subtitle_ko", "")) for scene in scenes["scenes"])
@@ -44,7 +44,7 @@ def test_legacy_narration_field_is_rejected(tmp_path: Path) -> None:
     project = tmp_path / "legacy-narration"
     prepare_project(project)
     assert run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30").returncode == 0
-    path = project / "storyboard" / "scenes.json"
+    path = project / "story" / "scenes.json"
     scenes = json.loads(path.read_text(encoding="utf-8"))
     scenes["scenes"][0]["narration_ko"] = "금지된 나레이션"
     path.write_text(json.dumps(scenes, ensure_ascii=False), encoding="utf-8")

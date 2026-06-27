@@ -24,7 +24,7 @@ def run_cli(*args: str) -> subprocess.CompletedProcess[str]:
 
 def test_assembly_plan_is_written_from_existing_clips(tmp_path: Path) -> None:
     project = tmp_path / "assembly"
-    clips = project / "video" / "clips"
+    clips = project / "media" / "video" / "clips"
     clips.mkdir(parents=True)
     (clips / "sc01_sc02.mp4").write_bytes(b"fake")
     (clips / "sc02_sc03.mp4").write_bytes(b"fake")
@@ -32,10 +32,10 @@ def test_assembly_plan_is_written_from_existing_clips(tmp_path: Path) -> None:
     result = run_cli("scripts/assemble_video.py", "--project", str(project), "--dry-run")
 
     assert result.returncode == 0
-    plan = load_json(project / "video" / "final" / "assembly_plan.json")
+    plan = load_json(project / "media" / "output" / "assembly_plan.json")
     assert plan["dry_run"] is True
-    assert plan["clips"] == ["video/clips/sc01_sc02.mp4", "video/clips/sc02_sc03.mp4"]
-    assert plan["output"] == "video/final/final.mp4"
+    assert plan["clips"] == ["media/video/clips/sc01_sc02.mp4", "media/video/clips/sc02_sc03.mp4"]
+    assert plan["output"] == "media/output/final.mp4"
 
 
 def test_story_video_alignment_reports_missing_artifacts(tmp_path: Path) -> None:
@@ -48,8 +48,8 @@ def test_story_video_alignment_reports_missing_artifacts(tmp_path: Path) -> None
                 "scenes": [
                     {
                         "id": "sc01",
-                        "start_keyframe": "images/approved/sc01.png",
-                        "end_keyframe": "images/approved/sc02.png",
+                        "start_keyframe": "media/images/approved/sc01.png",
+                        "end_keyframe": "media/images/approved/sc02.png",
                         "subtitle_ko": "정지 후 확인",
                     }
                 ]
@@ -72,17 +72,17 @@ def test_video_qa_writes_propose_only_regeneration_plan(tmp_path: Path) -> None:
     if not source.exists():
         return
     project = tmp_path / "video-proposal"
-    clips = project / "video" / "clips"
+    clips = project / "media" / "video" / "clips"
     clips.mkdir(parents=True)
     (clips / source.name).write_bytes(source.read_bytes())
-    inspection = project / "video" / "inspection" / source.stem
+    inspection = project / "media" / "video" / "inspection" / source.stem
     inspection.mkdir(parents=True)
     for index in range(1, 4):
         (inspection / f"frame_{index:02d}.jpg").write_bytes(b"fake-frame")
     (inspection / "manifest.json").write_text(
         json.dumps(
             {
-                "clip": f"video/clips/{source.name}",
+                "clip": f"media/video/clips/{source.name}",
                 "tool": "video-frame-analysis",
                 "transcript_enabled": False,
                 "ocr_lang": "kor+eng",
@@ -103,7 +103,7 @@ def test_video_qa_writes_propose_only_regeneration_plan(tmp_path: Path) -> None:
                 "reviews": [
                     {
                         "clip": source.name,
-                        "inspection_manifest": f"video/inspection/{source.stem}/manifest.json",
+                        "inspection_manifest": f"media/video/inspection/{source.stem}/manifest.json",
                         "character_continuity_score": 2,
                         "gaze_motivation_score": 2,
                         "education_clarity_score": 2,

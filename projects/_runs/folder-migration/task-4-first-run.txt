@@ -1,0 +1,164 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.4, pytest-9.0.3, pluggy-1.6.0
+rootdir: /Volumes/Ha tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스
+configfile: pyproject.toml
+collected 14 items
+
+tests/test_layout.py ...F                                                [ 28%]
+tests/test_folder_migration_characterization.py F..F                     [ 57%]
+tests/test_mvp_flow.py F..FFF                                            [100%]
+
+=================================== FAILURES ===================================
+_____________ test_layout_old_aliases_cover_existing_project_dirs ______________
+
+    def test_layout_old_aliases_cover_existing_project_dirs() -> None:
+        missing = [relative_path for relative_path in PROJECT_DIRS if relative_path not in OLD_PROJECT_DIRS]
+    
+>       assert missing == []
+E       AssertionError: assert ['input/sourc...didates', ...] == []
+E         
+E         Left contains 26 more items, first extra item: 'input/sources/raw'
+E         Use -v to get more diff
+
+tests/test_layout.py:61: AssertionError
+__ test_root_script_project_init_creates_current_layout_when_called_directly ___
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-64/test_root_script_project_init_0')
+
+    def test_root_script_project_init_creates_current_layout_when_called_directly(tmp_path: Path) -> None:
+        project = tmp_path / "current-layout"
+    
+        result = run_cli("scripts/init_project.py", "--name", "현재 구조", "--slug", str(project))
+    
+        assert result.returncode == 0
+        for relative_path in [
+            "sources/raw",
+            "sources/rendered",
+            "model/cast",
+            "model/ppe",
+            "product/equipment",
+            "ref/approved/person",
+            "ref/approved/work",
+            "ref/approved/space",
+            "storyboard/versions",
+            "prompts",
+            "images/draft",
+            "images/approved",
+            "video/clips",
+            "qa",
+            "evidence",
+            ".harness",
+        ]:
+>           assert (project / relative_path).exists(), relative_path
+E           AssertionError: sources/raw
+E           assert False
+E            +  where False = exists()
+E            +    where exists = (PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-64/test_root_script_project_init_0/current-layout') / 'sources/raw').exists
+
+tests/test_folder_migration_characterization.py:62: AssertionError
+__________ test_imagegen_job_contract_uses_current_old_project_paths ___________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-64/test_imagegen_job_contract_use0')
+
+    def test_imagegen_job_contract_uses_current_old_project_paths(tmp_path: Path) -> None:
+        project = tmp_path / "imagegen-job-contract"
+>       prepare_storyboard_project(project)
+
+tests/test_folder_migration_characterization.py:111: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+project = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-64/test_imagegen_job_contract_use0/imagegen-job-contract')
+
+    def prepare_storyboard_project(project: Path) -> None:
+        assert run_cli("scripts/init_project.py", "--name", "레미콘 충돌 예방", "--slug", str(project)).returncode == 0
+>       assert run_cli("scripts/register_sources.py", "--project", str(project), "--source", str(FIXTURE)).returncode == 0
+E       AssertionError: assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['python3', 'scripts/register_sources.py', '--project', '/private/var/folders/kt/z98_h_917fldpmx...ytest-of-hatae/pytest-64/test_imagegen_job_contract_use0/imagegen-job-contract/sources/sources.json: file not found\n').returncode
+E        +    where CompletedProcess(args=['python3', 'scripts/register_sources.py', '--project', '/private/var/folders/kt/z98_h_917fldpmx...ytest-of-hatae/pytest-64/test_imagegen_job_contract_use0/imagegen-job-contract/sources/sources.json: file not found\n') = run_cli('scripts/register_sources.py', '--project', '/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-64/test_imagegen_job_contract_use0/imagegen-job-contract', '--source', '/Volumes/Ha tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스/fixtures/sources/remicon-collision-guide.pptx')
+E        +      where '/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-64/test_imagegen_job_contract_use0/imagegen-job-contract' = str(PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-64/test_imagegen_job_contract_use0/imagegen-job-contract'))
+E        +      and   '/Volumes/Ha tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스/fixtures/sources/remicon-collision-guide.pptx' = str(PosixPath('/Volumes/Ha tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스/fixtures/sources/remicon-collision-guide.pptx'))
+
+tests/test_folder_migration_characterization.py:30: AssertionError
+_______________ test_mvp_happy_path_dry_run_when_project_created _______________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-64/test_mvp_happy_path_dry_run_wh0')
+
+    def test_mvp_happy_path_dry_run_when_project_created(tmp_path: Path) -> None:
+        project = tmp_path / "demo"
+        source = tmp_path / "guide.pptx"
+        source.write_bytes(b"fake pptx")
+    
+        assert run_cli("scripts/init_project.py", "--name", "추락 예방", "--slug", str(project)).returncode == 0
+        handoff = project / "HANDOFF.md"
+        assert handoff.exists()
+        handoff_text = handoff.read_text(encoding="utf-8")
+        assert "AGENTS.md" in handoff_text
+        assert "docs/evaluation-rubrics.md" in handoff_text
+        assert "live Seedance" in handoff_text
+        assert run_cli("scripts/validate_plan.py", str(project / "PLAN.md")).returncode == 0
+>       assert run_cli("scripts/register_sources.py", "--project", str(project), "--source", str(source)).returncode == 0
+E       AssertionError: assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['python3', 'scripts/register_sources.py', '--project', '/private/var/folders/kt/z98_h_917fldpmx...74tfcd40000gn/T/pytest-of-hatae/pytest-64/test_mvp_happy_path_dry_run_wh0/demo/sources/sources.json: file not found\n').returncode
+E        +    where CompletedProcess(args=['python3', 'scripts/register_sources.py', '--project', '/private/var/folders/kt/z98_h_917fldpmx...74tfcd40000gn/T/pytest-of-hatae/pytest-64/test_mvp_happy_path_dry_run_wh0/demo/sources/sources.json: file not found\n') = run_cli('scripts/register_sources.py', '--project', '/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-64/test_mvp_happy_path_dry_run_wh0/demo', '--source', '/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-64/test_mvp_happy_path_dry_run_wh0/guide.pptx')
+E        +      where '/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-64/test_mvp_happy_path_dry_run_wh0/demo' = str(PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-64/test_mvp_happy_path_dry_run_wh0/demo'))
+E        +      and   '/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-64/test_mvp_happy_path_dry_run_wh0/guide.pptx' = str(PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-64/test_mvp_happy_path_dry_run_wh0/guide.pptx'))
+
+tests/test_mvp_flow.py:38: AssertionError
+__________ test_live_generation_blocked_before_gate_when_not_approved __________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-64/test_live_generation_blocked_b0')
+
+    def test_live_generation_blocked_before_gate_when_not_approved(tmp_path: Path) -> None:
+        project = tmp_path / "blocked"
+        assert run_cli("scripts/init_project.py", "--name", "blocked", "--slug", str(project)).returncode == 0
+        assert run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30").returncode == 0
+    
+        image_result = run_cli("scripts/generate_images.py", "--project", str(project), "--live")
+        video_result = run_cli("scripts/generate_seedance.py", "--project", str(project), "--live")
+    
+        assert image_result.returncode != 0
+>       assert "Gate storyboard is not approved" in image_result.stderr
+E       AssertionError: assert 'Gate storyboard is not approved' in 'unreadable JSON state file: /private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-64/test_live_generation_blocked_b0/blocked/approvals.json: file not found\n'
+E        +  where 'unreadable JSON state file: /private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-64/test_live_generation_blocked_b0/blocked/approvals.json: file not found\n' = CompletedProcess(args=['python3', 'scripts/generate_images.py', '--project', '/private/var/folders/kt/z98_h_917fldpmxh...xhd74tfcd40000gn/T/pytest-of-hatae/pytest-64/test_live_generation_blocked_b0/blocked/approvals.json: file not found\n').stderr
+
+tests/test_mvp_flow.py:94: AssertionError
+_______ test_approve_gate_rejects_image_to_video_without_cost_disclosure _______
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-64/test_approve_gate_rejects_imag0')
+
+    def test_approve_gate_rejects_image_to_video_without_cost_disclosure(tmp_path: Path) -> None:
+        project = tmp_path / "gate-cost"
+        assert run_cli("scripts/init_project.py", "--name", "gate", "--slug", str(project)).returncode == 0
+    
+        result = run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "image_to_video")
+    
+        assert result.returncode != 0
+>       assert "cost disclosure" in result.stderr
+E       AssertionError: assert 'cost disclosure' in 'unreadable JSON state file: /private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-64/test_approve_gate_rejects_imag0/gate-cost/approvals.json: file not found\n'
+E        +  where 'unreadable JSON state file: /private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-64/test_approve_gate_rejects_imag0/gate-cost/approvals.json: file not found\n' = CompletedProcess(args=['python3', 'scripts/approve_gate.py', '--project', '/private/var/folders/kt/z98_h_917fldpmxhd74...d74tfcd40000gn/T/pytest-of-hatae/pytest-64/test_approve_gate_rejects_imag0/gate-cost/approvals.json: file not found\n').stderr
+
+tests/test_mvp_flow.py:106: AssertionError
+____ test_live_image_generation_allows_external_upload_disabled_after_gate _____
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-64/test_live_image_generation_all0')
+
+    def test_live_image_generation_allows_external_upload_disabled_after_gate(tmp_path: Path) -> None:
+        project = tmp_path / "upload-blocked"
+        assert run_cli("scripts/init_project.py", "--name", "upload", "--slug", str(project)).returncode == 0
+        assert run_cli("scripts/plan_storyboard.py", "--project", str(project), "--duration", "30").returncode == 0
+>       assert run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard").returncode == 0
+E       AssertionError: assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['python3', 'scripts/approve_gate.py', '--project', '/private/var/folders/kt/z98_h_917fldpmxhd74...cd40000gn/T/pytest-of-hatae/pytest-64/test_live_image_generation_all0/upload-blocked/approvals.json: file not found\n').returncode
+E        +    where CompletedProcess(args=['python3', 'scripts/approve_gate.py', '--project', '/private/var/folders/kt/z98_h_917fldpmxhd74...cd40000gn/T/pytest-of-hatae/pytest-64/test_live_image_generation_all0/upload-blocked/approvals.json: file not found\n') = run_cli('scripts/approve_gate.py', '--project', '/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-64/test_live_image_generation_all0/upload-blocked', '--gate', 'storyboard')
+E        +      where '/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-64/test_live_image_generation_all0/upload-blocked' = str(PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-64/test_live_image_generation_all0/upload-blocked'))
+
+tests/test_mvp_flow.py:113: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_layout.py::test_layout_old_aliases_cover_existing_project_dirs
+FAILED tests/test_folder_migration_characterization.py::test_root_script_project_init_creates_current_layout_when_called_directly
+FAILED tests/test_folder_migration_characterization.py::test_imagegen_job_contract_uses_current_old_project_paths
+FAILED tests/test_mvp_flow.py::test_mvp_happy_path_dry_run_when_project_created
+FAILED tests/test_mvp_flow.py::test_live_generation_blocked_before_gate_when_not_approved
+FAILED tests/test_mvp_flow.py::test_approve_gate_rejects_image_to_video_without_cost_disclosure
+FAILED tests/test_mvp_flow.py::test_live_image_generation_allows_external_upload_disabled_after_gate
+========================= 7 failed, 7 passed in 0.80s ==========================

@@ -1,0 +1,10 @@
+{
+  "role": "technical",
+  "scores": {
+    "technical": 0
+  },
+  "blocking_issues": [
+    "missing draft image"
+  ],
+  "execution_mode": "parallel_role_evaluator"
+}

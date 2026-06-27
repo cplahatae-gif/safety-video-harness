@@ -24,7 +24,7 @@ def load_json(path: Path) -> dict:
 
 def test_video_qa_blocks_when_clip_folder_is_empty(tmp_path: Path) -> None:
     project = tmp_path / "empty-video"
-    (project / "video" / "clips").mkdir(parents=True)
+    (project / "media" / "video" / "clips").mkdir(parents=True)
 
     result = run_cli("scripts/validate_video.py", "--project", str(project), "--expected-clips", "2")
 
@@ -39,7 +39,7 @@ def test_video_qa_blocks_when_clip_folder_is_empty(tmp_path: Path) -> None:
 
 def test_video_qa_scores_existing_clips(tmp_path: Path) -> None:
     project = tmp_path / "video-ok"
-    clips = project / "video" / "clips"
+    clips = project / "media" / "video" / "clips"
     clips.mkdir(parents=True)
     source = ROOT / "projects" / "remicon-collision-guide" / "video" / "clips" / "sc01_sc02_seedance.mp4"
     if not source.exists():
@@ -54,7 +54,7 @@ def test_video_qa_scores_existing_clips(tmp_path: Path) -> None:
 
 def test_video_qa_blocks_visual_review_findings(tmp_path: Path) -> None:
     project = tmp_path / "video-blocked"
-    clips = project / "video" / "clips"
+    clips = project / "media" / "video" / "clips"
     clips.mkdir(parents=True)
     source = ROOT / "projects" / "remicon-collision-guide" / "video" / "clips" / "sc01_sc02_seedance.mp4"
     if not source.exists():
@@ -89,7 +89,7 @@ def test_video_qa_blocks_visual_review_findings(tmp_path: Path) -> None:
     review = report["reviews"][0]
     assert review["rubric_source"] == "docs/evaluation-rubrics.md"
     assert review["few_shot_source"] == "docs/few-shot-examples.md"
-    assert review["artifact_path"].endswith("video/clips/sc01_sc02_seedance.mp4")
+    assert review["artifact_path"].endswith("media/video/clips/sc01_sc02_seedance.mp4")
     assert review["blocker_categories"]
     assert "Do not regenerate automatically" in review["regeneration_delta"]
     assert "person appears or disappears without motivation" in json.dumps(report, ensure_ascii=False)
@@ -97,13 +97,13 @@ def test_video_qa_blocks_visual_review_findings(tmp_path: Path) -> None:
 
 def test_video_qa_passes_with_clean_visual_review(tmp_path: Path) -> None:
     project = tmp_path / "video-ok"
-    clips = project / "video" / "clips"
+    clips = project / "media" / "video" / "clips"
     clips.mkdir(parents=True)
     source = ROOT / "projects" / "remicon-collision-guide" / "video" / "clips" / "sc01_sc02_seedance.mp4"
     if not source.exists():
         return
     (clips / "sc01_sc02_seedance.mp4").write_bytes(source.read_bytes())
-    inspection = project / "video" / "inspection" / "sc01_sc02_seedance"
+    inspection = project / "media" / "video" / "inspection" / "sc01_sc02_seedance"
     inspection.mkdir(parents=True)
     for index in range(1, 4):
         (inspection / f"frame_{index:02d}.jpg").write_bytes(b"fake-frame")
@@ -111,7 +111,7 @@ def test_video_qa_passes_with_clean_visual_review(tmp_path: Path) -> None:
     manifest.write_text(
         json.dumps(
             {
-                "clip": "video/clips/sc01_sc02_seedance.mp4",
+                "clip": "media/video/clips/sc01_sc02_seedance.mp4",
                 "tool": "video-frame-analysis",
                 "transcript_enabled": False,
                 "ocr_lang": "kor+eng",
@@ -141,7 +141,7 @@ def test_video_qa_passes_with_clean_visual_review(tmp_path: Path) -> None:
                         "gaze_motivation_score": 5,
                         "education_clarity_score": 5,
                         "storyboard_alignment_score": 5,
-                        "inspection_manifest": "video/inspection/sc01_sc02_seedance/manifest.json",
+                        "inspection_manifest": "media/video/inspection/sc01_sc02_seedance/manifest.json",
                         "blocking_issues": [],
                     }
                 ]
@@ -179,7 +179,7 @@ def test_video_qa_passes_with_clean_visual_review(tmp_path: Path) -> None:
 
 def test_video_qa_requires_inspection_manifest(tmp_path: Path) -> None:
     project = tmp_path / "video-no-inspection"
-    clips = project / "video" / "clips"
+    clips = project / "media" / "video" / "clips"
     clips.mkdir(parents=True)
     source = ROOT / "projects" / "remicon-collision-guide" / "video" / "clips" / "sc01_sc02_seedance.mp4"
     if not source.exists():
@@ -214,21 +214,21 @@ def test_video_qa_requires_inspection_manifest(tmp_path: Path) -> None:
 
 def test_video_qa_can_validate_one_named_clip(tmp_path: Path) -> None:
     project = tmp_path / "video-one-clip"
-    clips = project / "video" / "clips"
+    clips = project / "media" / "video" / "clips"
     clips.mkdir(parents=True)
     source = ROOT / "projects" / "remicon-collision-guide" / "video" / "clips" / "sc01_sc02_seedance.mp4"
     if not source.exists():
         return
     (clips / "accepted.mp4").write_bytes(source.read_bytes())
     (clips / "blocked.mp4").write_bytes(source.read_bytes())
-    inspection = project / "video" / "inspection" / "accepted"
+    inspection = project / "media" / "video" / "inspection" / "accepted"
     inspection.mkdir(parents=True)
     for index in range(1, 4):
         (inspection / f"frame_{index:02d}.jpg").write_bytes(b"fake-frame")
     (inspection / "manifest.json").write_text(
         json.dumps(
             {
-                "clip": "video/clips/accepted.mp4",
+                "clip": "media/video/clips/accepted.mp4",
                 "tool": "video-frame-analysis",
                 "transcript_enabled": False,
                 "ocr_lang": "kor+eng",
@@ -249,7 +249,7 @@ def test_video_qa_can_validate_one_named_clip(tmp_path: Path) -> None:
                 "reviews": [
                     {
                         "clip": "accepted.mp4",
-                        "inspection_manifest": "video/inspection/accepted/manifest.json",
+                        "inspection_manifest": "media/video/inspection/accepted/manifest.json",
                         "character_continuity_score": 5,
                         "gaze_motivation_score": 5,
                         "education_clarity_score": 5,
@@ -296,17 +296,17 @@ def test_video_qa_accepts_10_second_validation_clip_when_present(tmp_path: Path)
     if not source.exists():
         return
     project = tmp_path / "video-10s"
-    clips = project / "video" / "clips"
+    clips = project / "media" / "video" / "clips"
     clips.mkdir(parents=True)
     (clips / source.name).write_bytes(source.read_bytes())
-    inspection = project / "video" / "inspection" / source.stem
+    inspection = project / "media" / "video" / "inspection" / source.stem
     inspection.mkdir(parents=True)
     for index in range(1, 4):
         (inspection / f"frame_{index:02d}.jpg").write_bytes(b"fake-frame")
     (inspection / "manifest.json").write_text(
         json.dumps(
             {
-                "clip": f"video/clips/{source.name}",
+                "clip": f"media/video/clips/{source.name}",
                 "tool": "video-frame-analysis",
                 "transcript_enabled": False,
                 "ocr_lang": "kor+eng",
@@ -327,7 +327,7 @@ def test_video_qa_accepts_10_second_validation_clip_when_present(tmp_path: Path)
                 "reviews": [
                     {
                         "clip": source.name,
-                        "inspection_manifest": f"video/inspection/{source.stem}/manifest.json",
+                        "inspection_manifest": f"media/video/inspection/{source.stem}/manifest.json",
                         "character_continuity_score": 4,
                         "gaze_motivation_score": 4,
                         "education_clarity_score": 4,

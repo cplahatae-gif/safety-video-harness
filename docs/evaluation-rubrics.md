@@ -9,11 +9,11 @@ This document defines local scoring standards for the safety video harness. Use 
 Before running or simulating any agent or skill, read:
 
 1. `AGENTS.md`
-2. the selected `agents/<agent-id>/AGENT.md` or `skills/<skill-id>/SKILL.md`
+2. the selected `app/plugin/agents/<agent-id>/AGENT.md` or `app/plugin/skills/<skill-id>/SKILL.md`
 3. that package's `references/*.md`
 4. this rubric when scoring storyboards, images, or video
 
-If the work uses a style guide, also read `style-guides/<style-id>/STYLE_GUIDE.md`.
+If the work uses a style guide, also read `references/style/<style-id>/STYLE_GUIDE.md`.
 
 ## Score Scale
 

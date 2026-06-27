@@ -68,14 +68,14 @@ For each intended clip, write a job spec before any live action:
   "mode": "image_to_video",
   "duration_seconds": 5,
   "aspect_ratio": "16:9",
-  "start_keyframe": "images/approved/sc03.png",
-  "end_keyframe": "images/approved/sc04.png",
-  "prompt_path": "video_prompts/sc03_to_sc04.md",
+  "start_keyframe": "media/images/approved/sc03.png",
+  "end_keyframe": "media/images/approved/sc04.png",
+  "prompt_path": "story/video_prompts.json",
   "reference_media_pack": [
-    "model/cast/signal-worker.png",
-    "product/equipment/bct-truck.png",
-    "ref/approved/space/plant-entry.png",
-    "ref/approved/style/webtoon-style.png"
+    "refs/people/signal-worker.png",
+    "refs/equipment/bct-truck.png",
+    "refs/approved/spaces/plant-entry.png",
+    "refs/approved/style/webtoon-style.png"
   ],
   "cost_estimate_required": true,
   "gate_required": "image_to_video",

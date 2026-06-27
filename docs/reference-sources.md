@@ -27,14 +27,14 @@ Checked: 2026-06-12
 - Seedance expert skill: `$CODEX_HOME/skills/seedance-expert/SKILL.md`
 - Video frame analysis skill: `$CODEX_HOME/skills/video-frame-analysis/SKILL.md`
 - Understand video skill: `$CODEX_HOME/skills/understand-video/SKILL.md`
-- Style guide catalog: `style-guides/README.md`
-- Current webtoon style: `style-guides/korean-industrial-webtoon/STYLE_GUIDE.md`
+- Style guide catalog: `references/style/README.md`
+- Current webtoon style: `references/style/korean-industrial-webtoon/STYLE_GUIDE.md`
 - Image prompt rules: `docs/imagegen-prompting-references.md`
 
 ## Package Summary Locations
 
-- Agent operating references: `agents/<agent-id>/references/*.md`
-- Skill operating references: `skills/<skill-id>/references/*.md`
+- Agent operating references: `app/plugin/agents/<agent-id>/references/*.md`
+- Skill operating references: `app/plugin/skills/<skill-id>/references/*.md`
 - Evaluation rubrics: `docs/evaluation-rubrics.md`
 - Few-shot examples: `docs/few-shot-examples.md`
 - Higgsfield/Seedance operating reference: `docs/higgsfield-seedance-local-reference.md`

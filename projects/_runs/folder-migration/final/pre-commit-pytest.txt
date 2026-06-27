@@ -1,0 +1,37 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.4, pytest-9.0.3, pluggy-1.6.0
+rootdir: /Volumes/Ha tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스
+configfile: pyproject.toml
+testpaths: tests
+collected 141 items
+
+tests/test_docs_folder_structure.py .                                    [  0%]
+tests/test_evaluation_arbiter.py .....                                   [  4%]
+tests/test_evaluation_round_wiki_memory.py ..                            [  5%]
+tests/test_folder_migration_characterization.py .......                  [ 10%]
+tests/test_harness_move.py ...                                           [ 12%]
+tests/test_hook_guardrails.py .........                                  [ 19%]
+tests/test_image_ralph_loop.py .......                                   [ 24%]
+tests/test_layout.py ....                                                [ 26%]
+tests/test_mvp_flow.py ......                                            [ 31%]
+tests/test_no_narration_contract.py ..                                   [ 32%]
+tests/test_omo_ralph_orchestrator.py ..                                  [ 34%]
+tests/test_plugin_structure.py ............                              [ 42%]
+tests/test_project_migration.py .....                                    [ 46%]
+tests/test_remicon_fixture_flow.py ....                                  [ 48%]
+tests/test_review_regressions.py ................                        [ 60%]
+tests/test_roadmap_bundle1.py ..........                                 [ 67%]
+tests/test_roadmap_bundle2.py ...........                                [ 75%]
+tests/test_seedance_live_guardrails.py ........                          [ 80%]
+tests/test_seedance_prompt_contract.py .                                 [ 81%]
+tests/test_story_flow_quality.py ...                                     [ 83%]
+tests/test_storyboard_density.py ..                                      [ 85%]
+tests/test_storyboard_quality.py ...                                     [ 87%]
+tests/test_style_guides.py ....                                          [ 90%]
+tests/test_subtitle_contract.py .                                        [ 90%]
+tests/test_tools.py .                                                    [ 91%]
+tests/test_video_inspection.py ..                                        [ 92%]
+tests/test_video_qa.py .......                                           [ 97%]
+tests/test_video_regeneration_proposals.py ...                           [100%]
+
+============================= 141 passed in 21.64s =============================

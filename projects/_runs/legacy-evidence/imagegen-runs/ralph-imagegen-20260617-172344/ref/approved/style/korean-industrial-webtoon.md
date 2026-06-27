@@ -1,0 +1,1 @@
+style lock: precision Korean industrial webtoon safety illustration, clean line art, restrained cel shading, stable educational composition

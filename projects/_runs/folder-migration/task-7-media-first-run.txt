@@ -1,0 +1,329 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.4, pytest-9.0.3, pluggy-1.6.0
+rootdir: /Volumes/Ha tae/작업공간/10_프로젝트/안전영상 제작/테스트_코덱스
+configfile: pyproject.toml
+collected 42 items
+
+tests/test_mvp_flow.py ......                                            [ 14%]
+tests/test_roadmap_bundle2.py ....F......                                [ 40%]
+tests/test_seedance_live_guardrails.py ....F...                          [ 59%]
+tests/test_video_regeneration_proposals.py F..                           [ 66%]
+tests/test_subtitle_contract.py F                                        [ 69%]
+tests/test_storyboard_quality.py FFF                                     [ 76%]
+tests/test_image_ralph_loop.py F.....F                                   [ 92%]
+tests/test_roadmap_bundle1.py ..F                                        [100%]
+
+=================================== FAILURES ===================================
+_________________ test_imagegen_jobs_include_asset_lock_policy _________________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-78/test_imagegen_jobs_include_ass0')
+
+    def test_imagegen_jobs_include_asset_lock_policy(tmp_path: Path) -> None:
+        project = tmp_path / "imagegen-asset-lock"
+        prepare_storyboard_project(project)
+        add_asset_lock_references(project)
+        assert run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard").returncode == 0
+        allow_upload(project)
+    
+        result = run_cli("scripts/generate_images.py", "--project", str(project), "--live", "--only", "sc01")
+    
+        assert result.returncode == 0
+        jobs = load_json(project / "story" / "imagegen_jobs.json")
+        job = jobs["jobs"][0]
+>       assert job["asset_lock"]["status"] == "production_locked"
+E       AssertionError: assert 'draft_exploration_only' == 'production_locked'
+E         
+E         - production_locked
+E         + draft_exploration_only
+
+tests/test_roadmap_bundle2.py:157: AssertionError
+_______ test_seedance_plan_includes_reference_media_pack_when_available ________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-78/test_seedance_plan_includes_re0')
+
+    def test_seedance_plan_includes_reference_media_pack_when_available(tmp_path: Path) -> None:
+        project = tmp_path / "seedance-reference-pack"
+        prepare_project(project)
+        add_seedance_reference_pack(project)
+        assert run_cli("scripts/generate_seedance.py", "--project", str(project), "--dry-run").returncode == 0
+        approve_video_gate_for_plan(project)
+    
+        result = run_cli(
+            "scripts/generate_seedance.py",
+            "--project",
+            str(project),
+            "--live",
+            "--execute-paid",
+            "--test-seconds",
+            "10",
+            "--plan-only",
+        )
+    
+        assert result.returncode == 0
+        plan = load_json(project / "media" / "video" / "seedance_live_plan.json")
+        job = plan["jobs"][0]
+>       assert len(job["reference_media_pack"]) == 3
+E       assert 0 == 3
+E        +  where 0 = len([])
+
+tests/test_seedance_live_guardrails.py:172: AssertionError
+______________ test_assembly_plan_is_written_from_existing_clips _______________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-78/test_assembly_plan_is_written_0')
+
+    def test_assembly_plan_is_written_from_existing_clips(tmp_path: Path) -> None:
+        project = tmp_path / "assembly"
+        clips = project / "media" / "video" / "clips"
+        clips.mkdir(parents=True)
+        (clips / "sc01_sc02.mp4").write_bytes(b"fake")
+        (clips / "sc02_sc03.mp4").write_bytes(b"fake")
+    
+        result = run_cli("scripts/assemble_video.py", "--project", str(project), "--dry-run")
+    
+        assert result.returncode == 0
+>       plan = load_json(project / "video" / "final" / "assembly_plan.json")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_video_regeneration_proposals.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_video_regeneration_proposals.py:12: in load_json
+    return json.loads(path.read_text(encoding="utf-8"))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:787: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-78/test_assembly_plan_is_written_0/assembly/video/final/assembly_plan.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-78/test_assembly_plan_is_written_0/assembly/video/final/assembly_plan.json'
+
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:771: FileNotFoundError
+_______________ test_subtitle_plan_generates_srt_from_storyboard _______________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-78/test_subtitle_plan_generates_s0')
+
+    def test_subtitle_plan_generates_srt_from_storyboard(tmp_path: Path) -> None:
+        project = tmp_path / "subtitle-plan"
+        prepare_project(project)
+    
+        result = run_cli("scripts/plan_subtitles.py", "--project", str(project), "--dry-run")
+    
+        assert result.returncode == 0
+>       srt = (project / "subtitles" / "subtitles.srt").read_text(encoding="utf-8")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_subtitle_contract.py:37: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:787: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-78/test_subtitle_plan_generates_s0/subtitle-plan/subtitles/subtitles.srt')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-78/test_subtitle_plan_generates_s0/subtitle-plan/subtitles/subtitles.srt'
+
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:771: FileNotFoundError
+_______________ test_storyboard_quality_passes_complete_fixture ________________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-78/test_storyboard_quality_passes0')
+
+    def test_storyboard_quality_passes_complete_fixture(tmp_path: Path) -> None:
+        project = tmp_path / "storyboard-quality"
+        prepare_project(project)
+    
+        result = run_cli("scripts/evaluate_storyboard.py", "--project", str(project))
+    
+        assert result.returncode == 0
+        report = json.loads((project / "qa" / "storyboard_quality_reviews.json").read_text(encoding="utf-8"))
+        assert report["passed"] is True
+        assert report["rubric_source"] == "docs/evaluation-rubrics.md"
+        assert report["few_shot_source"] == "docs/few-shot-examples.md"
+        assert report["thresholds"]["minimum_total_score"] == 20
+        assert report["reviews"][0]["criteria"]["source_grounding_score"] >= 4
+        assert report["reviews"][0]["rubric_source"] == "docs/evaluation-rubrics.md"
+>       assert report["reviews"][0]["artifact_path"] == "storyboard/scenes.json#sc01"
+E       AssertionError: assert 'story/scenes.json#sc01' == 'storyboard/scenes.json#sc01'
+E         
+E         - storyboard/scenes.json#sc01
+E         ?      -----
+E         + story/scenes.json#sc01
+
+tests/test_storyboard_quality.py:45: AssertionError
+_______________ test_storyboard_quality_blocks_missing_citations _______________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-78/test_storyboard_quality_blocks0')
+
+    def test_storyboard_quality_blocks_missing_citations(tmp_path: Path) -> None:
+        project = tmp_path / "storyboard-quality-block"
+        prepare_project(project)
+        path = project / "storyboard" / "scenes.json"
+>       payload = json.loads(path.read_text(encoding="utf-8"))
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_storyboard_quality.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:787: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-78/test_storyboard_quality_blocks0/storyboard-quality-block/storyboard/scenes.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-78/test_storyboard_quality_blocks0/storyboard-quality-block/storyboard/scenes.json'
+
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:771: FileNotFoundError
+_____________ test_storyboard_gate_requires_passing_storyboard_qa ______________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-78/test_storyboard_gate_requires_0')
+
+    def test_storyboard_gate_requires_passing_storyboard_qa(tmp_path: Path) -> None:
+        project = tmp_path / "storyboard-gate-qa"
+        prepare_project(project)
+        path = project / "storyboard" / "scenes.json"
+>       scenes = json.loads(path.read_text(encoding="utf-8"))
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_storyboard_quality.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:787: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-78/test_storyboard_gate_requires_0/storyboard-gate-qa/storyboard/scenes.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-78/test_storyboard_gate_requires_0/storyboard-gate-qa/storyboard/scenes.json'
+
+/Users/hatae/.local/share/uv/python/cpython-3.14.4-macos-aarch64-none/lib/python3.14/pathlib/__init__.py:771: FileNotFoundError
+_____________ test_image_qa_writes_ralph_loop_regeneration_prompts _____________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-78/test_image_qa_writes_ralph_loo0')
+
+    def test_image_qa_writes_ralph_loop_regeneration_prompts(tmp_path: Path) -> None:
+        project = tmp_path / "image-ralph"
+        prepare_project(project)
+    
+        result = run_cli("scripts/validate_images.py", "--project", str(project), "--only", "sc01")
+    
+        assert result.returncode == 0
+        loop = json.loads((project / "qa" / "image_qa_loop.json").read_text(encoding="utf-8"))
+        assert loop["ralph_loop"]["status"] == "needs_regeneration"
+        assert loop["ralph_loop"]["max_iterations"] == 20
+        assert loop["ralph_loop"]["current_iterations"]["sc01"] == 1
+        assert loop["ralph_loop"]["remaining_iterations"]["sc01"] == 19
+        assert loop["ralph_loop"]["blocked_scenes"][0]["scene_id"] == "sc01"
+        assert "missing draft image" in loop["ralph_loop"]["blocked_scenes"][0]["deficiencies"]
+        assert "RALPH critique for sc01" in loop["ralph_loop"]["blocked_scenes"][0]["regeneration_prompt"]
+        assert "Quality pressure" in loop["ralph_loop"]["blocked_scenes"][0]["regeneration_prompt"]
+        review = loop["reviews"][0]
+        assert review["rubric_source"] == "docs/evaluation-rubrics.md"
+        assert review["few_shot_source"] == "docs/few-shot-examples.md"
+>       assert review["artifact_path"] == "media/images/draft/sc01_v*.png"
+E       AssertionError: assert 'images/draft/sc01_v*.png' == 'media/images...t/sc01_v*.png'
+E         
+E         - media/images/draft/sc01_v*.png
+E         ? ------
+E         + images/draft/sc01_v*.png
+
+tests/test_image_ralph_loop.py:86: AssertionError
+___ test_build_image_visual_review_writes_contact_sheet_and_review_contract ____
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-78/test_build_image_visual_review0')
+
+    def test_build_image_visual_review_writes_contact_sheet_and_review_contract(tmp_path: Path) -> None:
+        project = tmp_path / "image-visual-review"
+        prepare_project(project)
+        add_asset_lock_references(project)
+        draft = project / "media" / "images" / "draft" / "sc01_v001.png"
+        draft.parent.mkdir(parents=True, exist_ok=True)
+        Image.new("RGB", (1600, 900), color=(120, 140, 160)).save(draft)
+    
+        result = run_cli(
+            "scripts/build_image_visual_review.py",
+            "--project",
+            str(project),
+            "--only",
+            "sc01",
+            "--write-review",
+        )
+    
+>       assert result.returncode == 0
+E       AssertionError: assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['python3', 'scripts/build_image_visual_review.py', '--project', '/private/var/folders/kt/z98_h_...ytest-of-hatae/pytest-78/test_build_image_visual_review0/image-visual-review/storyboard/scenes.json: file not found\n').returncode
+
+tests/test_image_ralph_loop.py:217: AssertionError
+_______________ test_approval_write_respects_single_writer_lock ________________
+
+tmp_path = PosixPath('/private/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/pytest-of-hatae/pytest-78/test_approval_write_respects_s0')
+
+    def test_approval_write_respects_single_writer_lock(tmp_path: Path) -> None:
+        project = tmp_path / "locked"
+        assert run_cli("scripts/init_project.py", "--name", "locked", "--slug", str(project)).returncode == 0
+        (project / "approvals.json.lock").write_text("held by test\n", encoding="utf-8")
+    
+        result = run_cli("scripts/approve_gate.py", "--project", str(project), "--gate", "storyboard")
+    
+        assert result.returncode != 0
+>       assert "lock is held" in result.stderr
+E       AssertionError: assert 'lock is held' in 'story/scenes.json is missing\n'
+E        +  where 'story/scenes.json is missing\n' = CompletedProcess(args=['python3', 'scripts/approve_gate.py', '--project', '/private/var/folders/kt/z98_h_917fldpmxhd74...l_write_respects_s0/locked', '--gate', 'storyboard'], returncode=1, stdout='', stderr='story/scenes.json is missing\n').stderr
+
+tests/test_roadmap_bundle1.py:304: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_roadmap_bundle2.py::test_imagegen_jobs_include_asset_lock_policy
+FAILED tests/test_seedance_live_guardrails.py::test_seedance_plan_includes_reference_media_pack_when_available
+FAILED tests/test_video_regeneration_proposals.py::test_assembly_plan_is_written_from_existing_clips
+FAILED tests/test_subtitle_contract.py::test_subtitle_plan_generates_srt_from_storyboard
+FAILED tests/test_storyboard_quality.py::test_storyboard_quality_passes_complete_fixture
+FAILED tests/test_storyboard_quality.py::test_storyboard_quality_blocks_missing_citations
+FAILED tests/test_storyboard_quality.py::test_storyboard_gate_requires_passing_storyboard_qa
+FAILED tests/test_image_ralph_loop.py::test_image_qa_writes_ralph_loop_regeneration_prompts
+FAILED tests/test_image_ralph_loop.py::test_build_image_visual_review_writes_contact_sheet_and_review_contract
+FAILED tests/test_roadmap_bundle1.py::test_approval_write_respects_single_writer_lock
+======================== 10 failed, 32 passed in 12.20s ========================

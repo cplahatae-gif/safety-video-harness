@@ -1,0 +1,140 @@
+{
+  "stage": "image",
+  "item_id": "sc07",
+  "round": 3,
+  "iteration": 3,
+  "decision": "regenerate",
+  "role_reviews": [
+    {
+      "role": "technical",
+      "scores": {
+        "technical": 5
+      },
+      "blocking_issues": [
+        "manual visual consistency review is required before image approval: score floor/lane, background, character identity, vehicle geometry, and hazard-zone consistency",
+        "floor_lane_consistency_score below minimum 4: 0",
+        "background_consistency_score below minimum 4: 0",
+        "character_identity_lock_score below minimum 4: 0",
+        "vehicle_geometry_lock_score below minimum 4: 0",
+        "hazard_zone_consistency_score below minimum 4: 0",
+        "total score below minimum 44: 30"
+      ],
+      "execution_mode": "parallel_role_evaluator"
+    },
+    {
+      "role": "visual_continuity",
+      "scores": {
+        "identity_consistency": 5,
+        "ppe": 5,
+        "equipment": 5
+      },
+      "blocking_issues": [
+        "manual visual consistency review is required before image approval: score floor/lane, background, character identity, vehicle geometry, and hazard-zone consistency",
+        "floor_lane_consistency_score below minimum 4: 0",
+        "background_consistency_score below minimum 4: 0",
+        "character_identity_lock_score below minimum 4: 0",
+        "vehicle_geometry_lock_score below minimum 4: 0",
+        "hazard_zone_consistency_score below minimum 4: 0",
+        "total score below minimum 44: 30"
+      ],
+      "execution_mode": "parallel_role_evaluator"
+    },
+    {
+      "role": "story_match",
+      "scores": {
+        "story_match": 5,
+        "story_flow": 5
+      },
+      "blocking_issues": [
+        "manual visual consistency review is required before image approval: score floor/lane, background, character identity, vehicle geometry, and hazard-zone consistency",
+        "floor_lane_consistency_score below minimum 4: 0",
+        "background_consistency_score below minimum 4: 0",
+        "character_identity_lock_score below minimum 4: 0",
+        "vehicle_geometry_lock_score below minimum 4: 0",
+        "hazard_zone_consistency_score below minimum 4: 0",
+        "total score below minimum 44: 30"
+      ],
+      "execution_mode": "parallel_role_evaluator"
+    },
+    {
+      "role": "safety_education",
+      "scores": {
+        "safety": 5
+      },
+      "blocking_issues": [
+        "manual visual consistency review is required before image approval: score floor/lane, background, character identity, vehicle geometry, and hazard-zone consistency",
+        "floor_lane_consistency_score below minimum 4: 0",
+        "background_consistency_score below minimum 4: 0",
+        "character_identity_lock_score below minimum 4: 0",
+        "vehicle_geometry_lock_score below minimum 4: 0",
+        "hazard_zone_consistency_score below minimum 4: 0",
+        "total score below minimum 44: 30"
+      ],
+      "critical_blockers": [],
+      "execution_mode": "parallel_role_evaluator"
+    },
+    {
+      "role": "devils_advocate",
+      "scores": {
+        "risk": 2
+      },
+      "blocking_issues": [
+        "manual visual consistency review is required before image approval: score floor/lane, background, character identity, vehicle geometry, and hazard-zone consistency",
+        "floor_lane_consistency_score below minimum 4: 0",
+        "background_consistency_score below minimum 4: 0",
+        "character_identity_lock_score below minimum 4: 0",
+        "vehicle_geometry_lock_score below minimum 4: 0",
+        "hazard_zone_consistency_score below minimum 4: 0",
+        "total score below minimum 44: 30"
+      ],
+      "critical_blockers": [],
+      "vote": "reject",
+      "execution_mode": "parallel_role_evaluator"
+    }
+  ],
+  "scores": {
+    "technical": 5,
+    "identity_consistency": 5,
+    "ppe": 5,
+    "equipment": 5,
+    "story_match": 5,
+    "story_flow": 5,
+    "safety": 5,
+    "risk": 2
+  },
+  "blocking_issues": [
+    "manual visual consistency review is required before image approval: score floor/lane, background, character identity, vehicle geometry, and hazard-zone consistency",
+    "floor_lane_consistency_score below minimum 4: 0",
+    "background_consistency_score below minimum 4: 0",
+    "character_identity_lock_score below minimum 4: 0",
+    "vehicle_geometry_lock_score below minimum 4: 0",
+    "hazard_zone_consistency_score below minimum 4: 0",
+    "total score below minimum 44: 30"
+  ],
+  "blocker_signatures": [
+    "image:sc07:identity_consistency:manual_visual_consistency_review_is_required_before_image_approval_score_floor_l",
+    "image:sc07:general:floor_lane_consistency_score_below_minimum_4_0",
+    "image:sc07:general:background_consistency_score_below_minimum_4_0",
+    "image:sc07:identity_consistency:character_identity_lock_score_below_minimum_4_0",
+    "image:sc07:general:vehicle_geometry_lock_score_below_minimum_4_0",
+    "image:sc07:general:hazard_zone_consistency_score_below_minimum_4_0",
+    "image:sc07:general:total_score_below_minimum_44_30"
+  ],
+  "repeated_blockers": [],
+  "critical_vetoes": [],
+  "consensus": {
+    "rule": "5/5 approve or 4/5 approve plus conditional; critical veto overrides majority",
+    "total_roles": 5,
+    "approve_count": 0,
+    "conditional_count": 0,
+    "reject_count": 5,
+    "critical_vetoes": [],
+    "rule_result": "rejected"
+  },
+  "debate_required": false,
+  "debate_triggers": [],
+  "repeated_blocker_threshold": 3,
+  "next_action": "regenerate_blocked_scenes",
+  "regeneration_delta": "Regenerate only after directly addressing these visible deficiencies: manual visual consistency review is required before image approval: score floor/lane, background, character identity, vehicle geometry, and hazard-zone consistency; floor_lane_consistency_score below minimum 4: 0; background_consistency_score below minimum 4: 0; character_identity_lock_score below minimum 4: 0; vehicle_geometry_lock_score below minimum 4: 0; hazard_zone_consistency_score below minimum 4: 0; total score below minimum 44: 30. Preserve approved continuity locks.",
+  "evidence_bundle": "qa/evaluation_bundles/image/sc07/round_003.json"
+}

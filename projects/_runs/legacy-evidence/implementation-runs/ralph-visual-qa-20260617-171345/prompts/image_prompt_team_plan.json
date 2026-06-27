@@ -1,0 +1,248 @@
+{
+  "schema_version": "1.0",
+  "purpose": "pre-image-generation production team plan",
+  "style_guide_id": "korean-industrial-webtoon",
+  "agent_team": {
+    "lead_style_agent": {
+      "agent_file": "agents/lead-style-agent/AGENT.md",
+      "mission": "turn sc01 into style, character, vehicle, space, camera, rendering, and negative bibles",
+      "style_guide_id": "korean-industrial-webtoon",
+      "output_contract": [
+        "character_bible",
+        "vehicle_bible",
+        "space_bible",
+        "camera_bible",
+        "rendering_bible",
+        "negative_bible"
+      ],
+      "hard_locks": [
+        "same worker/signal/supervisor PPE colors",
+        "same white BCT and yellow dump truck silhouettes",
+        "same green pedestrian route and red/orange hazard zone",
+        "same precision industrial webtoon linework and cel shading"
+      ]
+    },
+    "scene_prompt_agents": [
+      {
+        "scene_id": "sc01",
+        "agent_file": "agents/scene-prompt-agent/AGENT.md",
+        "scene_role": "keyframe 1 of 6",
+        "current_action": "레미콘 사업장 입구에서 BCT와 덤프트럭 동선이 분리되어 표시된다.",
+        "previous_continuity": "opening frame",
+        "next_setup": "prepare the next prevention beat without a visual jump",
+        "visible_cast_rule": "include only people needed to explain the current safety action",
+        "gaze_rule": "every visible person must look at a visible hazard, signal, route, mirror, or camera display",
+        "must_preserve": [
+          "selected reusable style guide",
+          "lead style bible",
+          "same PPE colors",
+          "same BCT and dump truck identity",
+          "same plant entrance and lane layout",
+          "previous and next scene continuity"
+        ],
+        "must_avoid": [
+          "standalone poster composition",
+          "unmotivated gaze",
+          "random extra workers",
+          "sudden person disappearance",
+          "readable generated text",
+          "logos, collision impact, injury, or gore"
+        ]
+      },
+      {
+        "scene_id": "sc02",
+        "agent_file": "agents/scene-prompt-agent/AGENT.md",
+        "scene_role": "keyframe 2 of 6",
+        "current_action": "덤프트럭 후진 경로 옆 사각지대에 보행자 접근 금지 표시가 보인다.",
+        "previous_continuity": "continue directly from the prior keyframe",
+        "next_setup": "prepare the next prevention beat without a visual jump",
+        "visible_cast_rule": "include only people needed to explain the current safety action",
+        "gaze_rule": "every visible person must look at a visible hazard, signal, route, mirror, or camera display",
+        "must_preserve": [
+          "selected reusable style guide",
+          "lead style bible",
+          "same PPE colors",
+          "same BCT and dump truck identity",
+          "same plant entrance and lane layout",
+          "previous and next scene continuity"
+        ],
+        "must_avoid": [
+          "standalone poster composition",
+          "unmotivated gaze",
+          "random extra workers",
+          "sudden person disappearance",
+          "readable generated text",
+          "logos, collision impact, injury, or gore"
+        ]
+      },
+      {
+        "scene_id": "sc03",
+        "agent_file": "agents/scene-prompt-agent/AGENT.md",
+        "scene_role": "keyframe 3 of 6",
+        "current_action": "신호수가 신호봉과 무전기로 BCT 운전원에게 정지 신호를 보낸다.",
+        "previous_continuity": "continue directly from the prior keyframe",
+        "next_setup": "prepare the next prevention beat without a visual jump",
+        "visible_cast_rule": "include only people needed to explain the current safety action",
+        "gaze_rule": "every visible person must look at a visible hazard, signal, route, mirror, or camera display",
+        "must_preserve": [
+          "selected reusable style guide",
+          "lead style bible",
+          "same PPE colors",
+          "same BCT and dump truck identity",
+          "same plant entrance and lane layout",
+          "previous and next scene continuity"
+        ],
+        "must_avoid": [
+          "standalone poster composition",
+          "unmotivated gaze",
+          "random extra workers",
+          "sudden person disappearance",
+          "readable generated text",
+          "logos, collision impact, injury, or gore"
+        ]
+      },
+      {
+        "scene_id": "sc04",
+        "agent_file": "agents/scene-prompt-agent/AGENT.md",
+        "scene_role": "keyframe 4 of 6",
+        "current_action": "운전원이 후방카메라와 거울을 확인한 뒤 천천히 후진을 준비한다.",
+        "previous_continuity": "continue directly from the prior keyframe",
+        "next_setup": "prepare the next prevention beat without a visual jump",
+        "visible_cast_rule": "include only people needed to explain the current safety action",
+        "gaze_rule": "every visible person must look at a visible hazard, signal, route, mirror, or camera display",
+        "must_preserve": [
+          "selected reusable style guide",
+          "lead style bible",
+          "same PPE colors",
+          "same BCT and dump truck identity",
+          "same plant entrance and lane layout",
+          "previous and next scene continuity"
+        ],
+        "must_avoid": [
+          "standalone poster composition",
+          "unmotivated gaze",
+          "random extra workers",
+          "sudden person disappearance",
+          "readable generated text",
+          "logos, collision impact, injury, or gore"
+        ]
+      },
+      {
+        "scene_id": "sc05",
+        "agent_file": "agents/scene-prompt-agent/AGENT.md",
+        "scene_role": "keyframe 5 of 6",
+        "current_action": "작업자가 지정 구역 밖 차량 통로로 들어가려다 관리감독자의 안내로 멈춘다.",
+        "previous_continuity": "continue directly from the prior keyframe",
+        "next_setup": "prepare the next prevention beat without a visual jump",
+        "visible_cast_rule": "include only people needed to explain the current safety action",
+        "gaze_rule": "every visible person must look at a visible hazard, signal, route, mirror, or camera display",
+        "must_preserve": [
+          "selected reusable style guide",
+          "lead style bible",
+          "same PPE colors",
+          "same BCT and dump truck identity",
+          "same plant entrance and lane layout",
+          "previous and next scene continuity"
+        ],
+        "must_avoid": [
+          "standalone poster composition",
+          "unmotivated gaze",
+          "random extra workers",
+          "sudden person disappearance",
+          "readable generated text",
+          "logos, collision impact, injury, or gore"
+        ]
+      },
+      {
+        "scene_id": "sc06",
+        "agent_file": "agents/scene-prompt-agent/AGENT.md",
+        "scene_role": "keyframe 6 of 6",
+        "current_action": "현장 표지판에 제한속도 10~20km와 스마트폰 사용 금지가 표시된다.",
+        "previous_continuity": "continue directly from the prior keyframe",
+        "next_setup": "prepare the next prevention beat without a visual jump",
+        "visible_cast_rule": "include only people needed to explain the current safety action",
+        "gaze_rule": "every visible person must look at a visible hazard, signal, route, mirror, or camera display",
+        "must_preserve": [
+          "selected reusable style guide",
+          "lead style bible",
+          "same PPE colors",
+          "same BCT and dump truck identity",
+          "same plant entrance and lane layout",
+          "previous and next scene continuity"
+        ],
+        "must_avoid": [
+          "standalone poster composition",
+          "unmotivated gaze",
+          "random extra workers",
+          "sudden person disappearance",
+          "readable generated text",
+          "logos, collision impact, injury, or gore"
+        ]
+      },
+      {
+        "scene_id": "sc07",
+        "agent_file": "agents/scene-prompt-agent/AGENT.md",
+        "scene_role": "final controlled end keyframe",
+        "current_action": "resolve the safety story with vehicles controlled and workers outside hazard zones",
+        "previous_continuity": "현장 표지판에 제한속도 10~20km와 스마트폰 사용 금지가 표시된다.",
+        "next_setup": "no next scene; preserve a stable ending for the final video clip",
+        "must_preserve": [
+          "selected reusable style guide",
+          "lead style bible",
+          "same PPE colors",
+          "same BCT and dump truck identity",
+          "same plant entrance and lane layout",
+          "previous and next scene continuity"
+        ],
+        "must_avoid": [
+          "standalone poster composition",
+          "unmotivated gaze",
+          "random extra workers",
+          "sudden person disappearance",
+          "readable generated text",
+          "logos, collision impact, injury, or gore"
+        ]
+      }
+    ],
+    "visual_director_arbiter": {
+      "agent_file": "agents/visual-director-arbiter/AGENT.md",
+      "mission": "integrate scene prompt briefs before image generation",
+      "decision_contract": "ready_for_generation | revise_scene_prompt | revise_style_bible | revise_storyboard",
+      "critical_checks": [
+        "cast count and roles do not drift",
+        "PPE colors and vehicle shapes remain stable",
+        "gaze targets are visible inside the frame",
+        "hazard zone, pedestrian route, and vehicle lane remain spatially coherent",
+        "no exact Korean or English text is requested inside keyframes"
+      ],
+      "deferred_work": "parallel consistency-evaluation agents can be added later"
+    }
+  },
+  "generation_policy": {
+    "parallelize": "scene prompt drafting and review only",
+    "centralize": "final imagegen execution through one coordinator",
+    "reason": "parallel image generation can break identity, PPE, vehicle, camera, and style continuity"
+  },
+  "references": [
+    {
+      "name": "OpenAI Image generation guide",
+      "url": "https://developers.openai.com/api/docs/guides/image-generation",
+      "use": "image generation modes, reference-image workflows, output options, limitations"
+    },
+    {
+      "name": "OpenAI Video generation guide",
+      "url": "https://developers.openai.com/api/docs/guides/video-generation",
+      "use": "image references, character reuse, video continuity concepts"
+    },
+    {
+      "name": "Higgsfield CLI/MCP",
+      "url": "https://higgsfield.ai/cli",
+      "use": "CLI auth, model catalog, generate/upload commands, credit-based video generation"
+    },
+    {
+      "name": "Local Codex imagegen skill",
+      "url": "$CODEX_HOME/skills/.system/imagegen/SKILL.md",
+      "use": "built-in imagegen workflow and save-path policy"
+    }
+  ]
+}

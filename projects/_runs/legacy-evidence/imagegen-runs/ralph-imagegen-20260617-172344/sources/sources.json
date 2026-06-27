@@ -1,0 +1,29 @@
+{
+  "sources": [
+    {
+      "source_id": "src-001",
+      "path": "fixtures/sources/remicon-collision-guide.pptx",
+      "type": "pptx",
+      "sha256": "23f96d614f28e0af11d5a18bd7448dfd6c26515f0405df162640528c1a950dc5",
+      "page_count": 12,
+      "rendered_assets": [
+        "evidence/imagegen-runs/ralph-imagegen-20260617-172344/sources/rendered/src-001_slide_01.png",
+        "evidence/imagegen-runs/ralph-imagegen-20260617-172344/sources/rendered/src-001_slide_02.png",
+        "evidence/imagegen-runs/ralph-imagegen-20260617-172344/sources/rendered/src-001_slide_03.png",
+        "evidence/imagegen-runs/ralph-imagegen-20260617-172344/sources/rendered/src-001_slide_04.png",
+        "evidence/imagegen-runs/ralph-imagegen-20260617-172344/sources/rendered/src-001_slide_05.png",
+        "evidence/imagegen-runs/ralph-imagegen-20260617-172344/sources/rendered/src-001_slide_06.png",
+        "evidence/imagegen-runs/ralph-imagegen-20260617-172344/sources/rendered/src-001_slide_07.png",
+        "evidence/imagegen-runs/ralph-imagegen-20260617-172344/sources/rendered/src-001_slide_08.png",
+        "evidence/imagegen-runs/ralph-imagegen-20260617-172344/sources/rendered/src-001_slide_09.png",
+        "evidence/imagegen-runs/ralph-imagegen-20260617-172344/sources/rendered/src-001_slide_10.png",
+        "evidence/imagegen-runs/ralph-imagegen-20260617-172344/sources/rendered/src-001_slide_11.png",
+        "evidence/imagegen-runs/ralph-imagegen-20260617-172344/sources/rendered/src-001_slide_12.png"
+      ],
+      "registered_at": "2026-06-17T08:23:45.029810+00:00",
+      "extracted_text_assets": [],
+      "rendering_mode": "media_extract",
+      "render_warning": "soffice missing; used PPTX media extraction fallback"
+    }
+  ]
+}

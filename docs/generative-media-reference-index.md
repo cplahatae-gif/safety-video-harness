@@ -2,7 +2,7 @@
 
 This project keeps external references explicit so agent prompts can cite the guidance they rely on.
 The source URL ledger is `docs/reference-sources.md`; role-specific operational summaries live inside
-`agents/<agent-id>/references/` and `skills/<skill-id>/references/`.
+`app/plugin/agents/<agent-id>/references/` and `app/plugin/skills/<skill-id>/references/`.
 
 ## Official References
 
@@ -46,9 +46,9 @@ The source URL ledger is `docs/reference-sources.md`; role-specific operational 
   - This harness uses Codex built-in `imagegen` as the default image path, not OpenAI API/CLI fallback.
 - Seedance expert skill: `$CODEX_HOME/skills/seedance-expert/SKILL.md`
   - Use when writing Seedance/Higgsfield video prompts.
-- Style guide catalog: `style-guides/README.md`
+- Style guide catalog: `references/style/README.md`
   - Use for project-level style choices.
-- Current webtoon style: `style-guides/korean-industrial-webtoon/STYLE_GUIDE.md`
+- Current webtoon style: `references/style/korean-industrial-webtoon/STYLE_GUIDE.md`
   - Use for precision industrial webtoon keyframes.
 - Image prompt reference rules: `docs/imagegen-prompting-references.md`
   - Use for local prompt structure, no text in keyframes, story flow, and continuity requirements.
@@ -60,7 +60,7 @@ The source URL ledger is `docs/reference-sources.md`; role-specific operational 
 3. Visual director arbiter checks the whole prompt set before `imagegen` runs.
 4. Generated images are evaluated by existing QA roles and RALPH loop logic.
 5. OpenCV MCP is used as the no-cost local first-pass visual inspection layer for measurable drift before any paid or external semantic vision review.
-5. Video work remains downstream and paid/live generation stays gate-protected.
+6. Video work remains downstream and paid/live generation stays gate-protected.
 
 ## Role-to-Reference Map
 
@@ -75,9 +75,9 @@ The source URL ledger is `docs/reference-sources.md`; role-specific operational 
 | `image-consistency-check` | OpenAI Image generation limitations, local style guide, visual continuity agents |
 | `seedance-prompting` | Higgsfield CLI/MCP, OpenAI Video generation, local Seedance expert skill |
 | `video-inspect` | FFmpeg, ffprobe, OpenAI Video generation, local video analysis skills |
+| `video-qa` | ffprobe, OpenAI Video generation, Higgsfield CLI/MCP, local inspection manifest |
 
 ## Packaged Summary Rule
 
 Do not make agents or skills depend only on raw external URLs. Each agent/skill package should carry its own
 local operating reference under `references/` so it can be copied, reviewed, or executed independently without reopening the source sites during normal work.
-| `video-qa` | ffprobe, OpenAI Video generation, Higgsfield CLI/MCP, local inspection manifest |

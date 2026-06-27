@@ -1,0 +1,79 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CODEX_PLUGIN_ROOT:-${PLUGIN_ROOT}}/hooks/session-start-anchor.py\"",
+            "timeout": 5,
+            "statusMessage": "Safety Video Harness: loading mission anchor"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "^(Bash|exec_command|functions.exec_command|Write|Edit|MultiEdit|apply_patch|functions.apply_patch|imagegen|image_gen.imagegen|imagegen.imagegen)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CODEX_PLUGIN_ROOT:-${PLUGIN_ROOT}}/hooks/pretooluse-live-veto.py\"",
+            "timeout": 5,
+            "statusMessage": "Safety Video Harness: checking live/paid guardrails"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"${CODEX_PLUGIN_ROOT:-${PLUGIN_ROOT}}/hooks/pretooluse-secret-veto.py\"",
+            "timeout": 5,
+            "statusMessage": "Safety Video Harness: checking secret-like content"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"${CODEX_PLUGIN_ROOT:-${PLUGIN_ROOT}}/hooks/pretooluse-protected-path-veto.py\"",
+            "timeout": 5,
+            "statusMessage": "Safety Video Harness: checking protected paths"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "^(Bash|exec_command|functions.exec_command|Write|Edit|MultiEdit|apply_patch|functions.apply_patch)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CODEX_PLUGIN_ROOT:-${PLUGIN_ROOT}}/hooks/posttooluse-schema-validation.py\"",
+            "timeout": 20,
+            "statusMessage": "Safety Video Harness: validating project schema"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"${CODEX_PLUGIN_ROOT:-${PLUGIN_ROOT}}/hooks/posttooluse-scene-link-validation.py\"",
+            "timeout": 20,
+            "statusMessage": "Safety Video Harness: validating scene links"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"${CODEX_PLUGIN_ROOT:-${PLUGIN_ROOT}}/hooks/posttooluse-evidence-feedback.py\"",
+            "timeout": 5,
+            "statusMessage": "Safety Video Harness: checking evidence claims"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CODEX_PLUGIN_ROOT:-${PLUGIN_ROOT}}/hooks/stop-sentinel-guard.py\"",
+            "timeout": 5,
+            "statusMessage": "Safety Video Harness: checking completion sentinel"
+          }
+        ]
+      }
+    ]
+  }
+}

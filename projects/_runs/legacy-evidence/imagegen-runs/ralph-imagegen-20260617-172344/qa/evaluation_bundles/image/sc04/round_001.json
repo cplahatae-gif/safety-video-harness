@@ -1,0 +1,285 @@
+{
+  "stage": "image",
+  "iteration": 1,
+  "evaluator_context_policy": "isolated_evaluator_with_evidence_bundle",
+  "evaluator_instruction": "Evaluate only the supplied evidence. Do not rely on the generator's intent. Score the produced image against storyboard, references, continuity, and QA rubric.",
+  "scene": {
+    "id": "sc04",
+    "duration_sec": 5,
+    "educational_goal_ko": "후방카메라와 후방 확인의 중요성을 이해한다.",
+    "source_citations": [
+      {
+        "source_id": "src-001",
+        "page_or_slide": 4,
+        "claim": "사각지대 내 보행자 미인지 상태에서 대형차량 후진 및 회전 시 보행자 충돌 위험이 크다."
+      }
+    ],
+    "visual_action_ko": "운전원이 후방카메라와 거울을 확인한 뒤 천천히 후진을 준비한다.",
+    "caption_ko": "후방 확인",
+    "subtitle_ko": "후방을 확인한 뒤 후진하세요.",
+    "overlay_text_ko": "후방 확인",
+    "image_prompt_en": "Korean industrial safety training animation style, ready-mix concrete plant, BCT bulk cement trailer and dump truck, signal person with orange vest, hard hat, scene action: a driver checking the rear camera and mirrors before slowly reversing the heavy vehicle, clear blind spot zone, safe pedestrian route, no text, no injury, no impact frame.",
+    "motion_prompt_en": "Use start and end keyframes as a continuous safety training shot, slow camera movement, show this action: a driver checking the rear camera and mirrors before slowly reversing the heavy vehicle, keep BCT, dump truck, PPE, signal person, and plant layout consistent, avoid collision or injury depiction.",
+    "start_keyframe": "images/approved/sc04.png",
+    "end_keyframe": "images/approved/sc05.png",
+    "clip_path": "video/clips/sc04_sc05.mp4",
+    "continuity_constraints": {
+      "character_ids": [
+        "worker-001"
+      ],
+      "equipment_ids": [
+        "equipment-001"
+      ],
+      "ppe_requirements": [
+        "hard hat",
+        "safety vest"
+      ],
+      "background_id": "site-001"
+    },
+    "approval_state": "draft",
+    "asset_version": 1
+  },
+  "review": {
+    "scene_id": "sc04",
+    "rubric_source": "docs/evaluation-rubrics.md",
+    "few_shot_source": "docs/few-shot-examples.md",
+    "artifact_path": "images/draft/sc04_v001.png",
+    "story_match_score": 5,
+    "identity_consistency_score": 5,
+    "ppe_score": 5,
+    "equipment_score": 5,
+    "story_flow_score": 5,
+    "technical_score": 5,
+    "floor_lane_consistency_score": 3,
+    "background_consistency_score": 3,
+    "character_identity_lock_score": 4,
+    "vehicle_geometry_lock_score": 4,
+    "hazard_zone_consistency_score": 3,
+    "total_score": 47,
+    "score_source": "harness_file_story_flow_and_manual_visual_consistency_review",
+    "manual_visual_review": {
+      "status": "present",
+      "source_path": "qa/image_manual_reviews.json",
+      "reviewer": "local_heuristic_visual_qa",
+      "notes": "Local heuristic checks image readability, contact-sheet evidence, asset-lock coverage, and coarse adjacent-frame color/layout drift. It does not replace human or model-based semantic review for gaze, exact identity, or safety meaning.",
+      "scores": {
+        "floor_lane_consistency_score": 3,
+        "background_consistency_score": 3,
+        "character_identity_lock_score": 4,
+        "vehicle_geometry_lock_score": 4,
+        "hazard_zone_consistency_score": 3
+      },
+      "blocking_issues": [
+        "floor_lane_consistency_score below minimum 4: 3",
+        "background_consistency_score below minimum 4: 3",
+        "hazard_zone_consistency_score below minimum 4: 3",
+        "adjacent scene color/layout drift too high: 159.00"
+      ]
+    },
+    "blocking_issues": [
+      "floor_lane_consistency_score below minimum 4: 3",
+      "background_consistency_score below minimum 4: 3",
+      "hazard_zone_consistency_score below minimum 4: 3",
+      "adjacent scene color/layout drift too high: 159.00",
+      "floor_lane_consistency_score below minimum 4: 3",
+      "background_consistency_score below minimum 4: 3",
+      "hazard_zone_consistency_score below minimum 4: 3"
+    ],
+    "blocker_categories": [
+      {
+        "issue": "floor_lane_consistency_score below minimum 4: 3",
+        "category": "quality"
+      },
+      {
+        "issue": "background_consistency_score below minimum 4: 3",
+        "category": "quality"
+      },
+      {
+        "issue": "hazard_zone_consistency_score below minimum 4: 3",
+        "category": "quality"
+      },
+      {
+        "issue": "adjacent scene color/layout drift too high: 159.00",
+        "category": "quality"
+      },
+      {
+        "issue": "floor_lane_consistency_score below minimum 4: 3",
+        "category": "quality"
+      },
+      {
+        "issue": "background_consistency_score below minimum 4: 3",
+        "category": "quality"
+      },
+      {
+        "issue": "hazard_zone_consistency_score below minimum 4: 3",
+        "category": "quality"
+      }
+    ],
+    "critical_blockers": [],
+    "regeneration_delta": "RALPH critique for sc04:\nQuality pressure: This result is not acceptable for a safety training video until the listed blockers are visibly fixed. Re-check the failed frame before generating again; do not make a cosmetic variation that repeats the same issue.\nFailed criteria and required fixes:\n- floor_lane_consistency_score below minimum 4: 3\n- background_consistency_score below minimum 4: 3\n- hazard_zone_consistency_score below minimum 4: 3\n- adjacent scene color/layout drift too high: 159.00\n- floor_lane_consistency_score below minimum 4: 3\n- background_consistency_score below minimum 4: 3\n- hazard_zone_consistency_score below minimum 4: 3\nMust preserve:\n- approved character identity, helmet, vest, body proportion, and role\n- approved BCT/dump-truck geometry, scale, wheel count, mirrors, and relative position\n- approved site layout, concrete floor, lane colors, pedestrian route, cones, bollards, and hazard zone\n- current storyboard beat and previous/next scene continuity\nMust change this round:\n- make every listed blocker visually impossible to miss\n- remove unexplained gaze, character drift, vehicle drift, floor/lane drift, or generic factory framing\nDo not repeat:\n- floor_lane_consistency_score below minimum 4: 3\n- background_consistency_score below minimum 4: 3\n- hazard_zone_consistency_score below minimum 4: 3\n- adjacent scene color/layout drift too high: 159.00\n- floor_lane_consistency_score below minimum 4: 3\n- background_consistency_score below minimum 4: 3\n- hazard_zone_consistency_score below minimum 4: 3",
+    "previous_blockers_applied": false,
+    "decision": "regenerate",
+    "reviewed_asset": "images/draft/sc04_v001.png",
+    "scoring_rubric": {
+      "story_match_score": "Matches the cited storyboard action and education objective.",
+      "identity_consistency_score": "Preserves recurring worker, signal person, and supervisor identity cues.",
+      "ppe_score": "Shows required hard hat, vest, workwear, boots, and safe posture.",
+      "equipment_score": "Preserves BCT, dump truck, lanes, cones, and plant layout.",
+      "story_flow_score": "Connects causally to adjacent scenes instead of acting as an isolated checklist panel.",
+      "technical_score": "Readable 16:9 image file suitable for video keyframe use.",
+      "floor_lane_consistency_score": "Concrete floor, lane colors, walk path, cones, and bollards match the locked site layout.",
+      "background_consistency_score": "Plant structures, gates, mirrors, signage, and camera-side geometry remain stable.",
+      "character_identity_lock_score": "Recurring workers keep the same body type, helmet, vest, role, and visual identity cues.",
+      "vehicle_geometry_lock_score": "BCT mixer, dump truck, mirrors, wheels, scale, and relative positions remain stable.",
+      "hazard_zone_consistency_score": "The red danger zone, pedestrian route, stop line, and control point stay consistent and visible."
+    },
+    "arbiter_decision": {
+      "stage": "image",
+      "item_id": "sc04",
+      "round": 1,
+      "iteration": 1,
+      "decision": "regenerate",
+      "role_reviews": [
+        {
+          "role": "technical",
+          "scores": {
+            "technical": 5
+          },
+          "blocking_issues": [
+            "floor_lane_consistency_score below minimum 4: 3",
+            "background_consistency_score below minimum 4: 3",
+            "hazard_zone_consistency_score below minimum 4: 3",
+            "adjacent scene color/layout drift too high: 159.00",
+            "floor_lane_consistency_score below minimum 4: 3",
+            "background_consistency_score below minimum 4: 3",
+            "hazard_zone_consistency_score below minimum 4: 3"
+          ],
+          "execution_mode": "parallel_role_evaluator"
+        },
+        {
+          "role": "visual_continuity",
+          "scores": {
+            "identity_consistency": 5,
+            "ppe": 5,
+            "equipment": 5
+          },
+          "blocking_issues": [
+            "floor_lane_consistency_score below minimum 4: 3",
+            "background_consistency_score below minimum 4: 3",
+            "hazard_zone_consistency_score below minimum 4: 3",
+            "adjacent scene color/layout drift too high: 159.00",
+            "floor_lane_consistency_score below minimum 4: 3",
+            "background_consistency_score below minimum 4: 3",
+            "hazard_zone_consistency_score below minimum 4: 3"
+          ],
+          "execution_mode": "parallel_role_evaluator"
+        },
+        {
+          "role": "story_match",
+          "scores": {
+            "story_match": 5,
+            "story_flow": 5
+          },
+          "blocking_issues": [
+            "floor_lane_consistency_score below minimum 4: 3",
+            "background_consistency_score below minimum 4: 3",
+            "hazard_zone_consistency_score below minimum 4: 3",
+            "adjacent scene color/layout drift too high: 159.00",
+            "floor_lane_consistency_score below minimum 4: 3",
+            "background_consistency_score below minimum 4: 3",
+            "hazard_zone_consistency_score below minimum 4: 3"
+          ],
+          "execution_mode": "parallel_role_evaluator"
+        },
+        {
+          "role": "safety_education",
+          "scores": {
+            "safety": 5
+          },
+          "blocking_issues": [
+            "floor_lane_consistency_score below minimum 4: 3",
+            "background_consistency_score below minimum 4: 3",
+            "hazard_zone_consistency_score below minimum 4: 3",
+            "adjacent scene color/layout drift too high: 159.00",
+            "floor_lane_consistency_score below minimum 4: 3",
+            "background_consistency_score below minimum 4: 3",
+            "hazard_zone_consistency_score below minimum 4: 3"
+          ],
+          "critical_blockers": [],
+          "execution_mode": "parallel_role_evaluator"
+        },
+        {
+          "role": "devils_advocate",
+          "scores": {
+            "risk": 2
+          },
+          "blocking_issues": [
+            "floor_lane_consistency_score below minimum 4: 3",
+            "background_consistency_score below minimum 4: 3",
+            "hazard_zone_consistency_score below minimum 4: 3",
+            "adjacent scene color/layout drift too high: 159.00",
+            "floor_lane_consistency_score below minimum 4: 3",
+            "background_consistency_score below minimum 4: 3",
+            "hazard_zone_consistency_score below minimum 4: 3"
+          ],
+          "critical_blockers": [],
+          "vote": "reject",
+          "execution_mode": "parallel_role_evaluator"
+        }
+      ],
+      "scores": {
+        "technical": 5,
+        "identity_consistency": 5,
+        "ppe": 5,
+        "equipment": 5,
+        "story_match": 5,
+        "story_flow": 5,
+        "safety": 5,
+        "risk": 2
+      },
+      "blocking_issues": [
+        "floor_lane_consistency_score below minimum 4: 3",
+        "background_consistency_score below minimum 4: 3",
+        "hazard_zone_consistency_score below minimum 4: 3",
+        "adjacent scene color/layout drift too high: 159.00"
+      ],
+      "blocker_signatures": [
+        "image:sc04:general:floor_lane_consistency_score_below_minimum_4_3",
+        "image:sc04:general:background_consistency_score_below_minimum_4_3",
+        "image:sc04:general:hazard_zone_consistency_score_below_minimum_4_3",
+        "image:sc04:general:adjacent_scene_color_layout_drift_too_high_159_00"
+      ],
+      "repeated_blockers": [],
+      "critical_vetoes": [],
+      "consensus": {
+        "rule": "5/5 approve or 4/5 approve plus conditional; critical veto overrides majority",
+        "total_roles": 5,
+        "approve_count": 0,
+        "conditional_count": 0,
+        "reject_count": 5,
+        "critical_vetoes": [],
+        "rule_result": "rejected"
+      },
+      "debate_required": false,
+      "debate_triggers": [],
+      "repeated_blocker_threshold": 3,
+      "next_action": "regenerate_blocked_scenes",
+      "regeneration_delta": "Regenerate only after directly addressing these visible deficiencies: floor_lane_consistency_score below minimum 4: 3; background_consistency_score below minimum 4: 3; hazard_zone_consistency_score below minimum 4: 3; adjacent scene color/layout drift too high: 159.00. Preserve approved continuity locks.",
+      "evidence_bundle": "qa/evaluation_bundles/image/sc04/round_001.json"
+    },
+    "blocker_signatures": [
+      "image:sc04:general:floor_lane_consistency_score_below_minimum_4_3",
+      "image:sc04:general:background_consistency_score_below_minimum_4_3",
+      "image:sc04:general:hazard_zone_consistency_score_below_minimum_4_3",
+      "image:sc04:general:adjacent_scene_color_layout_drift_too_high_159_00"
+    ]
+  },
+  "required_evidence": [
+    "selected education topic",
+    "current scene",
+    "previous and next scene continuity",
+    "approved reference assets and character profiles",
+    "draft image path or missing-image blocker",
+    "scoring rubric"
+  ]
+}

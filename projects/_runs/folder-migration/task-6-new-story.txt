@@ -1,0 +1,14 @@
+manual qa temp: /var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.o3YnMeHSO4
+created project /var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.o3YnMeHSO4/story-flow
+registered src-001
+dry-run rendered 1 source(s)
+extracted 1 topic(s)
+applied default intake
+planned 6 story beat(s)
+prepared image prompt team plan for 7 scene brief(s)
+image dry-run prepared 7 prompt(s)
+Seedance dry-run prepared 6 clip plan(s)
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.o3YnMeHSO4/story-flow/story/image_prompt_team_plan.json
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.o3YnMeHSO4/story-flow/story/image_prompts.json
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.o3YnMeHSO4/story-flow/story/scenes.json
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.o3YnMeHSO4/story-flow/story/video_prompts.json

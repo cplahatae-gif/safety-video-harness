@@ -1,0 +1,144 @@
+{
+  "stage": "storyboard",
+  "iteration": 1,
+  "evaluator_context_policy": "isolated_evaluator_with_evidence_bundle",
+  "scene": {
+    "id": "sc05",
+    "duration_sec": 5,
+    "educational_goal_ko": "지정 구역 외 임의 작업과 통로 침범을 금지한다.",
+    "source_citations": [
+      {
+        "source_id": "src-001",
+        "page_or_slide": 4,
+        "claim": "지정 구역 외 임의 작업과 통로 침범은 차량 밀림 및 끼임 위험을 높인다."
+      }
+    ],
+    "visual_action_ko": "작업자가 지정 구역 밖 차량 통로로 들어가려다 관리감독자의 안내로 멈춘다.",
+    "caption_ko": "지정구역 준수",
+    "subtitle_ko": "지정구역 밖 작업은 금지입니다.",
+    "overlay_text_ko": "지정구역 준수",
+    "image_prompt_en": "Korean industrial safety training animation style, ready-mix concrete plant, BCT bulk cement trailer and dump truck, signal person with orange vest, hard hat, scene action: a worker stopping before entering a vehicle passage outside the designated work zone while a supervisor redirects them, clear blind spot zone, safe pedestrian route, no text, no injury, no impact frame.",
+    "motion_prompt_en": "Use start and end keyframes as a continuous safety training shot, slow camera movement, show this action: a worker stopping before entering a vehicle passage outside the designated work zone while a supervisor redirects them, keep BCT, dump truck, PPE, signal person, and plant layout consistent, avoid collision or injury depiction.",
+    "start_keyframe": "images/approved/sc05.png",
+    "end_keyframe": "images/approved/sc06.png",
+    "clip_path": "video/clips/sc05_sc06.mp4",
+    "continuity_constraints": {
+      "character_ids": [
+        "worker-001"
+      ],
+      "equipment_ids": [
+        "equipment-001"
+      ],
+      "ppe_requirements": [
+        "hard hat",
+        "safety vest"
+      ],
+      "background_id": "site-001"
+    },
+    "approval_state": "draft",
+    "asset_version": 1
+  },
+  "review": {
+    "scene_id": "sc05",
+    "rubric_source": "docs/evaluation-rubrics.md",
+    "few_shot_source": "docs/few-shot-examples.md",
+    "artifact_path": "storyboard/scenes.json#sc05",
+    "criteria": {
+      "source_grounding_score": 5,
+      "causal_flow_score": 5,
+      "granularity_score": 5,
+      "text_delivery_score": 5,
+      "continuity_score": 5
+    },
+    "total_score": 25,
+    "blocking_issues": [],
+    "blocker_categories": [],
+    "critical_blockers": [],
+    "decision": "approve_storyboard",
+    "revision_prompt": "",
+    "arbiter_decision": {
+      "stage": "storyboard",
+      "item_id": "sc05",
+      "round": 1,
+      "iteration": 1,
+      "decision": "approve_for_image",
+      "role_reviews": [
+        {
+          "role": "source_grounding",
+          "scores": {
+            "source_grounding": 5
+          },
+          "blocking_issues": [],
+          "execution_mode": "parallel_role_evaluator"
+        },
+        {
+          "role": "causal_flow",
+          "scores": {
+            "causal_flow": 5
+          },
+          "blocking_issues": [],
+          "execution_mode": "parallel_role_evaluator"
+        },
+        {
+          "role": "granularity",
+          "scores": {
+            "granularity": 5
+          },
+          "blocking_issues": [],
+          "execution_mode": "parallel_role_evaluator"
+        },
+        {
+          "role": "text_delivery",
+          "scores": {
+            "text_delivery": 5
+          },
+          "blocking_issues": [],
+          "execution_mode": "parallel_role_evaluator"
+        },
+        {
+          "role": "devils_advocate",
+          "scores": {
+            "risk": 5
+          },
+          "blocking_issues": [],
+          "critical_blockers": [],
+          "vote": "approve",
+          "execution_mode": "parallel_role_evaluator"
+        }
+      ],
+      "scores": {
+        "source_grounding": 5,
+        "causal_flow": 5,
+        "granularity": 5,
+        "text_delivery": 5,
+        "risk": 5
+      },
+      "blocking_issues": [],
+      "blocker_signatures": [],
+      "repeated_blockers": [],
+      "critical_vetoes": [],
+      "consensus": {
+        "rule": "5/5 approve or 4/5 approve plus conditional; critical veto overrides majority",
+        "total_roles": 5,
+        "approve_count": 5,
+        "conditional_count": 0,
+        "reject_count": 0,
+        "critical_vetoes": [],
+        "rule_result": "approved"
+      },
+      "debate_required": false,
+      "debate_triggers": [],
+      "repeated_blocker_threshold": 3,
+      "next_action": "continue",
+      "regeneration_delta": "",
+      "evidence_bundle": "qa/evaluation_bundles/storyboard/sc05/round_001.json"
+    }
+  },
+  "required_evidence": [
+    "source citations",
+    "selected education topic",
+    "current scene",
+    "subtitle or overlay contract",
+    "start/end keyframe continuity contract"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "passed": true,
+  "reviews": [
+    {
+      "scene_id": "sc01",
+      "start_keyframe_score": 5,
+      "end_keyframe_score": 5,
+      "story_flow_score": 5,
+      "blocking_issues": [],
+      "decision": "pass"
+    },
+    {
+      "scene_id": "sc02",
+      "start_keyframe_score": 5,
+      "end_keyframe_score": 5,
+      "story_flow_score": 5,
+      "blocking_issues": [],
+      "decision": "pass"
+    },
+    {
+      "scene_id": "sc03",
+      "start_keyframe_score": 5,
+      "end_keyframe_score": 5,
+      "story_flow_score": 5,
+      "blocking_issues": [],
+      "decision": "pass"
+    },
+    {
+      "scene_id": "sc04",
+      "start_keyframe_score": 5,
+      "end_keyframe_score": 5,
+      "story_flow_score": 5,
+      "blocking_issues": [],
+      "decision": "pass"
+    },
+    {
+      "scene_id": "sc05",
+      "start_keyframe_score": 5,
+      "end_keyframe_score": 5,
+      "story_flow_score": 5,
+      "blocking_issues": [],
+      "decision": "pass"
+    },
+    {
+      "scene_id": "sc06",
+      "start_keyframe_score": 5,
+      "end_keyframe_score": 5,
+      "story_flow_score": 5,
+      "blocking_issues": [],
+      "decision": "pass"
+    }
+  ],
+  "rule": "Each clip must use scNN as start and scNN+1 as end so adjacent clips share keyframes."
+}

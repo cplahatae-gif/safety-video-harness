@@ -1,0 +1,39 @@
+ M .codex-plugin/plugin.json
+ M AGENTS.md
+ M README.md
+ M agents/continuity-qa/AGENT.md
+ M agents/continuity-qa/references/continuity-qa-reference.md
+ M agents/storyteller/AGENT.md
+ M agents/video-qa/AGENT.md
+ M agents/visual-continuity-director/AGENT.md
+ M docs/few-shot-examples.md
+ M docs/generative-media-reference-index.md
+ M docs/safety-video-harness-algorithm-onepager.html
+ M docs/safety-video-harness-onepager.html
+ M hooks/posttooluse-evidence-feedback.py
+ M hooks/posttooluse-scene-link-validation.py
+ M hooks/posttooluse-schema-validation.py
+ M hooks/pretooluse-live-veto.py
+ M hooks/pretooluse-protected-path-veto.py
+ M hooks/pretooluse-secret-veto.py
+ M hooks/protected_paths.json
+ M safety_video_harness/gate_validation.py
+ M safety_video_harness/generation.py
+ M safety_video_harness/imagegen_jobs.py
+ M skills/image-consistency-check/SKILL.md
+ M skills/story-writer/SKILL.md
+ M templates/project/HANDOFF.md
+ M tests/test_mvp_flow.py
+ M tests/test_plugin_structure.py
+ M tests/test_review_regressions.py
+ M tests/test_roadmap_bundle1.py
+ M tests/test_roadmap_bundle2.py
+?? docs/repository-folder-structure-onepager.html
+?? evidence/imagegen-runs/
+?? evidence/imagegen-tests/
+?? evidence/implementation-runs/
+?? hooks/hook_payload.py
+?? hooks/hooks.json
+?? plans/repository-folder-structure-reorg.md
+?? plans/strong-folder-structure-implementation-plan.md
+?? tests/test_hook_guardrails.py

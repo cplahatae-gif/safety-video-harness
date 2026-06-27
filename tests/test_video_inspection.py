@@ -51,5 +51,5 @@ def test_video_frame_analysis_manifest_is_created(tmp_path: Path) -> None:
     )
 
     assert result.returncode == 0, result.stderr
-    manifest = project / "video" / "inspection" / "sc01_sc02_seedance" / "manifest.json"
+    manifest = project / "media" / "video" / "inspection" / "sc01_sc02_seedance" / "manifest.json"
     assert manifest.exists()

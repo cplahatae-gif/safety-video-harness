@@ -1,0 +1,51 @@
+{
+  "stage": "storyboard",
+  "item_id": "sc04",
+  "round": 1,
+  "output_contract": "role_evaluator_reviews_v1",
+  "execution_mode": "parallel_role_evaluators",
+  "role_reviews": [
+    {
+      "role": "source_grounding",
+      "scores": {
+        "source_grounding": 5
+      },
+      "blocking_issues": [],
+      "execution_mode": "parallel_role_evaluator"
+    },
+    {
+      "role": "causal_flow",
+      "scores": {
+        "causal_flow": 5
+      },
+      "blocking_issues": [],
+      "execution_mode": "parallel_role_evaluator"
+    },
+    {
+      "role": "granularity",
+      "scores": {
+        "granularity": 5
+      },
+      "blocking_issues": [],
+      "execution_mode": "parallel_role_evaluator"
+    },
+    {
+      "role": "text_delivery",
+      "scores": {
+        "text_delivery": 5
+      },
+      "blocking_issues": [],
+      "execution_mode": "parallel_role_evaluator"
+    },
+    {
+      "role": "devils_advocate",
+      "scores": {
+        "risk": 5
+      },
+      "blocking_issues": [],
+      "critical_blockers": [],
+      "vote": "approve",
+      "execution_mode": "parallel_role_evaluator"
+    }
+  ]
+}

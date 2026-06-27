@@ -1,0 +1,24 @@
+manual qa temp: /var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.JNhSYlya7F
+created project /var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.JNhSYlya7F/new-layout
+project valid
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.JNhSYlya7F/new-layout
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.JNhSYlya7F/new-layout/input
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.JNhSYlya7F/new-layout/input/sources
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.JNhSYlya7F/new-layout/media
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.JNhSYlya7F/new-layout/media/audio
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.JNhSYlya7F/new-layout/media/images
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.JNhSYlya7F/new-layout/media/output
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.JNhSYlya7F/new-layout/media/subtitles
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.JNhSYlya7F/new-layout/media/video
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.JNhSYlya7F/new-layout/qa
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.JNhSYlya7F/new-layout/qa/evidence
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.JNhSYlya7F/new-layout/qa/state
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.JNhSYlya7F/new-layout/refs
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.JNhSYlya7F/new-layout/refs/approved
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.JNhSYlya7F/new-layout/refs/asset-lock
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.JNhSYlya7F/new-layout/refs/candidates
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.JNhSYlya7F/new-layout/refs/equipment
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.JNhSYlya7F/new-layout/refs/people
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.JNhSYlya7F/new-layout/refs/ppe
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.JNhSYlya7F/new-layout/story
+/var/folders/kt/z98_h_917fldpmxhd74tfcd40000gn/T/tmp.JNhSYlya7F/new-layout/story/versions
