@@ -6,136 +6,205 @@
   <title>Safety Video Harness Algorithm Map</title>
   <style>
     :root {
-      --bg: #eef2ed;
-      --paper: #fffdf8;
+      --bg: #f3f1ea;
+      --paper: #fffefa;
       --ink: #172128;
-      --muted: #5f6b70;
-      --line: #c7d0c7;
-      --source: #2f6f89;
-      --story: #2d6f54;
-      --image: #b76a24;
-      --video: #9f3f38;
-      --qa: #4c5d83;
-      --gate: #20262b;
-      --source-soft: #e5f0f4;
-      --story-soft: #e5f3eb;
-      --image-soft: #fff0dc;
-      --video-soft: #ffebe8;
-      --qa-soft: #edf0f8;
-      --gate-soft: #ece8df;
+      --muted: #5d6870;
+      --line: #cfd5cf;
+      --blue: #285f86;
+      --green: #26745a;
+      --amber: #a56721;
+      --red: #a8443b;
+      --violet: #66537b;
+      --soft-blue: #e9f1f6;
+      --soft-green: #e8f4ee;
+      --soft-amber: #fff3df;
+      --soft-red: #fff0ed;
+      --soft-violet: #f0edf5;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
       color: var(--ink);
-      background:
-        linear-gradient(90deg, rgba(23, 33, 40, 0.05) 1px, transparent 1px),
-        linear-gradient(180deg, rgba(23, 33, 40, 0.04) 1px, transparent 1px),
-        radial-gradient(circle at 12% 8%, rgba(47, 111, 137, 0.13), transparent 32%),
-        radial-gradient(circle at 86% 16%, rgba(183, 106, 36, 0.12), transparent 34%),
-        var(--bg);
-      background-size: 28px 28px, 28px 28px, auto, auto, auto;
-      font-family: "Avenir Next", "Apple SD Gothic Neo", "Pretendard", sans-serif;
+      background: var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
       line-height: 1.45;
     }
 
     main {
-      width: min(1600px, calc(100% - 36px));
+      width: min(1560px, calc(100% - 32px));
       margin: 0 auto;
-      padding: 24px 0 38px;
+      padding: 24px 0 40px;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+
+    code {
+      padding: 2px 5px;
+      border: 1px solid #ded7c9;
+      background: #f8f4ea;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 0.92em;
+    }
+
+    .hero,
+    .panel {
+      border: 1px solid var(--line);
+      background: var(--paper);
+      box-shadow: 0 12px 28px rgba(23, 33, 40, 0.08);
     }
 
     .hero {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 460px;
-      gap: 18px;
-      align-items: stretch;
-      margin-bottom: 16px;
-    }
-
-    .title-block,
-    .scoreboard,
-    .canvas,
-    .strip,
-    .legend-card {
-      border: 1px solid var(--line);
-      background: rgba(255, 253, 248, 0.96);
-      box-shadow: 0 18px 44px rgba(23, 33, 40, 0.12);
-    }
-
-    .title-block {
-      padding: 26px 28px;
-      border-left: 9px solid var(--story);
-    }
-
-    h1,
-    h2,
-    h3,
-    p {
-      margin: 0;
-    }
-
-    h1 {
-      max-width: 880px;
-      font-size: clamp(34px, 4.8vw, 68px);
-      line-height: 0.98;
-      letter-spacing: 0;
-    }
-
-    .subtitle {
-      max-width: 940px;
-      margin-top: 14px;
-      color: #334047;
-      font-size: 16px;
-    }
-
-    .scoreboard {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 1px;
-      background: var(--line);
+      grid-template-columns: minmax(0, 1.35fr) minmax(360px, 0.65fr);
       overflow: hidden;
     }
 
+    .hero-title {
+      padding: 28px 30px;
+      border-left: 9px solid var(--green);
+    }
+
+    h1 {
+      max-width: 920px;
+      font-size: clamp(34px, 4.3vw, 64px);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 980px;
+      margin-top: 14px;
+      color: #35454d;
+      font-size: 16px;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1px;
+      border-left: 1px solid var(--line);
+      background: var(--line);
+    }
+
     .metric {
+      min-height: 116px;
       padding: 18px;
-      background: var(--paper);
-      min-height: 108px;
+      background: #fbfcf8;
     }
 
     .metric b {
       display: block;
-      font-size: 30px;
+      font-size: 32px;
       line-height: 1;
     }
 
     .metric span {
       display: block;
-      margin-top: 8px;
+      margin-top: 9px;
       color: var(--muted);
       font-size: 12px;
       font-weight: 800;
-      letter-spacing: 0;
     }
 
+    .panel {
+      margin-top: 16px;
+      padding: 18px;
+    }
+
+    .panel h2 {
+      margin-bottom: 14px;
+      font-size: 21px;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 9px;
+      border: 1px solid var(--line);
+      background: #f8faf6;
+      border-radius: 999px;
+      color: #33434a;
+      font-size: 12px;
+      font-weight: 760;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--blue);
+    }
+
+    .dot.green { background: var(--green); }
+    .dot.amber { background: var(--amber); }
+    .dot.red { background: var(--red); }
+    .dot.violet { background: var(--violet); }
+
     .canvas {
-      padding: 16px;
       overflow-x: auto;
+      border: 1px solid var(--line);
+      background: #fbfcf8;
+      padding: 14px;
     }
 
     svg {
       display: block;
       width: 100%;
-      min-width: 1240px;
+      min-width: 1320px;
       height: auto;
     }
 
+    .lane {
+      fill: #f6f7f3;
+      stroke: #d9ded8;
+      stroke-width: 1;
+    }
+
+    .node {
+      fill: #fff;
+      stroke-width: 1.5;
+      filter: drop-shadow(0 7px 12px rgba(23, 33, 40, 0.08));
+    }
+
+    .blue { stroke: var(--blue); fill: var(--soft-blue); }
+    .green-node { stroke: var(--green); fill: var(--soft-green); }
+    .amber-node { stroke: var(--amber); fill: var(--soft-amber); }
+    .red-node { stroke: var(--red); fill: var(--soft-red); }
+    .violet-node { stroke: var(--violet); fill: var(--soft-violet); }
+    .white-node { stroke: #bfc8c1; fill: #fff; }
+
+    .arrow {
+      stroke: #53616a;
+      stroke-width: 2.2;
+      fill: none;
+      marker-end: url(#arrow);
+    }
+
+    .retry {
+      stroke: var(--amber);
+      stroke-dasharray: 6 5;
+      marker-end: url(#arrow-amber);
+    }
+
+    .block {
+      stroke: var(--red);
+      stroke-dasharray: 6 5;
+      marker-end: url(#arrow-red);
+    }
+
     .svg-title {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 900;
       fill: var(--ink);
     }
@@ -148,705 +217,450 @@
 
     .svg-small {
       font-size: 11px;
+      font-weight: 720;
       fill: var(--muted);
-      font-weight: 700;
     }
 
-    .svg-mini {
-      font-size: 10px;
-      fill: var(--muted);
-      font-weight: 700;
+    .lane-title {
+      font-size: 13px;
+      font-weight: 900;
+      fill: #43515a;
     }
 
-    .grid {
+    .grid-2 {
       display: grid;
-      grid-template-columns: 1.08fr 0.92fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap: 16px;
-      margin-top: 16px;
     }
 
-    .strip {
-      padding: 18px;
-    }
-
-    .strip h2 {
-      margin-bottom: 14px;
-      font-size: 22px;
-    }
-
-    .reference-map {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .ref-box,
-    .contract-box {
-      border: 1px solid var(--line);
-      background: #ffffff;
-      padding: 12px;
-      min-height: 110px;
-    }
-
-    .ref-box h3,
-    .contract-box h3 {
-      margin-bottom: 7px;
-      font-size: 14px;
-    }
-
-    .ref-box p,
-    .contract-box p {
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .ref-box code,
-    .contract-box code {
-      display: inline-block;
-      margin-bottom: 6px;
-      padding: 2px 5px;
-      border: 1px solid #d9d0c2;
-      background: #f7f0e5;
-      color: #1f2a31;
-      font-family: "SFMono-Regular", "Consolas", monospace;
-      font-size: 11px;
-      white-space: nowrap;
-    }
-
-    .contracts {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .component-map {
+    .cards {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 10px;
     }
 
-    .component-card {
-      min-height: 220px;
-      padding: 14px;
+    .card {
       border: 1px solid var(--line);
-      background: #ffffff;
+      background: #fff;
+      padding: 13px;
+      min-height: 190px;
     }
 
-    .component-card h3 {
-      margin: 0 0 10px;
+    .card h3 {
+      margin-bottom: 8px;
       font-size: 15px;
     }
 
-    .component-card ul {
-      margin: 0;
-      padding-left: 16px;
+    .card p,
+    .card li {
       color: var(--muted);
       font-size: 12px;
     }
 
-    .component-card li {
-      margin: 0 0 7px;
+    .card ul {
+      margin: 8px 0 0;
+      padding-left: 18px;
     }
 
-    .component-card code {
-      padding: 2px 5px;
-      border: 1px solid #d9d0c2;
-      background: #f7f0e5;
-      color: #1f2a31;
-      font-family: "SFMono-Regular", "Consolas", monospace;
-      font-size: 11px;
+    .timeline {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
     }
 
-    .runbook {
-      display: grid;
-      grid-template-columns: 1.18fr 0.82fr;
-      gap: 16px;
-      margin-top: 16px;
-    }
-
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .step {
-      position: relative;
-      min-height: 138px;
-      padding: 14px 12px 12px;
+    .timeline th,
+    .timeline td {
+      padding: 9px 10px;
       border: 1px solid var(--line);
-      background: #ffffff;
+      text-align: left;
+      vertical-align: top;
     }
 
-    .step strong {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 32px;
-      height: 32px;
-      margin-bottom: 10px;
-      border-radius: 50%;
-      background: var(--gate);
-      color: #ffffff;
-      font-size: 13px;
+    .timeline th {
+      background: #edf2ee;
+      color: #2b3a41;
+      font-size: 12px;
     }
 
-    .step h3 {
-      margin: 0 0 7px;
-      font-size: 14px;
-    }
-
-    .step p {
+    .note {
+      margin-top: 10px;
       color: var(--muted);
       font-size: 12px;
     }
 
-    .step.source strong { background: var(--source); }
-    .step.story strong { background: var(--story); }
-    .step.image strong { background: var(--image); }
-    .step.qa strong { background: var(--qa); }
-    .step.video strong { background: var(--video); }
-
-    .guardrail-list {
-      display: grid;
-      gap: 10px;
+    @media (max-width: 980px) {
+      main { width: min(100% - 20px, 1560px); }
+      .hero, .grid-2 { grid-template-columns: 1fr; }
+      .metrics, .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
-    .guardrail {
-      padding: 12px;
-      border: 1px solid var(--line);
-      background: #ffffff;
-    }
-
-    .guardrail b {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 13px;
-    }
-
-    .guardrail p {
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .legend {
-      display: grid;
-      grid-template-columns: repeat(6, minmax(0, 1fr));
-      gap: 8px;
-      margin-top: 16px;
-    }
-
-    .legend-card {
-      padding: 12px;
-      min-height: 86px;
-      box-shadow: none;
-    }
-
-    .legend-card b {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      margin-bottom: 6px;
-      font-size: 13px;
-    }
-
-    .dot {
-      width: 13px;
-      height: 13px;
-      display: inline-block;
-      border-radius: 50%;
-      background: var(--ink);
-    }
-
-    .legend-card span {
-      color: var(--muted);
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    .source-dot { background: var(--source); }
-    .story-dot { background: var(--story); }
-    .image-dot { background: var(--image); }
-    .video-dot { background: var(--video); }
-    .qa-dot { background: var(--qa); }
-    .gate-dot { background: var(--gate); }
-
-    .footer {
-      margin-top: 16px;
-      color: var(--muted);
-      text-align: right;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    @media (max-width: 1180px) {
-      .hero,
-      .grid {
-        grid-template-columns: 1fr;
-      }
-
-      .scoreboard {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-      }
-
-      .legend,
-      .reference-map,
-      .contracts,
-      .component-map,
-      .steps {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .runbook {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 720px) {
-      main {
-        width: min(100% - 20px, 1600px);
-      }
-
-      .title-block {
-        padding: 20px;
-      }
-
-      .scoreboard,
-      .legend,
-      .reference-map,
-      .contracts,
-      .component-map,
-      .steps {
-        grid-template-columns: 1fr;
-      }
+    @media (max-width: 640px) {
+      .metrics, .cards { grid-template-columns: 1fr; }
+      .hero-title, .panel { padding: 14px; }
     }
   </style>
 </head>
 <body>
-  <main>
-    <section class="hero" aria-label="Summary">
-      <div class="title-block">
-        <h1>안전영상 하네스 알고리즘 지도</h1>
-        <p class="subtitle">
-          시작 인터뷰에서 레퍼런스와 목표를 잠그고, 스토리보드를 먼저 만든 뒤,
-          이미지는 RALPH로 반복 검증하고, 유료 영상은 Gate 2 이후 짧은 검증 영상부터 실행한다.
-          OMO는 반복 실행자이고, 최종 판정은 하네스 평가자와 Arbiter가 맡는다.
-        </p>
-      </div>
-      <aside class="scoreboard" aria-label="Operating constants">
-        <div class="metric"><b>1st</b><span>스토리보드가 기준 계약</span></div>
-        <div class="metric"><b>9</b><span>레퍼런스 타입 자동 스캔</span></div>
-        <div class="metric"><b>20 max</b><span>이미지 RALPH early stop</span></div>
-        <div class="metric"><b>103</b><span>자동 테스트 통과</span></div>
-      </aside>
-    </section>
+<main>
+  <section class="hero">
+    <div class="hero-title">
+      <h1>Safety Video Harness 알고리즘 구조</h1>
+      <p class="lead">
+        교육자료에서 시작해 스토리보드, 레퍼런스 고정, 이미지 RALPH, Gate 2, 영상 dry-run까지 이어지는
+        현재 구현 기준의 실행 지도다. 실제 live imagegen, Seedance, TTS, 외부 업로드, 유료 호출은 승인 경계 밖에 둔다.
+      </p>
+    </div>
+    <div class="metrics">
+      <div class="metric"><b>142</b><span>전체 pytest 통과</span></div>
+      <div class="metric"><b>2</b><span>Gate 1 / Gate 2 승인 경계</span></div>
+      <div class="metric"><b>20</b><span>이미지 RALPH 최대 반복, 조기 종료</span></div>
+      <div class="metric"><b>0</b><span>이번 검증 live/유료 호출 수</span></div>
+    </div>
+  </section>
 
-    <section class="canvas" aria-label="Visual algorithm map">
-      <svg viewBox="0 0 1480 920" role="img" aria-labelledby="map-title map-desc">
-        <title id="map-title">Safety video harness algorithm flow map</title>
-        <desc id="map-desc">A visual map from intake interview through storyboard, image RALPH, Gate 2, Seedance validation, and video QA.</desc>
-
+  <section class="panel">
+    <h2>Production Work Flowchart</h2>
+    <div class="legend">
+      <span class="tag"><span class="dot"></span>Core script/state</span>
+      <span class="tag"><span class="dot green"></span>Skill/Agent/생성 계획</span>
+      <span class="tag"><span class="dot amber"></span>QA/RALPH/evidence</span>
+      <span class="tag"><span class="dot red"></span>승인/차단/유료 경계</span>
+      <span class="tag"><span class="dot violet"></span>외부 도구/미디어</span>
+    </div>
+    <div class="canvas">
+      <svg viewBox="0 0 1500 760" role="img" aria-labelledby="prod-title prod-desc">
+        <title id="prod-title">Production workflow</title>
+        <desc id="prod-desc">Source material moves through intake, storyboard, image RALPH, approvals, video dry-run, and final evidence.</desc>
         <defs>
-          <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
-            <path d="M0,0 L10,5 L0,10 Z" fill="#66717a"></path>
+          <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+            <path d="M0,0 L8,3 L0,6 Z" fill="#53616a"></path>
           </marker>
-          <marker id="arrow-strong" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
-            <path d="M0,0 L10,5 L0,10 Z" fill="#20262b"></path>
+          <marker id="arrow-amber" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+            <path d="M0,0 L8,3 L0,6 Z" fill="#a56721"></path>
           </marker>
-          <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-            <feDropShadow dx="0" dy="8" stdDeviation="9" flood-color="#172128" flood-opacity="0.13"></feDropShadow>
-          </filter>
+          <marker id="arrow-red" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+            <path d="M0,0 L8,3 L0,6 Z" fill="#a8443b"></path>
+          </marker>
         </defs>
 
-        <rect x="0" y="0" width="1480" height="920" rx="18" fill="#fffdf8"></rect>
-        <text x="36" y="44" class="svg-title">One-page execution algorithm</text>
-        <text x="36" y="66" class="svg-small">Storyboard first. Images second. Paid video last. Every stage leaves evidence.</text>
+        <rect x="20" y="30" width="1460" height="100" rx="8" class="lane"></rect>
+        <text x="38" y="64" class="lane-title">1. Intake / Source</text>
+        <rect x="160" y="52" width="150" height="56" rx="8" class="node blue"></rect>
+        <text x="178" y="77" class="svg-label">intake</text>
+        <text x="178" y="96" class="svg-small">topic, length, refs</text>
+        <rect x="370" y="52" width="170" height="56" rx="8" class="node blue"></rect>
+        <text x="388" y="77" class="svg-label">init/register</text>
+        <text x="388" y="96" class="svg-small">project + sources</text>
+        <rect x="605" y="52" width="190" height="56" rx="8" class="node blue"></rect>
+        <text x="623" y="77" class="svg-label">render/extract</text>
+        <text x="623" y="96" class="svg-small">facts + topic candidates</text>
+        <rect x="870" y="52" width="190" height="56" rx="8" class="node green-node"></rect>
+        <text x="888" y="77" class="svg-label">topic selection</text>
+        <text x="888" y="96" class="svg-small">user chooses one subject</text>
 
-        <rect x="32" y="95" width="1416" height="120" rx="10" fill="#e5f0f4" stroke="#b8d0da"></rect>
-        <rect x="32" y="235" width="1416" height="120" rx="10" fill="#e5f3eb" stroke="#b8d7c5"></rect>
-        <rect x="32" y="375" width="1416" height="150" rx="10" fill="#fff0dc" stroke="#e7c99d"></rect>
-        <rect x="32" y="545" width="1416" height="160" rx="10" fill="#edf0f8" stroke="#cbd2e6"></rect>
-        <rect x="32" y="725" width="1416" height="130" rx="10" fill="#ffebe8" stroke="#e5b8b2"></rect>
+        <rect x="20" y="160" width="1460" height="128" rx="8" class="lane"></rect>
+        <text x="38" y="194" class="lane-title">2. Story Contract</text>
+        <rect x="160" y="196" width="170" height="60" rx="8" class="node green-node"></rect>
+        <text x="178" y="222" class="svg-label">story-writer</text>
+        <text x="178" y="241" class="svg-small">source-cited scenes</text>
+        <rect x="400" y="196" width="170" height="60" rx="8" class="node blue"></rect>
+        <text x="418" y="222" class="svg-label">story/scenes.json</text>
+        <text x="418" y="241" class="svg-small">canonical contract</text>
+        <rect x="640" y="196" width="165" height="60" rx="8" class="node amber-node"></rect>
+        <text x="658" y="222" class="svg-label">storyboard QA</text>
+        <text x="658" y="241" class="svg-small">rubric + citations</text>
+        <polygon points="910,196 990,226 910,256 830,226" class="node red-node"></polygon>
+        <text x="881" y="223" class="svg-label">Gate 1</text>
+        <text x="867" y="241" class="svg-small">story approve</text>
 
-        <text x="52" y="122" class="svg-label">A. Intake & Source</text>
-        <text x="52" y="262" class="svg-label">B. Story Contract</text>
-        <text x="52" y="402" class="svg-label">C. Image Generation + RALPH</text>
-        <text x="52" y="572" class="svg-label">D. QA Memory + Orchestration</text>
-        <text x="52" y="752" class="svg-label">E. Paid Video Gate + Validation</text>
+        <rect x="20" y="320" width="1460" height="168" rx="8" class="lane"></rect>
+        <text x="38" y="354" class="lane-title">3. Reference Lock / Image RALPH</text>
+        <rect x="120" y="374" width="185" height="62" rx="8" class="node green-node"></rect>
+        <text x="138" y="400" class="svg-label">style/ref assets</text>
+        <text x="138" y="419" class="svg-small">people, PPE, equipment</text>
+        <rect x="365" y="374" width="185" height="62" rx="8" class="node blue"></rect>
+        <text x="383" y="400" class="svg-label">asset lock</text>
+        <text x="383" y="419" class="svg-small">refs/asset-lock</text>
+        <rect x="610" y="374" width="190" height="62" rx="8" class="node green-node"></rect>
+        <text x="628" y="400" class="svg-label">prompt team</text>
+        <text x="628" y="419" class="svg-small">scene briefs + continuity</text>
+        <rect x="860" y="374" width="190" height="62" rx="8" class="node violet-node"></rect>
+        <text x="878" y="400" class="svg-label">Codex imagegen</text>
+        <text x="878" y="419" class="svg-small">live only after approval</text>
+        <rect x="1110" y="374" width="185" height="62" rx="8" class="node amber-node"></rect>
+        <text x="1128" y="400" class="svg-label">image QA</text>
+        <text x="1128" y="419" class="svg-small">scores + visual review</text>
+        <rect x="1330" y="374" width="120" height="62" rx="8" class="node amber-node"></rect>
+        <text x="1348" y="400" class="svg-label">approve</text>
+        <text x="1348" y="419" class="svg-small">keyframes</text>
+        <path d="M1202 436 C1202 472, 710 472, 710 436" class="arrow retry"></path>
+        <text x="842" y="462" class="svg-small">RALPH critique → regenerate, max 20</text>
+        <path d="M1202 374 C1202 335, 484 335, 484 374" class="arrow block"></path>
+        <text x="780" y="342" class="svg-small">same blocker 3x → storyboard/reference/prompt repair</text>
 
-        <g filter="url(#shadow)">
-          <rect x="190" y="126" width="160" height="64" rx="8" fill="#ffffff" stroke="#8eb8c9"></rect>
-          <text x="212" y="153" class="svg-label">시작 인터뷰</text>
-          <text x="212" y="172" class="svg-small">자료·주제·길이·레퍼런스</text>
+        <rect x="20" y="520" width="1460" height="144" rx="8" class="lane"></rect>
+        <text x="38" y="554" class="lane-title">4. Video Boundary / Evidence</text>
+        <polygon points="170,552 250,582 170,612 90,582" class="node red-node"></polygon>
+        <text x="141" y="579" class="svg-label">Gate 2</text>
+        <text x="116" y="597" class="svg-small">upload + cost</text>
+        <rect x="335" y="552" width="190" height="62" rx="8" class="node green-node"></rect>
+        <text x="353" y="578" class="svg-label">Seedance dry-run</text>
+        <text x="353" y="597" class="svg-small">prompt + ref pack</text>
+        <rect x="595" y="552" width="190" height="62" rx="8" class="node violet-node"></rect>
+        <text x="613" y="578" class="svg-label">short live test</text>
+        <text x="613" y="597" class="svg-small">only after approval</text>
+        <rect x="855" y="552" width="190" height="62" rx="8" class="node amber-node"></rect>
+        <text x="873" y="578" class="svg-label">video QA</text>
+        <text x="873" y="597" class="svg-small">sampled frames, propose-only</text>
+        <rect x="1115" y="552" width="190" height="62" rx="8" class="node blue"></rect>
+        <text x="1133" y="578" class="svg-label">assemble package</text>
+        <text x="1133" y="597" class="svg-small">subtitles + output</text>
+        <rect x="1330" y="552" width="120" height="62" rx="8" class="node amber-node"></rect>
+        <text x="1348" y="578" class="svg-label">evidence</text>
+        <text x="1348" y="597" class="svg-small">qa + wiki</text>
+        <path d="M948 614 C948 648, 474 648, 474 614" class="arrow block"></path>
+        <text x="625" y="638" class="svg-small">video failure → no auto paid retry, propose upstream fix</text>
 
-          <rect x="390" y="126" width="160" height="64" rx="8" fill="#ffffff" stroke="#8eb8c9"></rect>
-          <text x="414" y="153" class="svg-label">자료 등록</text>
-          <text x="414" y="172" class="svg-small">PPTX / SOP / PDF</text>
-
-          <rect x="590" y="126" width="160" height="64" rx="8" fill="#ffffff" stroke="#8eb8c9"></rect>
-          <text x="612" y="153" class="svg-label">렌더링·추출</text>
-          <text x="612" y="172" class="svg-small">슬라이드·텍스트·facts</text>
-
-          <rect x="790" y="126" width="160" height="64" rx="8" fill="#ffffff" stroke="#8eb8c9"></rect>
-          <text x="817" y="153" class="svg-label">주제 선택</text>
-          <text x="817" y="172" class="svg-small">후보 중 명시 선택</text>
-
-          <rect x="990" y="126" width="210" height="64" rx="8" fill="#ffffff" stroke="#8eb8c9"></rect>
-          <text x="1018" y="153" class="svg-label">레퍼런스 승인</text>
-          <text x="1018" y="172" class="svg-small">person · work · space · style</text>
-        </g>
-
-        <g filter="url(#shadow)">
-          <rect x="250" y="266" width="190" height="64" rx="8" fill="#ffffff" stroke="#86bc9d"></rect>
-          <text x="279" y="293" class="svg-label">스토리보드 생성</text>
-          <text x="279" y="312" class="svg-small">길이·이미지 밀도 반영</text>
-
-          <rect x="500" y="266" width="190" height="64" rx="8" fill="#ffffff" stroke="#86bc9d"></rect>
-          <text x="529" y="293" class="svg-label">Role QA 병렬</text>
-          <text x="529" y="312" class="svg-small">source · causal · education</text>
-
-          <rect x="750" y="266" width="190" height="64" rx="8" fill="#ffffff" stroke="#86bc9d"></rect>
-          <text x="787" y="293" class="svg-label">Arbiter</text>
-          <text x="787" y="312" class="svg-small">consensus · veto · debate</text>
-
-          <path d="M1035 256 L1110 298 L1035 340 L960 298 Z" fill="#ece8df" stroke="#20262b" stroke-width="2"></path>
-          <text x="1010" y="296" class="svg-label">Gate 1</text>
-          <text x="988" y="314" class="svg-mini">QA 통과 필수</text>
-        </g>
-
-        <g filter="url(#shadow)">
-          <rect x="190" y="416" width="180" height="70" rx="8" fill="#ffffff" stroke="#dfb773"></rect>
-          <text x="214" y="444" class="svg-label">이미지 프롬프트</text>
-          <text x="214" y="463" class="svg-small">이전 blocker 주입</text>
-
-          <rect x="430" y="416" width="180" height="70" rx="8" fill="#ffffff" stroke="#dfb773"></rect>
-          <text x="462" y="444" class="svg-label">Codex imagegen</text>
-          <text x="462" y="463" class="svg-small">draft/scNN_vNNN.png</text>
-
-          <rect x="670" y="416" width="180" height="70" rx="8" fill="#ffffff" stroke="#dfb773"></rect>
-          <text x="709" y="444" class="svg-label">Image QA</text>
-          <text x="694" y="463" class="svg-small">44/55 · manual visual QA</text>
-
-          <rect x="900" y="400" width="230" height="108" rx="22" fill="#fff8ee" stroke="#b76a24" stroke-width="3"></rect>
-          <path d="M1110 426 C1140 452 1138 492 1110 514" fill="none" stroke="#b76a24" stroke-width="2.4" marker-end="url(#arrow)"></path>
-          <text x="946" y="431" class="svg-label">RALPH loop</text>
-          <text x="924" y="453" class="svg-small">최대 20회, 통과 시 즉시 종료</text>
-          <text x="918" y="473" class="svg-small">critique block을 다음 프롬프트에 주입</text>
-          <text x="914" y="493" class="svg-small">같은 blocker 3회면 upstream 수정</text>
-
-          <rect x="1200" y="416" width="180" height="70" rx="8" fill="#ffffff" stroke="#dfb773"></rect>
-          <text x="1232" y="444" class="svg-label">Approved images</text>
-          <text x="1232" y="463" class="svg-small">start/end keyframes</text>
-        </g>
-
-        <g filter="url(#shadow)">
-          <rect x="190" y="586" width="210" height="74" rx="8" fill="#ffffff" stroke="#a9b5d4"></rect>
-          <text x="218" y="616" class="svg-label">Evaluation Bundles</text>
-          <text x="206" y="636" class="svg-small">OpenCV MCP + contact sheet</text>
-
-          <rect x="460" y="586" width="210" height="74" rx="8" fill="#ffffff" stroke="#a9b5d4"></rect>
-          <text x="487" y="616" class="svg-label">Role Evaluations</text>
-          <text x="487" y="636" class="svg-small">각 역할 json + md</text>
-
-          <rect x="730" y="586" width="210" height="74" rx="8" fill="#ffffff" stroke="#a9b5d4"></rect>
-          <text x="771" y="616" class="svg-label">Arbiter Decision</text>
-          <text x="771" y="636" class="svg-small">pass · revise · propose</text>
-
-          <rect x="1000" y="586" width="210" height="74" rx="8" fill="#ffffff" stroke="#a9b5d4"></rect>
-          <text x="1032" y="616" class="svg-label">OMO Runner Plan</text>
-          <text x="1032" y="636" class="svg-small">실행 관리만 담당</text>
-        </g>
-
-        <g filter="url(#shadow)">
-          <path d="M335 740 L420 785 L335 830 L250 785 Z" fill="#ece8df" stroke="#20262b" stroke-width="2"></path>
-          <text x="310" y="783" class="svg-label">Gate 2</text>
-          <text x="272" y="801" class="svg-mini">전체 이미지 QA + 수동 시각 QA</text>
-
-          <rect x="500" y="752" width="210" height="66" rx="8" fill="#ffffff" stroke="#dfaaa4"></rect>
-          <text x="534" y="779" class="svg-label">Seedance validation</text>
-          <text x="534" y="798" class="svg-small">5s/10s, 최소 live 테스트</text>
-
-          <rect x="790" y="752" width="210" height="66" rx="8" fill="#ffffff" stroke="#dfaaa4"></rect>
-          <text x="827" y="779" class="svg-label">Video Inspect</text>
-          <text x="827" y="798" class="svg-small">프레임·OCR·contact sheet</text>
-
-          <rect x="1080" y="752" width="210" height="66" rx="8" fill="#ffffff" stroke="#dfaaa4"></rect>
-          <text x="1125" y="779" class="svg-label">Video QA</text>
-          <text x="1125" y="798" class="svg-small">실패 시 propose-only</text>
-        </g>
-
-        <g fill="none" stroke="#66717a" stroke-width="2.4" marker-end="url(#arrow)">
-          <path d="M350 158 H390"></path>
-          <path d="M550 158 H590"></path>
-          <path d="M750 158 H790"></path>
-          <path d="M950 158 H990"></path>
-          <path d="M1095 190 C1095 220 345 220 345 266"></path>
-
-          <path d="M440 298 H500"></path>
-          <path d="M690 298 H750"></path>
-          <path d="M940 298 H962"></path>
-          <path d="M1110 298 C1180 298 1180 450 1200 450"></path>
-          <path d="M1035 340 C1035 366 280 366 280 416"></path>
-
-          <path d="M370 451 H430"></path>
-          <path d="M610 451 H670"></path>
-          <path d="M850 451 H900"></path>
-          <path d="M1130 451 H1200"></path>
-          <path d="M1015 508 C1015 680 335 682 335 740"></path>
-
-          <path d="M400 623 H460"></path>
-          <path d="M670 623 H730"></path>
-          <path d="M940 623 H1000"></path>
-          <path d="M1105 660 C1105 704 605 704 605 752"></path>
-
-          <path d="M420 785 H500"></path>
-          <path d="M710 785 H790"></path>
-          <path d="M1000 785 H1080"></path>
-        </g>
-
-        <g fill="none" stroke="#20262b" stroke-width="3" stroke-dasharray="8 7" marker-end="url(#arrow-strong)">
-          <path d="M995 400 C950 370 770 382 760 416"></path>
-          <path d="M760 486 C760 532 890 536 918 508"></path>
-          <path d="M1185 752 C1185 700 1210 690 1210 660"></path>
-        </g>
-
-        <g>
-          <rect x="1215" y="106" width="205" height="88" rx="8" fill="#ffffff" stroke="#8eb8c9"></rect>
-          <text x="1232" y="132" class="svg-label">레퍼런스 입력 위치</text>
-          <text x="1232" y="152" class="svg-small">person / work / space</text>
-          <text x="1232" y="171" class="svg-small">style / camera / lighting</text>
-
-          <rect x="1228" y="586" width="180" height="74" rx="8" fill="#ffffff" stroke="#a9b5d4"></rect>
-          <text x="1256" y="616" class="svg-label">LLM Wiki</text>
-          <text x="1256" y="636" class="svg-small">반복 blocker 요약</text>
-        </g>
-
-        <text x="52" y="892" class="svg-small">Solid arrows: normal flow. Dashed arrows: QA feedback. Diamonds: approval gates. Video branch is paid and propose-only after failure.</text>
+        <path d="M310 80 L370 80" class="arrow"></path>
+        <path d="M540 80 L605 80" class="arrow"></path>
+        <path d="M795 80 L870 80" class="arrow"></path>
+        <path d="M965 108 C965 146, 235 146, 235 196" class="arrow"></path>
+        <path d="M330 226 L400 226" class="arrow"></path>
+        <path d="M570 226 L640 226" class="arrow"></path>
+        <path d="M805 226 L830 226" class="arrow"></path>
+        <path d="M910 256 C910 304, 210 304, 210 374" class="arrow"></path>
+        <path d="M305 405 L365 405" class="arrow"></path>
+        <path d="M550 405 L610 405" class="arrow"></path>
+        <path d="M800 405 L860 405" class="arrow"></path>
+        <path d="M1050 405 L1110 405" class="arrow"></path>
+        <path d="M1295 405 L1330 405" class="arrow"></path>
+        <path d="M1390 436 C1390 508, 170 508, 170 552" class="arrow"></path>
+        <path d="M250 582 L335 582" class="arrow"></path>
+        <path d="M525 582 L595 582" class="arrow"></path>
+        <path d="M785 582 L855 582" class="arrow"></path>
+        <path d="M1045 582 L1115 582" class="arrow"></path>
+        <path d="M1305 582 L1330 582" class="arrow"></path>
       </svg>
-    </section>
+    </div>
+  </section>
 
-    <div class="legend" aria-label="Legend">
-      <div class="legend-card"><b><span class="dot source-dot"></span>Source</b><span>교육자료, 주제, 레퍼런스 승인</span></div>
-      <div class="legend-card"><b><span class="dot story-dot"></span>Storyboard</b><span>모든 생성의 기준 계약</span></div>
-      <div class="legend-card"><b><span class="dot image-dot"></span>Image</b><span>imagegen + RALPH 검증</span></div>
-      <div class="legend-card"><b><span class="dot qa-dot"></span>QA Memory</b><span>evidence, role review, Arbiter, OMO plan</span></div>
-      <div class="legend-card"><b><span class="dot gate-dot"></span>Gate</b><span>승인 전 live/유료 호출 차단</span></div>
-      <div class="legend-card"><b><span class="dot video-dot"></span>Video</b><span>Seedance 짧은 검증 후 propose-only QA</span></div>
+  <section class="panel">
+    <h2>Runtime Flowchart</h2>
+    <div class="canvas">
+      <svg viewBox="0 0 1500 650" role="img" aria-labelledby="runtime-title runtime-desc">
+        <title id="runtime-title">Runtime flow with skills, agents, hooks, and scripts</title>
+        <desc id="runtime-desc">Implementation lanes show scripts, skills, agents, QA, hooks, and external tooling.</desc>
+        <defs>
+          <marker id="arrow2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+            <path d="M0,0 L8,3 L0,6 Z" fill="#53616a"></path>
+          </marker>
+        </defs>
+        <rect x="20" y="30" width="1460" height="90" rx="8" class="lane"></rect>
+        <text x="38" y="64" class="lane-title">User / Approval</text>
+        <rect x="190" y="52" width="150" height="46" rx="8" class="node red-node"></rect>
+        <text x="208" y="80" class="svg-label">intake answers</text>
+        <rect x="750" y="52" width="150" height="46" rx="8" class="node red-node"></rect>
+        <text x="768" y="80" class="svg-label">Gate 1 approve</text>
+        <rect x="1180" y="52" width="150" height="46" rx="8" class="node red-node"></rect>
+        <text x="1198" y="80" class="svg-label">Gate 2 approve</text>
+
+        <rect x="20" y="145" width="1460" height="95" rx="8" class="lane"></rect>
+        <text x="38" y="178" class="lane-title">Core scripts / project state</text>
+        <rect x="150" y="170" width="165" height="46" rx="8" class="node blue"></rect>
+        <text x="168" y="198" class="svg-label">init/register/render</text>
+        <rect x="385" y="170" width="165" height="46" rx="8" class="node blue"></rect>
+        <text x="403" y="198" class="svg-label">extract/select</text>
+        <rect x="620" y="170" width="165" height="46" rx="8" class="node blue"></rect>
+        <text x="638" y="198" class="svg-label">plan_storyboard</text>
+        <rect x="855" y="170" width="165" height="46" rx="8" class="node blue"></rect>
+        <text x="873" y="198" class="svg-label">generate_images</text>
+        <rect x="1090" y="170" width="165" height="46" rx="8" class="node blue"></rect>
+        <text x="1108" y="198" class="svg-label">generate_seedance</text>
+        <rect x="1315" y="170" width="120" height="46" rx="8" class="node blue"></rect>
+        <text x="1333" y="198" class="svg-label">assemble</text>
+
+        <rect x="20" y="265" width="1460" height="95" rx="8" class="lane"></rect>
+        <text x="38" y="298" class="lane-title">Skills / Agents</text>
+        <rect x="360" y="290" width="155" height="46" rx="8" class="node green-node"></rect>
+        <text x="378" y="318" class="svg-label">topic-extractor</text>
+        <rect x="595" y="290" width="155" height="46" rx="8" class="node green-node"></rect>
+        <text x="613" y="318" class="svg-label">story-writer</text>
+        <rect x="830" y="290" width="170" height="46" rx="8" class="node green-node"></rect>
+        <text x="848" y="318" class="svg-label">style/scene agents</text>
+        <rect x="1065" y="290" width="170" height="46" rx="8" class="node green-node"></rect>
+        <text x="1083" y="318" class="svg-label">seedance-prompting</text>
+
+        <rect x="20" y="385" width="1460" height="95" rx="8" class="lane"></rect>
+        <text x="38" y="418" class="lane-title">QA / Arbiter / Memory</text>
+        <rect x="600" y="410" width="160" height="46" rx="8" class="node amber-node"></rect>
+        <text x="618" y="438" class="svg-label">storyboard QA</text>
+        <rect x="840" y="410" width="160" height="46" rx="8" class="node amber-node"></rect>
+        <text x="858" y="438" class="svg-label">image QA/RALPH</text>
+        <rect x="1080" y="410" width="160" height="46" rx="8" class="node amber-node"></rect>
+        <text x="1098" y="438" class="svg-label">video QA</text>
+        <rect x="1300" y="410" width="150" height="46" rx="8" class="node amber-node"></rect>
+        <text x="1318" y="438" class="svg-label">llm-wiki/evidence</text>
+
+        <rect x="20" y="505" width="1460" height="95" rx="8" class="lane"></rect>
+        <text x="38" y="538" class="lane-title">Hooks / External / Local tools</text>
+        <rect x="170" y="530" width="175" height="46" rx="8" class="node red-node"></rect>
+        <text x="188" y="558" class="svg-label">pretooluse veto</text>
+        <rect x="410" y="530" width="175" height="46" rx="8" class="node red-node"></rect>
+        <text x="428" y="558" class="svg-label">posttooluse checks</text>
+        <rect x="835" y="530" width="175" height="46" rx="8" class="node violet-node"></rect>
+        <text x="853" y="558" class="svg-label">Codex imagegen</text>
+        <rect x="1075" y="530" width="175" height="46" rx="8" class="node violet-node"></rect>
+        <text x="1093" y="558" class="svg-label">Higgsfield/Seedance</text>
+        <rect x="1315" y="530" width="120" height="46" rx="8" class="node violet-node"></rect>
+        <text x="1333" y="558" class="svg-label">ffmpeg</text>
+
+        <path d="M340 75 C390 75, 100 146, 150 193" class="arrow" marker-end="url(#arrow2)"></path>
+        <path d="M315 193 L385 193" class="arrow" marker-end="url(#arrow2)"></path>
+        <path d="M550 193 L620 193" class="arrow" marker-end="url(#arrow2)"></path>
+        <path d="M785 193 L855 193" class="arrow" marker-end="url(#arrow2)"></path>
+        <path d="M1020 193 L1090 193" class="arrow" marker-end="url(#arrow2)"></path>
+        <path d="M1255 193 L1315 193" class="arrow" marker-end="url(#arrow2)"></path>
+        <path d="M465 216 L438 290" class="arrow" marker-end="url(#arrow2)"></path>
+        <path d="M703 216 L672 290" class="arrow" marker-end="url(#arrow2)"></path>
+        <path d="M938 216 L915 290" class="arrow" marker-end="url(#arrow2)"></path>
+        <path d="M1172 216 L1150 290" class="arrow" marker-end="url(#arrow2)"></path>
+        <path d="M705 336 L680 410" class="arrow" marker-end="url(#arrow2)"></path>
+        <path d="M915 336 L920 410" class="arrow" marker-end="url(#arrow2)"></path>
+        <path d="M1150 336 L1160 410" class="arrow" marker-end="url(#arrow2)"></path>
+        <path d="M825 98 L680 410" class="arrow block"></path>
+        <path d="M1255 98 L1160 410" class="arrow block"></path>
+        <path d="M922 456 L922 530" class="arrow" marker-end="url(#arrow2)"></path>
+        <path d="M1162 456 L1162 530" class="arrow" marker-end="url(#arrow2)"></path>
+        <path d="M1375 456 L1375 530" class="arrow" marker-end="url(#arrow2)"></path>
+      </svg>
+    </div>
+  </section>
+
+  <section class="grid-2">
+    <div class="panel">
+      <h2>Execution Order</h2>
+      <table class="timeline">
+        <thead>
+          <tr><th>순서</th><th>실행</th><th>주요 산출물</th><th>차단/통과 기준</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td><code>init_project.py</code>, <code>register_sources.py</code></td><td><code>project_config.json</code>, <code>input/sources.json</code></td><td>프로젝트 skeleton과 source registry 생성</td></tr>
+          <tr><td>2</td><td><code>render_pptx_sources.py</code>, <code>extract_topics.py</code></td><td><code>input/source_facts.json</code>, <code>input/extracted_topics.json</code></td><td>자료 근거가 없는 안전 주장은 이후 QA에서 차단</td></tr>
+          <tr><td>3</td><td><code>intake_project.py</code>, <code>select_topic.py</code></td><td>길이, 밀도, 스타일, 승인 범위</td><td>기본값은 보수적으로 적용</td></tr>
+          <tr><td>4</td><td><code>plan_storyboard.py</code>, <code>evaluate_storyboard.py</code></td><td><code>story/scenes.json</code>, <code>qa/storyboard_quality_reviews.json</code></td><td>Gate 1 전 스토리보드 QA 필수</td></tr>
+          <tr><td>5</td><td><code>plan_image_prompt_team.py</code>, <code>generate_images.py --dry-run</code></td><td><code>story/image_prompts.json</code>, image job spec</td><td>live imagegen은 명시 승인 필요</td></tr>
+          <tr><td>6</td><td><code>validate_images.py</code>, image QA/RALPH</td><td><code>qa/image_qa_loop.json</code>, approved keyframes</td><td>통과 시 조기 종료, 같은 blocker 3회면 upstream repair</td></tr>
+          <tr><td>7</td><td><code>generate_seedance.py --dry-run</code>, <code>validate_scene_links.py</code></td><td><code>story/video_prompts.json</code>, scene link review</td><td>Gate 2 전 외부 업로드/유료 호출 금지</td></tr>
+          <tr><td>8</td><td><code>plan_subtitles.py</code>, <code>assemble_video.py --dry-run</code></td><td><code>media/subtitles</code>, <code>media/output/assembly_plan.json</code></td><td>실제 합본은 클립 존재와 후처리 승인 필요</td></tr>
+        </tbody>
+      </table>
+      <p class="note">검증 evidence: <code>projects/_runs/folder-migration/final/phase2-e2e-dry-run-full-flow.txt</code></p>
     </div>
 
-    <div class="runbook">
-      <section class="strip">
-        <h2>실행 순서</h2>
-        <div class="steps">
-          <div class="step source">
-            <strong>01</strong>
-            <h3>인터뷰와 자료 등록</h3>
-            <p>교육자료, 목표 주제, 영상 길이, 이미지 분량, 레퍼런스 보유 여부를 먼저 잠근다.</p>
-          </div>
-          <div class="step source">
-            <strong>02</strong>
-            <h3>주제 후보 추출</h3>
-            <p>PPTX/SOP에서 교육 주제를 뽑고, 사용자가 선택한 주제만 스토리보드 기준으로 쓴다.</p>
-          </div>
-          <div class="step story">
-            <strong>03</strong>
-            <h3>스토리보드 작성</h3>
-            <p>장면별 교육목표, 출처, 예방행동, 자막, start/end keyframe 계약을 만든다.</p>
-          </div>
-          <div class="step story">
-            <strong>04</strong>
-            <h3>Gate 1</h3>
-            <p>스토리보드 QA가 통과해야 이미지 live job spec 생성으로 넘어간다.</p>
-          </div>
-          <div class="step image">
-            <strong>05</strong>
-            <h3>이미지 프롬프트</h3>
-            <p>레퍼런스와 이전 blocker memory를 넣어 Codex imagegen용 작업지시서를 만든다.</p>
-          </div>
-          <div class="step image">
-            <strong>06</strong>
-            <h3>이미지 RALPH</h3>
-            <p>44/55, 필드별 4점, OpenCV MCP/휴리스틱/수동 시각 QA가 통과할 때까지 최대 20회 반복한다. 실패 시 RALPH critique block을 다음 프롬프트에 넣고, 같은 blocker 3회면 upstream 수정으로 넘긴다.</p>
-          </div>
-          <div class="step qa">
-            <strong>07</strong>
-            <h3>OMO 실행 관리</h3>
-            <p>OMO는 반복 실행자만 맡고, 점수와 판정은 하네스 role evaluator와 Arbiter가 결정한다.</p>
-          </div>
-          <div class="step video">
-            <strong>08</strong>
-            <h3>Gate 2와 영상 검증</h3>
-            <p>전체 이미지 QA, contact sheet/시각 QA, 비용, 업로드 허용이 모두 맞을 때 짧은 Seedance 검증 영상만 실행한다.</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="strip">
-        <h2>차단 규칙</h2>
-        <div class="guardrail-list">
-          <div class="guardrail">
-            <b>Gate 1</b>
-            <p><code>qa/storyboard_quality_reviews.json</code>이 통과하지 않으면 스토리보드 승인을 기록하지 않는다.</p>
-          </div>
-          <div class="guardrail">
-            <b>Gate 2</b>
-            <p>모든 scene의 이미지 QA coverage, <code>image_qa_loop.passed=true</code>, 승인 이미지, 비용 고지가 필요하다.</p>
-          </div>
-          <div class="guardrail">
-            <b>Live Veto</b>
-            <p>Codex imagegen <code>--live</code>는 스토리보드 Gate와 명시 승인이 필요하다. Seedance/Higgsfield/upload는 Gate 2와 <code>external_upload_allowed=true</code>가 추가로 필요하다.</p>
-          </div>
-          <div class="guardrail">
-            <b>Evidence Hygiene</b>
-            <p>Seedance 결과 URL은 로그에 그대로 저장하지 않고 <code>[redacted-url]</code>로 마스킹한다.</p>
-          </div>
-        </div>
-      </section>
-    </div>
-
-    <div class="grid">
-      <section class="strip">
-        <h2>레퍼런스 투입 지도</h2>
-        <div class="reference-map">
-          <div class="ref-box">
-            <code>model/cast</code>
-            <h3>고정 등장인물</h3>
-            <p>작업자, 신호수, 감독자. 얼굴형, 체형, PPE, 포즈 언어를 고정한다.</p>
-          </div>
-          <div class="ref-box">
-            <code>model/ppe</code>
-            <h3>PPE 기준</h3>
-            <p>안전모, 조끼, 안전화, 장갑. 장면마다 색상과 착용 위치가 흔들리지 않게 한다.</p>
-          </div>
-          <div class="ref-box">
-            <code>product/equipment</code>
-            <h3>장비·차량</h3>
-            <p>BCT, 덤프트럭, 지게차, 설비. 형태, 축 수, 색상, 스케일을 고정한다.</p>
-          </div>
-          <div class="ref-box">
-            <code>ref/approved/person</code>
-            <h3>사람 행동 참고</h3>
-            <p>시선, 신호봉, 무전기, 작업자 위치처럼 역할 행동을 참고한다.</p>
-          </div>
-          <div class="ref-box">
-            <code>ref/approved/work</code>
-            <h3>작업상황 참고</h3>
-            <p>위험구역, 예방행동, 정지/유도/확인 장면의 구도를 참고한다.</p>
-          </div>
-          <div class="ref-box">
-            <code>ref/approved/space</code>
-            <h3>공간·동선 참고</h3>
-            <p>현장 구조, 차량 동선, 보행자 통로, 사각지대 표시를 참고한다.</p>
-          </div>
-          <div class="ref-box">
-            <code>ref/approved/style</code>
-            <h3>그림체·톤</h3>
-            <p>안전교육 애니메이션 톤, 색감, 질감, 정보 밀도를 맞춘다.</p>
-          </div>
-          <div class="ref-box">
-            <code>ref/approved/camera</code>
-            <h3>카메라</h3>
-            <p>와이드샷, 운전석 POV, 후방 확인 장면 등 앵글과 거리감을 참고한다.</p>
-          </div>
-          <div class="ref-box">
-            <code>ref/approved/lighting</code>
-            <h3>조명·날씨</h3>
-            <p>주간, 흐림, 실내, 공장 조명 등 장면 일관성을 유지한다.</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="strip">
-        <h2>파일 계약</h2>
-        <div class="contracts">
-          <div class="contract-box">
-            <code>storyboard/scenes.json</code>
-            <h3>기준 계약</h3>
-            <p>교육 목표, 출처, visual action, start/end keyframe, 자막 계획을 담는다.</p>
-          </div>
-          <div class="contract-box">
-            <code>prompts/image_prompts.json</code>
-            <h3>이미지 작업지시서</h3>
-            <p>이전/현재/다음 장면, 레퍼런스, blocker memory를 포함한다.</p>
-          </div>
-          <div class="contract-box">
-            <code>qa/image_qa_loop.json</code>
-            <h3>RALPH 상태</h3>
-            <p>통과 여부, 점수, blocker, 반복 횟수, 다음 action을 기록한다.</p>
-          </div>
-          <div class="contract-box">
-            <code>qa/omo_image_ralph_plan.json</code>
-            <h3>OMO 실행 계획</h3>
-            <p>OMO가 반복 실행할 명령을 제공하되 판정은 하네스에 남긴다.</p>
-          </div>
-          <div class="contract-box">
-            <code>video/seedance_live_plan.json</code>
-            <h3>유료 영상 계획</h3>
-            <p>테스트 길이, 허용 호출 수, start/end 이미지, 비용 command를 담는다.</p>
-          </div>
-          <div class="contract-box">
-            <code>qa/video_reviews.json</code>
-            <h3>영상 QA</h3>
-            <p>기술 조건, 시선, 교육성, 스토리보드 일치, blocker를 판정한다.</p>
-          </div>
-        </div>
-      </section>
-    </div>
-
-    <section class="strip" style="margin-top:16px">
-      <h2>플러그인 구성요소</h2>
-      <div class="component-map">
-        <div class="component-card">
-          <h3>Skills</h3>
-          <ul>
-            <li><code>topic-extractor</code> 교육자료에서 주제 후보 추출</li>
-            <li><code>style-ref-search</code> 스타일·작업상황 레퍼런스 수집 지침</li>
-            <li><code>story-writer</code> 교육 시나리오와 스토리보드 작성</li>
-            <li><code>image-consistency-check</code> 인물·PPE·장비·장면 일관성 검토</li>
-            <li><code>seedance-prompting</code> start/end keyframe 기반 영상 프롬프트 작성</li>
-            <li><code>video-inspect</code> 결과 영상 프레임·OCR·스토리 일치 검토</li>
-          </ul>
-        </div>
-
-        <div class="component-card">
-          <h3>Agents</h3>
-          <ul>
-            <li><code>storyteller/AGENT.md</code> 교육자료 근거 기반 스토리 구성</li>
-            <li><code>continuity-qa/AGENT.md</code> 장면 간 인물·동선·시선 연결 검토</li>
-            <li><code>visual-continuity-director/AGENT.md</code> 이미지와 영상의 시각 연속성 감독</li>
-            <li><code>video-qa/AGENT.md</code> 영상 결과의 교육성, gaze, continuity, storyboard alignment 평가</li>
-            <li>Role evaluator는 evidence bundle만 보고 점수화하고, Arbiter가 최종 결정을 낸다.</li>
-          </ul>
-        </div>
-
-        <div class="component-card">
-          <h3>Hooks</h3>
-          <ul>
-            <li><code>session-start-anchor.py</code> 새 세션에서 미션·금지사항 재주입</li>
-            <li><code>pretooluse-live-veto.py</code> 승인 Gate와 업로드 허용 전 live 호출 차단</li>
-            <li><code>pretooluse-secret-veto.py</code> 토큰·키·Bearer 문자열 노출 차단</li>
-            <li><code>pretooluse-protected-path-veto.py</code> 보호 경로 수정 차단</li>
-            <li><code>posttooluse-schema-validation.py</code> 산출물 schema 검증</li>
-            <li><code>posttooluse-scene-link-validation.py</code> sliding-chain 연결 검증</li>
-            <li><code>posttooluse-evidence-feedback.py</code> 실행 증거 누락 피드백</li>
-            <li><code>stop-sentinel-guard.py</code> 미완료 상태 종료 방지</li>
-          </ul>
-        </div>
-
-        <div class="component-card">
-          <h3>MCP / External Tools</h3>
-          <ul>
-            <li><code>Codex imagegen</code> 기본 이미지 생성 경로. OpenAI API adapter는 기본 금지.</li>
-            <li><code>Higgsfield CLI</code> Seedance 영상 생성 경로. Gate 2 이후 짧은 검증 실행만 허용.</li>
-            <li><code>scenelens</code> / <code>understand-video</code> 영상 프레임·OCR·내용 이해 보조 후보.</li>
-            <li><code>ffmpeg</code> / <code>ffprobe</code> 영상 메타데이터, 프레임 추출, contact sheet 검증.</li>
-            <li><code>MCP server</code> 현재 플러그인 자체 manifest에는 미등록. 추후 Higgsfield, asset store, evaluation DB를 MCP로 감쌀 수 있다.</li>
-          </ul>
-        </div>
+    <div class="panel">
+      <h2>Guardrail Rules</h2>
+      <div class="cards">
+        <article class="card">
+          <h3>Gate 1</h3>
+          <p>스토리보드 QA가 통과해야 이미지 live 작업을 승인할 수 있다.</p>
+          <ul><li><code>approve_gate.py --gate storyboard</code></li><li>근거, causal flow, 전달 방식 검증</li></ul>
+        </article>
+        <article class="card">
+          <h3>Gate 2</h3>
+          <p>승인 이미지, scene link, 비용, 외부 업로드 허용이 맞아야 영상 경계로 넘어간다.</p>
+          <ul><li><code>--gate image_to_video</code></li><li><code>external_upload_allowed=true</code></li></ul>
+        </article>
+        <article class="card">
+          <h3>Live Veto</h3>
+          <p>훅이 live imagegen, Seedance, TTS, 업로드, 유료 경로를 승인 전 차단한다.</p>
+          <ul><li><code>pretooluse-live-veto.py</code></li><li>직접 imagegen은 pending approved job 필요</li></ul>
+        </article>
+        <article class="card">
+          <h3>Video Propose-Only</h3>
+          <p>영상 QA 실패는 자동 유료 재생성이 아니라 수정 제안으로 남긴다.</p>
+          <ul><li>sampled frames 기반 QA</li><li>story/keyframe/prompt 중 가장 싼 upstream 수정</li></ul>
+        </article>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <p class="footer">Verified algorithm view: current harness tests pass with <strong>66 passed</strong>.</p>
-  </main>
+  <section class="panel">
+    <h2>Component Groups</h2>
+    <div class="cards">
+      <article class="card">
+        <h3>Core Harness</h3>
+        <p>역할: 프로젝트 상태, 경로, 게이트, QA 파일을 생성하고 검증한다.</p>
+        <ul>
+          <li>구성: <code>app/harness/package/safety_video_harness/</code></li>
+          <li>CLI: <code>app/harness/cli/</code>, root <code>scripts/</code> wrappers</li>
+          <li>산출: <code>input/</code>, <code>story/</code>, <code>media/</code>, <code>qa/</code></li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Skills</h3>
+        <p>역할: 주제 추출, 스토리 작성, 스타일 검색, Seedance prompt, 이미지/영상 검사 지침을 제공한다.</p>
+        <ul>
+          <li><code>topic-extractor</code>, <code>story-writer</code></li>
+          <li><code>style-ref-search</code>, <code>seedance-prompting</code></li>
+          <li><code>image-consistency-check</code>, <code>video-inspect</code></li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Agents</h3>
+        <p>역할: 장면, 스타일, 연속성, 영상 QA를 분리된 시각에서 검토한다.</p>
+        <ul>
+          <li><code>storyteller</code>, <code>lead-style-agent</code></li>
+          <li><code>scene-prompt-agent</code>, <code>continuity-qa</code></li>
+          <li><code>visual-director-arbiter</code>, <code>video-qa</code></li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Hooks</h3>
+        <p>역할: 세션 시작, live veto, schema/scene-link/evidence check, completion sentinel을 자동 실행한다.</p>
+        <ul>
+          <li><code>SessionStart</code>: mission anchor</li>
+          <li><code>PreToolUse</code>: live/secret/protected path veto</li>
+          <li><code>PostToolUse</code>: schema, scene link, evidence feedback</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>References</h3>
+        <p>역할: 이미지 동일성을 위해 사람, PPE, 장비, 공간, 스타일 기준을 asset lock으로 묶는다.</p>
+        <ul>
+          <li>공통: <code>references/style/</code>, <code>references/examples/</code></li>
+          <li>프로젝트: <code>projects/&lt;slug&gt;/refs/</code></li>
+          <li>기준: cast, PPE, equipment, space, style, camera, lighting</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>QA Memory</h3>
+        <p>역할: QA round, blocker signature, Arbiter decision, wiki summary를 남긴다.</p>
+        <ul>
+          <li><code>qa/evaluation_rounds.jsonl</code></li>
+          <li><code>qa/image_qa_loop.json</code></li>
+          <li><code>llm-wiki/evaluation-rounds.md</code></li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>External Boundary</h3>
+        <p>역할: 실제 미디어 생성과 외부 도구를 승인 경계 뒤로 둔다.</p>
+        <ul>
+          <li>Codex built-in <code>imagegen</code></li>
+          <li>Higgsfield / Seedance CLI</li>
+          <li><code>ffmpeg</code>, <code>ffprobe</code>, OpenCV first-pass review</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Verification</h3>
+        <p>역할: 구조 변경과 전체 dry-run 흐름이 깨지지 않았는지 자동 확인한다.</p>
+        <ul>
+          <li><code>uv run python -m pytest</code>: 142 passed</li>
+          <li>Phase 2 E2E dry-run: passed</li>
+          <li>legacy root folders absent</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+</main>
 </body>
 </html>
