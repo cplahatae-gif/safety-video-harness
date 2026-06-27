@@ -8,11 +8,16 @@ from safety_video_harness.qa_contract import (
     critical_blockers,
     guide_sources,
 )
+from safety_video_harness.image_manual_review import (
+    empty_visual_scores,
+    load_image_manual_review,
+    missing_manual_review_issue,
+)
 from safety_video_harness.ralph_prompt import QUALITY_PRESSURE
 
 
 MINIMUM_FIELD_SCORE = 4
-MINIMUM_TOTAL_SCORE = 24
+MINIMUM_TOTAL_SCORE = 44
 MAX_RALPH_ITERATIONS = 20
 
 
@@ -52,8 +57,14 @@ def review_scene_image(project: Path, scene: dict) -> dict:
         "story_flow_score": story_flow_score,
         "technical_score": 5,
     }
+    manual = load_image_manual_review(project, scene_id)
+    scores.update(manual.scores if manual is not None else empty_visual_scores())
     total_score = sum(scores.values())
     blockers = _score_blockers(scores, total_score)
+    if manual is None:
+        blockers = [missing_manual_review_issue(), *blockers]
+    elif manual.blocking_issues:
+        blockers = [*manual.blocking_issues, *blockers]
     return {
         "scene_id": scene_id,
         **guide_sources(),
@@ -82,7 +93,12 @@ def dry_run_review(scene: dict) -> dict:
         "equipment_score": 4,
         "story_flow_score": 4,
         "technical_score": 4,
-        "total_score": 24,
+        "floor_lane_consistency_score": 4,
+        "background_consistency_score": 4,
+        "character_identity_lock_score": 4,
+        "vehicle_geometry_lock_score": 4,
+        "hazard_zone_consistency_score": 4,
+        "total_score": 44,
         "blocking_issues": [],
         "blocker_categories": [],
         "critical_blockers": [],
@@ -276,4 +292,9 @@ def _scoring_rubric() -> dict[str, str]:
         "equipment_score": "Preserves BCT, dump truck, lanes, cones, and plant layout.",
         "story_flow_score": "Connects causally to adjacent scenes instead of acting as an isolated checklist panel.",
         "technical_score": "Readable 16:9 image file suitable for video keyframe use.",
+        "floor_lane_consistency_score": "Manual visual lock: floor, lane colors, walk path, cones, bollards match the locked site.",
+        "background_consistency_score": "Manual visual lock: plant structures, gates, signage, camera-side geometry stable.",
+        "character_identity_lock_score": "Manual visual lock: recurring workers keep body, helmet, vest, role identity.",
+        "vehicle_geometry_lock_score": "Manual visual lock: mixer, dump truck, mirrors, wheels, scale, positions stable.",
+        "hazard_zone_consistency_score": "Manual visual lock: danger zone, pedestrian route, stop line, control point consistent.",
     }
