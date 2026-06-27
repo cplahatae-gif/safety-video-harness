@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>안전영상 하네스 — 코덱스→클로드 포팅 현황</title>
+<style>
+  :root{ --blue:#009CD9; --accent:#3182F6; --ink:#191F28; --muted:#8B95A1;
+         --bg:#F2F4F6; --line:#E5E8EB; --done:#12B886; --wip:#F59F00; --todo:#ADB5BD; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"맑은 고딕","Malgun Gothic",system-ui,sans-serif;color:var(--ink);
+       background:var(--bg);padding:28px;line-height:1.5}
+  .page{max-width:1100px;margin:0 auto;background:#fff;border:1px solid var(--line);
+        border-radius:16px;padding:34px 38px}
+  header{display:flex;justify-content:space-between;align-items:flex-end;
+         border-bottom:3px solid var(--blue);padding-bottom:14px;margin-bottom:22px}
+  h1{font-size:22px;letter-spacing:-.4px}
+  h1 small{display:block;font-size:13px;color:var(--muted);font-weight:400;margin-top:4px}
+  .meta{text-align:right;font-size:12px;color:var(--muted)}
+  .meta b{color:var(--ink)}
+  .strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+  .kpi{background:var(--bg);border-radius:12px;padding:14px 16px}
+  .kpi .n{font-size:24px;font-weight:700;color:var(--blue)}
+  .kpi .l{font-size:12px;color:var(--muted);margin-top:2px}
+  h2{font-size:14px;margin:22px 0 10px;color:var(--accent);
+     text-transform:uppercase;letter-spacing:.5px}
+  .cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  .col{border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .col h3{font-size:13px;margin-bottom:10px;display:flex;align-items:center;gap:7px}
+  .dot{width:9px;height:9px;border-radius:50%}
+  .d-done{background:var(--done)} .d-wip{background:var(--wip)} .d-todo{background:var(--todo)}
+  ul{list-style:none}
+  li{font-size:12.5px;padding:6px 0;border-top:1px dashed var(--line)}
+  li:first-child{border-top:none}
+  li b{font-weight:600}
+  .tag{font-size:10px;padding:1px 6px;border-radius:5px;margin-left:4px;vertical-align:1px}
+  .t-pol{background:#FFF0F6;color:#E64980}
+  .t-ref{background:#F1F3F5;color:#868E96}
+  .t-feat{background:#E7F5FF;color:#1971C2}
+  .note{font-size:11.5px;color:var(--muted);margin-top:4px}
+  .bar{height:10px;background:var(--line);border-radius:6px;overflow:hidden;margin:6px 0 18px}
+  .bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--accent))}
+  footer{margin-top:22px;border-top:1px solid var(--line);padding-top:12px;
+         font-size:11.5px;color:var(--muted);display:flex;justify-content:space-between}
+  .act{background:#E7F5FF;border-left:3px solid var(--accent);border-radius:8px;
+       padding:12px 16px;font-size:12.5px;margin-top:6px}
+  .act b{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <h1>안전영상 하네스 — 코덱스 분기 → 클로드 포팅
+      <small>테스트_코덱스(선행본)의 진전을 테스트_클로드로 우선순위 이식 · 출처 <b>08-codex-vs-claude-port-guide.md</b></small>
+    </h1>
+    <div class="meta">
+      2026-06-27<br>branch <b>codex/session-anchor-mas-evaluation</b><br>
+      커밋 <b>e1fcc6e</b> · PR <b>#2</b>
+    </div>
+  </header>
+
+  <div class="strip">
+    <div class="kpi"><div class="n">102</div><div class="l">테스트 통과 / 0 실패</div></div>
+    <div class="kpi"><div class="n">4+1</div><div class="l">완료 번들(견고화·시각QA·doctrine·asset_lock·assembly)</div></div>
+    <div class="kpi"><div class="n">11</div><div class="l">신규 모듈/스크립트/테스트</div></div>
+    <div class="kpi"><div class="n">5</div><div class="l">남은 보류 항목</div></div>
+  </div>
+
+  <h2>전체 진행도 · 08 우선순위 기준</h2>
+  <div class="bar"><i style="width:70%"></i></div>
+
+  <div class="cols">
+    <div class="col">
+      <h3><span class="dot d-done"></span>완료 · 커밋됨 (e1fcc6e / PR #2)</h3>
+      <ul>
+        <li><b>1순위 라이브러리 견고화</b><br>external_tools(타임아웃)·io 원자성·locks O_EXCL·eval_rounds 손상내성·scene_links·video_qa h264·imagegen 경로/버전 가드 + 회귀테스트 9</li>
+        <li><b>2순위 시각 QA(독립)</b><br>통과씬 조기종료·image_manual_review 모듈·ralph_prompt QUALITY_PRESSURE</li>
+        <li><b>3순위 doctrine + 레퍼런스 역할</b><br>approve_reference 역할 라우팅·CONTEXT.md·CLAUDE.md 연결</li>
+        <li><b>환경 픽스</b> test_story_flow_quality → sys.executable (Pillow)</li>
+      </ul>
+    </div>
+
+    <div class="col">
+      <h3><span class="dot d-wip"></span>완료 · 미커밋 (검증 green)</h3>
+      <ul>
+        <li><b>asset_lock 일관성 시스템 (Inc 1)</b><span class="tag t-feat">feature</span><br>승인 레퍼런스로 인물·장비·공간 lock 판정 → 매니페스트·이미지 프롬프트·imagegen job·Seedance 참조에 주입</li>
+        <li><b>영상 최종 조립 assemble_video</b><span class="tag t-feat">feature</span><br>video/clips → ffmpeg concat → video/final/final.mp4 (Wave H 공백)</li>
+        <li class="note">파일: asset_lock.py·assembly.py·assemble_video.py + generation/imagegen_jobs/seedance_live 수정 + 테스트 2종</li>
+      </ul>
+    </div>
+
+    <div class="col">
+      <h3><span class="dot d-todo"></span>앞으로 · 보류분</h3>
+      <ul>
+        <li><b>asset_lock Inc 2</b><span class="tag t-feat">feature</span><br>image_visual_review(PIL 휴리스틱 콘택트시트)·final-keyframe plan 부착</li>
+        <li><b>시각 QA 하드게이트</b><span class="tag t-pol">정책변경</span><br>합격 24→44 + 수동리뷰 필수화 (기존 테스트·rubrics 갱신 필요)</li>
+        <li><b>reference_catalog 통합</b><span class="tag t-ref">리팩터</span><br>assets+reference_profile 중복 스캔 단일화 (로드맵 07과 조율)</li>
+        <li><b>자막 번인 · 오디오</b><span class="tag t-feat">feature</span><br>assemble_video 후처리 패스(subtitles.srt)</li>
+        <li class="note">의도적 제외: 아키텍처 혼입(임계 2→3·transcript·codex_builtin)·argv 훅 — Claude 설계와 충돌</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>부수 검증 (이번 세션)</h2>
+  <ul>
+    <li><span class="dot d-done" style="display:inline-block"></span> &nbsp;Codex 유료 계정 재로그인 완료 · codex_image.sh 라이브 1장 + 네이버 웹툰 스타일 변환 동작 확인</li>
+  </ul>
+
+  <div class="act">
+    <b>다음 액션 →</b> 미커밋 2건(asset_lock Inc1 + assemble_video)을 PR #2 브랜치에 커밋·push해 최신화.
+    이후 보류분은 <b>asset_lock Inc2</b> 또는 <b>시각 QA 하드게이트</b> 중 택1.
+  </div>
+
+  <footer>
+    <span>안전영상 자동제작 하네스 · SHE팀</span>
+    <span>근거: project-review/08 · 09 · evidence/port-rounds/</span>
+  </footer>
+</div>
+</body>
+</html>

@@ -62,7 +62,28 @@
 - 전체 스위트: **94 passed, 1 failed**(3개 번들 누적, 회귀 0).
 - 유일 실패는 동일한 **기존 Pillow 환경 문제**(test_validate_images_writes_scored_loop_summary) — 내 변경과 무관.
 
+# 4. asset_lock 일관성 시스템 (Increment 1 — 이미지 + 매니페스트 + Seedance 참조)
+
+08 문서 "최대 기능 격차". 승인 레퍼런스로 인물·장비·공간 일관성을 코드로 강제하기 시작.
+
+| 파일 | 변경 |
+|---|---|
+| `safety_video_harness/asset_lock.py` | **신규** 순수 모듈(Path만). `build_asset_lock_manifest`(cast/equipment/space_reference 유무로 `production_locked` vs `draft_exploration_only`), `build_reference_media_pack`, `asset_lock_prompt_block`, `media_paths` |
+| `generation.py` | 매니페스트 빌드 → `asset-lock/asset_lock_manifest.json` 저장, `_style_and_reference_prompt_block`에 정책 블록 주입, 이미지 plan에 `asset_lock`·영상 plan에 `reference_media_pack` 부착 |
+| `imagegen_jobs.py` | job에 `asset_lock` 필드 |
+| `seedance_live.py` | `_build_job`에 `reference_media_pack`→존재하는 참조이미지 `--image` 주입 + `media_lock_policy` |
+| `tests/test_asset_lock.py` | **신규** 5 테스트 |
+
+**적응**: Codex의 `codex_builtin_imagegen`·깨진 스크립트 참조(production_consistency_policy의 build_image_visual_review.py)는 제외하고, 매니페스트 자체가 정책을 담도록 함. plan 필드는 dict 할당으로 부착(prompt_contract 시그니처 churn 최소화). seedance 참조주입은 `command.index("--prompt")` 기반 테스트와 무충돌(참조 없으면 `--image` 미추가).
+
+**보류(Increment 2)**: `image_visual_review.py`(휴리스틱 콘택트시트, PIL 의존), generation의 final-keyframe plan asset_lock 부착, project.py asset-lock 스캐폴딩.
+
+## 최종 검증
+
+- 전체 **100 passed, 0 failed**(4개 번들 누적, 회귀 0).
+- e2e: `generate_images` dry-run → 매니페스트(`draft_exploration_only`, 미충족역할 정확) 생성 + plan `asset_lock` 부착 + 프롬프트 정책 블록 확인.
+
 ## 후속
 
-- (선택) Pillow 환경 문제 해결: 시스템 `python3`에 pillow 설치 또는 테스트 `run_cli`를 `sys.executable` 사용으로 수정.
-- 다음(보류분): 시각 QA 하드게이트(24→44+수동리뷰 필수)·asset_lock 일관성 시스템·reference_catalog 통합·영상 최종 조립 — 각각 정책/대형 작업으로 별도 스케줄.
+- (완료) Pillow 환경 문제: `test_story_flow_quality`의 `run_cli`를 `sys.executable`로 수정 → 95→ green.
+- 다음(보류분): asset_lock Increment 2(image_visual_review/final-keyframe), 시각 QA 하드게이트(정책 변경), reference_catalog 통합, 영상 최종 조립.

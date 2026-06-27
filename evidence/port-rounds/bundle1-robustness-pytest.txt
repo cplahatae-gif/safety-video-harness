@@ -28,3 +28,12 @@ full suite (final):
 =========================== short test summary info ============================
 FAILED tests/test_story_flow_quality.py::test_validate_images_writes_scored_loop_summary
 1 failed, 94 passed in 17.20s
+
+## bundle 4 (asset_lock 일관성 시스템 — 이미지+매니페스트+seedance 참조) — 2026-06-27
+.....                                                                    [100%]
+5 passed in 0.01s
+full suite:
+........................................................................ [ 72%]
+............................                                             [100%]
+100 passed in 17.46s
+e2e: generate_images dry-run → asset-lock/asset_lock_manifest.json + plan.asset_lock + prompt policy block 확인됨

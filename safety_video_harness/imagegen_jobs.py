@@ -77,6 +77,7 @@ def _job_for_plan(project: Path, plan: dict, regenerate: bool) -> dict:
         "prompt": plan["prompt"],
         "negative_prompt": plan.get("negative_prompt", ""),
         "reference_assets": plan.get("reference_assets", {}),
+        "asset_lock": plan.get("asset_lock", {}),
         "output": str(output.relative_to(project)),
         "version": output.stem.removeprefix(f"{scene_id}_v"),
         "preserve_project_output": True,

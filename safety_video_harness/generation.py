@@ -4,6 +4,7 @@ from pathlib import Path
 
 from safety_video_harness.errors import HarnessError
 from safety_video_harness.assets import load_reference_assets, reference_assets_prompt_block
+from safety_video_harness.asset_lock import asset_lock_prompt_block, build_asset_lock_manifest
 from safety_video_harness.evaluation_rounds import previous_blocking_issues
 from safety_video_harness.gates import require_gate
 from safety_video_harness.image_qa import (
@@ -28,11 +29,15 @@ def generate_images(project: Path, dry_run: bool, live: bool, scene_filter: str 
     scenes = read_json(project / "storyboard" / "scenes.json")
     ensure_image_prompt_team_plan(project)
     reference_assets = load_reference_assets(project)
-    reference_block = _style_and_reference_prompt_block(project, reference_assets)
+    asset_lock = build_asset_lock_manifest(reference_assets)
+    reference_block = _style_and_reference_prompt_block(project, reference_assets, asset_lock)
     scene_items = list(scenes.get("scenes", []))
     plans = _image_prompt_plans(project, scenes, scene_items, reference_assets, reference_block, scene_filter)
     if scene_filter is not None and not plans:
         raise HarnessError(f"unknown scene_id: {scene_filter}")
+    for plan in plans:
+        plan["asset_lock"] = asset_lock
+    write_json(project / "asset-lock" / "asset_lock_manifest.json", asset_lock)
     write_json(project / "prompts" / "image_prompts.json", {"dry_run": dry_run, "plans": plans})
     if live:
         jobs = build_imagegen_jobs(project, plans, scene_filter, regenerate)
@@ -131,11 +136,16 @@ def generate_seedance(
         return run_seedance_live_plan(project, plan)
     scenes = read_json(project / "storyboard" / "scenes.json")
     reference_assets = load_reference_assets(project)
-    reference_block = _style_and_reference_prompt_block(project, reference_assets)
+    asset_lock = build_asset_lock_manifest(reference_assets)
+    reference_block = _style_and_reference_prompt_block(project, reference_assets, asset_lock)
     plans = [
         build_video_prompt_plan(scene, reference_assets, reference_block)
         for scene in scenes.get("scenes", [])
     ]
+    for plan in plans:
+        plan["reference_media_pack"] = list(asset_lock.get("reference_media_pack", []))
+        plan["asset_lock"] = asset_lock
+    write_json(project / "asset-lock" / "asset_lock_manifest.json", asset_lock)
     write_json(project / "prompts" / "video_prompts.json", {"dry_run": dry_run, "plans": plans})
     return f"Seedance dry-run prepared {len(plans)} clip plan(s)"
 
@@ -146,7 +156,11 @@ def _require_external_upload(project: Path) -> None:
         raise HarnessError("live generation requires external_upload_allowed=true")
 
 
-def _style_and_reference_prompt_block(project: Path, reference_assets: dict[str, list[dict[str, str]]]) -> str:
+def _style_and_reference_prompt_block(
+    project: Path,
+    reference_assets: dict[str, list[dict[str, str]]],
+    asset_lock: dict,
+) -> str:
     return "\n\n".join(
         [
             "Selected reusable style guide:",
@@ -155,6 +169,7 @@ def _style_and_reference_prompt_block(project: Path, reference_assets: dict[str,
             prompt_team_prompt_block(project),
             "Project-approved visual reference assets:",
             reference_assets_prompt_block(reference_assets),
+            asset_lock_prompt_block(asset_lock),
         ]
     )
 
