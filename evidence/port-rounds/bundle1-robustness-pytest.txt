@@ -1,0 +1,30 @@
+# Port Bundle 1 (robustness + external_tools) — pytest evidence
+# date: 2026-06-27
+
+## new regression tests (tests/test_review_regressions.py)
+.........                                                                [100%]
+9 passed in 0.03s
+
+## full suite
+E       assert False is True
+
+tests/test_story_flow_quality.py:72: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_story_flow_quality.py::test_validate_images_writes_scored_loop_summary
+1 failed, 86 passed in 18.38s
+
+## bundle 2 (독립: image_evaluation_flow early-stop / image_manual_review / ralph_prompt QUALITY_PRESSURE) — 2026-06-27
+.............                                                            [100%]
+13 passed in 0.03s
+full suite:
+=========================== short test summary info ============================
+FAILED tests/test_story_flow_quality.py::test_validate_images_writes_scored_loop_summary
+1 failed, 90 passed in 17.73s
+
+## bundle 3 (approve_reference role routing + CONTEXT.md) — 2026-06-27
+....                                                                     [100%]
+4 passed in 0.01s
+full suite (final):
+=========================== short test summary info ============================
+FAILED tests/test_story_flow_quality.py::test_validate_images_writes_scored_loop_summary
+1 failed, 94 passed in 17.20s

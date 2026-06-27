@@ -8,6 +8,24 @@ from safety_video_harness.errors import HarnessError
 from safety_video_harness.io import read_json, write_json
 
 
+APPROVED_REFERENCE_ROLES = {
+    "root": "ref/approved",
+    "person": "ref/approved/person",
+    "work": "ref/approved/work",
+    "space": "ref/approved/space",
+    "style": "ref/approved/style",
+    "camera": "ref/approved/camera",
+    "lighting": "ref/approved/lighting",
+}
+
+
+def approved_reference_dir(project: Path, role: str) -> Path:
+    if role not in APPROVED_REFERENCE_ROLES:
+        allowed = ", ".join(sorted(APPROVED_REFERENCE_ROLES))
+        raise HarnessError(f"role must be one of: {allowed}")
+    return project / APPROVED_REFERENCE_ROLES[role]
+
+
 def analyze_reference_assets(project: Path, dry_run: bool) -> str:
     assets = []
     for role, relative_dir in ASSET_DIRS.items():
@@ -20,11 +38,11 @@ def analyze_reference_assets(project: Path, dry_run: bool) -> str:
     return f"profiled {len(assets)} reference asset(s)"
 
 
-def approve_reference(project: Path, candidate: str) -> str:
+def approve_reference(project: Path, candidate: str, role: str = "root") -> str:
     source = project / "ref" / "candidates" / candidate
     if not source.exists():
         raise HarnessError(f"candidate does not exist: {candidate}")
-    target = project / "ref" / "approved" / source.name
+    target = approved_reference_dir(project, role) / source.name
     target.parent.mkdir(parents=True, exist_ok=True)
     source.replace(target)
     _move_sidecar(source, target)
@@ -34,7 +52,7 @@ def approve_reference(project: Path, candidate: str) -> str:
     entries.append(
         {
             "source": f"ref/candidates/{candidate}",
-            "target": f"ref/approved/{target.name}",
+            "target": str(target.relative_to(project)),
             "approved_at": datetime.now(UTC).isoformat(),
             "approved_by": "local-user",
         }

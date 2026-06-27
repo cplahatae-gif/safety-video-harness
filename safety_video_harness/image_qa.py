@@ -8,6 +8,7 @@ from safety_video_harness.qa_contract import (
     critical_blockers,
     guide_sources,
 )
+from safety_video_harness.ralph_prompt import QUALITY_PRESSURE
 
 
 MINIMUM_FIELD_SCORE = 4
@@ -204,7 +205,8 @@ def _regeneration_prompt(scene_id: str, deficiencies: list[str]) -> str:
     return (
         f"Regenerate {scene_id} and directly fix these deficiencies: "
         + "; ".join(deficiencies)
-        + ". Preserve approved character, PPE, equipment, site layout, story beat, and adjacent-scene continuity."
+        + ". Preserve approved character, PPE, equipment, site layout, story beat, and adjacent-scene continuity. "
+        + QUALITY_PRESSURE
     )
 
 

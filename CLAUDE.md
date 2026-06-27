@@ -15,6 +15,7 @@
 
 ## 작업 전 필수 문서
 
+- 도메인 용어집·비협상 정책·구조 오리엔테이션: `CONTEXT.md`
 - 평가 기준: `docs/evaluation-rubrics.md`
 - 산출물 예시: `docs/few-shot-examples.md`
 - Higgsfield/Seedance 운영: `docs/higgsfield-seedance-local-reference.md`

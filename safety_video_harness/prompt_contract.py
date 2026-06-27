@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import TypedDict
 
+from safety_video_harness.ralph_prompt import QUALITY_PRESSURE
+
 
 class ImagePromptPlan(TypedDict):
     scene_id: str
@@ -244,6 +246,7 @@ def _previous_blocker_prompt_lines(blockers: list[str]) -> list[str]:
     blocker_lines = [f"- {blocker}" for blocker in blockers]
     return [
         "Previous QA blockers for this scene:",
+        f"Quality pressure: {QUALITY_PRESSURE}",
         *blocker_lines,
         "Do not repeat:",
         *blocker_lines,

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import subprocess
+import sys
 from pathlib import Path
 
 from PIL import Image
@@ -12,7 +13,7 @@ FIXTURE = ROOT / "fixtures" / "sources" / "remicon-collision-guide.pptx"
 
 def run_cli(*args: str) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
-        ["python3", *args],
+        [sys.executable, *args],
         cwd=ROOT,
         check=False,
         text=True,

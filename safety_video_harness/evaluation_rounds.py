@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from safety_video_harness.errors import HarnessError
 from safety_video_harness.blocker_signatures import blocker_signature
 from safety_video_harness.evaluation_markdown import (
     markdown_artifacts,
@@ -102,10 +103,16 @@ def _read_round_entries(project: Path) -> list[JsonObject]:
     if not ledger.exists():
         return []
     entries: list[JsonObject] = []
-    for line in ledger.read_text(encoding="utf-8").splitlines():
+    lines = ledger.read_text(encoding="utf-8").splitlines()
+    for index, line in enumerate(lines, start=1):
         if not line.strip():
             continue
-        value = json.loads(line)
+        try:
+            value = json.loads(line)
+        except json.JSONDecodeError as exc:
+            if index == len(lines):
+                continue
+            raise HarnessError(f"corrupt evaluation ledger: {ledger}: line {index}: {exc}") from exc
         if isinstance(value, dict):
             entries.append(value)
     return entries

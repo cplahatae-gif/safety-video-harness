@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Final
 
 from safety_video_harness.errors import HarnessError
+from safety_video_harness.external_tools import run_tool
 from safety_video_harness.io import read_json, write_json, write_jsonl
 
 
@@ -127,10 +128,7 @@ def _build_job(project: Path, plan: dict, duration: int) -> dict:
 
 
 def _run_cli(command: list[str]) -> subprocess.CompletedProcess[str]:
-    result = subprocess.run(command, check=False, text=True, capture_output=True)
-    if result.returncode != 0:
-        raise HarnessError(result.stderr.strip() or result.stdout.strip() or "higgsfield command failed")
-    return result
+    return run_tool(command, 1500, "higgsfield command failed")
 
 
 def _redact_public_urls(text: str) -> str:

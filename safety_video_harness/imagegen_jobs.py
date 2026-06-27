@@ -36,7 +36,7 @@ def record_image_output(project: Path, scene_id: str, generated_file: Path) -> s
     job = next((item for item in jobs if item.get("scene_id") == scene_id), None)
     if job is None:
         raise HarnessError(f"imagegen job not found for {scene_id}")
-    output = project / str(job["output"])
+    output = _project_relative_output(project, str(job["output"]))
     if output.exists():
         raise HarnessError(f"draft image already exists: {output}")
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -83,13 +83,31 @@ def _job_for_plan(project: Path, plan: dict, regenerate: bool) -> dict:
     }
 
 
+def _project_relative_output(project: Path, relative: str) -> Path:
+    output = project / relative
+    try:
+        output.resolve().relative_to(project.resolve())
+    except ValueError as exc:
+        raise HarnessError(f"imagegen output path is outside project: {output}") from exc
+    return output
+
+
+def _max_version(paths: list[Path], scene_id: str) -> int:
+    versions = []
+    for path in paths:
+        suffix = path.stem.removeprefix(f"{scene_id}_v")
+        if suffix.isdigit():
+            versions.append(int(suffix))
+    return max(versions, default=0)
+
+
 def _next_draft_path(project: Path, scene_id: str, regenerate: bool) -> Path:
     draft_dir = project / "images" / "draft"
     draft_dir.mkdir(parents=True, exist_ok=True)
     existing = sorted(draft_dir.glob(f"{scene_id}_v*.png"))
     if existing and not regenerate:
         raise HarnessError(f"draft image already exists for {scene_id}; use --regenerate")
-    version = len(existing) + 1
+    version = _max_version(existing, scene_id) + 1
     return draft_dir / f"{scene_id}_v{version:03d}.png"
 
 
@@ -103,4 +121,5 @@ def _latest_draft(project: Path, scene_id: str) -> Path:
 def _next_preserved_approved(project: Path, scene_id: str) -> Path:
     approved_dir = project / "images" / "approved"
     existing = sorted(approved_dir.glob(f"{scene_id}_v*.png"))
-    return approved_dir / f"{scene_id}_v{len(existing) + 1:03d}.png"
+    version = _max_version(existing, scene_id) + 1
+    return approved_dir / f"{scene_id}_v{version:03d}.png"
