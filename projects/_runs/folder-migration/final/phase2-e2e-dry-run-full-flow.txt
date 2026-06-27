@@ -1,0 +1,51 @@
+work_dir=/tmp/safety-harness-phase2-e2e.MGvMpp
+project=/tmp/safety-harness-phase2-e2e.MGvMpp/e2e-project
+created project /tmp/safety-harness-phase2-e2e.MGvMpp/e2e-project
+plan valid
+registered src-001
+dry-run rendered 1 source(s)
+extracted 2 topic(s)
+applied default intake
+selected topic topic-001
+prepared reference search queries
+extracted style DNA
+planned 6 story beat(s)
+project valid
+storyboard QA passed 6 scene(s)
+approved gate storyboard
+prepared image prompt team plan for 7 scene brief(s)
+image dry-run prepared 1 prompt(s)
+validated 1 image plan(s)
+Seedance dry-run prepared 6 clip plan(s)
+dry-run subtitle plan written: /tmp/safety-harness-phase2-e2e.MGvMpp/e2e-project/media/subtitles/subtitles.srt
+validated 6 scene link(s)
+dry-run assembly plan written: /tmp/safety-harness-phase2-e2e.MGvMpp/e2e-project/media/output/assembly_plan.json
+phase2 e2e dry-run passed
+/tmp/safety-harness-phase2-e2e.MGvMpp/e2e-project/AGENTS.md
+/tmp/safety-harness-phase2-e2e.MGvMpp/e2e-project/HANDOFF.md
+/tmp/safety-harness-phase2-e2e.MGvMpp/e2e-project/input/extracted_topics.json
+/tmp/safety-harness-phase2-e2e.MGvMpp/e2e-project/input/source_facts.json
+/tmp/safety-harness-phase2-e2e.MGvMpp/e2e-project/input/sources.json
+/tmp/safety-harness-phase2-e2e.MGvMpp/e2e-project/llm-wiki/evaluation-rounds.md
+/tmp/safety-harness-phase2-e2e.MGvMpp/e2e-project/media/output/assembly_plan.json
+/tmp/safety-harness-phase2-e2e.MGvMpp/e2e-project/media/output/concat.txt
+/tmp/safety-harness-phase2-e2e.MGvMpp/e2e-project/media/subtitles/subtitles.srt
+/tmp/safety-harness-phase2-e2e.MGvMpp/e2e-project/PLAN.md
+/tmp/safety-harness-phase2-e2e.MGvMpp/e2e-project/project_config.json
+/tmp/safety-harness-phase2-e2e.MGvMpp/e2e-project/qa/approvals.json
+/tmp/safety-harness-phase2-e2e.MGvMpp/e2e-project/qa/evaluation_rounds.jsonl
+/tmp/safety-harness-phase2-e2e.MGvMpp/e2e-project/qa/image_qa_loop.json
+/tmp/safety-harness-phase2-e2e.MGvMpp/e2e-project/qa/image_reviews.json
+/tmp/safety-harness-phase2-e2e.MGvMpp/e2e-project/qa/scene_link_reviews.json
+/tmp/safety-harness-phase2-e2e.MGvMpp/e2e-project/qa/state/errors.jsonl
+/tmp/safety-harness-phase2-e2e.MGvMpp/e2e-project/qa/state/self_score.json
+/tmp/safety-harness-phase2-e2e.MGvMpp/e2e-project/qa/state/turn_count
+/tmp/safety-harness-phase2-e2e.MGvMpp/e2e-project/qa/story_image_reviews.json
+/tmp/safety-harness-phase2-e2e.MGvMpp/e2e-project/qa/storyboard_quality_reviews.json
+/tmp/safety-harness-phase2-e2e.MGvMpp/e2e-project/refs/asset-lock/asset_lock_manifest.json
+/tmp/safety-harness-phase2-e2e.MGvMpp/e2e-project/refs/candidates/search_queries.json
+/tmp/safety-harness-phase2-e2e.MGvMpp/e2e-project/story/image_prompt_team_plan.json
+/tmp/safety-harness-phase2-e2e.MGvMpp/e2e-project/story/image_prompts.json
+/tmp/safety-harness-phase2-e2e.MGvMpp/e2e-project/story/scenes.json
+/tmp/safety-harness-phase2-e2e.MGvMpp/e2e-project/story/video_prompts.json
+cleanup removed /tmp/safety-harness-phase2-e2e.MGvMpp

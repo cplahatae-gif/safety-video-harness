@@ -5,8 +5,8 @@
 #   scripts/codex_image.sh <출력경로.png> "<영문 이미지 프롬프트>" [참조이미지1.png] [참조이미지2.png] ...
 #
 # 예:
-#   scripts/codex_image.sh storyboard/sc01.png "A reversing concrete truck..."
-#   scripts/codex_image.sh storyboard/sc03.png "Same site, same worker..." storyboard/sc01.png storyboard/character.png
+#   scripts/codex_image.sh projects/demo/media/images/draft/sc01.png "A reversing concrete truck..."
+#   scripts/codex_image.sh projects/demo/media/images/draft/sc03.png "Same site, same worker..." references/examples/storyboard-drafts/sc01.png references/examples/storyboard-drafts/character.png
 #
 # 참조이미지를 여러 장 넘기면 현장·캐릭터·톤 일관성 유지에 사용된다(gpt-image-2 레퍼런스 다중 입력).
 set -euo pipefail

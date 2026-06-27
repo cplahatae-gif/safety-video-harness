@@ -46,6 +46,8 @@ def test_plugin_manifest_and_harness_assets_exist() -> None:
         "app/harness/schemas/scenes.schema.json",
         "references/style/catalog.json",
         "references/style/korean-industrial-webtoon/STYLE_GUIDE.md",
+        "references/examples/storyboard-drafts/scenes.json",
+        "references/examples/storyboard-drafts/sc01.png",
         "app/harness/templates/project/PLAN.md",
         "app/harness/templates/project/AGENTS.safety.md",
         "app/harness/templates/project/HANDOFF.md",
@@ -58,6 +60,31 @@ def test_plugin_manifest_and_harness_assets_exist() -> None:
         "scripts/plan_image_prompt_team.py",
     ]:
         assert (ROOT / path).exists(), path
+
+
+def test_root_keeps_only_current_top_level_buckets() -> None:
+    for obsolete_path in [
+        "plans",
+        "project-review",
+        "storyboard",
+        "scenarios",
+        "scenes.json",
+    ]:
+        assert not (ROOT / obsolete_path).exists(), obsolete_path
+
+    for current_path in [
+        "app",
+        "projects",
+        "references",
+        "docs",
+        "tests",
+        "fixtures",
+        "scripts",
+        "docs/plans/safety-video",
+        "docs/reviews/project",
+        "references/examples/storyboard-drafts",
+    ]:
+        assert (ROOT / current_path).exists(), current_path
 
 
 def test_hooks_json_registers_all_entrypoint_hooks() -> None:

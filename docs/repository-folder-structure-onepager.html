@@ -454,7 +454,7 @@
           <text x="556" y="204" class="svg-small">root experiments/logs</text>
 
           <rect x="370" y="246" width="145" height="70" rx="8" class="node node-amber"></rect>
-          <text x="391" y="276" class="svg-title">docs/ plans/</text>
+          <text x="391" y="276" class="svg-title">docs/</text>
           <text x="391" y="298" class="svg-small">operator knowledge</text>
 
           <rect x="535" y="246" width="145" height="70" rx="8" class="node node-amber"></rect>
@@ -471,15 +471,14 @@
 
           <rect x="810" y="74" width="280" height="340" rx="10" class="node node-blue"></rect>
           <text x="833" y="110" class="svg-title">projects/&lt;slug&gt;/</text>
-          <text x="833" y="140" class="svg-small">sources / storyboard / prompts</text>
-          <text x="833" y="168" class="svg-small">images / video / subtitles / output</text>
-          <text x="833" y="196" class="svg-small">qa / evidence / llm-wiki</text>
-          <text x="833" y="224" class="svg-small">model/cast / model/ppe</text>
-          <text x="833" y="252" class="svg-small">product/equipment</text>
-          <text x="833" y="280" class="svg-small">ref/approved/person|work|space</text>
-          <text x="833" y="308" class="svg-small">style / asset-lock / approvals</text>
-          <text x="833" y="350" class="svg-title">1차 원칙</text>
-          <text x="833" y="378" class="svg-small">프로젝트 내부 경로는 유지한다</text>
+          <text x="833" y="140" class="svg-small">input / refs / story</text>
+          <text x="833" y="168" class="svg-small">media/images / media/video</text>
+          <text x="833" y="196" class="svg-small">qa / llm-wiki / HANDOFF</text>
+          <text x="833" y="224" class="svg-small">refs/people / refs/ppe</text>
+          <text x="833" y="252" class="svg-small">refs/equipment / refs/space</text>
+          <text x="833" y="280" class="svg-small">refs/approved/*</text>
+          <text x="833" y="350" class="svg-title">2차 원칙</text>
+          <text x="833" y="378" class="svg-small">루트 잔여 폴더를 흡수한다</text>
         </svg>
       </div>
       <div class="legend">
@@ -542,10 +541,11 @@
             </ul>
           </article>
           <article class="bucket">
-            <h3><span class="badge b-amber">D</span>docs/plans/tests</h3>
+            <h3><span class="badge b-amber">D</span>docs/tests</h3>
             <ul>
               <li><code>docs/</code> 운영 문서</li>
-              <li><code>plans/</code> 실행 계획</li>
+              <li><code>docs/plans/</code> 실행 계획</li>
+              <li><code>docs/reviews/</code> 리뷰 기록</li>
               <li><code>tests/</code> 회귀 검증</li>
               <li><code>fixtures/</code> 테스트 입력</li>
             </ul>
@@ -570,8 +570,12 @@
             <p>여러 프로젝트에서 재사용할 기준만 둔다.</p>
           </article>
           <article class="route">
-            <h3>evidence/audio/clips/output/storyboard/scenes.json -> projects/_runs/</h3>
-            <p>루트에 남은 실험 결과와 로그는 manifest와 함께 이동한다.</p>
+            <h3>evidence/audio/clips/output -> projects/_runs/</h3>
+            <p>루트에 남은 실험 결과와 로그는 run evidence로 이동한다.</p>
+          </article>
+          <article class="route">
+            <h3>plans/project-review/storyboard samples -> docs/references</h3>
+            <p>계획과 리뷰는 docs로, 샘플 스토리보드 이미지는 references/examples로 이동한다.</p>
           </article>
           <article class="route">
             <h3>projects/&lt;slug&gt;/* -> 그대로 유지</h3>
@@ -599,7 +603,7 @@
 │   └── templates/
 ├── references/
 │   ├── style/
-│   ├── cast/
+│   ├── people/
 │   ├── ppe/
 │   ├── equipment/
 │   ├── spaces/
@@ -607,36 +611,30 @@
 ├── projects/
 ├── projects/_runs/
 ├── docs/
-├── plans/
+│   ├── plans/
+│   └── reviews/
 ├── tests/
 └── fixtures/</pre>
         </article>
         <article class="tree">
           <h3><span class="badge b-green">P</span>Project workspace</h3>
           <pre>projects/&lt;slug&gt;/
-├── sources/
-├── storyboard/
-├── prompts/
-├── images/
-│   ├── draft/
+├── input/
+├── refs/
+│   ├── people/
+│   ├── ppe/
+│   ├── equipment/
 │   └── approved/
-├── video/
-│   ├── clips/
-│   └── inspection/
+├── story/
+├── media/
+│   ├── images/
+│   │   ├── draft/
+│   │   └── approved/
+│   ├── video/
+│   │   ├── clips/
+│   │   └── inspection/
+│   └── subtitles/
 ├── qa/
-├── projects/_runs/
-├── model/
-│   ├── cast/
-│   └── ppe/
-├── product/
-│   └── equipment/
-├── ref/
-│   ├── candidates/
-│   └── approved/
-├── style/
-├── asset-lock/
-├── subtitles/
-├── output/
 └── llm-wiki/</pre>
         </article>
       </div>
@@ -651,7 +649,7 @@
         </article>
         <article class="rule">
           <b>프로젝트 계약 유지</b>
-          <span><code>projects/&lt;slug&gt;/model</code>, <code>ref</code>, <code>qa</code>, <code>images</code>는 1차 이동 대상이 아니다.</span>
+          <span>새 쓰기는 <code>input</code>, <code>refs</code>, <code>story</code>, <code>media</code>, <code>qa</code>로 고정하고, 옛 프로젝트 경로는 한 migration window 동안 read fallback만 둔다.</span>
         </article>
         <article class="rule">
           <b>레퍼런스 경계</b>

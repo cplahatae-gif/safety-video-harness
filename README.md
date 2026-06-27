@@ -2,9 +2,9 @@
 
 이 폴더는 독립형 Codex 플러그인 `safety-video-harness`의 PRD와 실행 설계를 관리한다.
 
-현재 실행 기준 문서는 [plans/safety-video-harness-final-prd.md](./plans/safety-video-harness-final-prd.md)이다.
+현재 실행 기준 문서는 [docs/plans/safety-video/safety-video-harness-final-prd.md](./docs/plans/safety-video/safety-video-harness-final-prd.md)이다.
 
-이전 PRD와 비교 검토 문서는 [plans/archive](./plans/archive)에 보관되어 있다.
+이전 PRD와 비교 검토 문서는 [docs/plans/safety-video/archive](./docs/plans/safety-video/archive)에 보관되어 있다.
 
 ## 핵심 방향
 
@@ -106,9 +106,11 @@ safety-video-harness 방식으로 새 안전교육 영상 프로젝트를 시작
 │       ├── cli/                       # canonical CLI 엔트리포인트
 │       ├── schemas/                   # JSON contract/schema
 │       └── templates/project/         # 새 프로젝트 기본 파일
+├── references/                        # 재사용 스타일/레퍼런스/샘플
 ├── scripts/                           # root compatibility CLI wrappers
-├── plans/                             # PRD, 로드맵, 구현 계획
-├── docs/                              # 원페이저, 프롬프트 가이드
+├── docs/                              # 원페이저, 프롬프트 가이드, 계획, 리뷰
+│   ├── plans/safety-video/            # PRD, 로드맵, 구현 계획
+│   └── reviews/project/               # 프로젝트 구조/품질 리뷰
 ├── projects/_runs/                    # 루트 단위 실행 증거
 └── projects/<slug>/                   # 실제 영상 프로젝트 산출물
 ```
