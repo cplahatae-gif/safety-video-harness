@@ -60,54 +60,51 @@
 
   <div class="strip">
     <div class="kpi"><div class="n">102</div><div class="l">테스트 통과 / 0 실패</div></div>
-    <div class="kpi"><div class="n">4+1</div><div class="l">완료 번들(견고화·시각QA·doctrine·asset_lock·assembly)</div></div>
-    <div class="kpi"><div class="n">11</div><div class="l">신규 모듈/스크립트/테스트</div></div>
-    <div class="kpi"><div class="n">5</div><div class="l">남은 보류 항목</div></div>
+    <div class="kpi"><div class="n">6</div><div class="l">완료 번들(견고화·시각QA·doctrine·asset_lock·assembly·게이트)</div></div>
+    <div class="kpi"><div class="n">3</div><div class="l">커밋 (e1fcc6e·fc9bfb0·056d00e)</div></div>
+    <div class="kpi"><div class="n">3</div><div class="l">남음 · skip 권장</div></div>
   </div>
 
   <h2>전체 진행도 · 08 우선순위 기준</h2>
-  <div class="bar"><i style="width:70%"></i></div>
+  <div class="bar"><i style="width:92%"></i></div>
 
   <div class="cols">
     <div class="col">
-      <h3><span class="dot d-done"></span>완료 · 커밋됨 (e1fcc6e / PR #2)</h3>
+      <h3><span class="dot d-done"></span>완료 · 커밋·push됨</h3>
       <ul>
-        <li><b>1순위 라이브러리 견고화</b><br>external_tools(타임아웃)·io 원자성·locks O_EXCL·eval_rounds 손상내성·scene_links·video_qa h264·imagegen 경로/버전 가드 + 회귀테스트 9</li>
-        <li><b>2순위 시각 QA(독립)</b><br>통과씬 조기종료·image_manual_review 모듈·ralph_prompt QUALITY_PRESSURE</li>
-        <li><b>3순위 doctrine + 레퍼런스 역할</b><br>approve_reference 역할 라우팅·CONTEXT.md·CLAUDE.md 연결</li>
-        <li><b>환경 픽스</b> test_story_flow_quality → sys.executable (Pillow)</li>
+        <li><b>1순위 라이브러리 견고화</b> <span class="tag t-feat">e1fcc6e</span><br>external_tools·io 원자성·locks O_EXCL·eval_rounds·scene_links·video_qa h264·imagegen 가드 + 회귀테스트 9</li>
+        <li><b>2순위 시각 QA(독립)</b> <span class="tag t-feat">e1fcc6e</span><br>통과씬 조기종료·image_manual_review·ralph_prompt QUALITY_PRESSURE</li>
+        <li><b>3순위 doctrine + 레퍼런스 역할</b> <span class="tag t-feat">e1fcc6e</span><br>approve_reference 역할 라우팅·CONTEXT.md</li>
+        <li><b>asset_lock 일관성 시스템 (Inc1)</b> <span class="tag t-feat">fc9bfb0</span><br>인물·장비·공간 lock → 매니페스트·프롬프트·imagegen·Seedance 참조 주입</li>
+        <li><b>영상 최종 조립 assemble_video</b> <span class="tag t-feat">fc9bfb0</span><br>video/clips → ffmpeg concat → video/final/final.mp4</li>
+        <li><b>시각 QA 하드게이트</b> <span class="tag t-pol">056d00e</span><br>수동 시각리뷰 필수화 + 합격 24→44 — 생성기 자기승인 차단</li>
       </ul>
     </div>
 
     <div class="col">
-      <h3><span class="dot d-wip"></span>완료 · 미커밋 (검증 green)</h3>
+      <h3><span class="dot d-done"></span>부수 검증 · 환경</h3>
       <ul>
-        <li><b>asset_lock 일관성 시스템 (Inc 1)</b><span class="tag t-feat">feature</span><br>승인 레퍼런스로 인물·장비·공간 lock 판정 → 매니페스트·이미지 프롬프트·imagegen job·Seedance 참조에 주입</li>
-        <li><b>영상 최종 조립 assemble_video</b><span class="tag t-feat">feature</span><br>video/clips → ffmpeg concat → video/final/final.mp4 (Wave H 공백)</li>
-        <li class="note">파일: asset_lock.py·assembly.py·assemble_video.py + generation/imagegen_jobs/seedance_live 수정 + 테스트 2종</li>
+        <li>전체 <b>102 테스트 통과 / 0 실패</b></li>
+        <li>Pillow 환경 픽스(test → sys.executable)</li>
+        <li>Codex 유료 재로그인 · codex_image.sh 라이브 1장 + 네이버 웹툰 변환 확인</li>
+        <li>PR <b>#2</b> open · push: e1fcc6e → fc9bfb0 → 056d00e</li>
       </ul>
     </div>
 
     <div class="col">
-      <h3><span class="dot d-todo"></span>앞으로 · 보류분</h3>
+      <h3><span class="dot d-todo"></span>남음 · skip 권장 (ponytail)</h3>
       <ul>
-        <li><b>asset_lock Inc 2</b><span class="tag t-feat">feature</span><br>image_visual_review(PIL 휴리스틱 콘택트시트)·final-keyframe plan 부착</li>
-        <li><b>시각 QA 하드게이트</b><span class="tag t-pol">정책변경</span><br>합격 24→44 + 수동리뷰 필수화 (기존 테스트·rubrics 갱신 필요)</li>
-        <li><b>reference_catalog 통합</b><span class="tag t-ref">리팩터</span><br>assets+reference_profile 중복 스캔 단일화 (로드맵 07과 조율)</li>
-        <li><b>자막 번인 · 오디오</b><span class="tag t-feat">feature</span><br>assemble_video 후처리 패스(subtitles.srt)</li>
-        <li class="note">의도적 제외: 아키텍처 혼입(임계 2→3·transcript·codex_builtin)·argv 훅 — Claude 설계와 충돌</li>
+        <li><b>image_visual_review (PIL 콘택트시트)</b> <span class="tag t-ref">편의</span><br>게이트는 이미 동작 · 수동리뷰 JSON은 continuity-qa 에이전트가 직접 작성. → 콘택트시트가 실제로 번거로울 때 추가</li>
+        <li><b>자막 번인 · 오디오</b> <span class="tag t-ref">YAGNI</span><br>subtitles.srt 생산 파이프라인 부재 · 입력 없는 후처리. → srt가 생길 때 추가</li>
+        <li><b>reference_catalog 통합</b> <span class="tag t-ref">리팩터</span><br>기능 불변 · 로드맵 07과 충돌. → 07 진행 시 그때</li>
+        <li class="note">제외(설계 충돌): 임계 2→3·transcript·codex_builtin·argv 훅</li>
       </ul>
     </div>
   </div>
 
-  <h2>부수 검증 (이번 세션)</h2>
-  <ul>
-    <li><span class="dot d-done" style="display:inline-block"></span> &nbsp;Codex 유료 계정 재로그인 완료 · codex_image.sh 라이브 1장 + 네이버 웹툰 스타일 변환 동작 확인</li>
-  </ul>
-
   <div class="act">
-    <b>다음 액션 →</b> 미커밋 2건(asset_lock Inc1 + assemble_video)을 PR #2 브랜치에 커밋·push해 최신화.
-    이후 보류분은 <b>asset_lock Inc2</b> 또는 <b>시각 QA 하드게이트</b> 중 택1.
+    <b>현재 상태 →</b> 08 우선순위의 기능 격차 전부 이식·검증 완료(102 pass, 3 커밋 push). 남은 3건은
+    편의·YAGNI·로드맵충돌 리팩터라 <b>지금 만들지 않는 게 맞음</b>(필요해지면 그때). 사용자가 특정 항목을 원하면 그것만 진행.
   </div>
 
   <footer>
