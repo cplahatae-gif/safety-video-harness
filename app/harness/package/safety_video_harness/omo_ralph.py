@@ -82,7 +82,7 @@ def _forbidden_actions() -> list[str]:
         "Do not run live imagegen unless the user explicitly approves that paid or external step.",
         "Do not run live Seedance inside image RALPH.",
         "Do not run live TTS or narration tools.",
-        "Do not change Gate 1, Gate 2, critical veto, repeated blocker, or max-20 rules.",
+        "Do not change Gate 1, Gate 2, critical veto, repeated blocker, or max-10 rules.",
     ]
 
 

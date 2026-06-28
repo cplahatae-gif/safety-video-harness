@@ -5,7 +5,7 @@ from safety_video_harness.image_manual_review import VISUAL_LOCK_SCORE_FIELDS
 
 MINIMUM_FIELD_SCORE = 4
 MINIMUM_TOTAL_SCORE = 44
-MAX_RALPH_ITERATIONS = 20
+MAX_RALPH_ITERATIONS = 10
 
 
 def scoring_rubric() -> dict[str, str]:

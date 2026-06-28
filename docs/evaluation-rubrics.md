@@ -108,14 +108,14 @@ Critical blockers:
 
 ## RALPH Loop Policy
 
-RALPH is early-stopping, not a fixed 20-round loop.
+RALPH is early-stopping, not a fixed 10-round loop.
 
 1. Generate or revise the artifact.
 2. Evaluate with the relevant rubric.
 3. If pass threshold is met and no critical blocker exists, stop.
 4. If failed, write a concrete regeneration delta.
 5. Inject previous blockers from `llm-wiki/evaluation-rounds.md`.
-6. Repeat until pass or max `20` image/storyboard iterations.
+6. Repeat until pass or max `10` image/storyboard iterations.
 7. If the same blocker appears `3` times, stop repeating and escalate upstream.
 
 Escalation targets:

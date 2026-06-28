@@ -21,7 +21,7 @@ This harness creates safety-training video projects from source training materia
 - `blocking_issue`: Human-readable problem that prevents approval.
 - `blocker_signature`: Stable normalized blocker identity used to detect repeated failure.
 - `repeated_blocker`: A blocker signature that has occurred at least three times for the same stage and item.
-- `RALPH loop`: Early-stopping repair loop for storyboard/image quality. It stops when thresholds pass, when repeated blockers require upstream escalation, or at max 20 image iterations.
+- `RALPH loop`: Early-stopping repair loop for storyboard/image quality. It stops when thresholds pass, when repeated blockers require upstream escalation, or at max 10 image iterations.
 - `propose-only video QA`: Video failures produce recommendations only. The harness must not automatically regenerate paid video.
 
 ## Non-Negotiable Policies

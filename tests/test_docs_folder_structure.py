@@ -9,7 +9,9 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_docs_describe_moved_root_and_project_layout() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
-    onepager = (ROOT / "docs" / "repository-folder-structure-onepager.html").read_text(encoding="utf-8")
+    onepager = (ROOT / "deliverables" / "onepagers" / "repository-folder-structure-onepager.html").read_text(
+        encoding="utf-8"
+    )
 
     for required in [
         "app/plugin/.codex-plugin/plugin.json",

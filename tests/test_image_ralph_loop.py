@@ -73,9 +73,9 @@ def test_image_qa_writes_ralph_loop_regeneration_prompts(tmp_path: Path) -> None
     assert result.returncode == 0
     loop = json.loads((project / "qa" / "image_qa_loop.json").read_text(encoding="utf-8"))
     assert loop["ralph_loop"]["status"] == "needs_regeneration"
-    assert loop["ralph_loop"]["max_iterations"] == 20
+    assert loop["ralph_loop"]["max_iterations"] == 10
     assert loop["ralph_loop"]["current_iterations"]["sc01"] == 1
-    assert loop["ralph_loop"]["remaining_iterations"]["sc01"] == 19
+    assert loop["ralph_loop"]["remaining_iterations"]["sc01"] == 9
     assert loop["ralph_loop"]["blocked_scenes"][0]["scene_id"] == "sc01"
     assert "missing draft image" in loop["ralph_loop"]["blocked_scenes"][0]["deficiencies"]
     assert "RALPH critique for sc01" in loop["ralph_loop"]["blocked_scenes"][0]["regeneration_prompt"]
@@ -116,7 +116,7 @@ def test_image_qa_stops_ralph_after_max_iterations(tmp_path: Path) -> None:
     qa_dir = project / "qa"
     qa_dir.mkdir(parents=True, exist_ok=True)
     with (qa_dir / "evaluation_rounds.jsonl").open("w", encoding="utf-8") as handle:
-        for iteration in range(1, 21):
+        for iteration in range(1, 11):
             handle.write(
                 json.dumps(
                     {
@@ -136,7 +136,7 @@ def test_image_qa_stops_ralph_after_max_iterations(tmp_path: Path) -> None:
     assert result.returncode == 0
     loop = json.loads((project / "qa" / "image_qa_loop.json").read_text(encoding="utf-8"))
     assert loop["ralph_loop"]["status"] == "max_iterations_reached"
-    assert loop["ralph_loop"]["current_iterations"]["sc01"] == 20
+    assert loop["ralph_loop"]["current_iterations"]["sc01"] == 10
     assert loop["ralph_loop"]["remaining_iterations"]["sc01"] == 0
     assert loop["next_action"] == "stop_and_escalate"
 

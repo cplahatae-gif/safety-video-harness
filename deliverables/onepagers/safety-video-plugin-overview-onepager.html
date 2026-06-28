@@ -504,6 +504,133 @@
   </section>
 
   <section class="panel">
+    <h2>Folder Map & Usage Cheat Sheet</h2>
+    <p class="note">
+      헷갈리는 기준은 하나다. <code>app/plugin</code>은 Codex가 읽는 플러그인 껍데기,
+      <code>app/harness</code>는 실제 명령/검증 코드, <code>projects/&lt;slug&gt;</code>는 영상별 작업장,
+      <code>references/style</code>은 여러 프로젝트에서 재사용하는 스타일 창고다.
+    </p>
+    <div class="cards">
+      <div class="card core">
+        <h3>app/plugin</h3>
+        <ul>
+          <li><b>역할:</b> Codex 플러그인 등록부. manifest, skills, agents, hooks가 들어간다.</li>
+          <li><b>읽는 시점:</b> 세션 시작, 관련 작업 요청, tool 사용 전후, Stop 시점.</li>
+          <li><b>건드릴 때:</b> 새 skill/agent/hook을 추가하거나 플러그인 정책을 바꿀 때만.</li>
+          <li><b>중요 파일:</b> <code>.codex-plugin/plugin.json</code>, <code>skills/*/SKILL.md</code>, <code>agents/*/AGENT.md</code>, <code>hooks/hooks.json</code></li>
+        </ul>
+      </div>
+      <div class="card core">
+        <h3>app/harness</h3>
+        <ul>
+          <li><b>역할:</b> 운영 CLI와 Python 패키지. 프로젝트 생성, 자료 등록, QA, imagegen job, Seedance plan을 만든다.</li>
+          <li><b>읽는 시점:</b> <code>uv run python scripts/*.py</code> 명령을 실행할 때.</li>
+          <li><b>건드릴 때:</b> 폴더 규칙, 검증 로직, 게이트, RALPH, Seedance dry-run 동작을 바꿀 때.</li>
+          <li><b>중요 파일:</b> <code>cli/*.py</code>, <code>package/safety_video_harness/*.py</code>, <code>schemas/*.json</code>, <code>templates/project/*</code></li>
+        </ul>
+      </div>
+      <div class="card asset">
+        <h3>projects/&lt;slug&gt;</h3>
+        <ul>
+          <li><b>역할:</b> 한 편의 영상 프로젝트 전체 산출물. 입력 자료, 레퍼런스, 스토리, 이미지, 영상, QA 증거가 여기에 쌓인다.</li>
+          <li><b>읽는 시점:</b> 거의 모든 CLI가 <code>--project projects/&lt;slug&gt;</code>로 이 폴더를 기준 삼는다.</li>
+          <li><b>건드릴 때:</b> 이번 영상 자료를 넣거나 승인 이미지/레퍼런스/QA 파일을 관리할 때.</li>
+          <li><b>핵심:</b> 프로젝트별 레퍼런스는 여기에 들어간다. 전역 스타일 가이드와 섞지 않는다.</li>
+        </ul>
+      </div>
+      <div class="card skill">
+        <h3>references/style</h3>
+        <ul>
+          <li><b>역할:</b> 여러 프로젝트에서 재사용하는 그림체/렌더링 스타일 카탈로그.</li>
+          <li><b>읽는 시점:</b> intake의 <code>style_guide_id</code>, <code>extract_style_dna</code>, 이미지 프롬프트 팀 단계.</li>
+          <li><b>건드릴 때:</b> 반복 사용 가능한 스타일 가이드를 추가할 때.</li>
+          <li><b>중요 파일:</b> <code>catalog.json</code>, <code>&lt;style-id&gt;/STYLE_GUIDE.md</code>, <code>&lt;style-id&gt;/references/*</code></li>
+        </ul>
+      </div>
+      <div class="card qa">
+        <h3>docs</h3>
+        <ul>
+          <li><b>역할:</b> 운영 설명서, 루브릭, few-shot, 로컬 참조 문서, 원페이저.</li>
+          <li><b>읽는 시점:</b> 평가, 프롬프트 작성, Higgsfield/Seedance 계획, 구조 파악 전.</li>
+          <li><b>건드릴 때:</b> 사용법이나 평가 기준이 바뀌었을 때.</li>
+          <li><b>중요 파일:</b> <code>evaluation-rubrics.md</code>, <code>few-shot-examples.md</code>, <code>higgsfield-seedance-local-reference.md</code></li>
+        </ul>
+      </div>
+      <div class="card hook">
+        <h3>Live Boundary</h3>
+        <ul>
+          <li><b>원칙:</b> live image/video/TTS는 승인 없이 실행하지 않는다.</li>
+          <li><b>차단:</b> <code>pretooluse-live-veto.py</code>가 paid/live성 실행을 막는다.</li>
+          <li><b>허용:</b> 먼저 <code>--dry-run</code>으로 job spec, 비용, 업로드 대상을 확인한다.</li>
+          <li><b>증거:</b> QA round, visual review, sampled frames를 남긴 뒤 다음 단계로 간다.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Project Folder: Where Things Go</h2>
+    <div class="grid-2">
+      <div>
+        <pre class="command">projects/&lt;slug&gt;/
+├── input/                         # 원본 자료: PPTX, PDF, SOP, 이미지, 설명 파일
+├── refs/
+│   ├── people/                    # 고정 등장인물: 작업자, 신호수, 운전자
+│   ├── ppe/                       # 안전모, 조끼, 장갑, 안전화 등 PPE
+│   ├── equipment/                 # 차량, 설비, 제품, 장비 형상 lock
+│   ├── candidates/                # 후보 보관함: 자동 prompt 반영 안 됨
+│   └── approved/                  # 실제 prompt에 들어가는 승인 레퍼런스
+│       ├── people/                # 포즈, 시선, 역할 행동
+│       ├── work/                  # 작업상황, 위험상황, 예방행동
+│       ├── spaces/                # 현장 구조, 동선, 통로, 위험구역
+│       ├── style/                 # 프로젝트 한정 그림체/색감 참고
+│       ├── camera/                # 구도, 앵글, 거리감
+│       └── lighting/              # 조명, 날씨, 노출
+├── sources/                       # 추출된 source facts, topics, citations
+├── story/                         # scenes, storyboard QA, image prompt team plan
+├── media/
+│   ├── images/draft/              # 생성/수집된 후보 키프레임
+│   ├── images/approved/           # 승인 키프레임, 덮어쓰기 금지
+│   └── video/clips/               # Seedance/Higgsfield clip 결과
+├── qa/                            # image/video manual review, visual contact sheet
+├── gates/                         # Gate 1, Gate 2 승인 상태
+├── project_config.json            # target seconds, style_guide_id, text delivery
+└── HANDOFF.md                     # 다음 세션 인계 문서</pre>
+      </div>
+      <div class="cards">
+        <div class="card asset">
+          <h3>레퍼런스 넣는 기준</h3>
+          <ul>
+            <li><code>refs/people</code>: 같은 사람이 반복 등장해야 할 때.</li>
+            <li><code>refs/ppe</code>: 안전모/조끼/장갑처럼 착용물이 중요할 때.</li>
+            <li><code>refs/equipment</code>: 차량 축 수, 설비 형상, 제품 크기를 고정할 때.</li>
+            <li><code>refs/approved/*</code>: 장면 구성이나 스타일처럼 prompt에 직접 반영할 승인 참고.</li>
+          </ul>
+        </div>
+        <div class="card asset">
+          <h3>.md Sidecar 규칙</h3>
+          <ul>
+            <li>이미지 옆에 같은 이름의 <code>.md</code>를 둔다.</li>
+            <li>인물 다각도 이미지는 <code>worker-001.profile.md</code>처럼 공통 프로필을 둔다.</li>
+            <li>내용은 “참고할 것 / 복제하지 말 것”만 짧게 쓴다.</li>
+            <li>설명 없는 이미지는 파일명 기반 placeholder가 들어가므로 production용으로 약하다.</li>
+          </ul>
+        </div>
+        <div class="card hook">
+          <h3>헷갈리면 이렇게</h3>
+          <ul>
+            <li>모자/조끼/장갑: <code>refs/ppe</code></li>
+            <li>사람 자체: <code>refs/people</code></li>
+            <li>차량/장비: <code>refs/equipment</code></li>
+            <li>장면 배치: <code>refs/approved/work</code> 또는 <code>spaces</code></li>
+            <li>화면 틀/앵글: <code>refs/approved/camera</code></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
     <h2>Top-Level Flow</h2>
     <div class="legend">
       <span class="tag"><span class="dot blue"></span>문서/상태 처리</span>

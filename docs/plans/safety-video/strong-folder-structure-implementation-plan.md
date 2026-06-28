@@ -610,7 +610,7 @@ Wave 4: Task 11, Task 12, Task 13. Move docs/references/evidence, update tests/d
   **References**:
   - Pattern: `README.md` root structure and command examples.
   - Pattern: `AGENTS.md` reference path rules.
-  - Pattern: `docs/repository-folder-structure-onepager.html` - previous folder overview.
+  - Pattern: `deliverables/onepagers/repository-folder-structure-onepager.html` - previous folder overview.
   - Pattern: `CONTEXT.md` domain terms and architecture orientation.
 
   **Acceptance Criteria**:
