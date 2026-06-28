@@ -37,6 +37,12 @@
 - After asking whether references exist, ask which reusable style guide to use and show 5 choices from `references/style/catalog.json`.
 - Store reusable styles under `references/style/<style-id>/STYLE_GUIDE.md` with reference images in `references/style/<style-id>/references/`.
 - Use dry-run before live work.
+- Do not treat approval for one stage as approval for later stages; broad wording such as "go ahead" or "make it" is not enough to skip checkpoints.
+- Required human checkpoints for every safety-video project:
+  1. Storyboard/scenario approval before live image generation or final image prompt execution.
+  2. Keyframe/image approval after image generation and QA, before any Higgsfield/Seedance upload or video generation.
+  3. Final video confirmation after generated video QA, before calling the result final or handing it off as approved.
+- Before any paid Seedance/Higgsfield execution, also disclose estimated credits, confirm external upload permission, and get explicit approval for that paid run.
 - Treat 30 seconds as a cost guardrail, not a technical limit.
 - Inspect video through sampled frames, not direct MP4 understanding.
 - When handing off, ending a long task, or preparing work for another session, include a ready-to-copy recommended prompt that tells the next session which files to read, which approvals are forbidden, and what the next action should be.

@@ -13,6 +13,7 @@ Read the repository-level handoff and operating rules before continuing this pro
 - `docs/higgsfield-seedance-local-reference.md`
 
 Paid calls, live imagegen, live Seedance, and live TTS are forbidden before explicit approval.
+Approval is stage-specific: storyboard approval, keyframe/image approval, paid video-generation approval, and final video confirmation are separate checkpoints.
 
 ## Project Order
 
@@ -20,11 +21,14 @@ Paid calls, live imagegen, live Seedance, and live TTS are forbidden before expl
 2. Confirm target seconds, image density, style guide, aspect ratio, and reference assets.
 3. Build or revise `storyboard/scenes.json`.
 4. Run storyboard QA before image work.
-5. Generate image prompts and imagegen job specs.
-6. Use Codex built-in `imagegen` only after the storyboard gate allows it.
-7. Run image QA and RALPH early-stopping loops.
-8. Generate Seedance/Higgsfield prompt specs only from approved keyframes.
-9. Run live video only after Gate 2 approval, external upload permission, and cost disclosure.
+5. Ask for explicit storyboard/scenario approval before any live image generation.
+6. Generate image prompts and imagegen job specs.
+7. Use Codex built-in `imagegen` only after the storyboard gate allows it.
+8. Run image QA and RALPH early-stopping loops.
+9. Ask for explicit keyframe/image approval before any Seedance/Higgsfield upload or video generation.
+10. Generate Seedance/Higgsfield prompt specs only from approved keyframes.
+11. Run live video only after Gate 2 approval, external upload permission, cost disclosure, and explicit paid-run approval.
+12. Run sampled-frame video QA, then ask for final video confirmation before marking the result final.
 
 ## Local Evidence To Inspect
 
@@ -42,5 +46,6 @@ Paid calls, live imagegen, live Seedance, and live TTS are forbidden before expl
 handoff.md, AGENTS.md, CONTEXT.md, docs/evaluation-rubrics.md, docs/few-shot-examples.md를 읽고 이어서 작업해줘.
 이 프로젝트의 HANDOFF.md와 AGENTS.md도 읽어줘.
 유료 호출, live Seedance, live TTS, 외부 업로드, live imagegen은 명시 승인 전 금지야.
+승인은 단계별로 받아야 해: 스토리보드 승인, 이미지 키프레임 승인, 유료 영상 생성 승인, 최종 영상 컨펌을 서로 대체하지 마.
 먼저 현재 gate 상태와 미커밋 변경을 요약하고, 다음에 필요한 작업은 dry-run 계획부터 제안해줘.
 ```

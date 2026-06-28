@@ -6,6 +6,7 @@ from safety_video_harness.asset_lock import asset_lock_prompt_block, build_asset
 from safety_video_harness.errors import HarnessError
 from safety_video_harness.assets import load_reference_assets, reference_assets_prompt_block
 from safety_video_harness.evaluation_rounds import previous_blocking_issues
+from safety_video_harness.fast_draft import prepare_fast_image_draft
 from safety_video_harness.gates import require_gate
 from safety_video_harness.image_qa import (
     build_loop_summary,
@@ -28,7 +29,16 @@ from safety_video_harness.seedance_live import (
 from safety_video_harness.style_guides import selected_style_prompt_block
 
 
-def generate_images(project: Path, dry_run: bool, live: bool, scene_filter: str | None, regenerate: bool) -> str:
+def generate_images(
+    project: Path,
+    dry_run: bool,
+    live: bool,
+    scene_filter: str | None,
+    regenerate: bool,
+    fast_draft: bool = False,
+) -> str:
+    if fast_draft:
+        return prepare_fast_image_draft(project)
     layout = layout_for_project(project)
     if live:
         require_gate(project, "storyboard")

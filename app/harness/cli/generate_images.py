@@ -20,6 +20,7 @@ def main() -> int:
     parser.add_argument("--live", action="store_true")
     parser.add_argument("--only")
     parser.add_argument("--regenerate", action="store_true")
+    parser.add_argument("--fast-draft", action="store_true")
     args = parser.parse_args()
     return run_boundary(
         lambda: generate_images(
@@ -28,6 +29,7 @@ def main() -> int:
             bool(args.live),
             args.only,
             bool(args.regenerate),
+            bool(args.fast_draft),
         )
     )
 
